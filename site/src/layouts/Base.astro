@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = '不標準答案',
+  description: rawDesc = '老查與阿分的 Podcast。每週一集，在日常觀察裡找破框的角度。',
+  ogImage,
+} = Astro.props;
+
+const description = rawDesc.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().slice(0, 160);
+
+const fullTitle = title === '不標準答案' ? title : `${title} — 不標準答案`;
+---
+
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={Astro.url.href} />
+
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+
+  <link rel="alternate" type="application/rss+xml" title="不標準答案" href="https://feed.firstory.me/rss/user/cmi76pcj000h7010chgezh8bs" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="site-title">不標準答案</a>
+      <nav class="header-nav">
+        <a href="/episodes">所有集數</a>
+        <a href="/#about">關於節目</a>
+        <a href="https://open.firstory.me/user/cmi76pcj000h7010chgezh8bs" target="_blank" rel="noopener">訂閱</a>
+      </nav>
+    </div>
+  </header>
+
+  <slot />
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-name">不標準答案 © {new Date().getFullYear()}</span>
+      <div class="footer-links">
+        <a href="https://www.facebook.com" target="_blank" rel="noopener">FB</a>
+        <a href="https://www.instagram.com" target="_blank" rel="noopener">IG</a>
+        <a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://open.firstory.me/user/cmi76pcj000h7010chgezh8bs" target="_blank" rel="noopener">Firstory</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

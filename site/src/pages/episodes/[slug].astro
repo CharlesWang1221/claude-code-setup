@@ -1,0 +1,269 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getFeed } from '../../lib/feed';
+
+export async function getStaticPaths() {
+  const { episodes } = await getFeed();
+  return episodes.map((ep) => ({
+    params: { slug: ep.slug },
+    props: { ep },
+  }));
+}
+
+const { ep } = Astro.props;
+const { episodes, meta } = await getFeed();
+const idx = episodes.findIndex((e) => e.slug === ep.slug);
+const prev = idx < episodes.length - 1 ? episodes[idx + 1] : null;
+const next = idx > 0 ? episodes[idx - 1] : null;
+
+const siteUrl = 'https://podcast-site-9hr.pages.dev';
+const cleanDesc = ep.description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastEpisode',
+  name: ep.title,
+  description: cleanDesc.slice(0, 500),
+  url: `${siteUrl}/episodes/${ep.slug}`,
+  datePublished: new Date(ep.pubDate).toISOString().split('T')[0],
+  timeRequired: `PT${ep.durationSeconds}S`,
+  associatedMedia: {
+    '@type': 'MediaObject',
+    contentUrl: ep.audioUrl,
+    encodingFormat: 'audio/mpeg',
+  },
+  partOfSeries: {
+    '@type': 'PodcastSeries',
+    name: meta.title,
+    url: siteUrl,
+    image: meta.image,
+  },
+  author: [
+    { '@type': 'Person', name: '老查' },
+    { '@type': 'Person', name: '阿分' },
+  ],
+};
+---
+
+<Base title={ep.title} description={cleanDesc.slice(0, 160)} ogImage={ep.image}>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <main>
+    <article class="ep-article container">
+      <!-- BACK -->
+      <a href="/episodes" class="back-link">← 所有集數</a>
+
+      <!-- HEADER -->
+      <header class="ep-header">
+        <div class="ep-eyebrow">
+          <span style="font-family:var(--mono);font-size:0.68rem;letter-spacing:0.22em;color:var(--accent);" style="font-size:0.68rem;letter-spacing:0.22em;">{ep.episodeLabel}</span>
+          <span class="meta-sep" aria-hidden="true"></span>
+          <span class="mono" style="font-size:0.68rem;color:var(--muted);font-variant-numeric:tabular-nums;">{ep.pubDateFormatted}</span>
+          <span class="meta-sep" aria-hidden="true"></span>
+          <span class="mono" style="font-size:0.68rem;color:var(--muted);font-variant-numeric:tabular-nums;">{ep.duration}</span>
+        </div>
+        <h1 class="ep-title-main">{ep.title}</h1>
+      </header>
+
+      <!-- AUDIO PLAYER -->
+      {ep.audioUrl && (
+        <div class="audio-wrap">
+          <audio controls src={ep.audioUrl} preload="metadata" style="width:100%;">
+            你的瀏覽器不支援音頻播放。<a href={ep.audioUrl}>下載音頻</a>
+          </audio>
+        </div>
+      )}
+
+      <!-- SHOW NOTES -->
+      {ep.description && (
+        <div class="show-notes">
+          <div class="section-label" style="margin-bottom:1.5rem;">Show Notes</div>
+          <div class="notes-body" set:html={ep.description} />
+        </div>
+      )}
+
+      <!-- LISTEN ON -->
+      <div class="listen-on">
+        <span class="section-label">收聽平台</span>
+        <div class="platform-row">
+          <a href={ep.link || `https://open.firstory.me/user/cmi76pcj000h7010chgezh8bs`} target="_blank" rel="noopener" class="btn-outline">Firstory</a>
+          <a href="#" class="btn-outline">Apple Podcasts</a>
+          <a href="#" class="btn-outline">Spotify</a>
+        </div>
+      </div>
+
+      <!-- PREV / NEXT -->
+      <nav class="ep-nav">
+        {prev ? (
+          <a href={`/episodes/${prev.slug}`} class="ep-nav-item ep-nav-prev">
+            <span class="nav-dir">← 上一集</span>
+            <span class="nav-title">{prev.title}</span>
+          </a>
+        ) : <div />}
+        {next ? (
+          <a href={`/episodes/${next.slug}`} class="ep-nav-item ep-nav-next">
+            <span class="nav-dir">下一集 →</span>
+            <span class="nav-title">{next.title}</span>
+          </a>
+        ) : <div />}
+      </nav>
+    </article>
+  </main>
+</Base>
+
+<style>
+  .ep-article {
+    padding-top: 3rem;
+    padding-bottom: 6rem;
+    max-width: 720px;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    transition: color 0.18s;
+  }
+
+  .back-link:hover { color: var(--accent); }
+
+  .ep-header { margin-bottom: 2rem; }
+
+  .ep-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-sep {
+    width: 1px;
+    height: 12px;
+    background: var(--rule);
+    flex-shrink: 0;
+  }
+
+  .ep-title-main {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  /* ─── AUDIO ─── */
+  .audio-wrap {
+    margin: 2rem 0;
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+  }
+
+  audio {
+    accent-color: var(--accent);
+    height: 40px;
+  }
+
+  /* ─── SHOW NOTES ─── */
+  .show-notes {
+    margin: 2.5rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .notes-body {
+    font-size: 0.92rem;
+    line-height: 1.85;
+    color: var(--muted);
+  }
+
+  .notes-body p { margin-bottom: 1.2em; }
+
+  .notes-body a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .notes-body h2, .notes-body h3 {
+    font-family: var(--serif);
+    color: var(--body);
+    margin: 1.8em 0 0.6em;
+  }
+
+  .notes-body ul, .notes-body ol {
+    padding-left: 1.5em;
+    margin-bottom: 1.2em;
+  }
+
+  .notes-body li { margin-bottom: 0.4em; }
+
+  /* ─── LISTEN ON ─── */
+  .listen-on {
+    margin: 2.5rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .platform-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* ─── PREV / NEXT ─── */
+  .ep-nav {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .ep-nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    transition: border-color 0.18s;
+  }
+
+  .ep-nav-item:hover { border-color: var(--accent); }
+
+  .ep-nav-next { text-align: right; }
+
+  .nav-dir {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  .nav-title {
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    color: var(--body);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .ep-nav { grid-template-columns: 1fr; }
+    .ep-nav-next { text-align: left; }
+    .listen-on { flex-direction: column; gap: 1rem; align-items: flex-start; }
+  }
+</style>

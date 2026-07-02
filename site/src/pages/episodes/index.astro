@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getFeed } from '../../lib/feed';
+
+const { episodes } = await getFeed();
+---
+
+<Base title="所有集數" description="《不標準答案》所有集數列表">
+  <main class="container" style="padding-top:3.5rem;padding-bottom:6rem;">
+    <div style="margin-bottom:2.5rem;">
+      <h1 style="font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;letter-spacing:-0.02em;text-wrap:balance;margin-bottom:0.75rem;">所有集數</h1>
+      <p style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;">{episodes.length} 集 · 每週一更新</p>
+    </div>
+
+    <ul class="episode-list">
+      {episodes.map((ep) => (
+        <li class="episode-item" onclick={`location.href='/episodes/${ep.slug}'`}>
+          <span class="ep-num">{ep.episodeLabel}</span>
+          <div>
+            <div class="ep-title">{ep.title}</div>
+            <div class="ep-date">{ep.pubDateFormatted}</div>
+          </div>
+          <span class="ep-dur">{ep.duration}</span>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Base>

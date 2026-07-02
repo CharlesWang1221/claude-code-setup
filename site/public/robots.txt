@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://podcast-site-9hr.pages.dev/sitemap-index.xml
