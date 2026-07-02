@@ -2,6 +2,33 @@ import { XMLParser } from 'fast-xml-parser';
 
 const RSS_URL = 'https://feed.firstory.me/rss/user/cmi76pcj000h7010chgezh8bs';
 
+function cleanTitle(raw: string): string {
+  // 1. 移除所有 emoji
+  let t = raw.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');
+  // 1b. 移除 variation selectors U+FE0E/FE0F 和零寬字符 U+200B–200D U+FEFF
+  t = t.replace(/[︎️​‌‍﻿]/g, '');
+
+  // 2. 取全形 ｜ 後面的部分（節目名稱前綴）
+  const pipeIdx = t.lastIndexOf('｜');
+  if (pipeIdx !== -1) t = t.slice(pipeIdx + 1);
+
+  // 3. 移除開頭的欄目標籤（可能被《包住，先做一次）
+  const stripLabels = (s: string) => s
+    .replace(/^\s*【聊哉】\s*/u, '')
+    .replace(/^\s*《聊哉》\s*/u, '')
+    .replace(/^\s*《書喔〜吾聊へ》[：:]?\s*/u, '');
+  t = stripLabels(t);
+
+  // 4. 移除開頭殘留的書名號，再補一次欄目標籤（《🎙️【聊哉】 的情況）
+  t = t.replace(/^\s*[《「]/u, '');
+  t = stripLabels(t);
+
+  // 5. 移除結尾集數標記（S2_EP.08、S1_EP.12、S2_EP2、.S2_EP.01）
+  t = t.replace(/[\s._]*S?\d+[_.]?EP\.?\s*\d*\s*$/i, '');
+
+  return t.replace(/\s+/g, ' ').trim();
+}
+
 export interface Episode {
   slug: string;
   title: string;
@@ -101,7 +128,7 @@ export async function getFeed(): Promise<{ episodes: Episode[]; meta: PodcastMet
 
       return {
         slug: slugFromGuid(typeof guid === 'object' ? guid['#text'] ?? '' : String(guid)),
-        title: item.title ?? '',
+        title: cleanTitle(item.title ?? ''),
         pubDate: item.pubDate ?? '',
         pubDateFormatted: item.pubDate ? formatDate(item.pubDate) : '',
         duration: formatDuration(rawDur),
