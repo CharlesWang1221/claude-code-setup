@@ -23,10 +23,21 @@
 - 方案：免費 500 次/月
 - API Key 已設定於環境變數 `FIRECRAWL_API_KEY`
 
-### 4. Google Workspace
+### 4. Cloudflare
+- 狀態：✅ 已安裝並登入
+- 用途：部署靜態網頁到 Cloudflare Pages（完全免費）、管理 DNS、Cloudflare Workers
+- 適合：純前端網頁、Landing Page、個人網站
+- 元件：Wrangler CLI + Cloudflare MCP Server
+
+### 5. Google Workspace
 - 狀態：跳過（未安裝）
 - 用途：串接 Gmail、行事曆、Drive、Sheets
 - 備註：需要 Google Cloud Project + OAuth 設定，約 10-15 分鐘。待日後安裝。
+
+### 6. Zeabur Agent Skills
+- 狀態：❌ 被 ASUS 企業政策封鎖
+- 用途：有後端的專案、Bot、資料庫應用部署
+- 備註：個人電腦可安裝，指令：`claude plugin marketplace add zeabur/agent-skills && claude plugin install zeabur@zeabur`
 
 ## 前置安裝
 
