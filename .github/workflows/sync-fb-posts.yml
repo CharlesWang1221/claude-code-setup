@@ -1,0 +1,38 @@
+name: Sync Facebook Posts to Blog
+
+on:
+  schedule:
+    - cron: '0 14 * * *'  # 每天台北時間 22:00 (UTC+8 = UTC 14:00)
+  workflow_dispatch:       # 手動觸發
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync Facebook posts
+        env:
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+        run: node .github/scripts/sync-fb-posts.js
+
+      - name: Commit new posts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/src/content/blog/
+          if git diff --staged --quiet; then
+            echo "No new posts to commit"
+          else
+            git commit -m "自動同步：Facebook 貼文 $(date '+%Y-%m-%d')"
+            git push
+          fi
