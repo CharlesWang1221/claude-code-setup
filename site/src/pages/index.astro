@@ -195,8 +195,8 @@ const podcastSchema = {
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 80% 60% at 50% 45%, rgba(13,12,11,0.15) 0%, rgba(13,12,11,0.72) 100%),
-      linear-gradient(to bottom, rgba(13,12,11,0.55) 0%, rgba(13,12,11,0.1) 35%, rgba(13,12,11,0.65) 80%, rgba(13,12,11,0.95) 100%);
+      radial-gradient(ellipse 80% 60% at 50% 45%, rgba(10,8,6,0.1) 0%, rgba(10,8,6,0.65) 100%),
+      linear-gradient(to bottom, rgba(10,8,6,0.5) 0%, rgba(10,8,6,0.08) 35%, rgba(10,8,6,0.6) 80%, rgba(10,8,6,0.92) 100%);
   }
 
   .hero-body {
@@ -217,7 +217,7 @@ const podcastSchema = {
     font-family: var(--mono);
     font-size: 0.75rem;
     letter-spacing: 0.22em;
-    color: rgba(240,237,232,0.75);
+    color: rgba(248,245,240,0.75);
     text-transform: uppercase;
   }
 
@@ -232,9 +232,9 @@ const podcastSchema = {
     font-weight: 700;
     line-height: 1.15;
     letter-spacing: -0.025em;
-    color: var(--body);
+    color: #F8F5F0;
     text-wrap: balance;
-    text-shadow: 0 2px 32px rgba(0,0,0,0.7), 0 0 60px rgba(0,0,0,0.4);
+    text-shadow: 0 2px 32px rgba(0,0,0,0.6), 0 0 60px rgba(0,0,0,0.35);
   }
 
   .btn-cta {
@@ -253,7 +253,7 @@ const podcastSchema = {
   }
 
   .btn-cta:hover {
-    background: #d94843;
+    background: #a83835;
     transform: translateY(-1px);
   }
 
@@ -266,7 +266,7 @@ const podcastSchema = {
     left: 0;
     right: 0;
     z-index: 3;
-    background: rgba(13,12,11,0.82);
+    background: rgba(10,8,6,0.82);
     backdrop-filter: blur(12px);
     border-top: 1px solid rgba(255,255,255,0.07);
   }
@@ -297,13 +297,13 @@ const podcastSchema = {
     transition: background 0.18s;
   }
 
-  .play-btn:hover { background: #d94843; }
+  .play-btn:hover { background: #a83835; }
 
   .player-label {
     font-family: var(--mono);
     font-size: 0.65rem;
     letter-spacing: 0.08em;
-    color: var(--muted);
+    color: rgba(248,245,240,0.55);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -330,14 +330,14 @@ const podcastSchema = {
   .player-time {
     font-family: var(--mono);
     font-size: 0.65rem;
-    color: var(--muted);
+    color: rgba(248,245,240,0.45);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
 
   .player-vol {
     font-size: 0.8rem;
-    color: var(--muted);
+    color: rgba(248,245,240,0.45);
     cursor: pointer;
   }
 
@@ -360,6 +360,7 @@ const podcastSchema = {
     font-size: clamp(1.6rem, 3vw, 2.4rem);
     font-weight: 700;
     letter-spacing: -0.02em;
+    color: var(--body);
     margin-bottom: 2.5rem;
     text-wrap: balance;
   }
@@ -375,8 +376,15 @@ const podcastSchema = {
     display: block;
     aspect-ratio: 3/4;
     overflow: hidden;
-    border-radius: 2px;
+    border-radius: 4px;
     cursor: pointer;
+    box-shadow: 0 2px 12px rgba(28,25,23,0.08);
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 28px rgba(28,25,23,0.14);
+    transform: translateY(-3px);
   }
 
   .card-bg {
@@ -387,16 +395,16 @@ const podcastSchema = {
     transition: transform 0.5s ease;
   }
 
-  .card:hover .card-bg { transform: scale(1.06); }
+  .card:hover .card-bg { transform: scale(1.04); }
 
   .card-dark {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(13,12,11,0.1) 0%,
-      rgba(13,12,11,0.7) 70%,
-      rgba(13,12,11,0.92) 100%
+      rgba(10,8,6,0.05) 0%,
+      rgba(10,8,6,0.62) 65%,
+      rgba(10,8,6,0.88) 100%
     );
   }
 
@@ -415,15 +423,14 @@ const podcastSchema = {
     font-family: var(--mono);
     font-size: 0.65rem;
     letter-spacing: 0.18em;
-    color: var(--body);
-    opacity: 0.7;
+    color: rgba(248,245,240,0.65);
   }
 
   .card-title {
     font-family: var(--serif);
     font-size: 0.95rem;
     line-height: 1.4;
-    color: var(--body);
+    color: #F8F5F0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -442,8 +449,9 @@ const podcastSchema = {
     position: relative;
     aspect-ratio: 16/7;
     overflow: hidden;
-    border-radius: 2px;
+    border-radius: 4px;
     cursor: default;
+    box-shadow: 0 2px 12px rgba(28,25,23,0.08);
   }
 
   .host-bg {
@@ -453,16 +461,16 @@ const podcastSchema = {
     transition: transform 0.6s ease;
   }
 
-  .host-card:hover .host-bg { transform: scale(1.05); }
+  .host-card:hover .host-bg { transform: scale(1.04); }
 
   .host-dark {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(13,12,11,0.95) 0%,
-      rgba(13,12,11,0.65) 45%,
-      rgba(13,12,11,0.25) 100%
+      rgba(10,8,6,0.92) 0%,
+      rgba(10,8,6,0.58) 45%,
+      rgba(10,8,6,0.2) 100%
     );
   }
 
@@ -488,20 +496,20 @@ const podcastSchema = {
     font-family: var(--serif);
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--body);
+    color: #F8F5F0;
     margin-bottom: 0.5rem;
     letter-spacing: -0.01em;
   }
 
   .host-desc {
     font-size: 0.82rem;
-    color: rgba(240,237,232,0.68);
+    color: rgba(248,245,240,0.65);
     line-height: 1.65;
   }
 
   /* ══ FEATURE ══ */
   .feature-section {
-    padding: 5rem 0;
+    padding: 6rem 0;
     background: var(--surface);
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
@@ -520,6 +528,7 @@ const podcastSchema = {
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.025em;
+    color: var(--body);
     margin: 0.8rem 0 0.6rem;
     text-wrap: balance;
   }
@@ -552,13 +561,15 @@ const podcastSchema = {
     aspect-ratio: 4/5;
     background-size: cover;
     background-position: center;
-    border-radius: 2px;
+    border-radius: 4px;
+    box-shadow: 0 4px 24px rgba(28,25,23,0.12);
   }
 
   /* ══ QUOTE ══ */
   .quote-section {
-    padding: 6rem 0;
+    padding: 7rem 0;
     text-align: center;
+    background: var(--bg);
   }
 
   .quote-text {
@@ -576,7 +587,7 @@ const podcastSchema = {
     font-family: var(--mono);
     font-size: 0.72rem;
     letter-spacing: 0.15em;
-    color: var(--accent);
+    color: var(--muted);
     font-style: normal;
   }
 
