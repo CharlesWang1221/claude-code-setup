@@ -1,9 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getFeed } from '../lib/feed';
+import { getCollection } from 'astro:content';
 
 const { episodes, meta } = await getFeed();
 const latest = episodes[0];
+const blogPosts = (await getCollection('blog'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
 const cards = episodes.slice(0, 3);
 const feature = episodes[3];
 
@@ -144,6 +148,31 @@ const podcastSchema = {
         </li>
       ))}
     </ul>
+  </section>
+
+  <!-- ══ BLOG ══ -->
+  <section class="blog-section">
+    <div class="container">
+      <div class="list-header">
+        <span class="section-label reveal">網誌</span>
+        <a href="/blog" class="all-link reveal">查看全部 →</a>
+      </div>
+      <div class="blog-preview-list">
+        {blogPosts.map((post) => (
+          <a href={`/blog/${post.slug}`} class="blog-preview-item reveal">
+            <div class="bp-meta">
+              <time class="bp-date">{post.data.date}</time>
+            </div>
+            <div class="bp-main">
+              <h3 class="bp-title">{post.data.title}</h3>
+              {post.data.description && (
+                <p class="bp-desc">{post.data.description}</p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
   </section>
 
   <!-- ══ ABOUT ══ -->
@@ -624,6 +653,74 @@ const podcastSchema = {
   }
 
   .all-link:hover { opacity: 0.7; }
+
+  /* ══ BLOG ══ */
+  .blog-section {
+    padding-bottom: 1rem;
+  }
+
+  .blog-preview-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-preview-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 2rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.2s, padding 0.2s, margin 0.2s;
+  }
+
+  .blog-preview-item:hover {
+    background: linear-gradient(90deg, rgba(192,160,98,0.04) 0%, rgba(192,160,98,0.07) 50%, rgba(192,160,98,0.04) 100%);
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .bp-date {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding-top: 0.3rem;
+    display: block;
+  }
+
+  .bp-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--body);
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+    transition: color 0.18s;
+  }
+
+  .blog-preview-item:hover .bp-title { color: var(--accent); }
+
+  .bp-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 480px) {
+    .blog-preview-item { grid-template-columns: 1fr; gap: 0.4rem; }
+    .blog-preview-item:hover {
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
 
   /* ══ ABOUT ══ */
   .about-section {
