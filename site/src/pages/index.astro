@@ -241,20 +241,20 @@ const podcastSchema = {
     display: inline-flex;
     align-items: center;
     padding: 0.7rem 2rem;
-    background: var(--accent);
-    color: #fff;
-    font-family: var(--sans);
+    background: linear-gradient(135deg, #C0A062 0%, #E8C878 100%);
+    color: #1A1408;
+    font-family: var(--serif);
     font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     cursor: pointer;
     border-radius: 2px;
-    transition: background 0.2s, transform 0.2s;
+    transition: opacity 0.2s, transform 0.2s;
   }
 
   .btn-cta:hover {
-    background: #a83835;
-    transform: translateY(-1px);
+    opacity: 0.85;
+    transform: translateY(-2px);
   }
 
   .btn-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -313,7 +313,7 @@ const podcastSchema = {
   .progress-track {
     flex: 1;
     height: 3px;
-    background: rgba(255,255,255,0.12);
+    background: rgba(192,160,98,0.15);
     border-radius: 2px;
     cursor: pointer;
     position: relative;
@@ -322,7 +322,7 @@ const podcastSchema = {
   .progress-fill {
     width: 0%;
     height: 100%;
-    background: var(--accent);
+    background: linear-gradient(90deg, #C0A062, #E8C878);
     border-radius: 2px;
     transition: width 0.5s linear;
   }
@@ -344,6 +344,7 @@ const podcastSchema = {
   /* ══ CARDS ══ */
   .cards-section {
     padding: 5rem 0;
+    background: linear-gradient(180deg, #0E0D0B 0%, #161310 60%, #0E0D0B 100%);
   }
 
   .section-eyebrow {

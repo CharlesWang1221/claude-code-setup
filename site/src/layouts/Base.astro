@@ -39,6 +39,84 @@ const fullTitle = title === '不標準答案' ? title : `${title} — 不標準�
   <meta name="google-site-verification" content="_smPOOXwZ5fzlRGZgFaObXqfLbgezY4Rz7AWZWsGKyM" />
 </head>
 <body>
+  <!-- Kintsugi loader -->
+  <div id="kintsugi-loader" aria-hidden="true">
+    <svg class="kintsugi-cracks" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="gold-glow">
+          <feGaussianBlur stdDeviation="0.8" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+      <path class="crack c1" d="M50,50 L36,18 L22,2"/>
+      <path class="crack c2" d="M50,50 L64,14 L78,0"/>
+      <path class="crack c3" d="M50,50 L84,36 L100,28"/>
+      <path class="crack c4" d="M50,50 L78,68 L92,90 L100,100"/>
+      <path class="crack c5" d="M50,50 L44,80 L40,100"/>
+      <path class="crack c6" d="M50,50 L18,72 L4,92"/>
+      <path class="crack c7" d="M50,50 L10,44 L0,38"/>
+      <path class="crack c8" d="M50,50 L58,32 L54,10"/>
+    </svg>
+    <div class="kintsugi-glow"></div>
+  </div>
+
+  <style>
+    #kintsugi-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #090806;
+      pointer-events: none;
+      animation: loader-exit 0.7s ease 2.0s forwards;
+    }
+
+    @keyframes loader-exit {
+      0%   { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    .kintsugi-cracks {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .crack {
+      fill: none;
+      stroke: #C0A062;
+      stroke-width: 0.35;
+      stroke-linecap: round;
+      filter: url(#gold-glow) drop-shadow(0 0 2px #E8C878);
+      stroke-dasharray: 120;
+      stroke-dashoffset: 120;
+    }
+
+    .c1 { animation: draw 0.5s ease 0.2s forwards; }
+    .c2 { animation: draw 0.5s ease 0.35s forwards; }
+    .c3 { animation: draw 0.4s ease 0.45s forwards; }
+    .c4 { animation: draw 0.6s ease 0.3s forwards; }
+    .c5 { animation: draw 0.4s ease 0.55s forwards; }
+    .c6 { animation: draw 0.5s ease 0.4s forwards; }
+    .c7 { animation: draw 0.4s ease 0.5s forwards; }
+    .c8 { animation: draw 0.35s ease 0.6s forwards; }
+
+    @keyframes draw {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .kintsugi-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(192,160,98,0.18) 0%, transparent 70%);
+      opacity: 0;
+      animation: glow-in 0.8s ease 0.7s forwards;
+    }
+
+    @keyframes glow-in {
+      to { opacity: 1; }
+    }
+  </style>
   <header class="site-header">
     <div class="header-inner">
       <a href="/" class="site-title">不標準答案</a>
