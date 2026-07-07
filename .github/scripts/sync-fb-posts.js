@@ -61,7 +61,7 @@ function postToMarkdown(post) {
 }
 
 async function main() {
-  const url = `https://graph.facebook.com/v25.0/${PAGE_ID}/posts?fields=id,message,created_time,full_picture&limit=10&access_token=${TOKEN}`;
+  const url = `https://graph.facebook.com/v25.0/${PAGE_ID}/posts?fields=id,message,created_time,full_picture&limit=10&access_token=${encodeURIComponent(TOKEN)}`;
 
   console.log(`Fetching posts from ${PAGE_ID}...`);
   const data = await httpsGet(url);
