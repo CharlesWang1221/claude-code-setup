@@ -4,3 +4,16 @@ Thumbs.db
 site/node_modules
 site/dist
 site/.astro
+
+# root
+node_modules/
+package-lock.json
+.playwright-mcp/
+
+# YouTube OAuth 憑證（機敏，勿上傳）
+tools/client_secret.json
+tools/client_secret.json.json
+tools/youtube-token.json
+
+# 影片檔（太大，不進 git）
+output/**/*.mp4
