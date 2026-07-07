@@ -30,14 +30,23 @@
 - 元件：Wrangler CLI + Cloudflare MCP Server
 
 ### 5. Google Workspace
-- 狀態：跳過（未安裝）
-- 用途：串接 Gmail、行事曆、Drive、Sheets
-- 備註：需要 Google Cloud Project + OAuth 設定，約 10-15 分鐘。待日後安裝。
+- 狀態：✅ Connected
+- 用途：串接 Gmail、Drive、Docs、Sheets、Calendar
+- GCP 專案：`podcast-tools-501708`，OAuth client：`podcast-uploader`（Desktop 類型）
+- 授權帳號：siming1221@gmail.com
+- credentials.json 位置：`~/.config/google-mcp/credentials.json`
+- token 位置：`~/.config/google-docs-mcp/token.json`
+- 換電腦時：執行 `setup.sh`，步驟 6 會自動授權（瀏覽器開啟，用 siming1221@gmail.com 登入按「繼續」即可）
 
 ### 6. Zeabur Agent Skills
-- 狀態：❌ 被 ASUS 企業政策封鎖
-- 用途：有後端的專案、Bot、資料庫應用部署
-- 備註：個人電腦可安裝，指令：`claude plugin marketplace add zeabur/agent-skills && claude plugin install zeabur@zeabur`
+- 狀態：⚠️ 被 ASUS 企業政策封鎖（macOS 個人電腦可安裝）
+- 用途：有後端的專案、Bot、資料庫應用部署（Node.js / Python / Go 都支援）
+- macOS 安裝指令：
+  ```bash
+  claude plugin marketplace add zeabur/agent-skills
+  claude plugin install zeabur@zeabur
+  ```
+- 需要 Zeabur 帳號（用 GitHub 登入）：https://zeabur.com
 
 ## 前置安裝
 
