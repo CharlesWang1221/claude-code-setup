@@ -2,7 +2,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const PAGE_ID = 'beyond.ans';
+const PAGE_ID = '711396992562275';
 const TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 const BLOG_DIR = path.join(process.cwd(), 'site', 'src', 'content', 'blog');
 
