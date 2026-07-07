@@ -118,10 +118,68 @@ if (Test-Path $siteDir) {
     Write-Host "      找不到 site/ 目錄，請確認 repo 已正確 clone" -ForegroundColor Red
 }
 
+# ── 8. Status Line ───────────────────────────────────────────
+Write-Host ""
+Write-Host "[8/8] 安裝 Claude Code 狀態列（雷蒙完整版）..." -ForegroundColor Yellow
+
+# 安裝 jq（腳本依賴）
+$jqCmd = Get-Command jq -ErrorAction SilentlyContinue
+if (-not $jqCmd) {
+    Write-Host "      安裝 jq..." -ForegroundColor Yellow
+    winget install jqlang.jq --accept-source-agreements --accept-package-agreements
+    $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH", "User")
+}
+
+# 備份舊腳本
+$slDest = "$env:USERPROFILE\.claude\statusline-command.sh"
+if (Test-Path $slDest) {
+    $ts = Get-Date -Format "yyyyMMdd-HHmmss"
+    Copy-Item $slDest "$slDest.backup.$ts"
+}
+
+# 複製腳本
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\hooks" | Out-Null
+Copy-Item "$scriptDir\statusline\statusline-command.sh" $slDest
+Copy-Item "$scriptDir\statusline\hooks\session-time.sh" "$env:USERPROFILE\.claude\hooks\session-time.sh"
+
+# 初始化時間戳（PowerShell 版，確保 Taiwan 時區正確）
+$tz = [System.TimeZoneInfo]::FindSystemTimeZoneById('Taipei Standard Time')
+$ts = [System.TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, $tz).ToString('yyyy-MM-dd HH:mm')
+[System.IO.File]::WriteAllText("$env:USERPROFILE\.claude\last-session-msg", $ts, (New-Object System.Text.UTF8Encoding $false))
+
+# 更新 settings.json
+$settingsPath = "$env:USERPROFILE\.claude\settings.json"
+if (-not (Test-Path $settingsPath)) { '{}' | Set-Content $settingsPath -Encoding UTF8 }
+
+$cfg = Get-Content $settingsPath -Raw | ConvertFrom-Json
+
+# statusLine
+$cfg | Add-Member -Force -NotePropertyName "statusLine" -NotePropertyValue ([PSCustomObject]@{
+    type    = "command"
+    command = "bash ~/.claude/statusline-command.sh"
+})
+
+# UserPromptSubmit hook（PowerShell，處理 Windows TZ 問題）
+if (-not $cfg.hooks) { $cfg | Add-Member -NotePropertyName "hooks" -NotePropertyValue ([PSCustomObject]@{}) }
+if (-not $cfg.hooks.UserPromptSubmit) {
+    $hookCmd = '$tz = [System.TimeZoneInfo]::FindSystemTimeZoneById(''Taipei Standard Time''); $ts = [System.TimeZoneInfo]::ConvertTimeFromUtc([DateTime]::UtcNow, $tz).ToString(''yyyy-MM-dd HH:mm''); [System.IO.File]::WriteAllText("$env:USERPROFILE\.claude\last-session-msg", $ts, (New-Object System.Text.UTF8Encoding $false))'
+    $hookEntry = [PSCustomObject]@{
+        hooks = @([PSCustomObject]@{ type = "command"; command = $hookCmd; shell = "powershell"; timeout = 5 })
+    }
+    $cfg.hooks | Add-Member -NotePropertyName "UserPromptSubmit" -NotePropertyValue @($hookEntry)
+}
+
+$cfg | ConvertTo-Json -Depth 10 | Set-Content $settingsPath -Encoding UTF8
+
+Write-Host "      狀態列安裝完成" -ForegroundColor Green
+Write-Host "      第一行：模型 │ Context 進度條 │ 5h 額度 │ 7d 額度" -ForegroundColor Gray
+Write-Host "      第二行：Git 分支 │ +N/-N │ 專案名 │ 📝 最後訊息時間" -ForegroundColor Gray
+Write-Host "      調整顯示：編輯 ~/.claude/statusline-command.sh 頂部的 true/false" -ForegroundColor Gray
+
 # ── 完成 ──────────────────────────────────────────────────────
 Write-Host ""
 Write-Host "=== 安裝完成 ===" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "請重新啟動 Claude Code 讓 MCP 工具與 Skills 生效。" -ForegroundColor White
+Write-Host "請重新啟動 Claude Code 讓 MCP 工具、Skills 與狀態列生效。" -ForegroundColor White
 Write-Host "驗證指令：claude mcp list" -ForegroundColor Gray
 Write-Host ""

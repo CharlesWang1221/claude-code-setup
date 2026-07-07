@@ -133,10 +133,61 @@ else
     echo -e "${RED}      找不到 site/ 目錄，請確認 repo 已正確 clone${NC}"
 fi
 
+# ── 8. Status Line ───────────────────────────────────────────
+echo ""
+echo -e "${YELLOW}[8/8] 安裝 Claude Code 狀態列（雷蒙完整版）...${NC}"
+
+# 安裝 jq（腳本依賴）
+if ! command -v jq &>/dev/null; then
+    echo -e "${YELLOW}      安裝 jq...${NC}"
+    brew install jq
+fi
+
+# 備份舊腳本
+test -f ~/.claude/statusline-command.sh && \
+    cp ~/.claude/statusline-command.sh ~/.claude/statusline-command.sh.backup.$(date +%Y%m%d-%H%M%S)
+
+# 複製腳本
+mkdir -p ~/.claude/hooks
+cp "$SCRIPT_DIR/statusline/statusline-command.sh" ~/.claude/statusline-command.sh
+cp "$SCRIPT_DIR/statusline/hooks/session-time.sh" ~/.claude/hooks/session-time.sh
+chmod +x ~/.claude/statusline-command.sh ~/.claude/hooks/session-time.sh
+
+# 初始化時間戳
+bash ~/.claude/hooks/session-time.sh
+
+# 更新 settings.json
+test -f ~/.claude/settings.json || echo '{}' > ~/.claude/settings.json
+
+# 加入 statusLine + UserPromptSubmit hook（bash 版，macOS 原生支援）
+python3 - <<'PYEOF'
+import json, os, sys
+path = os.path.expanduser("~/.claude/settings.json")
+with open(path) as f:
+    cfg = json.load(f)
+
+cfg["statusLine"] = {"type": "command", "command": "bash ~/.claude/statusline-command.sh"}
+
+hooks = cfg.setdefault("hooks", {})
+submit = hooks.setdefault("UserPromptSubmit", [])
+already = any("session-time.sh" in str(h) for h in submit)
+if not already:
+    submit.append({"hooks": [{"type": "command", "command": "~/.claude/hooks/session-time.sh", "timeout": 5}]})
+
+with open(path, "w") as f:
+    json.dump(cfg, f, indent=2, ensure_ascii=False)
+print("      settings.json 更新完成")
+PYEOF
+
+echo -e "${GREEN}      狀態列安裝完成${NC}"
+echo -e "${GRAY}      第一行：模型 │ Context 進度條 │ 5h 額度 │ 7d 額度${NC}"
+echo -e "${GRAY}      第二行：Git 分支 │ +N/-N │ 專案名 │ 📝 最後訊息時間${NC}"
+echo -e "${GRAY}      調整顯示：編輯 ~/.claude/statusline-command.sh 頂部的 true/false${NC}"
+
 # ── 完成 ──────────────────────────────────────────────────────
 echo ""
 echo -e "${CYAN}=== 安裝完成 ===${NC}"
 echo ""
-echo -e "請重新啟動 Claude Code 讓 MCP 工具與 Skills 生效。"
+echo -e "請重新啟動 Claude Code 讓 MCP 工具、Skills 與狀態列生效。"
 echo -e "${GRAY}驗證指令：claude mcp list${NC}"
 echo ""
