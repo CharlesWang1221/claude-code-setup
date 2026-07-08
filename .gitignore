@@ -17,6 +17,10 @@ tools/youtube-token.json
 
 # 影片檔（太大，不進 git）
 output/**/*.mp4
+video-projects/**/*.mp4
 
 # Google MCP 憑證（機敏，勿上傳）
 google-mcp/credentials.json
+
+# API Keys（機敏，勿上傳）
+.env

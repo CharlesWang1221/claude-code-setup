@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>字幕微調編輯器</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #111;
+  color: #f0f0f0;
+  font-family: 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  font-size: 14px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Header ─── */
+.header {
+  background: #1c1c1e;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.header h1 { font-size: 15px; font-weight: 600; color: #fff; flex: 1; }
+.header .subtitle { font-size: 12px; color: #666; }
+
+.btn {
+  border: none;
+  padding: 7px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.8; }
+.btn:active { opacity: 0.6; }
+.btn-primary { background: #6366f1; color: #fff; }
+.btn-secondary { background: #2a2a2a; color: #ccc; border: 1px solid #3a3a3a; }
+.btn-success { background: #16a34a; color: #fff; }
+.btn-warning { background: #d97706; color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 5px; }
+
+/* ─── Toolbar ─── */
+.toolbar {
+  background: #171717;
+  border-bottom: 1px solid #222;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.toolbar-sep { width: 1px; height: 20px; background: #333; margin: 0 4px; }
+
+.stat { font-size: 12px; color: #555; }
+.stat b { color: #aaa; }
+
+/* ─── Search ─── */
+.search-box {
+  background: #1c1c1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: #f0f0f0;
+  font-size: 13px;
+  width: 180px;
+  outline: none;
+}
+.search-box::placeholder { color: #555; }
+.search-box:focus { border-color: #6366f1; }
+
+/* ─── Main area ─── */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ─── Timeline panel ─── */
+.timeline {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+.timeline::-webkit-scrollbar { width: 6px; }
+.timeline::-webkit-scrollbar-track { background: transparent; }
+.timeline::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  gap: 16px;
+  color: #444;
+}
+
+.empty-state .icon { font-size: 48px; }
+.empty-state h2 { font-size: 18px; color: #555; font-weight: 500; }
+.empty-state p { font-size: 13px; color: #444; text-align: center; line-height: 1.7; }
+
+.drop-zone {
+  border: 2px dashed #333;
+  border-radius: 12px;
+  padding: 32px 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: #6366f1;
+  background: #6366f108;
+}
+
+/* ─── Subtitle Card ─── */
+.subtitle-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  transition: border-color 0.15s;
+  position: relative;
+}
+
+.subtitle-card:hover { border-color: #3a3a3a; }
+.subtitle-card.has-bigtext { border-color: #4f46e5; }
+.subtitle-card.highlighted { background: #1e1e2e; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.index-badge {
+  background: #252525;
+  color: #666;
+  font-size: 10px;
+  font-family: monospace;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 28px;
+  text-align: center;
+}
+
+.time-badge {
+  font-size: 11px;
+  color: #555;
+  font-family: 'SF Mono', Menlo, monospace;
+  flex: 1;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.subtitle-card:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { color: #ef4444; background: #2a1a1a; }
+
+.text-area {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #e8e8e8;
+  font-size: 15px;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  line-height: 1.6;
+  min-height: 28px;
+  overflow: hidden;
+}
+
+/* ─── BigText section ─── */
+.bigtext-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #222;
+}
+
+.bigtext-label {
+  font-size: 10px;
+  color: #555;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bigtext-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.bigtext-tag {
+  background: #312e81;
+  border: 1px solid #4f46e5;
+  color: #a5b4fc;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: default;
+}
+
+.bigtext-tag .remove-tag {
+  cursor: pointer;
+  color: #818cf8;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0 2px;
+}
+.bigtext-tag .remove-tag:hover { color: #f87171; }
+
+.bigtext-add-btn {
+  background: transparent;
+  border: 1px dashed #333;
+  color: #555;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.bigtext-add-btn:hover { border-color: #6366f1; color: #818cf8; }
+
+.bigtext-input-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.bigtext-input {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #f0f0f0;
+  font-size: 12px;
+  padding: 3px 8px;
+  outline: none;
+  flex: 1;
+  max-width: 200px;
+}
+.bigtext-input:focus { border-color: #6366f1; }
+
+/* ─── Side panel ─── */
+.side-panel {
+  width: 280px;
+  border-left: 1px solid #222;
+  background: #141414;
+  overflow-y: auto;
+  padding: 16px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panel-section h3 {
+  font-size: 12px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.bigtext-list-item {
+  background: #1c1c1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 7px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.bigtext-list-item .bti-time { color: #555; font-family: monospace; font-size: 10px; }
+.bigtext-list-item .bti-text { color: #a5b4fc; margin-top: 2px; }
+
+/* ─── Status bar ─── */
+.status-bar {
+  background: #1c1c1e;
+  border-top: 1px solid #222;
+  padding: 4px 20px;
+  font-size: 11px;
+  color: #444;
+  display: flex;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.status-bar .good { color: #16a34a; }
+.status-bar .warn { color: #d97706; }
+
+/* ─── Toast ─── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1c1c1e;
+  border: 1px solid #333;
+  color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+  z-index: 100;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ─── File input hidden ─── */
+#file-input { display: none; }
+
+/* ─── Scrollbar for side panel ─── */
+.side-panel::-webkit-scrollbar { width: 4px; }
+.side-panel::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>字幕微調編輯器</h1>
+  <span class="subtitle" id="filename-display">尚未載入</span>
+  <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()">載入 SRT</button>
+  <button class="btn btn-secondary" onclick="mergePaste()">貼上文字</button>
+  <div class="toolbar-sep"></div>
+  <button class="btn btn-success" onclick="exportSRT()">匯出 SRT</button>
+  <button class="btn btn-warning" onclick="exportJSON()">匯出大字 JSON</button>
+</div>
+
+<div class="toolbar">
+  <input class="search-box" id="search-input" placeholder="搜尋字幕…" oninput="filterCards()">
+  <div class="toolbar-sep"></div>
+  <span class="stat">共 <b id="total-count">0</b> 段</span>
+  <span class="stat">大字 <b id="bigtext-count">0</b> 處</span>
+  <div class="toolbar-sep"></div>
+  <button class="btn btn-secondary btn-sm" onclick="selectAllBigtext()">全部標大字</button>
+  <button class="btn btn-secondary btn-sm" onclick="clearAllBigtext()">清除大字</button>
+  <div class="toolbar-sep"></div>
+  <button class="btn btn-secondary btn-sm" onclick="mergeSelected()">合併 ↑↓</button>
+  <button class="btn btn-secondary btn-sm" onclick="splitAtCursor()">拆分</button>
+</div>
+
+<div class="main">
+  <div class="timeline" id="timeline">
+    <div class="empty-state">
+      <div class="icon">🎬</div>
+      <h2>拖曳 SRT 進來</h2>
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <p>點擊選擇 SRT 檔案<br>或從 02-transcript/ 資料夾拖曳進來</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="side-panel" id="side-panel">
+    <div class="panel-section">
+      <h3>大字清單</h3>
+      <div id="bigtext-list"><p style="font-size:12px;color:#444">標記大字後會在這顯示</p></div>
+    </div>
+    <div class="panel-section">
+      <h3>說明</h3>
+      <p style="font-size:12px;color:#555;line-height:1.8">
+        <b style="color:#aaa">大字</b> = 影片中放大強調的文字<br>
+        每張字幕卡片可以標記多個大字短語<br><br>
+        <b style="color:#aaa">快捷鍵</b><br>
+        Ctrl+S → 匯出 SRT<br>
+        Ctrl+D → 匯出大字 JSON<br>
+        Ctrl+F → 搜尋
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="status-bar">
+  <span id="status-text">等待載入 SRT 檔案</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<input type="file" id="file-input" accept=".srt,.txt" onchange="loadFromFile(this)">
+
+<script>
+// ─── State ───
+let subtitles = [];
+let filename = '';
+
+// ─── SRT Parser ───
+function parseSRT(text) {
+  const blocks = text.trim().split(/\n\n+/);
+  const result = [];
+  for (const block of blocks) {
+    const lines = block.trim().split('\n');
+    if (lines.length < 3) continue;
+    const index = parseInt(lines[0]);
+    if (isNaN(index)) continue;
+    const timeParts = lines[1].split(' --> ');
+    if (timeParts.length !== 2) continue;
+    const textLines = lines.slice(2).join('\n');
+    result.push({
+      id: index,
+      start: timeParts[0].trim(),
+      end: timeParts[1].trim(),
+      text: textLines,
+      bigtext: [],
+    });
+  }
+  return result;
+}
+
+function toSRT(subs) {
+  return subs.map((s, i) =>
+    `${i + 1}\n${s.start} --> ${s.end}\n${s.text}`
+  ).join('\n\n');
+}
+
+// ─── File Loading ───
+function loadFromFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  filename = file.name;
+  const reader = new FileReader();
+  reader.onload = e => loadSRT(e.target.result, filename);
+  reader.readAsText(file, 'UTF-8');
+}
+
+function loadSRT(text, name = 'subtitles.srt') {
+  filename = name;
+  subtitles = parseSRT(text);
+  document.getElementById('filename-display').textContent = name;
+  renderAll();
+  toast(`✓ 載入 ${subtitles.length} 段字幕`, 'good');
+  updateStatus();
+}
+
+// ─── Rendering ───
+function renderAll() {
+  const container = document.getElementById('timeline');
+  const search = document.getElementById('search-input').value.toLowerCase();
+  container.innerHTML = '';
+
+  if (subtitles.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="icon">📭</div>
+      <h2>沒有字幕資料</h2>
+    </div>`;
+    return;
+  }
+
+  for (let i = 0; i < subtitles.length; i++) {
+    const sub = subtitles[i];
+    if (search && !sub.text.toLowerCase().includes(search)) continue;
+    container.appendChild(renderCard(sub, i));
+  }
+
+  updateBigtextList();
+  updateCounts();
+}
+
+function renderCard(sub, idx) {
+  const div = document.createElement('div');
+  div.className = 'subtitle-card' + (sub.bigtext.length > 0 ? ' has-bigtext' : '');
+  div.dataset.idx = idx;
+
+  div.innerHTML = `
+    <div class="card-header">
+      <span class="index-badge">#${sub.id}</span>
+      <span class="time-badge">${sub.start} → ${sub.end}</span>
+      <button class="delete-btn" onclick="deleteCard(${idx})" title="刪除">✕</button>
+    </div>
+    <textarea class="text-area" rows="2"
+      onchange="updateText(${idx}, this.value)"
+      oninput="autoResize(this)"
+      onkeydown="handleTextKey(event, ${idx})"
+    >${escapeHTML(sub.text)}</textarea>
+    <div class="bigtext-section">
+      <div class="bigtext-label">大字標記</div>
+      <div class="bigtext-tags" id="tags-${idx}">
+        ${renderTags(sub, idx)}
+        <button class="bigtext-add-btn" onclick="showAddTag(${idx})">+ 新增大字</button>
+      </div>
+      <div class="bigtext-input-row" id="input-row-${idx}" style="display:none">
+        <input class="bigtext-input" id="tag-input-${idx}" placeholder="輸入大字短語…"
+          onkeydown="handleTagInput(event, ${idx})">
+        <button class="btn btn-primary btn-sm" onclick="addTag(${idx})">確認</button>
+        <button class="btn btn-secondary btn-sm" onclick="hideAddTag(${idx})">取消</button>
+      </div>
+    </div>
+  `;
+
+  return div;
+}
+
+function renderTags(sub, idx) {
+  return sub.bigtext.map((bt, ti) =>
+    `<span class="bigtext-tag">
+      ${escapeHTML(bt)}
+      <span class="remove-tag" onclick="removeTag(${idx}, ${ti})">✕</span>
+    </span>`
+  ).join('');
+}
+
+function refreshCard(idx) {
+  const container = document.getElementById('timeline');
+  const existing = container.querySelector(`[data-idx="${idx}"]`);
+  if (existing) {
+    const newCard = renderCard(subtitles[idx], idx);
+    container.replaceChild(newCard, existing);
+  }
+  updateBigtextList();
+  updateCounts();
+}
+
+// ─── Card actions ───
+function updateText(idx, val) {
+  subtitles[idx].text = val;
+  updateStatus();
+}
+
+function deleteCard(idx) {
+  subtitles.splice(idx, 1);
+  renderAll();
+  updateStatus();
+}
+
+function mergeSelected() {
+  const focused = document.activeElement.closest('.subtitle-card');
+  if (!focused) { toast('先點一段字幕', 'warn'); return; }
+  const idx = parseInt(focused.dataset.idx);
+  if (idx >= subtitles.length - 1) { toast('已是最後一段', 'warn'); return; }
+  subtitles[idx].text += ' ' + subtitles[idx + 1].text;
+  subtitles[idx].end = subtitles[idx + 1].end;
+  subtitles[idx].bigtext = [...new Set([...subtitles[idx].bigtext, ...subtitles[idx + 1].bigtext])];
+  subtitles.splice(idx + 1, 1);
+  renderAll();
+  toast('✓ 已合併');
+}
+
+function splitAtCursor() {
+  const ta = document.activeElement;
+  if (!ta || ta.tagName !== 'TEXTAREA') { toast('先點字幕文字框', 'warn'); return; }
+  const card = ta.closest('.subtitle-card');
+  if (!card) return;
+  const idx = parseInt(card.dataset.idx);
+  const cursor = ta.selectionStart;
+  const full = ta.value;
+  if (cursor <= 0 || cursor >= full.length) { toast('游標要在中間位置', 'warn'); return; }
+  const part1 = full.slice(0, cursor).trim();
+  const part2 = full.slice(cursor).trim();
+  const midTime = interpolateTime(subtitles[idx].start, subtitles[idx].end, cursor / full.length);
+  subtitles[idx].text = part1;
+  subtitles[idx].end = midTime;
+  subtitles.splice(idx + 1, 0, {
+    id: subtitles[idx].id + 1,
+    start: midTime,
+    end: subtitles[idx + 1] ? subtitles[idx].end : midTime,
+    text: part2,
+    bigtext: [],
+  });
+  renderAll();
+  toast('✓ 已拆分');
+}
+
+function interpolateTime(start, end, ratio) {
+  const s = timeToMs(start);
+  const e = timeToMs(end);
+  return msToTime(Math.round(s + (e - s) * ratio));
+}
+
+// ─── BigText ───
+function showAddTag(idx) {
+  document.getElementById(`input-row-${idx}`).style.display = 'flex';
+  document.getElementById(`tag-input-${idx}`).focus();
+}
+
+function hideAddTag(idx) {
+  const row = document.getElementById(`input-row-${idx}`);
+  if (row) row.style.display = 'none';
+  const inp = document.getElementById(`tag-input-${idx}`);
+  if (inp) inp.value = '';
+}
+
+function addTag(idx) {
+  const inp = document.getElementById(`tag-input-${idx}`);
+  if (!inp) return;
+  const val = inp.value.trim();
+  if (!val) return;
+  if (!subtitles[idx].bigtext.includes(val)) {
+    subtitles[idx].bigtext.push(val);
+  }
+  refreshCard(idx);
+  updateStatus();
+}
+
+function removeTag(idx, ti) {
+  subtitles[idx].bigtext.splice(ti, 1);
+  refreshCard(idx);
+  updateStatus();
+}
+
+function handleTagInput(e, idx) {
+  if (e.key === 'Enter') { e.preventDefault(); addTag(idx); }
+  if (e.key === 'Escape') hideAddTag(idx);
+}
+
+function handleTextKey(e, idx) {
+  if (e.ctrlKey && e.key === 'Enter') {
+    const ta = document.activeElement;
+    if (ta && ta.tagName === 'TEXTAREA') {
+      const val = ta.value.trim();
+      if (val) {
+        subtitles[idx].text = val;
+        // Quick-add highlighted phrase: Ctrl+Enter prompts for bigtext
+        const phrase = window.prompt('標記大字（輸入要放大的短語）：', '');
+        if (phrase && phrase.trim()) {
+          subtitles[idx].bigtext.push(phrase.trim());
+          refreshCard(idx);
+          updateStatus();
+        }
+      }
+    }
+  }
+}
+
+function selectAllBigtext() {
+  for (let i = 0; i < subtitles.length; i++) {
+    const text = subtitles[i].text.trim();
+    if (text && !subtitles[i].bigtext.includes(text)) {
+      subtitles[i].bigtext = [text];
+    }
+  }
+  renderAll();
+  toast('✓ 全部設為大字');
+}
+
+function clearAllBigtext() {
+  for (const sub of subtitles) sub.bigtext = [];
+  renderAll();
+  toast('✓ 已清除大字');
+}
+
+// ─── BigText sidebar ───
+function updateBigtextList() {
+  const list = document.getElementById('bigtext-list');
+  const items = subtitles.flatMap(sub =>
+    sub.bigtext.map(bt => ({ time: sub.start, text: bt, subtitle: sub.text }))
+  );
+  document.getElementById('bigtext-count').textContent = items.length;
+  if (items.length === 0) {
+    list.innerHTML = '<p style="font-size:12px;color:#444">尚無大字標記</p>';
+    return;
+  }
+  list.innerHTML = items.map(item => `
+    <div class="bigtext-list-item">
+      <div class="bti-time">${item.time}</div>
+      <div class="bti-text">${escapeHTML(item.text)}</div>
+    </div>
+  `).join('');
+}
+
+// ─── Export ───
+function exportSRT() {
+  const content = toSRT(subtitles);
+  downloadFile(content, filename || 'subtitles.srt', 'text/plain');
+  toast('✓ SRT 已下載');
+}
+
+function exportJSON() {
+  const bigtextItems = subtitles
+    .filter(s => s.bigtext.length > 0)
+    .map(s => ({
+      index: s.id,
+      start: s.start,
+      end: s.end,
+      subtitle_text: s.text,
+      bigtext: s.bigtext,
+    }));
+  const json = JSON.stringify({ bigtext: bigtextItems }, null, 2);
+  const baseName = (filename || 'subtitles').replace(/\.srt$/i, '');
+  downloadFile(json, `${baseName}_bigtext.json`, 'application/json');
+  toast(`✓ 匯出 ${bigtextItems.length} 條大字`);
+}
+
+function downloadFile(content, name, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── Search ───
+function filterCards() {
+  renderAll();
+}
+
+// ─── Paste mode ───
+function mergePaste() {
+  const raw = window.prompt('貼上字幕文字（會自動分段，每行一段）：');
+  if (!raw) return;
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  subtitles = lines.map((line, i) => ({
+    id: i + 1,
+    start: msToTime(i * 3000),
+    end: msToTime((i + 1) * 3000 - 100),
+    text: line,
+    bigtext: [],
+  }));
+  filename = 'pasted.srt';
+  document.getElementById('filename-display').textContent = filename;
+  renderAll();
+  toast(`✓ 匯入 ${subtitles.length} 段`);
+  updateStatus();
+}
+
+// ─── Helpers ───
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function timeToMs(timeStr) {
+  const [hms, ms] = timeStr.replace(',', '.').split('.');
+  const [h, m, s] = hms.split(':').map(Number);
+  return h * 3600000 + m * 60000 + s * 1000 + (parseInt(ms) || 0);
+}
+
+function msToTime(ms) {
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  const rest = ms % 1000;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')},${String(rest).padStart(3, '0')}`;
+}
+
+function updateCounts() {
+  document.getElementById('total-count').textContent = subtitles.length;
+  const btCount = subtitles.reduce((n, s) => n + s.bigtext.length, 0);
+  document.getElementById('bigtext-count').textContent = btCount;
+}
+
+function updateStatus() {
+  const btCount = subtitles.reduce((n, s) => n + s.bigtext.length, 0);
+  const status = document.getElementById('status-text');
+  status.textContent = `${subtitles.length} 段字幕 ・ ${btCount} 個大字標記 ・ ${filename || '未命名'}`;
+}
+
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ─── Drag-and-drop ───
+const dropZone = document.getElementById('drop-zone');
+
+document.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+document.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (!file || !file.name.match(/\.(srt|txt)$/i)) { toast('請拖曳 .srt 檔案', 'warn'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => loadSRT(ev.target.result, file.name);
+  reader.readAsText(file, 'UTF-8');
+});
+
+// ─── Keyboard shortcuts ───
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 's') { e.preventDefault(); exportSRT(); }
+  if (e.ctrlKey && e.key === 'd') { e.preventDefault(); exportJSON(); }
+  if (e.ctrlKey && e.key === 'f') { e.preventDefault(); document.getElementById('search-input').focus(); }
+});
+</script>
+</body>
+</html>

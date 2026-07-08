@@ -1,0 +1,26 @@
+[
+  {
+    "file": "broll_01_security c.mp4",
+    "keyword": "security camera office",
+    "insert_at_seconds": 10.72,
+    "insert_at_subtitle_index": 6,
+    "subtitle_text": "為什麼上班會有同事投拍你",
+    "pexels_id": 5483206
+  },
+  {
+    "file": "broll_02_anxiety st.mp4",
+    "keyword": "anxiety stressed",
+    "insert_at_seconds": 17.4,
+    "insert_at_subtitle_index": 11,
+    "subtitle_text": "我覺得你不沈重",
+    "pexels_id": 7640684
+  },
+  {
+    "file": "broll_03_family wor.mp4",
+    "keyword": "family worried",
+    "insert_at_seconds": 24.76,
+    "insert_at_subtitle_index": 16,
+    "subtitle_text": "如果萬一是家人被嚇",
+    "pexels_id": 6964246
+  }
+]

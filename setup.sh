@@ -247,3 +247,14 @@ echo ""
 echo -e "請重新啟動 Claude Code 讓 MCP 工具、Skills 與狀態列生效。"
 echo -e "${GRAY}驗證指令：claude mcp list${NC}"
 echo ""
+
+# ── API Keys 提示 ─────────────────────────────────────────────
+if [ ! -f ".env" ]; then
+  echo -e "${YELLOW}⚠ 找不到 .env 檔（API Keys）${NC}"
+  echo -e "${GRAY}  請從舊電腦複製 .env，或手動建立：${NC}"
+  echo -e "${GRAY}  echo 'PEXELS_API_KEY=你的Key' >> .env${NC}"
+  echo ""
+else
+  echo -e "${GREEN}✓ .env 已存在（API Keys 載入中）${NC}"
+  echo ""
+fi
