@@ -1,0 +1,12 @@
+{
+  "name": "fb-promo-pipeline",
+  "version": "1.0.0",
+  "description": "FB 預告動畫影片 Pipeline",
+  "type": "module",
+  "scripts": {
+    "setup": "npm install"
+  },
+  "dependencies": {
+    "puppeteer": "^22.0.0"
+  }
+}
