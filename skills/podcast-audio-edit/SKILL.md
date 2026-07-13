@@ -107,10 +107,23 @@ ffmpeg -y -i "$SCRATCH/mixed.wav" -ar 48000 "$SCRATCH/mixed_48k.wav"
 
 ### Step 5：截取片頭片尾
 
+片頭長度：**5 秒**（不是 13 秒）。
+
 ```bash
 MUSIC="/Volumes/AS1000 Plus/片頭片尾/0202mp3.mp3"
-ffmpeg -y -i "$MUSIC" -t 13 -ar 48000 "$SCRATCH/intro.wav"
+ffmpeg -y -i "$MUSIC" -t 5 -ar 48000 "$SCRATCH/intro.wav"
 ffmpeg -y -i "$MUSIC" -ss 1465 -ar 48000 "$SCRATCH/outro.wav"
+```
+
+主體音檔也需要從「回來啦」開始切，去掉前面的測試音（「好了」「可以囉」等收音前雜音）。用戶通常會告知「回來啦」在某個參考檔案的時間點，用以下公式反推切點：
+
+```
+主音檔切點 = 用戶說的時間點 - 參考檔片頭長度
+例：v3 的「回來啦」在 0:20，v3 片頭 13 秒 → 主音檔從 0:07 開始切
+```
+
+```bash
+ffmpeg -y -i "$SCRATCH/mixed_sync_48k.wav" -ss <切點秒數> "$SCRATCH/main_trimmed.wav"
 ```
 
 ---
