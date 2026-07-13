@@ -58,28 +58,38 @@ ffmpeg -y -f concat -safe 0 -i "$SCRATCH/track2_list.txt" -c copy "$SCRATCH/trac
 
 ---
 
-### Step 2：每軌個別處理
+### Step 2：每軌個別降噪 + Normalize（不去靜音）
 
-三個處理同時套用：降噪 → 去靜音 → Normalize。
+**重要：靜音只能在 mix 之後統一刪除。** 若分軌各自去靜音，兩軌移除的靜音位置不同，mix 後聲音對點會跑掉。
 
 ```bash
 ffmpeg -y -i "$SCRATCH/track1_merged.wav" \
-  -af "afftdn=nf=-25,silenceremove=start_periods=1:start_duration=0.5:start_threshold=-45dB:stop_periods=-1:stop_duration=3:stop_threshold=-45dB,loudnorm=I=-16:TP=-1.5:LRA=11" \
-  "$SCRATCH/track1_processed.wav"
-```
+  -af "afftdn=nf=-25,loudnorm=I=-16:TP=-1.5:LRA=11" \
+  "$SCRATCH/track1_norm.wav"
 
-兩條軌道都跑，參數相同。
+ffmpeg -y -i "$SCRATCH/track2_merged.wav" \
+  -af "afftdn=nf=-25,loudnorm=I=-16:TP=-1.5:LRA=11" \
+  "$SCRATCH/track2_norm.wav"
+```
 
 ---
 
-### Step 3：兩軌 Mix 合一
+### Step 3：兩軌 Mix 合一，再統一去靜音
+
+先 mix，再對 mix 後的整軌去靜音，確保兩人聲音對點不跑：
 
 ```bash
+# Mix
 ffmpeg -y \
-  -i "$SCRATCH/track1_processed.wav" \
-  -i "$SCRATCH/track2_processed.wav" \
-  -filter_complex "[0:a][1:a]amix=inputs=2:duration=longest:weights=1 1,loudnorm=I=-16:TP=-1.5:LRA=11[out]" \
+  -i "$SCRATCH/track1_norm.wav" \
+  -i "$SCRATCH/track2_norm.wav" \
+  -filter_complex "[0:a][1:a]amix=inputs=2:duration=longest:weights=1 1[out]" \
   -map "[out]" \
+  "$SCRATCH/mixed_sync.wav"
+
+# 統一去靜音 + 最終 normalize
+ffmpeg -y -i "$SCRATCH/mixed_sync.wav" \
+  -af "silenceremove=start_periods=1:start_duration=0.5:start_threshold=-50dB:stop_periods=-1:stop_duration=2:stop_threshold=-50dB,loudnorm=I=-16:TP=-1.5:LRA=11" \
   "$SCRATCH/mixed.wav"
 ```
 
