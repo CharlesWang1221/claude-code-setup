@@ -1,0 +1,12 @@
+{
+  "name": "ig-images",
+  "version": "1.0.0",
+  "description": "IG 圖片自動化（金句圖 + 輪播）",
+  "type": "module",
+  "dependencies": {
+    "puppeteer": "^22.0.0"
+  },
+  "allowScripts": {
+    "puppeteer@22.15.0": true
+  }
+}
