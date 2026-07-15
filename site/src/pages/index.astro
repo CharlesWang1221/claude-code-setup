@@ -29,9 +29,15 @@ const podcastSchema = {
 <Base title="不標準答案" description={meta.description}>
   <script type="application/ld+json" set:html={JSON.stringify(podcastSchema)} />
 
+  <!-- ══ INTRO OVERLAY ══ -->
+  <div id="intro-overlay">
+    <canvas id="intro-canvas"></canvas>
+    <div id="intro-pct">0%</div>
+  </div>
+
   <!-- ══ HERO ══ -->
   <section class="hero">
-    <div class="hero-glow"></div>
+    <div class="hero-orb"></div>
     <div class="hero-body">
       <p class="hero-eyebrow reveal">Podcast · 每週更新</p>
       <h1 class="hero-title reveal reveal-d1">
@@ -170,7 +176,187 @@ const podcastSchema = {
 
 </Base>
 
+<script>
+(function () {
+  const overlay = document.getElementById('intro-overlay');
+  const canvas  = document.getElementById('intro-canvas');
+  const pctEl   = document.getElementById('intro-pct');
+  if (!overlay || !canvas || !pctEl) return;
+
+  const ctx = canvas.getContext('2d');
+  const DURATION = 4800;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function cx() { return canvas.width  / 2; }
+  function cy() { return canvas.height / 2; }
+
+  const PALETTE = [
+    { color: '#815BDB', r: 26 },
+    { color: '#EE359E', r: 20 },
+    { color: '#5566EE', r: 22 },
+    { color: '#FF88CC', r: 13 },
+    { color: '#EE359E', r: 15 },
+    { color: '#9966FF', r: 11 },
+    { color: '#AADD22', r:  8 },
+    { color: '#6644DD', r: 17 },
+    { color: '#FF66AA', r:  9 },
+    { color: '#AADD22', r:  6 },
+    { color: '#CC77FF', r: 13 },
+    { color: '#4488FF', r: 10 },
+  ];
+
+  function edgePos() {
+    const w = canvas.width, h = canvas.height;
+    const edge = (Math.random() * 4) | 0;
+    return edge === 0 ? { x: Math.random() * w, y: -60 }
+         : edge === 1 ? { x: w + 60, y: Math.random() * h }
+         : edge === 2 ? { x: Math.random() * w, y: h + 60 }
+                      : { x: -60, y: Math.random() * h };
+  }
+
+  let nodes = [];
+  function initNodes() {
+    const spread = Math.min(canvas.width, canvas.height) * 0.34;
+    nodes = PALETTE.map((cfg, i) => {
+      const angle = (i / PALETTE.length) * Math.PI * 2 + (Math.random() - 0.5) * 0.7;
+      const dist  = spread * (0.45 + Math.random() * 0.55);
+      const start = edgePos();
+      return {
+        ...cfg,
+        tx: cx() + Math.cos(angle) * dist,
+        ty: cy() + Math.sin(angle) * dist,
+        sx: start.x, sy: start.y,
+        x: start.x,  y: start.y,
+        delay: i * 130 + Math.random() * 180,
+      };
+    });
+  }
+
+  const easeOut = t => 1 - Math.pow(1 - t, 3);
+  const easeIn  = t => t * t * t;
+
+  const FLY_END  = 0.70;
+  const HOLD_END = 0.84;
+
+  let startTime = null;
+
+  function draw(ts) {
+    if (!startTime) { startTime = ts; initNodes(); }
+    const elapsed  = ts - startTime;
+    const progress = Math.min(elapsed / DURATION, 1);
+    const w = canvas.width, h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // counter
+    pctEl.textContent = Math.min(Math.floor(progress * 100), 100) + '%';
+
+    nodes.forEach(node => {
+      const ne = elapsed - node.delay;
+      let nx, ny;
+
+      if (progress < FLY_END) {
+        const flyDur = DURATION * FLY_END - node.delay;
+        const t = Math.max(0, Math.min(ne / flyDur, 1));
+        nx = node.sx + (node.tx - node.sx) * easeOut(t);
+        ny = node.sy + (node.ty - node.sy) * easeOut(t);
+      } else if (progress < HOLD_END) {
+        nx = node.tx; ny = node.ty;
+      } else {
+        const t = (progress - HOLD_END) / (1 - HOLD_END);
+        nx = node.tx + (cx() - node.tx) * easeIn(t);
+        ny = node.ty + (cy() - node.ty) * easeIn(t);
+      }
+
+      node.x = nx; node.y = ny;
+      if (ne <= 0) return;
+
+      const collapseT = progress < HOLD_END ? 0 : (progress - HOLD_END) / (1 - HOLD_END);
+      const alpha = 1 - easeIn(collapseT);
+      const lineA = 0.28 * alpha;
+
+      // line
+      ctx.beginPath();
+      ctx.moveTo(cx(), cy());
+      ctx.lineTo(nx, ny);
+      ctx.strokeStyle = `rgba(200,180,255,${lineA})`;
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+
+      // glow + node
+      const curR = node.r * (1 - collapseT * 0.6);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = node.color;
+      ctx.shadowBlur  = curR * 1.2;
+      ctx.beginPath();
+      ctx.arc(nx, ny, curR, 0, Math.PI * 2);
+      ctx.fillStyle = node.color;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // hub
+    const hubR = 4 + easeIn(progress < HOLD_END ? 0 : (progress - HOLD_END) / (1 - HOLD_END)) * 18;
+    ctx.save();
+    ctx.shadowColor = '#C0A0FF';
+    ctx.shadowBlur  = 20;
+    ctx.beginPath();
+    ctx.arc(cx(), cy(), hubR, 0, Math.PI * 2);
+    ctx.fillStyle = '#D0B0FF';
+    ctx.fill();
+    ctx.restore();
+
+    if (progress < 1) {
+      requestAnimationFrame(draw);
+    } else {
+      overlay.classList.add('done');
+      document.body.style.overflow = '';
+      setTimeout(() => overlay.remove(), 700);
+    }
+  }
+
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(draw);
+})();
+</script>
+
 <style>
+  /* ══ INTRO OVERLAY ══ */
+  #intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg);
+    pointer-events: none;
+    transition: opacity 0.65s ease;
+  }
+  #intro-overlay.done { opacity: 0; }
+
+  #intro-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #intro-pct {
+    position: absolute;
+    bottom: 2.2rem;
+    right: 2.5rem;
+    font-family: var(--heading);
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: rgba(200, 180, 255, 0.65);
+  }
+
   /* ══ HERO ══ */
   .hero {
     position: relative;
@@ -182,13 +368,30 @@ const podcastSchema = {
     text-align: center;
   }
 
-  .hero-glow {
+  .hero-orb {
     position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 70% 55% at 50% 40%, rgba(238,53,158,0.22) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 30% 70%, rgba(129,91,219,0.15) 0%, transparent 60%);
+    bottom: -55%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(520px, 85vw, 1100px);
+    height: clamp(520px, 85vw, 1100px);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 38% 30%,
+      rgba(255, 170, 215, 1)   0%,
+      rgba(238, 53, 158, 0.95) 18%,
+      rgba(162, 80, 220, 0.85) 42%,
+      rgba(80,  30, 160, 0.55) 68%,
+      transparent              100%
+    );
+    filter: blur(45px);
     pointer-events: none;
+    animation: orb-breathe 7s ease-in-out infinite;
+  }
+
+  @keyframes orb-breathe {
+    0%, 100% { transform: translateX(-50%) scale(1);    opacity: 0.85; }
+    50%       { transform: translateX(-50%) scale(1.06); opacity: 1;    }
   }
 
   .hero-body {
@@ -208,8 +411,9 @@ const podcastSchema = {
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: rgba(255,255,255,0.75);
     margin: 0;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.6);
   }
 
   .hero-title {
@@ -220,14 +424,16 @@ const podcastSchema = {
     letter-spacing: -0.03em;
     color: #fff;
     text-wrap: balance;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.5);
   }
 
   .hero-sub {
     font-size: 1rem;
-    color: var(--muted);
+    color: rgba(255,255,255,0.82);
     line-height: 1.7;
     max-width: 480px;
     margin: 0;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.55);
   }
 
   .hero-actions {
