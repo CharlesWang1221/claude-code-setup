@@ -12,9 +12,9 @@
   --grad-surface: linear-gradient(180deg, #1A0A45 0%, #0F0235 100%);
   --grad-warm: linear-gradient(180deg, #1A0A45 0%, #15083A 100%);
 
-  --heading: 'Noto Sans', -apple-system, 'PingFang TC', 'Heiti TC', sans-serif;
-  --serif: 'Georgia', 'Noto Serif TC', 'STSong', serif;
-  --sans: 'Noto Sans', -apple-system, 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+  --heading: 'Noto Sans TC', 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+  --serif: 'Noto Sans TC', 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+  --sans: 'Noto Sans TC', 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
   --mono: 'SF Mono', 'Consolas', 'Courier New', monospace;
 }
 
