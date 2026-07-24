@@ -32,7 +32,7 @@ const schema = {
 };
 ---
 
-<Base title={post.data.title} description={post.data.description} ogImage={post.data.image} type="article">
+<Base title={post.data.title} description={post.data.description} ogImage={post.data.image} type="article" keywords={post.data.tags}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <article class="blog-post">
     <div class="post-hero">
