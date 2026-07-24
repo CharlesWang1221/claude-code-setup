@@ -12,9 +12,28 @@ const post = await getEntry('blog', slug);
 if (!post) return Astro.redirect('/blog');
 
 const { Content } = await post.render();
+
+const siteUrl = 'https://beyond-ans.com';
+const cleanDesc = (post.data.description || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: cleanDesc.slice(0, 500),
+  url: `${siteUrl}/blog/${post.slug}`,
+  datePublished: post.data.date,
+  image: post.data.image,
+  mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+  author: [
+    { '@type': 'Person', name: '老查' },
+    { '@type': 'Person', name: '阿分' },
+  ],
+};
 ---
 
-<Base title={post.data.title} description={post.data.description}>
+<Base title={post.data.title} description={post.data.description} ogImage={post.data.image} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   <article class="blog-post">
     <div class="post-hero">
       <div class="container">

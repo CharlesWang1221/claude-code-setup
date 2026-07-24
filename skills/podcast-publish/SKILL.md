@@ -111,6 +111,9 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 清楚標示完成、缺什麼輸入、還是不適用，讓老查一眼看出下一步要給什麼。
 
+### 9. SEO 文章（選配，不算在上面 8 項狀態表內）
+若老查想把這集也轉成SEO文章補網站流量，可另外呼叫 `seo-article-writer` skill（老查取名「居易」，模式A，帶入同一個 `{slug}`）。這不是必經步驟，星期天流程本身不會主動觸發它。
+
 ---
 
 ## 涉及但不修改的既有工具
@@ -120,6 +123,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - `tools/firstory-upload/upload.mjs`
 - `tools/fb-promo/run.bat` / `run.sh`
 - `shorts-pipeline` skill（步驟 7 直接引用其步驟，不要複製貼上整份內容）
+- `seo-article-writer` skill（居易，選配步驟 9 引用，不要複製貼上整份內容）
 
 ## 相關記憶
 `project_podcast_production`、`project_ig_pipeline`、`project_shorts_pipeline`、`project_fb_promo_pipeline`、`feedback_interaction_style`、`feedback_quote_selection`、`project_podcast_strategy`、`project_marketing_team_upgrade`
