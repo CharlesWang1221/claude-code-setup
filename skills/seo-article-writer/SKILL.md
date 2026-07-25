@@ -62,7 +62,11 @@ frontmatter 填：
 "seo_article": { "done": true }
 ```
 
-同時把同一份文章複製一份到 Google Drive：`G:\我的雲端硬碟\不標準答案\2026\網誌\未發布\{slug}.md`（老查要求2026-07-24，方便他在網站外部也能看草稿）。真正 commit+push+deploy 上線後，要把這份檔案從「未發布」移到同一層的「已發布」資料夾。
+同時把同一份文章複製一份到 Google Drive，**按資料夾分類**（老查要求2026-07-24／2026-07-26更新，方便他在網站外部也能看草稿）：
+- 模式A（單集轉SEO，帶episode slug）→ `G:\我的雲端硬碟\不標準答案\2026\網誌\未發布\{episode-slug}\{article-slug}.md`
+- 模式B（獨立SEO選題，無episode）→ `G:\我的雲端硬碟\不標準答案\2026\網誌\未發布\{article-slug}\{article-slug}.md`
+
+真正 commit+push+deploy 上線後，要把整個資料夾從「未發布」移到同一層的「已發布」資料夾（保留資料夾結構，不是只搬檔案）。
 
 ### 8. 技術驗證
 ```bash
