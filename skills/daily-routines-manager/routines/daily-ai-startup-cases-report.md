@@ -3,7 +3,7 @@ trigger_id: trig_01ER4FFu49McBY8zC9gaRqUU
 name: daily-ai-startup-cases-report
 cron: "0 0 * * *"  # 08:00 台北時間
 enabled: true
-output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格 + 3題反思問題
+output: Gmail（主收件人 siming1221@gmail.com，CC debra.hdf@gmail.com 阿分，2026-07-26新增），Word 風格 HTML 表格 + 3題反思問題
 mcp_connections: [Zapier]
 model: claude-sonnet-5
 allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
@@ -37,6 +37,6 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 (b) 以我目前的狀態可以如何應用——收件人是 Podcast 主持人/內容創作者，經營《不標準答案》Podcast 節目、正在做 YouTube 擴張，同時熟悉 n8n 自動化工具鏈，反思問題要盡量貼近這個身分脈絡去設計，不要泛用空泛的問題
 
 ## 4. 寄送
-用 mcp__Zapier__execute_zapier_write_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email）寄給收件人 siming1221@gmail.com。
+用 mcp__Zapier__execute_zapier_write_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email）寄送。主收件人（to）：siming1221@gmail.com，同時加上 CC（cc）給 debra.hdf@gmail.com（阿分）——讓這封信看起來是老查寄出並 CC 給阿分，不是兩人平行主收件人。呼叫 gmail_send_email 時記得帶上 cc 參數。
 
 寄送前務必先用 mcp__Zapier__list_enabled_zapier_actions 確認 Gmail 動作已啟用，若未啟用則用 mcp__Zapier__discover_zapier_actions 尋找並啟用。

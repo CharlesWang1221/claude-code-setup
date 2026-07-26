@@ -3,7 +3,7 @@ trigger_id: trig_01Xz9H5H9AZm2RD4bYCNAB3v
 name: daily-podcast-direction-inspiration-report
 cron: "0 0 * * *"  # 08:00 台北時間
 enabled: true
-output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格 + 單一最強執行方向
+output: Gmail（主收件人 siming1221@gmail.com，CC debra.hdf@gmail.com 阿分，2026-07-26新增），Word 風格 HTML 表格 + 單一最強執行方向
 mcp_connections: [Zapier]
 model: claude-sonnet-5
 allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
@@ -17,14 +17,17 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 
 選材規則：
 - 管道完全不限：新聞報導、文章、X/Threads/LinkedIn/Reddit 等社群貼文與討論串、影片、Podcast、論壇討論、書摘/書評、研究報告都可以
-- 語言完全不限（中文、英文、日文、其他語言皆可），但每則內容的摘要與分析都必須翻譯成中文呈現，並標註原文語言
+- 語言完全不限（中文、英文、日文、其他語言皆可），但每則內容的分析都必須翻譯成中文呈現，並標註原文語言
 - 每則內容必須能明確對應到上述三大支柱之一（社會議題深度／金繼時刻／書喔吾聊），單純泛用、跟節目調性無關的內容不要選
 - 10 則彼此完全不同（不同事件/作者/主題），連結必須直接指向內容本身（不能是首頁/搜尋頁），寄信前確認連結有效
 
 防重複機制（很重要）：寄信前先用 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, tool_name: gmail_find_email, query: "subject:每日節目方向靈感報告"）查近 7 天已寄送的報告，整理出「已用過清單」（主題/事件）。選材時排除清單裡出現過的主題與高度相似的後續報導，撞到就換一則，只有查詢失敗/完全查不到歷史紀錄才可略過比對並在報告備註誠實說明。
 
-報告格式：Word 風格 HTML 表格（border-collapse、標題行藍底白字 #4472C4、banded rows 淡灰交替），欄位依序：主題／標題｜來源管道｜原文語言｜連結（可點擊，文字「查看內容」）｜中文摘要｜對應支柱｜為什麼適合這個節目。
+報告格式：Word 風格 HTML 表格（border-collapse、標題行藍底白字 #4472C4、banded rows 淡灰交替），欄位依序：主題／標題｜來源管道｜原文語言｜連結（可點擊，文字「查看內容」）｜對應支柱｜分析方向｜可發展方向。其中「分析方向」與「可發展方向」兩欄的 cell 內容必須用點列式（<ul><li>）呈現，不能是一段長文字：
+- 「分析方向」2-3 點：這則內容值得注意的地方、跟對應支柱的具體關聯是什麼
+- 「可發展方向」2-3 點：具體怎麼把這則內容發展成一集節目（可以是集數角度/個人連結切入點/核心問句方向）
+不再別列「中文摘要」與「為什麼適合這個節目」不同欄，合併進上述兩欄裡。
 
-表格下方加一個區塊「📝 今日最值得執行的方向」：從這 10 則裡挑出你判斷最值得老查優先發展成一集的**單一**方向，給出具體的集數規劃建議——包含對應哪個支柱、可能的集數標題（風格參考：把最強的一句話放最前面，拿掉裝飾性前綴，例如「你請假的時候，有沒有先說『不好意思』？｜不標準答案 S2Enn」）、個人連結切入點的建議（老查或阿分的哪個真實經驗可以當開場）、以及核心問句。不要給多個模糊建議，就聚焦這一個，講清楚為什麼是它。
+表格下方仍保留一個區塊「📝 今日最值得執行的方向」：從這 10 則裡挑出你判斷最值得老查優先發展成一集的**單一**方向，給出具體的集數規劃建議（建議內容仍保留點列式）——包含對應哪個支柱、可能的集數標題（風格參考：把最強的一句話放最前面，拿掉裝飾性前綴，例如「你請假的時候，有沒有先說『不好意思』？｜不標準答案 S2Enn」）、個人連結切入點的建議（老查或阿分的哪個真實經驗可以當開場）、以及核心問句。不要給多個模糊建議，就聚焦這一個，講清楚為什麼是它。
 
-用 Zapier 的 Gmail Send Email 動作寄信（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email），收件人 siming1221@gmail.com，body_type 用 html。信件主旨：「每日節目方向靈感報告 - {今天日期，格式YYYY-MM-DD}」。
+用 Zapier 的 Gmail Send Email 動作寄信（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email），主收件人（to）：siming1221@gmail.com，同時加上 CC（cc）給 debra.hdf@gmail.com（阿分）——讓這封信看起來是老查寄出並 CC 給阿分，呼叫 gmail_send_email 時記得帶上 cc 參數，body_type 用 html。信件主旨：「每日節目方向靈感報告 - {今天日期，格式YYYY-MM-DD}」。
