@@ -2,7 +2,7 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-07-27（多利：daily-podcast-direction-inspiration-report 金繼時刻補第二個校準範例S2EP10，拉出未解/已消化光譜）
+最後同步時間：2026-07-27（多利：daily-podcast-direction-inspiration-report 新增「來源管道強制分散」規則，避免10則選材同質化）
 
 | 檔案 | routine 名稱 | trigger_id | 時間 | 輸出方式 |
 |---|---|---|---|---|
