@@ -143,9 +143,9 @@ GCREDS
 
     # 註冊到 Claude Code（全域 -s user）
     claude mcp add -s user google-workspace \
-        npx -y @a-bonus/google-docs-mcp \
         -e "GOOGLE_CLIENT_ID=$CLIENT_ID" \
-        -e "GOOGLE_CLIENT_SECRET=$CLIENT_SECRET"
+        -e "GOOGLE_CLIENT_SECRET=$CLIENT_SECRET" \
+        -- npx -y @a-bonus/google-docs-mcp
 
     echo -e "${GREEN}      Google Workspace MCP 加入完成（Gmail / Drive / Docs / Sheets / Calendar）${NC}"
 else
