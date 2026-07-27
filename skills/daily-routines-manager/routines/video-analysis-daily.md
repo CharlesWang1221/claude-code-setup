@@ -3,7 +3,7 @@ trigger_id: trig_01WoF3zy2i2AVHdhBSHhtQa6
 name: 影片分析每日推薦
 cron: "0 0 * * *"  # 08:00 台北時間
 enabled: true
-output: git repo（影片分析/{YYYY-MM-DD}/report.md，分支「影片分析」）
+output: git repo（影片分析/{YYYY-MM-DD}/report.md，分支「影片分析」）；來源平台限縮為不需登入公開平台（2026-07-26修復連結打不開問題）
 mcp_connections: []
 model: claude-sonnet-5
 allowed_tools: [Bash, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch]
@@ -20,7 +20,11 @@ sources: https://github.com/CharlesWang1221/claude-code-setup
 
 2. 檢查「影片分析/」資料夾下已經存在的所有日期子資料夾，記錄裡面已經推薦過的影片標題/連結，避免今天重複推薦同一支。
 
-3. 用 WebSearch / WebFetch 在網路上尋找 3 支「用 Motion Graphics 手法製作的宣傳、廣告類影片」——例如品牌宣傳片、產品發布影片、App 動畫廣告。不要選抽象藝術類動態設計作品，聚焦在「商業宣傳目的」的影片。來源不限，可以是 YouTube 品牌/廣告頻道、Behance 案例研究、Vimeo Staff Picks、知名動態設計工作室（例如 Buck、Giant Ant、Ordinary Folk、Man vs Machine、Gunner 等）的作品發布。優先挑近期（過去 7 天內）發布的；如果真的找不到夠新的，可以放寬到近期高品質精選作品，但務必避開步驟2列出的重複項目。
+3. 用 WebSearch / WebFetch 在網路上尋找 3 支「用 Motion Graphics 手法製作的宣傳、廣告類影片」——例如品牌宣傳片、產品發布影片、App 動畫廣告。不要選抽象藝術類動態設計作品，聚焦在「商業宣傳目的」的影片。
+
+**來源限定（重要，2026-07-26 新增）**：只使用不需登入、公開即可直接觀看的平台——YouTube 品牌/廣告頻道、Behance 案例研究、Vimeo公開影片（避開需密碼或僅限部分觀眾的 Vimeo 項目）、知名動態設計工作室（例如 Buck、Giant Ant、Ordinary Folk、Man vs Machine、Gunner 等）公開發布的作品。**不要使用**需登入才能完整觀看的平台內容（例如 Instagram/Reels、TikTok、Facebook 貼文、LinkedIn 貼文等），這些平台常規定需要登入、或有地區鎖/流量限制，這是之前推薦過連結打不開的主要原因。寄信前確認連結是具體影片頁面（不是頻道首頁或搜尋頁）且不需登入即可播放。
+
+優先挑近期（過去 7 天內）發布的；如果真的找不到夠新的，可以放寬到近期高品質精選作品，但務必避開步驟2列出的重複項目，也不能因為這樣就放寬到需登入的平台。
 
 4. 針對這 3 支影片，各寫一份分析，內容包含：
    - 影片標題、品牌或工作室名稱、影片連結、出處平台

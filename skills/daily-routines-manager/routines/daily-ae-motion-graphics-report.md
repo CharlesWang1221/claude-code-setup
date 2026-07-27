@@ -3,7 +3,7 @@ trigger_id: trig_016PteoSby2GRxyvYXEHSk3j
 name: daily-ae-motion-graphics-report
 cron: "0 0 * * *"  # 08:00 台北時間
 enabled: true
-output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格
+output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格；來源平台限縮為不需登入公開平台（2026-07-26修復連結打不開問題）
 mcp_connections: [Zapier]
 model: claude-sonnet-5
 allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
@@ -17,11 +17,11 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 - 內容主題限定在：科技、AI、UI/UX、雲端（Cloud）這四大方向。
 - 影片類型必須是「廣告宣傳影片」（例如品牌/產品發布宣傳、企業形象宣傳、產品功能宣傳短片等，以商業宣傳為目的使用 After Effects Motion Graphics 製作的影片）。
 - 絕對不要選「教學影片」（包含 AE 教學、教學得剏、How-to、Tutorial、Course 等教學性質內容），若搜尋結果看起來像教學影片就跳過。
-- 影片來源完全不限平台，不要只局限在一般網頁或只局限 YouTube，應該積極搜尋並涵蓋：YouTube、Vimeo、Bilibili、Facebook、Instagram/Reels、TikTok、Behance、LinkedIn、Twitter(X)、Dribbble、品牌官網發佈的宣傳影片等任何可能發布廣告宣傳影片的平台，不要自行限縮搜尋範圍。
+- 影片來源限定在「不需登入、公開即可直接觀看」的平台，只用以下來源：YouTube、Vimeo、Bilibili、Behance、Dribbble、品牌/代理商官網發佈的宣傳影片頁面。**明確排除**：Facebook、Instagram/Reels、TikTok、LinkedIn、Twitter(X)——這些平台常規定需要登入才能完整觀看、或有地區鎖/流量限制，這是之前連結打不開的主要原因，不要再選這些平台的內容。
 
 影片連結要求（重要）：
-- 每一支影片的連結都必須是可以直接點進去觀看那支具體影片的網址（例如 YouTube 影片頁面、Vimeo 具體影片頁、Behance 專案頁面、Facebook/Instagram 具體貼文連結等），不能是搜尋結果頁、頻道首頁、標題頁面或任何不能直接播放/觀看該影片的連結。
-- 寄信前要確認這 3 個連結都是有效且可點擊直接觀看的，不要放失效或不確定的連結。
+- 每一支影片的連結都必須是可以直接點進去觀看那支具體影片的網址（例如 YouTube 影片頁面、Vimeo 具體影片頁、Behance 專案頁面等），不能是搜尋結果頁、頻道首頁、標題頁面或任何不能直接播放/觀看該影片的連結。
+- 寄信前要確認這 3 個連結都是有效且不需登入即可點擊直接觀看的，不要放失效、不確定、或需登入/有地區限制提示的連結。
 - 3 支影片必須是彼此完全不同的內容（不同品牌/產品/創作者），不能是同一支影片的不同紙本/剪輯版本，也不能是同一創作者/同一作品集系列裡非常相似的區額影片，要確定 3 支在內容與主題上有明確差別。
 
 防止跨天重複（重要，必須執行）：
@@ -31,7 +31,7 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 
 執行步驟：
 1. 依上方「防止跨天重複」的做法，先取得「已用過清單」。
-2. 用網路搜尋工具（WebSearch/WebFetch）在上述所有可能的平台中，找出符合選項條件、且不在「已用過清單」裡的、近期最新、最熱門的 3 支廣告宣傳影片。優先挑選近期發布、討論度高、技術含量高、主題符合科技/AI/UIUX/雲端的作品，並跨越單一平台。
+2. 用網路搜尋工具（WebSearch/WebFetch）在上述限定的公開平台中，找出符合選項條件、且不在「已用過清單」裡的、近期最新、最熱門的 3 支廣告宣傳影片。優先挑選近期發布、討論度高、技術含量高、主題符合科技/AI/UIUX/雲端的作品，並跨越單一平台。
 3. 針對每一支影片，整理以下資訊：影片標題、影片連結（需可直接觀看，見上方連結要求）、來源平台、所屬主題、特色分析、技術分析。
 
 報告格式（重要）：
@@ -48,7 +48,7 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
    - 信件主旨格式：「每日 AE Motion Graphics 廣告影片分析報告 - {今天日期}」
 
 注意：
-- 如果找不到 3 支完全符合條件（主題+廣告性質+非教學+可直接觀看連結+彼此內容不同+不在已用過清單）的影片，盡量找最接近的，並在表格下方註明實際找到的數量、原因，以及是否有因為避免重複而放寬標準。
+- 如果找不到 3 支完全符合條件（主題+廣告性質+非教學+公開不需登入可直接觀看連結+彼此內容不同+不在已用過清單）的影片，盡量找最接近的，並在表格下方註明實際找到的數量、原因，以及是否有因為避免重複而放寬標準。
 - 並須確定找到的影片不是教學/教學得剏影片，若不確定就換一支。
-- 盡可能跨平台尋找（YouTube、Vimeo、Bilibili、Facebook、Instagram 等），讓 3 支影片不一定都來自同一平台。
+- 只從 YouTube、Vimeo、Bilibili、Behance、Dribbble、品牌官網這些公開不需登入的平台尋找，盡量跨平台，不一定都來自同一平台。絕對不要因為找不到合適影片就放寬到 Facebook/Instagram/TikTok 這些需登入的平台。
 - 每次執行都必須完成寄信這個步驟，不要只做分析不寄信。
