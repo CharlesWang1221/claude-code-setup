@@ -170,6 +170,22 @@ else
     echo -e "${GRAY}      找不到 skills/ 目錄，跳過${NC}"
 fi
 
+# 鏡像到 Codex 會掃描的路徑（雙棲；若之後手動裝了 minicourse skills 到 ~/.claude/skills，重跑這幾行即可同步）
+AGENTS_SKILLS_DEST="$HOME/.agents/skills"
+if [[ -d "$SKILLS_DEST" ]]; then
+    mkdir -p "$AGENTS_SKILLS_DEST"
+    cp -r "$SKILLS_DEST"/. "$AGENTS_SKILLS_DEST/"
+    echo -e "${GREEN}      已鏡像到 $AGENTS_SKILLS_DEST（Codex 讀取用）${NC}"
+fi
+
+CODEX_AGENTS_SRC="$SCRIPT_DIR/codex/AGENTS.global.md"
+CODEX_HOME_DIR="$HOME/.codex"
+if [[ -f "$CODEX_AGENTS_SRC" ]]; then
+    mkdir -p "$CODEX_HOME_DIR"
+    cp "$CODEX_AGENTS_SRC" "$CODEX_HOME_DIR/AGENTS.md"
+    echo -e "${GREEN}      已安裝 Codex 全域規則 ~/.codex/AGENTS.md${NC}"
+fi
+
 # ── 8. 網站專案依賴 ──────────────────────────────────────────
 echo ""
 echo -e "${YELLOW}[8/8] 安裝《不標準答案》網站依賴...${NC}"

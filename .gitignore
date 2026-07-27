@@ -24,3 +24,6 @@ google-mcp/credentials.json
 
 # API Keys（機敏，勿上傳）
 .env
+
+# Codex 本機設定（含明文 API key，勿上傳）
+.codex/

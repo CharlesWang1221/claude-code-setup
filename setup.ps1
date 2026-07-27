@@ -98,6 +98,22 @@ if (Test-Path $skillsSrc) {
     Write-Host "      找不到 skills/ 目錄，跳過" -ForegroundColor Gray
 }
 
+# 鏡像到 Codex 會掃描的路徑（雙棲；若之後手動裝了 minicourse skills 到 ~/.claude/skills，重跑這幾行即可同步）
+$agentsSkillsDest = Join-Path $env:USERPROFILE ".agents\skills"
+if (Test-Path $skillsDest) {
+    New-Item -ItemType Directory -Force $agentsSkillsDest | Out-Null
+    Copy-Item -Recurse -Force "$skillsDest\*" $agentsSkillsDest
+    Write-Host "      已鏡像到 $agentsSkillsDest（Codex 讀取用）" -ForegroundColor Green
+}
+
+$codexAgentsSrc = Join-Path $scriptDir "codex\AGENTS.global.md"
+$codexHome = Join-Path $env:USERPROFILE ".codex"
+if (Test-Path $codexAgentsSrc) {
+    New-Item -ItemType Directory -Force $codexHome | Out-Null
+    Copy-Item -Force $codexAgentsSrc (Join-Path $codexHome "AGENTS.md")
+    Write-Host "      已安裝 Codex 全域規則 ~/.codex/AGENTS.md" -ForegroundColor Green
+}
+
 # ── 7. 網站專案依賴 ──────────────────────────────────────────
 Write-Host ""
 Write-Host "[7/7] 安裝《不標準答案》網站依賴..." -ForegroundColor Yellow
