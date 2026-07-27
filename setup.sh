@@ -170,12 +170,12 @@ else
     echo -e "${GRAY}      找不到 skills/ 目錄，跳過${NC}"
 fi
 
-# 鏡像到 Codex 會掃描的路徑（雙棲；若之後手動裝了 minicourse skills 到 ~/.claude/skills，重跑這幾行即可同步）
-AGENTS_SKILLS_DEST="$HOME/.agents/skills"
-if [[ -d "$SKILLS_DEST" ]]; then
-    mkdir -p "$AGENTS_SKILLS_DEST"
-    cp -r "$SKILLS_DEST"/. "$AGENTS_SKILLS_DEST/"
-    echo -e "${GREEN}      已鏡像到 $AGENTS_SKILLS_DEST（Codex 讀取用）${NC}"
+# 同步 skills + 本地 MCP servers 到 Codex CLI（實測 Codex 讀取的是 ~/.codex/skills，不是 ~/.agents/skills）
+SYNC_CODEX_SCRIPT="$SCRIPT_DIR/tools/sync-codex.sh"
+if [[ -f "$SYNC_CODEX_SCRIPT" ]] && command -v codex &>/dev/null; then
+    bash "$SYNC_CODEX_SCRIPT"
+elif [[ -f "$SYNC_CODEX_SCRIPT" ]]; then
+    echo -e "${GRAY}      未偵測到 codex 指令，跳過 Codex 同步（之後裝好可手動執行 tools/sync-codex.sh）${NC}"
 fi
 
 CODEX_AGENTS_SRC="$SCRIPT_DIR/codex/AGENTS.global.md"
