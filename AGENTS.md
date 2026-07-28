@@ -49,3 +49,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - Codex 沒有等同 Claude auto-memory 的長期記憶機制，這份檔案是手動抽出來的，之後老查如果調整核心偏好，記得也回來更新這份 `AGENTS.md`
 - claude.ai 上的遠端 MCP connector（Adobe、Ahref、Asana、Figma、Semrush、VidIQ、Zapier 等）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
 - 本機 MCP（`filesystem`、`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則
+## 跨電腦品牌記憶
+
+- 涉及《不標準答案》、心維空間、We I、Podcast、社群、SEO、短影音、品牌企劃或 AI 工作流時，先讀根目錄 `BRAND_CONTEXT.md`。
+- 此 repo 為公開 repo；只將去識別的品牌原則與公開內容提交，原始家庭文件與其他私密資料不得提交。
