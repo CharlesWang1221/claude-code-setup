@@ -41,14 +41,17 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
 | 「動手前先想清楚」「/brainstorm」 | `brainstorm` |
+| 「銷售頁」「landing page」「$landing」 | `landing` |
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞目前只對 Claude Code 有效——它們是叫出 Claude 的 auto-memory 專案記憶，Codex 讀不到那套記憶，遇到這幾句要主動跟老查確認情境，不要假裝知道細節。
+
+> 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 
 ## 已知限制（雙棲健檢，2026-07-27）
 
 - Codex 沒有等同 Claude auto-memory 的長期記憶機制，這份檔案是手動抽出來的，之後老查如果調整核心偏好，記得也回來更新這份 `AGENTS.md`
-- claude.ai 上的遠端 MCP connector（Adobe、Ahref、Asana、Figma、Semrush、VidIQ、Zapier 等）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
-- 本機 MCP（`filesystem`、`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則
+- claude.ai 上的遠端 MCP connector（目前只留 Ahref、VidIQ、Zapier；Adobe/Asana/Figma/Semrush/Artlist.io/Atlassian Rovo/Similarweb/Meltwater/Anthropic Economic Index 於 2026-07-28 因零使用紀錄斷開）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
+- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
 ## 跨電腦品牌記憶
 
 - 涉及《不標準答案》、心維空間、We I、Podcast、社群、SEO、短影音、品牌企劃或 AI 工作流時，先讀根目錄 `BRAND_CONTEXT.md`。

@@ -41,8 +41,11 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
 | 「動手前先想清楚」「/brainstorm」 | `brainstorm` |
+| 「銷售頁」「landing page」「/landing」 | `landing` |
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞是叫出**這裡（Claude Code）專屬的 auto-memory 專案記憶**，對應到 `project_podcast_website.md`、`project_new_computer_setup.md`、`project_statusline_setup.md` 等記憶檔。Codex 讀不到這套記憶，只在 `AGENTS.md` 留了一句提醒它主動確認情境。
+
+> 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 
 ## 記憶分工（跟 Codex 不對稱，是刻意設計）
 
@@ -53,6 +56,6 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 
 ## 已知限制（雙棲健檢，2026-07-27）
 
-- claude.ai 上的遠端 MCP connector（Adobe、Ahref、Asana、Figma、Semrush、VidIQ、Zapier 等）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
-- 本機 MCP（`filesystem`、`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）兩邊都已設定並連線；Codex 端 `~/.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則
+- claude.ai 上的遠端 MCP connector（目前只留 Ahref、VidIQ、Zapier；Adobe/Asana/Figma/Semrush/Artlist.io/Atlassian Rovo/Similarweb/Meltwater/Anthropic Economic Index 於 2026-07-28 因零使用紀錄斷開）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
+- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）兩邊都已設定並連線；Codex 端 `~/.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
 - `~/.codex/skills`（舊位置，6 個）只是相容殘留，不是安裝目標，兩邊都不用管它
