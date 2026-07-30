@@ -45,6 +45,8 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞是叫出**這裡（Claude Code）專屬的 auto-memory 專案記憶**，對應到 `project_podcast_website.md`、`project_new_computer_setup.md`、`project_statusline_setup.md` 等記憶檔。Codex 讀不到這套記憶，只在 `AGENTS.md` 留了一句提醒它主動確認情境。
 
+> **`video-explainer`（影碩）沒有固定關鍵字**，是使用者丟上一份文件/素材時，由小查先判讀內容是不是 ASUS 相關或技術/科技說明類影像需求，符合才告知使用者建議啟動，經確認才進入影碩的 VOX+Remotion SOP。不符合（對話類/文字類）就導去其他既有 skill，不要自動硬套。
+
 > 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 
 ## 記憶分工（跟 Codex 不對稱，是刻意設計）
