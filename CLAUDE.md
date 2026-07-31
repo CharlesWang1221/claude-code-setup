@@ -61,5 +61,6 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 ## 已知限制（雙棲健檢，2026-07-27）
 
 - claude.ai 上的遠端 MCP connector（目前只留 Ahref、VidIQ、Zapier；Adobe/Asana/Figma/Semrush/Artlist.io/Atlassian Rovo/Similarweb/Meltwater/Anthropic Economic Index 於 2026-07-28 因零使用紀錄斷開）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
-- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）兩邊都已設定並連線；Codex 端 `~/.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
+- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`、`plaud`）兩邊都已設定並連線；Codex 端 `~/.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
+- `plaud`（2026-07-31 新增，用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步到 Codex 時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration` 且不會指出哪個 key 重複——踩到這個錯誤先檢查 `~/.codex/config.toml` 有無重複區塊
 - `~/.codex/skills`（舊位置，6 個）只是相容殘留，不是安裝目標，兩邊都不用管它

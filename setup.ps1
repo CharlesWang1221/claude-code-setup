@@ -47,6 +47,10 @@ Write-Host "      Playwright 加入完成" -ForegroundColor Green
 claude mcp add cloudflare -- npx mcp-remote https://observability.mcp.cloudflare.com/mcp
 Write-Host "      Cloudflare MCP 加入完成" -ForegroundColor Green
 
+# Plaud（會議錄音逐字稿/摘要）
+claude mcp add plaud -- npx -y @plaud-ai/mcp@latest
+Write-Host "      Plaud 加入完成（首次使用時需跑一次 OAuth 登入，跳出瀏覽器授權即可）" -ForegroundColor Green
+
 # ── 4. Firecrawl ─────────────────────────────────────────────
 Write-Host ""
 Write-Host "[4/5] Firecrawl API Key 設定" -ForegroundColor Yellow

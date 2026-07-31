@@ -123,4 +123,4 @@ PYEOF
 
 echo ""
 echo "=== 完成，驗證中 ==="
-codex mcp list 2>&1 | awk 'NR==1 || /filesystem|playwright|cloudflare|firecrawl|google-workspace/'
+codex mcp list 2>&1 | awk 'NR==1 || /filesystem|playwright|cloudflare|firecrawl|google-workspace|plaud/'

@@ -55,7 +55,9 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 - Codex 沒有等同 Claude auto-memory 的長期記憶機制，這份檔案是手動抽出來的，之後老查如果調整核心偏好，記得也回來更新這份 `AGENTS.md`
 - claude.ai 上的遠端 MCP connector（目前只留 Ahref、VidIQ、Zapier；Adobe/Asana/Figma/Semrush/Artlist.io/Atlassian Rovo/Similarweb/Meltwater/Anthropic Economic Index 於 2026-07-28 因零使用紀錄斷開）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
-- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
+- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`、`plaud`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
+- `plaud`（2026-07-31 新增，用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
+
 ## 跨電腦品牌記憶
 
 - 涉及《不標準答案》、心維空間、We I、Podcast、社群、SEO、短影音、品牌企劃或 AI 工作流時，先讀根目錄 `BRAND_CONTEXT.md`。

@@ -66,6 +66,10 @@ echo -e "${GREEN}      Playwright 加入完成${NC}"
 claude mcp add cloudflare -- npx mcp-remote https://observability.mcp.cloudflare.com/mcp
 echo -e "${GREEN}      Cloudflare MCP 加入完成${NC}"
 
+# Plaud（會議錄音逐字稿/摘要）
+claude mcp add plaud -- npx -y @plaud-ai/mcp@latest
+echo -e "${GREEN}      Plaud 加入完成（首次使用時需跑一次 OAuth 登入，跳出瀏覽器授權即可）${NC}"
+
 # ── 4. Firecrawl ─────────────────────────────────────────────
 echo ""
 echo -e "${YELLOW}[4/5] Firecrawl API Key 設定${NC}"

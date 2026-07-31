@@ -38,7 +38,18 @@
 - token 位置：`~/.config/google-docs-mcp/token.json`
 - 換電腦時：執行 `setup.sh`，步驟 6 會自動授權（瀏覽器開啟，用 siming1221@gmail.com 登入按「繼續」即可）
 
-### 6. Zeabur Agent Skills
+### 6.5 Plaud
+- 狀態：✅ Connected
+- 用途：讀取 Plaud 錄音筆的逐字稿、AI 摘要，會議記錄自動轉逐字稿
+- 安裝：`claude mcp add plaud -- npx -y @plaud-ai/mcp@latest`
+- 首次使用需跑一次 OAuth 登入（工具內建 `login`，跳出瀏覽器授權即可），登入後 token 由套件自行保存，換電腦要重新授權一次
+- 帳號：Google 登入（Charles Wang）
+
+### 6.6 Codex CLI 同步
+- 本機 MCP（filesystem/playwright/cloudflare/firecrawl/google-workspace/plaud）透過 `tools/sync-codex.sh` 自動鏡射到 `~/.codex/config.toml`，新增/更動 MCP 後重跑一次即可
+- 注意：若 Codex 端已手動 `codex mcp add` 過同名 server，且不在 sync 標記區塊內，重跑同步會產生重複 `[mcp_servers.x]` table 導致 TOML 解析失敗（`codex mcp list` 報 `failed to load configuration`）——出現這個錯誤先檢查 `~/.codex/config.toml` 有沒有重複區塊
+
+### 7. Zeabur Agent Skills
 - 狀態：⚠️ 被 ASUS 企業政策封鎖（macOS 個人電腦可安裝）
 - 用途：有後端的專案、Bot、資料庫應用部署（Node.js / Python / Go 都支援）
 - macOS 安裝指令：
