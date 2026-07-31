@@ -1,0 +1,4 @@
+interface:
+  display_name: "Chibi Ink Illustrations"
+  short_description: "Create consistent chibi ink story illustrations"
+  default_prompt: "Use $chibi-ink-illustrations to create a black-and-white chibi scene."
