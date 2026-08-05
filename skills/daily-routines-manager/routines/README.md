@@ -2,7 +2,7 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-07-27（多利：daily-podcast-direction-inspiration-report 新增「來源管道強制分散」規則，避免10則選材同質化）
+最後同步時間：2026-08-05（多利：daily-competitor-monitor 加入 3 個國際競品 We Can Do Hard Things／Unlocking Us／On Purpose，4台+3國際共7個，並補CC阿分；同時發現線上版本早於8/3已把③④換成本子在隔壁Benzi／FarHugs遠距抱抱，本機備份當時未同步——這次已補齊）
 
 | 檔案 | routine 名稱 | trigger_id | 時間 | 輸出方式 |
 |---|---|---|---|---|
@@ -13,7 +13,7 @@
 | daily-ai-startup-cases-report.md | daily-ai-startup-cases-report | trig_01ER4FFu49McBY8zC9gaRqUU | 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
 | daily-book-summaries-3.md | daily-book-summaries-3 | trig_01Jo3jNh1ckmveuGTN6V6HZ2 | 08:00 台北 | Gmail（siming1221@gmail.com） |
 | daily-podcast-direction-inspiration-report.md | daily-podcast-direction-inspiration-report | trig_01Xz9H5H9AZm2RD4bYCNAB3v | 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
-| daily-competitor-monitor-4.md | daily-competitor-monitor-4 | trig_01HaRbUMGiddyezfGpoq1FFS | 08:00 台北 | Gmail（siming1221@gmail.com） |
+| daily-competitor-monitor-7.md | daily-competitor-monitor-7 | trig_01HaRbUMGiddyezfGpoq1FFS | 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
 
 ## 共用設定（新增 routine 時套用）
 
