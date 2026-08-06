@@ -8,6 +8,7 @@ site/.astro
 # root
 node_modules/
 package-lock.json
+.next/
 .playwright-mcp/
 
 # YouTube OAuth 憑證（機敏，勿上傳）
