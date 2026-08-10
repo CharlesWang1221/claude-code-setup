@@ -51,13 +51,14 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
+| 「影碩」「剪紙效果影片」「用剪紙效果做」 | `video-explainer`（載入剪紙風格模組） |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞目前只對 Claude Code 有效——它們是叫出 Claude 的 auto-memory 專案記憶，Codex 讀不到那套記憶，遇到這幾句要主動跟老查確認情境，不要假裝知道細節。
 
 > **「工作站」固定指 Creator OS**：這是《不標準答案》的私人內容營運工作站，程式位於 `apps/creator-os`。MVP 已完成「今日推進、內容流轉、節奏日曆、復盤沉澱、規則庫」與本機瀏覽器 `localStorage` 保存；目前尚未接 Supabase、n8n、Google Calendar 或平台數據。老查說「工作站」時，先讀這個目錄與其 README（若存在），再依需求續作，不要誤解為電腦硬體或另開一個網站。
 
-> **`video-explainer`（影碩）沒有固定關鍵字**，是使用者丟上一份文件/素材時，由「小查」角色先判讀內容是不是 ASUS 相關或技術/科技說明類影像需求，符合才建議啟動，經確認才進入影碩的 VOX+Remotion SOP。不符合（對話類/文字類）就導去其他既有 skill，不要自動硬套。這份 skill 內容已自包含完整 SOP，不依賴 Claude 的 auto-memory。
+> **`video-explainer`（影碩）是影片製作總控**：VOX 技術解說是核心能力，剪紙效果是第一個可插拔風格模組。使用者明確說「影碩」或「剪紙效果影片」時直接啟動；未指定風格時，再由「小查」依題材建議。未來新增風格只加入影碩的 `references/` 模組庫，不另建會搶觸發詞的獨立 skill。
 >
 > **`video-promo`（影華）跟影碩分工**：影碩是證據驅動的解釋型內容（數據/技術說明/課程），影華是情緒/慾望/記憶點驅動的品牌宣傳片（Apple 式極簡文字/圖形語言，Remotion 主引擎，無 CGI）。同樣沒有固定關鍵字（也可以直接叫「影華」），由「小查」角色判讀是「講清楚問題」還是「造氣氛帶 CTA」來決定走哪條，經確認才進入對應 SOP。這份 skill 內容也已自包含，不依賴 Claude 的 auto-memory。
 >

@@ -102,12 +102,17 @@ if (Test-Path $skillsSrc) {
     Write-Host "      找不到 skills/ 目錄，跳過" -ForegroundColor Gray
 }
 
-# 鏡像到 Codex 會掃描的路徑（雙棲；若之後手動裝了 minicourse skills 到 ~/.claude/skills，重跑這幾行即可同步）
+# 鏡像到 Agents 與 Codex 會掃描的路徑
 $agentsSkillsDest = Join-Path $env:USERPROFILE ".agents\skills"
 if (Test-Path $skillsDest) {
     New-Item -ItemType Directory -Force $agentsSkillsDest | Out-Null
     Copy-Item -Recurse -Force "$skillsDest\*" $agentsSkillsDest
-    Write-Host "      已鏡像到 $agentsSkillsDest（Codex 讀取用）" -ForegroundColor Green
+    Write-Host "      已鏡像到 $agentsSkillsDest" -ForegroundColor Green
+
+    $codexSkillsDest = Join-Path $env:USERPROFILE ".codex\skills"
+    New-Item -ItemType Directory -Force $codexSkillsDest | Out-Null
+    Copy-Item -Recurse -Force "$skillsDest\*" $codexSkillsDest
+    Write-Host "      已鏡像到 $codexSkillsDest（Codex 讀取用）" -ForegroundColor Green
 }
 
 $codexAgentsSrc = Join-Path $scriptDir "codex\AGENTS.global.md"

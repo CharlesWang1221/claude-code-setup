@@ -1,0 +1,4 @@
+interface:
+  display_name: "影碩"
+  short_description: "統一管理影片製作流程，並依需求載入剪紙等視覺風格模組"
+  default_prompt: "使用 $video-explainer，依內容與指定風格規劃並製作影片。"
