@@ -38,3 +38,11 @@ metadata:
 
 - 永遠使用台北時間（Asia/Taipei, UTC+8）
 - 日期計算、時間戳記、檔案命名前先確認系統時間
+
+## 字型偏好
+
+- **所有專案的中文內文一律使用黑體**：`'Noto Sans TC', 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif`
+- Web 專案需在 `<head>` 引入 Google Fonts：`Noto Sans TC` (wght 400;500;700)
+- 標題用 serif（Georgia 系列），標籤用 mono（SF Mono 系列），內文全部黑體
+
+**Why:** 老查明確指定黑體，以後所有專案預設套用。

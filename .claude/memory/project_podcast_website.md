@@ -5,6 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 272bf243-fe65-4c8e-add5-f9840da310d3
+  modified: 2026-08-10T11:13:56.626Z
 ---
 
 ## 觸發詞
@@ -43,10 +44,15 @@ npx wrangler pages deploy dist --project-name podcast-site --commit-dirty=true -
 ```
 
 ## 設計 Token
-- `--bg: #0D0C0B`（暖黑）
-- `--accent: #E8534E`（coral/salmon 紅）
-- `--body: #F0EDE8`（暖白）
-- Serif 標題（Georgia）× mono 標籤（SF Mono）× sans 內文
+- `--bg: #15083A`（深紫黑）
+- `--surface: #0F0235`（更深紫，卡片背景）
+- `--rule: #2A1A5E`（紫色邊框）
+- `--accent: #EE359E`（粉紅）
+- `--accent2: #815BDB`（紫色）
+- `--body: #CAC0E4`（淡紫白，內文）
+- `--muted: #AAA8BD`（灰紫，次要文字）
+- Serif 標題（Georgia）× mono 標籤（SF Mono）× **黑體內文（Noto Sans TC → PingFang TC → Heiti TC → Microsoft JhengHei）**
+- 字型 import：`Noto Sans TC` from Google Fonts（已加入 Base.astro `<head>`）
 
 ## Blog Content Collections schema
 位置：`site/src/content/config.ts`
@@ -111,9 +117,12 @@ export const collections = { blog };
 - [x] Facebook 貼文自動同步 GitHub Action（sync-fb-posts.yml + sync-fb-posts.js）
 
 ## 待辦
-- [ ] 測試 Facebook 同步：去 GitHub Actions 手動觸發 `Sync Facebook Posts to Blog`，確認貼文出現在 `site/src/content/blog/`
-- [ ] Blog 前端頁面：`/blog` 列表頁 + `/blog/[slug]` 文章頁（目前還沒有前端路由顯示這些 md 文章）
-- [ ] 影音頁（`/videos`）— 曾被提及但未實作，可接 YouTube API 或手動維護
+- [x] 測試 Facebook 同步：已成功（2026-07-11），FB Page Token 需每 60 天更新一次；透過 `/me/accounts` 或直接呼叫 page endpoint 換 Page Token
+- [x] Blog 前端頁面：`/blog` 列表頁 + `/blog/[slug]` 文章頁已完成並部署
+- [x] Blog 卡片 RWD 修正：加半透明底色 + 紫色左邊框（rgba(255,255,255,0.04) + border-left: 3px solid var(--accent2)）
+- [x] 全站字型換黑體：--serif / --sans / --heading 全改為 Noto Sans TC 系列（已加 Google Fonts import 至 Base.astro）
+- [x] 影音頁（`/videos`）骨架已完成（空陣列 + empty state），2026-08-10 確認：卡在內容層，不是程式——YouTube 頻道正確 handle 是 `@不標準答案`（channelId `UCE-QusSupACm0Lk7D0ThHLQ`，注意不是 `@beyondanswersTW`，那個 404），頻道目前 0 支影片。等老查上傳第一支影片後，回來把資料填進 `src/pages/videos.astro` 的 `videos` 陣列（格式：`{ id, title, date, description }`）。
+- [x] 2026-08-10 修正全站 YouTube 死連結：header/footer/影音頁 CTA 原本都指向不存在的 `@beyondanswersTW`，已全部改成 `@不標準答案`，並部署上線。
 
 **Why:** 老查想要有 SEO 複利效果的 Podcast 內容資料庫，長期累積有機搜尋流量。  
 **How to apply:** 每次繼續前先 `npm run dev` 確認本地環境，改動後 `npm run build` 確認無誤再部署。
