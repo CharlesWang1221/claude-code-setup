@@ -65,12 +65,12 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 > 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 
-## 已知限制（雙棲健檢，2026-07-27）
+## 已知限制（雙棲健檢，2026-07-27；連結器現況更新於 2026-08-11 換電腦盤點）
 
 - Codex 沒有等同 Claude auto-memory 的長期記憶機制，這份檔案是手動抽出來的，之後老查如果調整核心偏好，記得也回來更新這份 `AGENTS.md`
-- claude.ai 上的遠端 MCP connector（目前只留 Ahref、VidIQ、Zapier；Adobe/Asana/Figma/Semrush/Artlist.io/Atlassian Rovo/Similarweb/Meltwater/Anthropic Economic Index 於 2026-07-28 因零使用紀錄斷開）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
-- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`、`plaud`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
-- `plaud`（2026-07-31 新增，用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
+- claude.ai 上的遠端 MCP connector 是**帳號層級**設定，不是機器層級，換電腦不會重置它，2026-07-28 斷開過的那批有些已被重新啟用。2026-08-11 `claude mcp list` 實測現況：`Ahref`、`VidIQ`、`Zapier`、`Higgsfield`、`Semrush`、`Adobe for creativity`、`Asana`、`Canva`、`Anthropic Economic Index` 已連線；`Similarweb`、`Meltwater`、`Artlist.io`、`Adobe Experience Manager`、`Figma`、`Atlassian Rovo` 顯示待授權（未斷開，只是沒登入）。這批對 Codex 沒有對應機制，別假設能用，也別憑這份文件的舊紀錄判斷，實況要問老查或看 Claude 端 `claude mcp list`
+- 本機/專案層級 MCP（`playwright`、`firecrawl`、`cloudflare`、`notion`）已經在 Codex 端設定；`google-workspace` 2026-08-11 在新機器上連線 timeout，需重跑 OAuth；`plaud` 在新機器上完全沒設定，換電腦後兩邊都要重新加回去；`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
+- `plaud`（用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
 
 ## 剪紙效果
 
