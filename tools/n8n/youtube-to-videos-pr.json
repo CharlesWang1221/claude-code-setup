@@ -1,0 +1,217 @@
+{
+  "name": "YouTube 新影片 → videos.astro 自動開 PR",
+  "active": false,
+  "nodes": [
+    {
+      "id": "sticky1",
+      "name": "設定說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-200, -320],
+      "parameters": {
+        "width": 480,
+        "height": 340,
+        "content": "## 匯入後要做 2 件事\n\n1. 在「YouTube RSS」節點把 url 裡的 REPLACE_WITH_CHANNEL_ID 換成你頻道的 Channel ID\n2. 建立一個 n8n Credential，類型選「GitHub API」，貼你的 GitHub Fine-grained PAT（只勾 claude-code-setup 這個repo，權限給 Contents R/W + Pull requests R/W），套用到下面 4 個 HTTP Request 節點\n\n這支只會開 PR，不會自動 merge，你要自己去 GitHub 看過再按合併。測過一次成功再把左上角 Active 打開。\n\nrepo 預設是 CharlesWang1221/claude-code-setup，如果改名要記得改下面 4 個節點的 URL。"
+      }
+    },
+    {
+      "id": "trigger1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-200, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rss1",
+      "name": "YouTube RSS",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [40, 300],
+      "parameters": {
+        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=REPLACE_WITH_CHANNEL_ID"
+      }
+    },
+    {
+      "id": "code1",
+      "name": "Filter New Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 300],
+      "parameters": {
+        "jsCode": "const staticData = getWorkflowStaticData('global');\nif (!staticData.postedVideoIds) staticData.postedVideoIds = [];\n\nconst results = [];\nfor (const item of $input.all()) {\n  const link = item.json.link || '';\n  const m = link.match(/v=([a-zA-Z0-9_-]{6,})/);\n  const videoId = m ? m[1] : null;\n  if (!videoId) continue;\n  if (staticData.postedVideoIds.includes(videoId)) continue;\n\n  const rawDesc = item.json.contentSnippet || item.json.content || '';\n  const description = rawDesc.replace(/\\s+/g, ' ').trim().slice(0, 200);\n\n  results.push({\n    json: {\n      videoId,\n      title: item.json.title || '',\n      link,\n      description,\n      pubDate: item.json.pubDate || '',\n    },\n  });\n}\nreturn results;"
+      }
+    },
+    {
+      "id": "http1",
+      "name": "Get Main Branch SHA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [520, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/CharlesWang1221/claude-code-setup/git/ref/heads/main",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi"
+      },
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "http2",
+      "name": "Create Branch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [760, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/CharlesWang1221/claude-code-setup/git/refs",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"ref\": \"refs/heads/videos/auto-\" + $('Filter New Videos').item.json.videoId, \"sha\": $json.object.sha } }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi"
+      },
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "http3",
+      "name": "Get Current videos.astro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 300],
+      "parameters": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/CharlesWang1221/claude-code-setup/contents/site/src/pages/videos.astro",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "ref", "value": "main" }
+          ]
+        },
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi"
+      },
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "code2",
+      "name": "Insert Video Entry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 300],
+      "parameters": {
+        "jsCode": "const resp = $input.first().json;\nconst rawBase64 = (resp.content || '').replace(/\\n/g, '');\nconst fileSha = resp.sha;\n\nconst videoId = $('Filter New Videos').item.json.videoId;\nconst title = $('Filter New Videos').item.json.title;\nconst description = $('Filter New Videos').item.json.description;\nconst pubDate = $('Filter New Videos').item.json.pubDate;\nconst dateStr = pubDate ? new Date(pubDate).toISOString().slice(0, 10) : '';\n\nconst decoded = Buffer.from(rawBase64, 'base64').toString('utf-8');\n\nconst esc = (s) => (s || '').replace(/\\\\/g, '\\\\\\\\').replace(/'/g, \"\\\\'\");\n\nconst newEntry = `  {\\n    id: '${esc(videoId)}',\\n    title: '${esc(title)}',\\n    date: '${dateStr}',\\n    description: '${esc(description)}',\\n  },\\n`;\n\nconst marker = 'const videos = [';\nconst idx = decoded.indexOf(marker);\nif (idx === -1) {\n  throw new Error('找不到 const videos = [ 標記，videos.astro 結構可能已變更，要人工檢查');\n}\nconst insertPos = idx + marker.length;\nconst updated = decoded.slice(0, insertPos) + '\\n' + newEntry + decoded.slice(insertPos);\n\nconst newContentBase64 = Buffer.from(updated, 'utf-8').toString('base64');\nconst branchName = `videos/auto-${videoId}`;\n\nreturn [{\n  json: {\n    newContentBase64,\n    fileSha,\n    branchName,\n    videoId,\n    title,\n  },\n}];"
+      }
+    },
+    {
+      "id": "http4",
+      "name": "Update File On Branch",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1480, 300],
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.github.com/repos/CharlesWang1221/claude-code-setup/contents/site/src/pages/videos.astro",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"message\": \"新增影片：\" + $json.title, \"content\": $json.newContentBase64, \"sha\": $json.fileSha, \"branch\": $json.branchName } }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi"
+      },
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "http5",
+      "name": "Create Pull Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1720, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/CharlesWang1221/claude-code-setup/pulls",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"title\": \"新增影片：\" + $('Insert Video Entry').item.json.title, \"head\": $('Insert Video Entry').item.json.branchName, \"base\": \"main\", \"body\": \"YouTube 新影片自動偵測，請審核後合併。\\n\\n影片連結：\" + $('Filter New Videos').item.json.link } }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "githubApi"
+      },
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "id": "code3",
+      "name": "Mark Video As Posted",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1960, 300],
+      "parameters": {
+        "jsCode": "const staticData = getWorkflowStaticData('global');\nif (!staticData.postedVideoIds) staticData.postedVideoIds = [];\n\nfor (const item of $input.all()) {\n  const videoId = $('Filter New Videos').item.json.videoId;\n  if (videoId && !staticData.postedVideoIds.includes(videoId)) {\n    staticData.postedVideoIds.push(videoId);\n  }\n}\nif (staticData.postedVideoIds.length > 500) {\n  staticData.postedVideoIds = staticData.postedVideoIds.slice(-500);\n}\nreturn $input.all();"
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [[{ "node": "YouTube RSS", "type": "main", "index": 0 }]]
+    },
+    "YouTube RSS": {
+      "main": [[{ "node": "Filter New Videos", "type": "main", "index": 0 }]]
+    },
+    "Filter New Videos": {
+      "main": [[{ "node": "Get Main Branch SHA", "type": "main", "index": 0 }]]
+    },
+    "Get Main Branch SHA": {
+      "main": [[{ "node": "Create Branch", "type": "main", "index": 0 }]]
+    },
+    "Create Branch": {
+      "main": [[{ "node": "Get Current videos.astro", "type": "main", "index": 0 }]]
+    },
+    "Get Current videos.astro": {
+      "main": [[{ "node": "Insert Video Entry", "type": "main", "index": 0 }]]
+    },
+    "Insert Video Entry": {
+      "main": [[{ "node": "Update File On Branch", "type": "main", "index": 0 }]]
+    },
+    "Update File On Branch": {
+      "main": [[{ "node": "Create Pull Request", "type": "main", "index": 0 }]]
+    },
+    "Create Pull Request": {
+      "main": [[{ "node": "Mark Video As Posted", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

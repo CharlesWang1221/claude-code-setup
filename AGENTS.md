@@ -72,6 +72,11 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`、`plaud`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
 - `plaud`（2026-07-31 新增，用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
 
+## 剪紙效果
+
+- 老查說「剪紙效果」「剪紙風」「紙雕動畫」「做成舊地圖拼貼」或給劇本要製作這類型社群影片時，先讀 `skills/paper-collage-video/SKILL.md`。
+- 這套流程的重點是劇本拆解、物件分層與有動作原因的紙雕動畫，不能只生成一張插圖後整張推鏡。
+
 ## 跨電腦品牌記憶
 
 - 涉及《不標準答案》、心維空間、We I、Podcast、社群、SEO、短影音、品牌企劃或 AI 工作流時，先讀根目錄 `BRAND_CONTEXT.md`。
