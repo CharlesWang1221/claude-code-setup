@@ -2,7 +2,7 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-08-12（多利：因 Zapier 額度不足調整多個排程頻率——新聞報告改每週一（原每2天）、AI創業案例改週三、書籍摘要改5本改週四、競品監控改雙週週五、創作靈感頻率不變（週一10則），並把 AE 影片分析報告的防重複機制由查 Gmail 改成 git log，省下最大宗的 Zapier 動作量；UIUX 維持每月1、15日不變）
+最後同步時間：2026-08-12（多利：已因 Zapier 額度不足降低頻率；另加入 Cloudflare Worker + Resend 寄送備援。線上 routine 尚待重新登入 Claude 後套用，遷移步驟見 `../RESEND_MIGRATION.md`。）
 
 | 檔案 | routine 名稱 | trigger_id | 頻率 | 輸出方式 |
 |---|---|---|---|---|
@@ -20,6 +20,6 @@
 - environment_id: `env_012PXqxpqYN4yzPvZoiGdmLf`
 - model: `claude-sonnet-5`
 - 08:00 台北時間 = cron `0 0 * * *`（UTC）
-- 寄信類 routine 一律走 Zapier MCP：`mcp_connections: [{connector_uuid: "4a34f6a9-553f-4645-939f-708b21535f24", name: "Zapier", url: "https://mcp.zapier.com/api/v1/connect"}]`
+- Zapier 已無額度時，寄信類 routine 改走 Cloudflare Worker + Resend。完整設定與 prompt 替換內容見 `../RESEND_MIGRATION.md`。
 - 預設收件人：siming1221@gmail.com
 - 樣板規則見「多利」skill 本體（`../SKILL.md`）
