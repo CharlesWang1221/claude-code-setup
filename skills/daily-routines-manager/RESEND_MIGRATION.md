@@ -27,7 +27,9 @@ curl --fail-with-body --retry 2 --retry-all-errors \\
   --data-binary @report.json
 ```
 
-`report.json` 格式為 `{"to":["siming1221@gmail.com"],"cc":[],"subject":"主旨","html":"完整 HTML"}`。有 CC 的 routine 才填入 `cc`，例如 `["debra.hdf@gmail.com"]`。寄送成功後立即刪除本機暫存檔。
+`report.json` 格式為 `{"to":["siming1221@gmail.com"],"cc":[],"subject":"多利｜主旨","html":"完整 HTML"}`。有 CC 的 routine 才填入 `cc`，例如 `["debra.hdf@gmail.com"]`。寄送成功後立即刪除本機暫存檔。
+
+Worker 會在伺服器端拒絕其他收件人、沒有 `多利｜` 開頭的主旨、非 JSON 或超過 500 KB 的報告。即使 routine 被 prompt injection，不能拿這條路寄給第三人。
 
 ## 驗收與故障判斷
 
