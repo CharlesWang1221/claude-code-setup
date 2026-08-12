@@ -2,18 +2,18 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-08-05（多利：daily-competitor-monitor 加入 3 個國際競品 We Can Do Hard Things／Unlocking Us／On Purpose，4台+3國際共7個，並補CC阿分；同時發現線上版本早於8/3已把③④換成本子在隔壁Benzi／FarHugs遠距抱抱，本機備份當時未同步——這次已補齊）
+最後同步時間：2026-08-12（多利：因 Zapier 額度不足調整多個排程頻率——新聞報告改每週一（原每2天）、AI創業案例改週三、書籍摘要改5本改週四、競品監控改雙週週五、創作靈感頻率不變（週一10則），並把 AE 影片分析報告的防重複機制由查 Gmail 改成 git log，省下最大宗的 Zapier 動作量；UIUX 維持每月1、15日不變）
 
-| 檔案 | routine 名稱 | trigger_id | 時間 | 輸出方式 |
+| 檔案 | routine 名稱 | trigger_id | 頻率 | 輸出方式 |
 |---|---|---|---|---|
-| video-analysis-daily.md | 影片分析每日推薦 | trig_01WoF3zy2i2AVHdhBSHhtQa6 | 08:00 台北 | 寫入 repo「影片分析」分支 |
-| daily-ae-motion-graphics-report.md | daily-ae-motion-graphics-report | trig_016PteoSby2GRxyvYXEHSk3j | 08:00 台北 | Gmail（siming1221@gmail.com） |
-| daily-news-digest-15.md | daily-news-digest-15 | trig_016qGJ7RpkNm7G4kqFhVvkg5 | 08:00 台北 | Gmail（siming1221@gmail.com） |
-| daily-uiux-articles-report.md | daily-uiux-articles-report | trig_01TANUyyqAknfU5sX4kiMNaZ | 08:00 台北 | Gmail（siming1221@gmail.com） |
-| daily-ai-startup-cases-report.md | daily-ai-startup-cases-report | trig_01ER4FFu49McBY8zC9gaRqUU | 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
-| daily-book-summaries-3.md | daily-book-summaries-3 | trig_01Jo3jNh1ckmveuGTN6V6HZ2 | 08:00 台北 | Gmail（siming1221@gmail.com） |
-| daily-podcast-direction-inspiration-report.md | daily-podcast-direction-inspiration-report | trig_01Xz9H5H9AZm2RD4bYCNAB3v | 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
-| daily-competitor-monitor-7.md | daily-competitor-monitor-7 | trig_01HaRbUMGiddyezfGpoq1FFS | 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
+| video-analysis-daily.md | 影片分析每日推薦 | trig_01WoF3zy2i2AVHdhBSHhtQa6 | 每天 08:00 台北 | 寫入 repo「影片分析」分支（不吃 Zapier） |
+| daily-ae-motion-graphics-report.md | daily-ae-motion-graphics-report | trig_016PteoSby2GRxyvYXEHSk3j | 每天 08:00 台北 | Gmail（siming1221@gmail.com）；防重複改用 git log |
+| daily-news-digest-15.md | daily-news-digest-15（每週重要新聞報告） | trig_016qGJ7RpkNm7G4kqFhVvkg5 | 每週一 08:00 台北 | Gmail（siming1221@gmail.com） |
+| daily-uiux-articles-report.md | daily-uiux-articles-report | trig_01TANUyyqAknfU5sX4kiMNaZ | 每月 1、15 日 08:00 台北 | Gmail（siming1221@gmail.com）；防重複用 git log |
+| daily-ai-startup-cases-report.md | daily-ai-startup-cases-report（每週AI創業案例報告） | trig_01ER4FFu49McBY8zC9gaRqUU | 每週三 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
+| daily-book-summaries-3.md | daily-book-summaries-3（每週5本書籍摘要） | trig_01Jo3jNh1ckmveuGTN6V6HZ2 | 每週四 08:00 台北 | Gmail（siming1221@gmail.com） |
+| daily-podcast-direction-inspiration-report.md | daily-podcast-direction-inspiration-report | trig_01Xz9H5H9AZm2RD4bYCNAB3v | 每週一 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
+| daily-competitor-monitor-7.md | daily-competitor-monitor-7（雙週競品動態監控） | trig_01HaRbUMGiddyezfGpoq1FFS | 雙週週五 08:00 台北（每月第1、3週的週五，cron無雙週語法，非精準隔14天） | Gmail（siming1221@gmail.com，CC 阿分） |
 
 ## 共用設定（新增 routine 時套用）
 

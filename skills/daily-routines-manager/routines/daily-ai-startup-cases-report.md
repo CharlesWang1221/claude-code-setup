@@ -1,9 +1,9 @@
 ---
 trigger_id: trig_01ER4FFu49McBY8zC9gaRqUU
 name: daily-ai-startup-cases-report
-cron: "0 0 * * *"  # 08:00 台北時間
+cron: "0 0 * * 3"  # 週三 08:00 台北時間（2026-08-12 由週一改週三）
 enabled: true
-output: Gmail（主收件人 siming1221@gmail.com，CC debra.hdf@gmail.com 阿分，2026-07-26新增），Word 風格 HTML 表格 + 3題反思問題
+output: Gmail（主收件人 siming1221@gmail.com，CC debra.hdf@gmail.com 阿分），Word 風格 HTML 表格 + 3題反思問題，5個案例；2026-08-12 由「每日AI創業案例報告」改名「每週AI創業案例報告」（頻率其實原本就是每週一次，只是命名一直沒改）
 mcp_connections: [Zapier]
 model: claude-sonnet-5
 allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
@@ -11,10 +11,10 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 
 ## Prompt
 
-你要產生並寄出「每日AI創業案例報告」email。請依序完成以下步驟：
+你要產生並寄出「每週AI創業案例報告」email。請依序完成以下步驟：
 
 ## 1. 防重複檢查
-先用 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, tool_name: gmail_find_email, query: "subject:每日AI創業案例報告"）查詢近 7 天已寄送的報告內容，整理出「已用過的案例清單」（案例名稱、創辦人、公司）。只有查詢失敗或完全查不到歷史紀錄時才可略過比對，並在報告最後備註說明「本次未執行防重複比對」。
+先用 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, tool_name: gmail_find_email, query: "subject:每週AI創業案例報告"）查詢近 7 天已寄送的報告內容，整理出「已用過的案例清單」（案例名稱、創辦人、公司）。只有查詢失敗或完全查不到歷史紀錄時才可略過比對，並在報告最後備註說明「本次未執行防重複比對」。
 
 ## 2. 搜尋 5 個 AI 創業真實案例
 用 WebSearch（必要時 WebFetch 確認連結有效）找出 5 個「AI創業相關的真實案例」：
@@ -24,7 +24,7 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 - 每個案例的連結必須直接指向該案例內容本身（不能是首頁、搜尋結果頁或分類頁），寄信前需確認連結有效
 
 ## 3. 產生 email 報告
-主旨：「每日AI創業案例報告 - {今天日期，格式 YYYY-MM-DD}」
+主旨：「每週AI創業案例報告 - {今天日期，格式 YYYY-MM-DD}」
 
 內容用 HTML email（body_type "html"），格式沿用「Word 風格表格」：
 - 表格用 border-collapse
