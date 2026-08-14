@@ -2,12 +2,14 @@
 trigger_id: trig_01Xz9H5H9AZm2RD4bYCNAB3v
 name: daily-podcast-direction-inspiration-report
 display_name: 每次創作靈感（原名「每日節目方向靈感報告」，2026-07-27 改名）
-cron: "0 0 * * *"  # 08:00 台北時間
+cron: "0 0 * * *"  # 每天 08:00 台北時間，已是每天，CC 阿分已有
 enabled: true
-output: Gmail（to: siming1221@gmail.com，cc: debra.hdf@gmail.com），Word 風格 HTML 表格 + 單一最強執行方向
-mcp_connections: [Zapier]
+output: Duoli Mailer Worker（to: siming1221@gmail.com，cc: debra.hdf@gmail.com），Word 風格 HTML 表格 + 單一最強執行方向；防重複用 git log（分支 duoli-log-podcast-direction，近14天）
+environment_id: env_012GK45Z6sL8waNgSho7rmSd（Duoli Mailer，2026-08-14 切過來）
+mcp_connections: [Zapier]（僅為 API 限制殘留，allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上無法被呼叫）
 model: claude-sonnet-5
-allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
+allowed_tools: [Bash, Read, Write, WebSearch, WebFetch]
+sources: [{git_repository: {url: "https://github.com/CharlesWang1221/claude-code-setup"}}]
 ---
 
 ## Prompt
@@ -27,12 +29,18 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 
 選材規則：
 - 管道完全不限：新聞報導、文章、X/Threads/LinkedIn/Reddit 等社群貼文與討論串、影片、Podcast、論壇討論、書摘/書評、研究報告都可以
-- **10 則的來源管道要分散、避免同質化（新增規則，2026-07-27）**：至少 2 則來自社群貼文/討論串（X/Threads/LinkedIn/Reddit）、至少 2 則來自影片/Podcast/訪談，其餘可為新聞報導、文章、書摘/書評、研究報告，但不能 10 則裡有 7、8 則都是新聞文章；若某個管道類型當天真的找不到符合四類主題的內容，備註中誠實寫明找不到，不要硬湊不相關的內容充數
+- **10 則的來源管道要分散、避免同質化**：至少 2 則來自社群貼文/討論串（X/Threads/LinkedIn/Reddit）、至少 2 則來自影片/Podcast/訪談，其餘可為新聞報導、文章、書摘/書評、研究報告，但不能 10 則裡有 7、8 則都是新聞文章；若某個管道類型當天真的找不到符合四類主題的內容，備註中誠實寫明找不到，不要硬湊不相關的內容充數
 - 語言完全不限（中文、英文、日文、其他語言皆可），但每則內容的分析都必須翻譯成中文呈現，並標註原文語言
 - 每則內容必須能明確對應到上述四種類型之一（社會議題深度／金繼時刻／書喔吾聊／文化科技現象輕鬆觀察），單純泛用、跟節目調性無關的內容不要選
 - 10 則彼此完全不同（不同事件/作者/主題），連結必須直接指向內容本身（不能是首頁/搜尋頁），寄信前確認連結有效
 
-防重複機制（很重要）：寄信前先用 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, tool_name: gmail_find_email, query: "subject:每次創作靈感"）查近 7 天已寄送的報告，整理出「已用過清單」（主題/事件）。選材時排除清單裡出現過的主題與高度相似的後續報導，撞到就換一則，只有查詢失敗/完全查不到歷史紀錄才可略過比對並在報告備註誠實說明。
+防止跨天重複（改用 repo git log，不再查 Gmail，不吃 Zapier 額度）：執行任務最前面先用 Bash 執行：
+```
+git fetch origin
+git checkout duoli-log-podcast-direction 2>/dev/null || git checkout -b duoli-log-podcast-direction origin/main
+git pull origin duoli-log-podcast-direction --ff-only 2>/dev/null || true
+```
+讀取 `skills/daily-routines-manager/sent-log/podcast-direction.md`（若檔案不存在，視為空清單，正常繼續選材，不用備註略過比對）。這份 log 記錄過去約 14 天內已用過的主題/事件，格式為每次寄送一個 `## YYYY-MM-DD` 區塊，底下列出當次 10 則的主題/事件。整理出「已用過清單」（主題/事件）。選材時排除清單裡出現過的主題與高度相似的後續報導，撞到就換一則。
 
 報告格式：Word 風格 HTML 表格（border-collapse、標題行藍底白字 #4472C4、banded rows 淡灰交替），欄位依序：主題／標題｜來源管道｜原文語言｜連結（可點擊，文字「查看內容」）｜對應類型｜分析方向｜可發展方向。「對應類型」填入四類中的一個（社會議題深度集/金繼時刻/書喔吾聊/文化科技現象輕鬆觀察）。其中「分析方向」與「可發展方向」兩欄的 cell 內容必須用點列式（<ul><li>）呈現，不能是一段長文字：
 - 「分析方向」2-3 點：這則內容值得注意的地方、跟對應類型的具體關聯是什麼
@@ -41,4 +49,25 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 
 表格下方仍保留一個區塊「📝 今日最值得執行的方向」：從這 10 則裡挑出你判斷最值得老查優先發展成一集的單一方向，給出具體的集數規劃建議（建議內容仍保留點列式）——包含對應哪一類、可能的集數標題（風格參考：把最強的一句話放最前面，拿掉裝飾性前綴，例如「你請假的時候，有沒有先說『不好意思』？｜不標準答案 S2Enn」）、個人連結切入點的建議（老查或阿分的哪個真實經驗可以當開場）、以及核心問句。不要給多個模糊建議，就聚焦這一個，講清楚為什麼是它。若這個最值得執行的方向屬於金繼時刻類型，可以引用 S1EP2 或 S2EP10 那兩個校準範例的基調作為導入參考。
 
-用 Zapier 的 Gmail Send Email 動作寄信（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email），主收件人（to）：siming1221@gmail.com，同時加上 CC（cc）給 debra.hdf@gmail.com（阿分）——讓這封信看起來是老查寄出並 CC 給阿分，呼叫 gmail_send_email 時記得帶上 cc 參數，body_type 用 html。信件主旨：「每次創作靈感 - {今天日期，格式YYYY-MM-DD}」。
+寄送（改用 Duoli Mailer Worker，禁止使用 Zapier 或任何其他管道）：
+1. 用 Write 工具把上面產生的完整 HTML email 內容寫進暫存檔 `/tmp/duoli-podcast-direction-body.html`。
+2. 用 Bash/Node.js 讀出暫存檔內容，組成 JSON payload：`{"to":"siming1221@gmail.com","cc":"debra.hdf@gmail.com","subject":"多利｜每次創作靈感 - {今天日期，格式YYYY-MM-DD}","html":"..."}`（html 欄位放暫存檔的完整內容），寫進 `/tmp/duoli-podcast-direction-payload.json`。組 JSON 務必用程式（例如 Node.js `JSON.stringify`）處理，不要手動拼字串。subject 必須以「多利｜」開頭。
+3. 用 Bash 執行：
+```bash
+curl --fail-with-body -sS -X POST https://duoli-mailer.siming1221.workers.dev \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: daily-podcast-direction-inspiration-report-$(TZ=Asia/Taipei date +%F)" \
+  --data @/tmp/duoli-podcast-direction-payload.json
+```
+4. 只有 curl 回應成功（HTTP 2xx）才算寄信完成，才能繼續下一步的 log 更新。若失敗（非 2xx、連線錯誤、或環境變數 `$DUOLI_WEBHOOK_TOKEN` 未設定）：直接回報「寄信失敗」＋實際錯誤訊息，**絕對不要改用 Zapier、Gmail 或任何其他方式寄送**，也不要更新 log。
+
+更新 log 並 commit（寄信成功後才做，只寫這一個 log 檔，不要動 repo 裡其他任何檔案，也不要碰 main 分支）：
+用 Bash 把這次實際選用的 10 則主題/事件 append 進 `skills/daily-routines-manager/sent-log/podcast-direction.md`：在檔案最上方新增一個 `## {今天日期 YYYY-MM-DD}` 區塊，列出這 10 則（每則一行 `- {主題/事件}`）。順手刪掉超過 14 天以前的舊區塊。
+完成後執行：
+```
+git add skills/daily-routines-manager/sent-log/podcast-direction.md
+git commit -m "多利日誌 daily-podcast-direction-inspiration-report {今天日期}"
+git push origin duoli-log-podcast-direction
+```
+若 push 失敗，不要因此卡住或重試超過1次，寄信才是主要任務。
