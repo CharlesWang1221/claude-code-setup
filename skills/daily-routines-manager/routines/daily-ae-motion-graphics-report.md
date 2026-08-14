@@ -3,10 +3,11 @@ trigger_id: trig_016PteoSby2GRxyvYXEHSk3j
 name: daily-ae-motion-graphics-report
 cron: "0 0 * * *"  # 08:00 台北時間（維持每天，2026-08-12 確認不變）
 enabled: true
-output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格；來源平台限縮為不需登入公開平台（2026-07-26修復連結打不開問題）；2026-08-12 防重複機制由查 Gmail 改為 git log（分支 duoli-log-ae），每次執行省一次 Zapier read 動作
-mcp_connections: [Zapier]
+output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格；來源平台限縮為不需登入公開平台（2026-07-26修復連結打不開問題）；2026-08-12 防重複機制由查 Gmail 改為 git log（分支 duoli-log-ae）；2026-08-12 寄送改用 Duoli Mailer Worker（curl POST，不再用 Zapier）
+environment_id: env_012GK45Z6sL8waNgSho7rmSd（Duoli Mailer，2026-08-12 由共用 env 換過來）
+mcp_connections: [Zapier]（僅為 API 限制殘留，見下方「已知限制」，allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上無法被呼叫）
 model: claude-sonnet-5
-allowed_tools: [Bash, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__discover_zapier_actions]
+allowed_tools: [Bash, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch]
 sources: [{git_repository: {url: "https://github.com/CharlesWang1221/claude-code-setup"}}]
 ---
 
@@ -50,9 +51,18 @@ git pull origin duoli-log-ae --ff-only 2>/dev/null || true
 - 共 3 支內容彼此不同、且不在「已用過清單」裡的影片，每支一行（<tr>）。
 - 表格上方加一行標題文字，例如 <h3>【AE Motion Graphics 廣告影片分析報告】{今天日期}</h3>。
 
-4. 用 mcp__Zapier__execute_zapier_write_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email）寄送報告到 siming1221@gmail.com。
-   - body_type 用 "html"，body 內容就是上述的 HTML 表格。
-   - 信件主旨格式：「每日 AE Motion Graphics 廣告影片分析報告 - {今天日期}」
+4. 寄送（改用 Duoli Mailer Worker，禁止使用 Zapier 或任何其他管道）
+   1. 用 Write 工具把步驟3產生的完整 HTML 表格內容，原封不動寫進暫存檔 `/tmp/duoli-ae-motion-graphics-body.html`。
+   2. 用 Bash/Node.js 讀出暫存檔內容，組成 JSON payload：`{"to":"siming1221@gmail.com","subject":"多利｜每日 AE Motion Graphics 廣告影片分析報告 - {今天日期}","html":"..."}`（html 欄位放暫存檔的完整內容），寫進 `/tmp/duoli-ae-motion-graphics-payload.json`。組 JSON 務必用程式（例如 Node.js `JSON.stringify`）處理，不要手動拼字串，避免 HTML 裡的引號/換行破壞 JSON 格式。subject 必須以「多利｜」開頭。
+   3. 用 Bash 執行：
+```bash
+curl --fail-with-body -sS -X POST https://duoli-mailer.siming1221.workers.dev \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: daily-ae-motion-graphics-report-$(TZ=Asia/Taipei date +%F)" \
+  --data @/tmp/duoli-ae-motion-graphics-payload.json
+```
+   4. 只有 curl 回應成功（HTTP 2xx）才算寄信完成，才能繼續下一步的 log 更新。若失敗（非 2xx、連線錯誤、或環境變數 `$DUOLI_WEBHOOK_TOKEN` 未設定）：直接回報「寄信失敗」＋實際錯誤訊息，**絕對不要改用 Zapier、Gmail 或任何其他方式寄送**，也不要繼續執行下一步的 log 更新（避免沒寄出卻誤標記已寄送）。
 
 5. 更新 log 並 commit（寄信成功後才做這一步，這一步只寫這一個 log 檔，不要動 repo 裡其他任何檔案，也不要碰 main 分支）：
    - 用 Bash 把這次實際選用的 3 支影片（標題＋連結）append 進 `skills/daily-routines-manager/sent-log/ae-motion-graphics.md`：在檔案最上方新增一個 `## {今天日期 YYYY-MM-DD}` 區塊，列出這 3 支影片（每支一行 `- {標題} — {連結}`）。順手刪掉超過 30 天以前的舊區塊，避免檔案無限長大。

@@ -2,14 +2,14 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-08-12（多利：已因 Zapier 額度不足降低頻率；另加入 Cloudflare Worker + Resend 寄送備援。線上 routine 尚待重新登入 Claude 後套用，遷移步驟見 `../RESEND_MIGRATION.md`。）
+最後同步時間：2026-08-12（多利：daily-ae-motion-graphics-report、daily-uiux-articles-report 兩支已改用 Duoli Mailer Worker 寄信、environment 換成 Duoli Mailer、allowed_tools 移除 Zapier；其餘 routine 尚待套用，遷移步驟見 `../RESEND_MIGRATION.md`。已知限制：RemoteTrigger update 對 mcp_connections 傳空陣列/null 不會清空既有連結，只能整批替換成非空陣列，這兩支目前 mcp_connections 仍列著 Zapier，但因 allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上不可能被呼叫。）
 
 | 檔案 | routine 名稱 | trigger_id | 頻率 | 輸出方式 |
 |---|---|---|---|---|
 | video-analysis-daily.md | 影片分析每日推薦 | trig_01WoF3zy2i2AVHdhBSHhtQa6 | 每天 08:00 台北 | 寫入 repo「影片分析」分支（不吃 Zapier） |
-| daily-ae-motion-graphics-report.md | daily-ae-motion-graphics-report | trig_016PteoSby2GRxyvYXEHSk3j | 每天 08:00 台北 | Gmail（siming1221@gmail.com）；防重複改用 git log |
+| daily-ae-motion-graphics-report.md | daily-ae-motion-graphics-report | trig_016PteoSby2GRxyvYXEHSk3j | 每天 08:00 台北 | Duoli Mailer Worker（siming1221@gmail.com）；防重複用 git log；2026-08-12 已移除 Zapier |
 | daily-news-digest-15.md | daily-news-digest-15（每週重要新聞報告） | trig_016qGJ7RpkNm7G4kqFhVvkg5 | 每週一 08:00 台北 | Gmail（siming1221@gmail.com） |
-| daily-uiux-articles-report.md | daily-uiux-articles-report | trig_01TANUyyqAknfU5sX4kiMNaZ | 每月 1、15 日 08:00 台北 | Gmail（siming1221@gmail.com）；防重複用 git log |
+| daily-uiux-articles-report.md | daily-uiux-articles-report | trig_01TANUyyqAknfU5sX4kiMNaZ | 每月 1、15 日 08:00 台北 | Duoli Mailer Worker（siming1221@gmail.com）；防重複用 git log；2026-08-12 已移除 Zapier |
 | daily-ai-startup-cases-report.md | daily-ai-startup-cases-report（每週AI創業案例報告） | trig_01ER4FFu49McBY8zC9gaRqUU | 每週三 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |
 | daily-book-summaries-3.md | daily-book-summaries-3（每週5本書籍摘要） | trig_01Jo3jNh1ckmveuGTN6V6HZ2 | 每週四 08:00 台北 | Gmail（siming1221@gmail.com） |
 | daily-podcast-direction-inspiration-report.md | daily-podcast-direction-inspiration-report | trig_01Xz9H5H9AZm2RD4bYCNAB3v | 每週一 08:00 台北 | Gmail（siming1221@gmail.com，CC 阿分） |

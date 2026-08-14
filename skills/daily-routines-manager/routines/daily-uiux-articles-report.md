@@ -1,17 +1,19 @@
 ---
 trigger_id: trig_01TANUyyqAknfU5sX4kiMNaZ
 name: daily-uiux-articles-report
-cron: "0 0 * * *"  # 08:00 台北時間
+cron: "0 0 1,15 * *"  # 每月 1、15 日 08:00 台北時間
 enabled: true
-output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格
-mcp_connections: [Zapier]
+output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格；2026-08-12 防重複機制由查 Gmail 改為 git log（分支 duoli-log-uiux）；2026-08-12 寄送改用 Duoli Mailer Worker（curl POST，不再用 Zapier）
+environment_id: env_012GK45Z6sL8waNgSho7rmSd（Duoli Mailer，2026-08-12 由共用 env 換過來）
+mcp_connections: [Zapier]（僅為 API 限制殘留，見下方「已知限制」，allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上無法被呼叫）
 model: claude-sonnet-5
-allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
+allowed_tools: [Bash, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch]
+sources: [{git_repository: {url: "https://github.com/CharlesWang1221/claude-code-setup"}}]
 ---
 
 ## Prompt
 
-你是一個自動化助手，任務是每天執行一次「UIUX 資訊分析報告」。這是雲端獨立執行的任務，不需要存取任何本機檔案或 git repo。
+你是一個自動化助手，任務是每天執行一次「UIUX 資訊分析報告」。這是雲端獨立執行的任務，需要存取 git repo（讀寫防重複 log 檔用），但不修改 repo 裡除了指定 log 檔以外的任何檔案。
 
 內容選項條件（重要，必須遵守）：
 - 主題限定在 UIUX 裡面「以視覺呈現為主」的內容：例如視覺設計、介面視覺風格、色彩與字型應用、圖標/插畫設計、資訊視覺化（data visualization/infographic）、UI 中的動態設計（motion/micro-interaction 的視覺表現）、視覺設計趨勢與美學、品牌視覺語言等。不要選一般性的 UX 研究、可用性測試、資訊架構等偏文字、不帶視覺呈現的文章，選文時要偏重內容本身就很有視覺衝擊力、帶有大量圖例/截圖/視覺展示的文章或案例。
@@ -23,9 +25,15 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 - 寄信前要確認這 3 個連結都是有效且可直接打開閱讀的，不要放失效或不確定的連結。
 - 3 篇文章必須彼此完全不同（不同主題、不同作者、不同網站），不能是同一篇文章的轉載/不同語言版本，也不能是同一作者近期非常相似的系列文章。
 
-防止跨天重複（重要，必須執行）：
-- 在開始搜尋新內容之前，先呼叫 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_find_email, params: {query: "subject:每日 UIUX 資訊分析報告"}）找出過去已寄送過的報告信，從回傳結果中整理出「近期（最近約 7 天內）所有已出現過的文章標題與連結」，列成一份「已用過清單」。
-- 本次選文時必須排除「已用過清單」裡的所有文章：不能選同一篇文章，也不能選同一作者/同一網站近期非常相似的文章。只有在該清單完全無法取得時才可以略過此比對，並在報告備註中誠實說明。
+防止跨天重複（改用 repo log，不再查 Gmail，不吃 Zapier 額度）：
+- 先用 Bash 執行：
+```
+git fetch origin
+git checkout duoli-log-uiux 2>/dev/null || git checkout -b duoli-log-uiux origin/main
+git pull origin duoli-log-uiux --ff-only 2>/dev/null || true
+```
+- 讀取 `skills/daily-routines-manager/sent-log/uiux-articles.md`（若檔案不存在，視為空清單，正常繼續選材，不用備註略過比對）。這份 log 記錄過去約 14 天內已寄送過的文章，格式為每天一個 `## YYYY-MM-DD` 區塊，底下列出當天已用過的文章（標題＋連結）。整理出「已用過清單」。
+- 本次選文時必須排除「已用過清單」裡的所有文章：不能選同一篇文章，也不能選同一作者/同一網站近期非常相似的文章。
 - 如果搜尋到的候選文章與「已用過清單」撞了，必須換一篇，不能因為找不到新文章就照樣選用近期已經寄過的內容。
 
 執行步驟：
@@ -42,11 +50,29 @@ allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, m
 - 共 3 篇內容彼此不同、且不在「已用過清單」裡的文章，每篇一行（<tr>）。
 - 表格上方加一行標題文字，例如 <h3>【UIUX 資訊分析報告】{今天日期}</h3>。
 
-4. 先呼叫 mcp__Zapier__list_enabled_zapier_actions（selected_api: GoogleMailV2CLIAPI）確認 Gmail Send Email 動作可用，再用 mcp__Zapier__execute_zapier_write_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email）寄送報告到 siming1221@gmail.com。
-   - body_type 用 "html"，body 內容就是上述的 HTML 表格。
-   - 信件主旨格式：「每日 UIUX 資訊分析報告 - {今天日期}」
+4. 寄送（改用 Duoli Mailer Worker，禁止使用 Zapier 或任何其他管道）
+   1. 用 Write 工具把步驟3產生的完整 HTML 表格內容，原封不動寫進暫存檔 `/tmp/duoli-uiux-articles-body.html`。
+   2. 用 Bash/Node.js 讀出暫存檔內容，組成 JSON payload：`{"to":"siming1221@gmail.com","subject":"多利｜每日 UIUX 資訊分析報告 - {今天日期}","html":"..."}`（html 欄位放暫存檔的完整內容），寫進 `/tmp/duoli-uiux-articles-payload.json`。組 JSON 務必用程式（例如 Node.js `JSON.stringify`）處理，不要手動拼字串，避免 HTML 裡的引號/換行破壞 JSON 格式。subject 必須以「多利｜」開頭。
+   3. 用 Bash 執行：
+```bash
+curl --fail-with-body -sS -X POST https://duoli-mailer.siming1221.workers.dev \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: daily-uiux-articles-report-$(TZ=Asia/Taipei date +%F)" \
+  --data @/tmp/duoli-uiux-articles-payload.json
+```
+   4. 只有 curl 回應成功（HTTP 2xx）才算寄信完成，才能繼續下一步的 log 更新。若失敗（非 2xx、連線錯誤、或環境變數 `$DUOLI_WEBHOOK_TOKEN` 未設定）：直接回報「寄信失敗」＋實際錯誤訊息，**絕對不要改用 Zapier、Gmail 或任何其他方式寄送**，也不要繼續執行下一步的 log 更新（避免沒寄出卻誤標記已寄送）。
+
+5. 更新 log 並 commit（寄信成功後才做這一步，這一步只寫這一個 log 檔，不要動 repo 裡其他任何檔案，也不要碰 main 分支）：
+   - 用 Bash 把這次實際選用的 3 篇文章（標題＋連結）append 進 `skills/daily-routines-manager/sent-log/uiux-articles.md`：在檔案最上方新增一個 `## {今天日期 YYYY-MM-DD}` 區塊，列出這 3 篇文章（每篇一行 `- {標題} — {連結}`）。順手刪掉超過 30 天以前的舊區塊，避免檔案無限長大。
+   - 完成後執行：
+```
+git add skills/daily-routines-manager/sent-log/uiux-articles.md
+git commit -m "多利日誌 daily-uiux-articles-report {今天日期}"
+git push origin duoli-log-uiux
+```
 
 注意：
 - 如果找不到 3 篇完全符合條件的文章，盡量找最接近的，並在表格下方註明實際找到的數量、原因。
 - 盡可能跨網站/跨語言尋找，讓 3 篇文章不一定都來自同一個網站。
-- 每次執行都必須完成寄信這個步驟，不要只做分析不寄信。整個執行過程應該很快（不需要抓圖、不需要大量 WebFetch），若發現自己在重試某個失敗的操作超過 2-3 次，直接放棄並繼續下一步，不要卡住。
+- 每次執行都必須完成寄信這個步驟，不要只做搜尋不寄信。整個執行過程應該很快（不需要抓圖、不需要大量 WebFetch），若發現自己在重試某個失敗的操作超過 2-3 次，直接放棄並繼續下一步，不要卡住。步驟5的log更新若失敗（例如push衝突），不要因此卡住或重試超過1次，寄信才是主要任務，log更新失敗只需在下次執行時自然補上。
