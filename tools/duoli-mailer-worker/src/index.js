@@ -23,19 +23,23 @@ export default {
 
     const allowedTo = ["siming1221@gmail.com"];
     const allowedCc = ["debra.hdf@gmail.com"];
+    const toArray = (value) => (typeof value === "string" ? [value] : value);
     const isAllowed = (list, allowed) => Array.isArray(list) && list.every((email) => typeof email === "string" && allowed.includes(email.toLowerCase()));
 
+    const to = toArray(report.to);
+    const cc = report.cc === undefined ? undefined : toArray(report.cc);
+
     if (
-      !isAllowed(report.to, allowedTo) || report.to.length !== 1 ||
-      (report.cc !== undefined && !isAllowed(report.cc, allowedCc)) ||
+      !isAllowed(to, allowedTo) || to.length !== 1 ||
+      (cc !== undefined && !isAllowed(cc, allowedCc)) ||
       typeof report.subject !== "string" || !report.subject.startsWith("多利｜") || report.subject.length > 160 ||
       typeof report.html !== "string" || !report.html.trim() || report.html.length > 450_000
     ) {
       return new Response("Missing to, subject, or html", { status: 400 });
     }
 
-    const payload = { from: env.RESEND_FROM, to: report.to, subject: report.subject, html: report.html };
-    if (Array.isArray(report.cc) && report.cc.length) payload.cc = report.cc;
+    const payload = { from: env.RESEND_FROM, to, subject: report.subject, html: report.html };
+    if (Array.isArray(cc) && cc.length) payload.cc = cc;
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
