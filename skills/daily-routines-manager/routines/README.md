@@ -2,7 +2,7 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-08-12（多利：daily-ae-motion-graphics-report、daily-uiux-articles-report 兩支已改用 Duoli Mailer Worker 寄信、environment 換成 Duoli Mailer、allowed_tools 移除 Zapier；其餘 routine 尚待套用，遷移步驟見 `../RESEND_MIGRATION.md`。已知限制：RemoteTrigger update 對 mcp_connections 傳空陣列/null 不會清空既有連結，只能整批替換成非空陣列，這兩支目前 mcp_connections 仍列著 Zapier，但因 allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上不可能被呼叫。）
+最後同步時間：2026-08-14（多利：daily-ae-motion-graphics-report、daily-uiux-articles-report 兩支寄信 token 已由硬編碼改成 `$DUOLI_WEBHOOK_TOKEN` 環境變數，environment_id 沿用共用 env（`env_012PXqxpqYN4yzPvZoiGdmLf`，跟其他 5 支寄信 routine 相同，已確認該 env 裡有設好這個變數），沒有另外切到獨立 Duoli Mailer 環境。已知限制：RemoteTrigger update 對 mcp_connections 傳空陣列/null 不會清空既有連結，只能整批替換成非空陣列，這兩支目前 mcp_connections 仍列著 Zapier，但因 allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上不可能被呼叫。）
 
 | 檔案 | routine 名稱 | trigger_id | 頻率 | 輸出方式 |
 |---|---|---|---|---|

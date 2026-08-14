@@ -4,7 +4,7 @@ name: daily-ae-motion-graphics-report
 cron: "0 0 * * *"  # 08:00 台北時間（維持每天，2026-08-12 確認不變）
 enabled: true
 output: Gmail（siming1221@gmail.com），Word 風格 HTML 表格；來源平台限縮為不需登入公開平台（2026-07-26修復連結打不開問題）；2026-08-12 防重複機制由查 Gmail 改為 git log（分支 duoli-log-ae）；2026-08-12 寄送改用 Duoli Mailer Worker（curl POST，不再用 Zapier）
-environment_id: env_012GK45Z6sL8waNgSho7rmSd（Duoli Mailer，2026-08-12 由共用 env 換過來）
+environment_id: env_012PXqxpqYN4yzPvZoiGdmLf（共用 env，2026-08-14 確認 $DUOLI_WEBHOOK_TOKEN 已在此環境設好，不需切到獨立 Duoli Mailer 環境）
 mcp_connections: [Zapier]（僅為 API 限制殘留，見下方「已知限制」，allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上無法被呼叫）
 model: claude-sonnet-5
 allowed_tools: [Bash, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch]
