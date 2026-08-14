@@ -43,6 +43,10 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
+| 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
+| 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
+| 「做 IG 內容」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
+| 「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
 | 「做圖卡」「/cards」「社群圖卡」 | `social-cards` |
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
@@ -66,6 +70,14 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 最終交付位置由私有的 `chibi-ink-illustrations` 設定檔決定；公開 repo 不記錄個人雲端帳號或絕對路徑。生成器先產出暫存檔，確認後再轉移。不得覆蓋既有成品，檔名採「主題＿場景＿版本.png」。
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞目前只對 Claude Code 有效——它們是叫出 Claude 的 auto-memory 專案記憶，Codex 讀不到那套記憶，遇到這幾句要主動跟老查確認情境，不要假裝知道細節。
+
+### 影片素材判讀閘門
+
+- 老查交來影片素材，或明確標記「真人」「訪談」時，小查先不進入製作。先檢查素材類型、長度、聲音、逐字稿可用性，以及是否有可剪成鉤子的段落。
+- 「真人」預設建議 `shorts-pipeline`：從原始真人素材找精華、重組節奏、加字幕與必要的 B-roll，輸出 Shorts。
+- 「訪談」預設建議 `talking-head-recut`：保留受訪者與對談的連續性，以動態標題、金句、lower-third 與資訊卡補強，不把它剪成另一支泛用 Shorts。
+- 小查只回覆「建議啟動的 Skill、判斷理由、預計交付物、缺少的素材」。老查回覆「確認製作」或指定另一條 Skill 後，才開始剪輯、生成素材或渲染。
+- 若標記與素材目標矛盾（例如標「真人」卻要保留完整訪談），小查要指出衝突並請老查選擇，不可自行猜測。
 
 > **「工作站」固定指 Creator OS**：這是《不標準答案》的私人內容營運工作站，程式位於 `apps/creator-os`。MVP 已完成「今日推進、內容流轉、節奏日曆、復盤沉澱、規則庫」與本機瀏覽器 `localStorage` 保存；目前尚未接 Supabase、n8n、Google Calendar 或平台數據。老查說「工作站」時，先讀這個目錄與其 README（若存在），再依需求續作，不要誤解為電腦硬體或另開一個網站。
 
