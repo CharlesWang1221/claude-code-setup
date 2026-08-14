@@ -3,4 +3,4 @@ main = "src/index.js"
 compatibility_date = "2026-08-12"
 
 [vars]
-RESEND_FROM = "onboarding@resend.dev"
+RESEND_FROM = "多利 <duoli@mail.beyond-ans.com>"

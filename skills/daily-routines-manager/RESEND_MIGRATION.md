@@ -16,7 +16,7 @@ Claude cloud routine 仍負責搜尋與寫報告，但不再呼叫 Zapier。它�
 
 ## 一次性設定（給下一次要重建或換帳號時參考）
 
-1. 建立 Resend 帳號，驗證寄件網域或單一寄件地址（目前用 Resend 的共用測試網域 `onboarding@resend.dev`，這個身分**只能寄給 Resend 帳號註冊信箱本人**，如果之後要 CC 給非帳號本人的地址，必須先在 Resend 完成自訂網域驗證，否則 Resend API 會拒收）。
+1. 建立 Resend 帳號，驗證寄件網域或單一寄件地址。**已完成**：`mail.beyond-ans.com`（不標準答案網站網域的子網域）已在 Resend 驗證通過，`RESEND_FROM` 設為 `多利 <duoli@mail.beyond-ans.com>`（`tools/duoli-mailer-worker/wrangler.toml`）。2026-08-14 之前誤用共用測試網域 `onboarding@resend.dev`，這個身分只能寄給 Resend 帳號註冊信箱本人，CC 給非本人地址（例如阿分）會被 Resend 直接 403 拒收整封信——這是造成 5 支有 CC 的排程「遷移後從未真正寄出過」的第二個隱藏根因（第一個是環境沒切、第三個是 to/cc 格式），已改用驗證網域徹底解決，不用再管這個限制。
 2. 在 Cloudflare Worker 建立 `duoli-mailer`，部署 `tools/duoli-mailer-worker`（`cd tools/duoli-mailer-worker && npx wrangler deploy`）。設定三個 secret：`RESEND_API_KEY`、`RESEND_FROM`、`DUOLI_WEBHOOK_TOKEN`。
 3. 在 claude.ai 建立（或編輯）一個叫「Duoli Mailer」的 Cloud environment：Environment variables 填 `DUOLI_WEBHOOK_TOKEN=<跟 Worker secret 完全一樣的值>`；Network access 選「Custom」，Allowed domains 只填 `duoli-mailer.siming1221.workers.dev`（不用擔心影響 git push/pull，claude.ai 官方文件說 git 憑證走獨立的安全 proxy，不受這層網路政策管）。
 4. 每支寄信 routine：Edit → Cloud environment 下拉選單切成「Duoli Mailer」→ Save。同時確認 allowed_tools 有 `Bash`、`Read`、`Write`、`Edit`、`Glob`、`Grep`、`WebSearch`、`WebFetch`，不含任何 `mcp__Zapier__*` 工具。
