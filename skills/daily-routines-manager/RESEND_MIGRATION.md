@@ -50,8 +50,28 @@ Worker 會在伺服器端拒絕其他收件人、沒有 `多利｜` 開頭的主
 - **診斷順序建議**：先去 `resend.com/emails` 看有沒有寄送嘗試記錄（這個帳號的 Cloudflare Workers Logs 功能沒開，過去查全部回空，別浪費時間查那邊）；再去 claude.ai/code/routines/{trigger_id} 點最新一次 run 的 session，看 agent 自己回報的錯誤訊息，通常會直接講清楚卡在哪一層。
 - 不要把報告、token 或 Resend key 寫入 repo。這個 repo 是公開的。
 
-## 已知次要問題：防重複 log 的 git push 會 403（2026-08-14 查清根因，不影響寄信本身）
+## 防重複 log 已改用 Cloudflare KV，不再用 git（2026-08-14 實作完成）
 
-寄信成功後，routine 的最後一步（把選用內容寫進 `sent-log/*.md` 並 `git push` 到 `duoli-log-*` 分支）在 cloud session 裡一律回 403。**根因不是 GitHub 權限**（這個帳號的 `github.com/settings/installations` 裡沒有裝任何 Claude/Anthropic 的 GitHub App，本機用個人帳號 push 也完全正常），而是 claude.ai 平台本身的限制，寫在官方文件 `code.claude.com/docs/en/cloud-environments`「GitHub proxy」段落：「Push protection: git push works only against the session's current working branch」——cloud session 的 git push 只能推回這個 session 自己當初被指派的分支（例如自動產生的 `claude/xxx`），routine 裡 `git checkout -b duoli-log-ae` 之後想推這個自訂分支，一定會被 proxy 擋掉，跟 GitHub 端任何權限設定無關。這是所有 8 支排程（含「影片分析每日推薦」寫入「影片分析」分支）共同的結構性限制。
+**背景**：寄信成功後 routine 原本要把選用內容 `git commit` + `git push` 到 `duoli-log-*` 分支，但 cloud session 的 `git push` 一律回 403。**根因不是 GitHub 權限**（這個帳號的 `github.com/settings/installations` 裡沒有裝任何 Claude/Anthropic 的 GitHub App，本機用個人帳號 push 也完全正常），而是 claude.ai 平台本身的限制，寫在官方文件 `code.claude.com/docs/en/cloud-environments`「GitHub proxy」段落：「Push protection: git push works only against the session's current working branch」——cloud session 的 git push 只能推回這個 session 自己當初被指派的分支（例如自動產生的 `claude/xxx`），routine 裡 `git checkout -b duoli-log-ae` 之後想推這個自訂分支，一定會被 proxy 擋掉，跟 GitHub 端任何權限設定無關。這是所有 8 支排程共同的結構性限制，不是能修的 bug，只能換掉存法。
 
-這個問題不影響寄信這個主任務，只影響防重複 log 沒被記錄（下次執行「已用過清單」永遠是空的）。可行修法（尚未實作）：把 log 儲存機制從 git commit 改成呼叫 Duoli Mailer Worker 擴充一個寫入端點，用 Cloudflare KV 存 log（Worker 網域已經在 Custom 網路白名單裡，不用再調網路政策），這是跟現有架構最一致的做法。
+**做法**：`tools/duoli-mailer-worker/src/index.js` 加了 `/log/{key}` 端點，掛在同一個 Duoli Mailer Worker 上（同網址、同 `DUOLI_WEBHOOK_TOKEN` 驗證），用 Cloudflare KV（namespace `duoli-log`，binding `DUOLI_LOG`）存防重複清單，完全不碰 git：
+
+- `GET /log/{key}` — 讀出既有 log 全文（純文字，找不到回空字串，不是 404）
+- `PUT` 或 `POST /log/{key}` — 用 request body 整份覆寫 log 全文（上限 200KB）
+
+`{key}` 只能是 `LOG_KEYS` 陣列裡的固定字串（防止任意 KV 寫入），目前有：`ae-motion-graphics`、`uiux-articles`、`news-digest`、`ai-startup-cases`、`book-summaries`、`podcast-direction`、`competitor-monitor`。新增寄信排程時要先把新 key 加進這個陣列並 `npx wrangler deploy`，否則會回 404「Unknown log key」。
+
+**routine 端的新流程**（取代原本的 git fetch/checkout/pull + Read，以及 git add/commit/push）：
+```bash
+# 讀「已用過清單」（寄信前）
+curl -sS https://duoli-mailer.siming1221.workers.dev/log/{key} \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" -o /tmp/duoli-{key}-log.md
+
+# 寫回更新後的 log（寄信成功後）
+curl -sS -X PUT https://duoli-mailer.siming1221.workers.dev/log/{key} \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  --data-binary @/tmp/duoli-{key}-log-new.md
+```
+log 檔案格式維持原本的 `## YYYY-MM-DD` 區塊＋條列，routine 自己負責在寫回前砍掉過舊的區塊（14 或 30 天，各 routine 不同）。7 支寄信 routine 的 prompt 已於 2026-08-14 全部改成這個流程，`sources.git_repository` 保留但這一步已經不會再用到 git。
+
+**已知殘留**：「影片分析每日推薦」的每日報告本體（不是防重複 log，是主要產出）仍是寫進 git 的「影片分析」分支，同樣會撞到這個 push 限制，還沒處理——它跟 KV 的關係不大，因為它的內容本來就要被看到（不是防重複用的內部清單），改法可能是也走 KV 存內容、或改成也用 Duoli Mailer 寄信，待評估。
