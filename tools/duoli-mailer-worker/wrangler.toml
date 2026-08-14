@@ -4,3 +4,7 @@ compatibility_date = "2026-08-12"
 
 [vars]
 RESEND_FROM = "多利 <duoli@mail.beyond-ans.com>"
+
+[[kv_namespaces]]
+binding = "DUOLI_LOG"
+id = "07c9080bc82643d49a1151980be53a2f"
