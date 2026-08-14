@@ -51,6 +51,7 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
+| 「鍋子」 | 先問要蒸餾「人物」或「書本」，再載入 `person-perspective-distiller` 或 `book-knowledge-distiller` |
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞是叫出**這裡（Claude Code）專屬的 auto-memory 專案記憶**，對應到 `project_podcast_website.md`、`project_new_computer_setup.md`、`project_statusline_setup.md` 等記憶檔。Codex 讀不到這套記憶，只在 `AGENTS.md` 留了一句提醒它主動確認情境。
 
