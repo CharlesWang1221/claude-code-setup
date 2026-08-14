@@ -2,7 +2,7 @@
 
 這份清單是 [claude.ai routines](https://claude.ai/code/routines)（cloud agent 排程）的 git 備份存檔，方便版本追蹤、換電腦還原、審閱異動。**即時狀態一律以 `RemoteTrigger list` 查到的線上結果為準**，這裡的檔案在每次異動後由「多利」skill 同步更新。
 
-最後同步時間：2026-08-14（多利：找出並修完 Duoli Mailer 寄信全掛的四層根因，7 支寄信 routine 全部改切到獨立的「Duoli Mailer」Cloud environment，`daily-ae-motion-graphics-report` 已實測收到真實報告信。同一天又把新聞報告、AI創業案例報告、書籍摘要三支從每週改成每天發送，並補上 CC 阿分；新聞報告的日期窗口同步從「過去7天」改回「過去24小時」，改抓當天新聞，避免每天收到重疊內容。完整故障排除步驟見 `../RESEND_MIGRATION.md`。次要已知問題：寄信成功後 log 分支 `git push` 回 403，懷疑是 claude.ai 連接 GitHub 的 App 在這個 repo 權限被裝成唯讀，待老查去 GitHub 網頁確認。）
+最後同步時間：2026-08-14（多利：找出並修完 Duoli Mailer 寄信全掛的五層根因（含 to/cc 格式、Cloud environment 沒切、網路白名單、token 不同步、CC 被 Resend 拒收），7 支寄信 routine 全部改切到獨立的「Duoli Mailer」Cloud environment，且已改用驗證網域 `mail.beyond-ans.com` 寄信，`daily-ae-motion-graphics-report` 已實測收到真實報告信、CC 也實測成功。同一天又把新聞報告、AI創業案例報告、書籍摘要三支從每週改成每天發送，並補上 CC 阿分；新聞報告的日期窗口同步從「過去7天」改回「過去24小時」，改抓當天新聞，避免每天收到重疊內容。完整故障排除步驟見 `../RESEND_MIGRATION.md`。次要已知問題：寄信成功後防重複 log 分支 `git push` 一律回 403，根因已查清是 claude.ai 平台限制「cloud session 的 git push 只能推回 session 自己的 working branch」，跟 GitHub 權限無關（這個帳號沒裝任何 Claude GitHub App），沒有現成修法，待評估是否改成用 Cloudflare KV 存防重複 log。）
 
 | 檔案 | routine 名稱 | trigger_id | 頻率 | 輸出方式 |
 |---|---|---|---|---|

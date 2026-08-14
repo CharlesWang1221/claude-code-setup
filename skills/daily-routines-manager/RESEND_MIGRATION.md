@@ -46,9 +46,12 @@ Worker 會在伺服器端拒絕其他收件人、沒有 `多利｜` 開頭的主
 - 環境變數 `$DUOLI_WEBHOOK_TOKEN` 展開後是空字串：這支 routine 的 Cloud environment 還停在「Default」，沒切過去。
 - Worker 回傳 400「Missing to, subject, or html」：檢查 `to`/`subject`/`html` 格式，`to`/`cc` 只能是白名單裡的信箱（`siming1221@gmail.com` / `debra.hdf@gmail.com`），subject 必須以「多利｜」開頭。
 - Worker 回傳 5xx 或 Resend 的驗證錯誤：去 Cloudflare／Resend 後台確認 `RESEND_API_KEY`、`RESEND_FROM`、網域驗證狀態。
+- Resend 回傳 403「You can only send testing emails to your own email address」：`RESEND_FROM` 還在用共用測試網域（`onboarding@resend.dev`），這個身分只能寄給 Resend 帳號註冊信箱本人，一旦 payload 有 `cc` 給非本人地址就會整封被拒收。目前已改用已驗證網域 `mail.beyond-ans.com`（`多利 <duoli@mail.beyond-ans.com>`），CC 已可正常寄送；若之後又改回或換掉 `RESEND_FROM`，記得確認寄件網域仍是已驗證狀態。
 - **診斷順序建議**：先去 `resend.com/emails` 看有沒有寄送嘗試記錄（這個帳號的 Cloudflare Workers Logs 功能沒開，過去查全部回空，別浪費時間查那邊）；再去 claude.ai/code/routines/{trigger_id} 點最新一次 run 的 session，看 agent 自己回報的錯誤訊息，通常會直接講清楚卡在哪一層。
 - 不要把報告、token 或 Resend key 寫入 repo。這個 repo 是公開的。
 
-## 已知次要問題（2026-08-14 發現，不影響寄信本身）
+## 已知次要問題：防重複 log 的 git push 會 403（2026-08-14 查清根因，不影響寄信本身）
 
-寄信成功後，routine 的第 5 步（把選用內容寫進 `sent-log/*.md` 並 `git push` 到 `duoli-log-*` 分支）在 cloud session 裡會被 GitHub 拒絕，回 403（`git push` 對 `https://github.com/CharlesWang1221/claude-code-setup/` 存取被拒）。本機用個人帳號 push 完全正常（`push:true`、`admin:true`），代表這不是 repo 權限問題，比較像是 claude.ai 連接 GitHub 的那個 App（Settings → Applications → Installed GitHub Apps → Claude）在這個 repo 上被裝成唯讀權限。待確認：去 GitHub 網頁檢查該 App 對這個 repo 的權限設定，改成允許寫入。這個問題不影響寄信這個主任務，只影響防重複 log 沒被記錄，下次執行會自然重試。
+寄信成功後，routine 的最後一步（把選用內容寫進 `sent-log/*.md` 並 `git push` 到 `duoli-log-*` 分支）在 cloud session 裡一律回 403。**根因不是 GitHub 權限**（這個帳號的 `github.com/settings/installations` 裡沒有裝任何 Claude/Anthropic 的 GitHub App，本機用個人帳號 push 也完全正常），而是 claude.ai 平台本身的限制，寫在官方文件 `code.claude.com/docs/en/cloud-environments`「GitHub proxy」段落：「Push protection: git push works only against the session's current working branch」——cloud session 的 git push 只能推回這個 session 自己當初被指派的分支（例如自動產生的 `claude/xxx`），routine 裡 `git checkout -b duoli-log-ae` 之後想推這個自訂分支，一定會被 proxy 擋掉，跟 GitHub 端任何權限設定無關。這是所有 8 支排程（含「影片分析每日推薦」寫入「影片分析」分支）共同的結構性限制。
+
+這個問題不影響寄信這個主任務，只影響防重複 log 沒被記錄（下次執行「已用過清單」永遠是空的）。可行修法（尚未實作）：把 log 儲存機制從 git commit 改成呼叫 Duoli Mailer Worker 擴充一個寫入端點，用 Cloudflare KV 存 log（Worker 網域已經在 Custom 網路白名單裡，不用再調網路政策），這是跟現有架構最一致的做法。
