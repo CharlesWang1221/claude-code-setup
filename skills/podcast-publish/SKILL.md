@@ -21,6 +21,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 {
   "transcript": false,
   "content_files": false,
+  "teaser_video": { "quote_selected": false, "rendered": false, "quote": null, "start": null, "end": null },
   "ig_images": false,
   "video_rendered": false,
   "youtube": { "uploaded": false, "videoId": null },
@@ -70,7 +71,15 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 **金句步驟鐵律（不可跳過、不可自動化）**：一律先列 10 句候選金句，讓老查選 5 句，選完才寫進最終文案。這條規則見記憶 `feedback_quote_selection`，統一入口做出來後這一步依然要人工核准。
 
+**節目預告選段**：選完 5 句後，將每句的原話、講者（若可知）與起訖時間碼列出，讓老查指定其中 1 句作為「節目預告主句」。沒有明確主句或可靠時間碼，就停在這裡，不自己猜要剪哪段。
+
 完成後 `content_files: true`。
+
+### 2.5 節目預告 — `teaser_video.rendered: false` 時
+
+只有在老查從已選 5 句金句中指定 1 句主句後才執行。把主句與時間碼寫入 `teaser_video.quote`、`start`、`end`，再呼叫 `podcast-teaser-video` skill。
+
+它以主句為剪輯錨點，從原始音檔取 12 至 18 秒，製作 9:16、15 秒、3 段重點卡的節目預告。必須先讓老查確認關鍵畫面才渲染；成品驗證完畢後才設 `teaser_video.rendered: true`。不在這個流程自行上傳。
 
 ### 3. IG 圖 — `content_files: true` 且 `ig_images: false` 時
 自動執行：
@@ -122,6 +131,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 |------|------|
 | 逐字稿 | ✅/❌/⏸️缺輸入 |
 | 文案4檔 | ... |
+| 節目預告 | ✅/❌/⏸️待選金句 |
 | IG圖 | ... |
 | 集數影片 | ... |
 | YouTube | ... |
@@ -143,6 +153,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - `tools/firstory-upload/upload.mjs`
 - `tools/fb-promo/run.bat` / `run.sh`
 - `shorts-pipeline` skill（步驟 7 直接引用其步驟，不要複製貼上整份內容）
+- `podcast-teaser-video` skill（步驟 2.5 只在老查選定預告主句後呼叫）
 - `seo-article-writer` skill（居易，選配步驟 9 引用，不要複製貼上整份內容）
 
 ## 相關記憶
