@@ -1,0 +1,10 @@
+{
+  "transcript": true,
+  "content_files": true,
+  "ig_images": true,
+  "video_rendered": true,
+  "youtube": { "uploaded": true, "videoId": "AuWvZe4n1dk" },
+  "firstory": { "uploaded": false },
+  "shorts": { "applicable": false, "done": false },
+  "fb_promo": { "applicable": false, "done": false }
+}

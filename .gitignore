@@ -28,3 +28,6 @@ google-mcp/credentials.json
 
 # Codex 本機設定（含明文 API key，勿上傳）
 .codex/
+
+# 暫存工作區（渲染輸出、草稿，不進 git）
+tmp/
