@@ -52,6 +52,12 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
 
+### 居易跨電腦落檔規則
+
+- 居易完成並經老查核准的文章，Google Drive 備份一律放在 `不標準答案/2026/網誌/未發布/{文章完整中文標題}/{article-slug}.md`。
+- 模式 A、模式 B 都用 frontmatter 的完整中文 `title` 命名資料夾，不再用 episode slug。
+- 2026-08-17 已存在的 `s3ep3` 資料夾維持原名，不回溯更名；規則從下一篇開始套用。
+
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞是叫出**這裡（Claude Code）專屬的 auto-memory 專案記憶**，對應到 `project_podcast_website.md`、`project_new_computer_setup.md`、`project_statusline_setup.md` 等記憶檔。Codex 讀不到這套記憶，只在 `AGENTS.md` 留了一句提醒它主動確認情境。
 
 > **`video-explainer`（影碩）沒有固定關鍵字**，是使用者丟上一份文件/素材時，由小查先判讀內容是不是 ASUS 相關或技術/科技說明類影像需求，符合才告知使用者建議啟動，經確認才進入影碩的 VOX+Remotion SOP。不符合（對話類/文字類）就導去其他既有 skill，不要自動硬套。
