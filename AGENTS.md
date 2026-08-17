@@ -41,6 +41,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 關鍵字 | Skill |
 |---|---|
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
+| 「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
 | 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |

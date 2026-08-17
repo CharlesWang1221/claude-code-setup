@@ -1,0 +1,4 @@
+interface:
+  display_name: "Podcast 成效復盤"
+  short_description: "整合單集上架數據，找出漏斗問題並修正下一集內容策略"
+  default_prompt: "使用 $podcast-performance-review 分析這一集上架後的成效，找出下一集可執行的調整。"
