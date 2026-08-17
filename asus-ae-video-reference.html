@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASUS Enterprise Agent Platform — AE 參考指南</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --bg:        #0B0F17;
+    --surface:   #131824;
+    --card:      #181F2E;
+    --border:    #1E2840;
+    --text:      #E2DDD4;
+    --muted:     #6B7A92;
+    --gold:      #C8923A;
+    --teal:      #3F9BAE;
+    --green:     #3A8A5C;
+    --s1:        #2A4A7A;   /* section 1 accent — corporate blue */
+    --s2:        #3A6A4A;   /* section 2 accent — intuitive green */
+    --s3:        #6A3A7A;   /* section 3 accent — technical purple */
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── STICKY HEADER ── */
+  .site-header {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(11,15,23,0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 1320px; margin: 0 auto;
+    padding: 0 28px;
+    display: flex; align-items: center; gap: 20px;
+    height: 54px;
+  }
+  .header-title { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; flex-shrink: 0; }
+  .header-title span { color: var(--gold); }
+  .hdivider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+
+  /* top-level tabs */
+  .top-tabs { display: flex; gap: 2px; flex-shrink: 0; }
+  .top-tab {
+    padding: 5px 14px; border-radius: 5px; border: 1px solid transparent;
+    background: none; color: var(--muted); font-size: 12px; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.02em; transition: all 0.15s;
+  }
+  .top-tab:hover { color: var(--text); background: var(--border); }
+  .top-tab.active { color: var(--gold); border-color: rgba(200,146,58,0.45); background: rgba(200,146,58,0.1); }
+
+  /* scene mini-nav (tab 2 only) */
+  .scene-nav {
+    display: flex; gap: 3px; overflow-x: auto; scrollbar-width: none; flex: 1;
+  }
+  .scene-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 4px 10px; border-radius: 4px; border: 1px solid transparent;
+    background: none; color: var(--muted); font-size: 11px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; transition: all 0.15s;
+  }
+  .nav-btn:hover  { color: var(--text); background: var(--border); }
+  .nav-btn.active { color: var(--gold); border-color: rgba(200,146,58,0.4); background: rgba(200,146,58,0.08); }
+
+  /* ── PAGE VIEWS ── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 0 28px 80px; }
+
+  /* ═══════════════════════════════════
+     TAB 1 — 腳本分析
+  ═══════════════════════════════════ */
+
+  /* segment banner */
+  .segment {
+    margin-top: 0;
+    padding-top: 48px;
+    scroll-margin-top: 62px;
+  }
+  .seg-banner {
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .seg-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+  .seg1 { background: linear-gradient(135deg, rgba(42,74,122,0.35), rgba(42,74,122,0.12)); border: 1px solid rgba(42,74,122,0.5); }
+  .seg2 { background: linear-gradient(135deg, rgba(58,106,74,0.35), rgba(58,106,74,0.12)); border: 1px solid rgba(58,106,74,0.5); }
+  .seg3 { background: linear-gradient(135deg, rgba(106,58,122,0.35), rgba(106,58,122,0.12)); border: 1px solid rgba(106,58,122,0.5); }
+
+  .seg-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .seg1 .seg-eyebrow { color: #6A9FD4; }
+  .seg2 .seg-eyebrow { color: #6ABF8A; }
+  .seg3 .seg-eyebrow { color: #BF8ADF; }
+
+  .seg-banner h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.022em; margin-bottom: 6px; }
+  .seg-banner .seg-sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  .seg-tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .seg-tag {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 3px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: var(--text);
+  }
+
+  /* two-col analysis layout */
+  .analysis-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 820px) { .analysis-layout { grid-template-columns: 1fr; } }
+
+  .a-panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px 22px;
+  }
+  .a-panel-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .a-panel-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .script-quote {
+    background: rgba(0,0,0,0.25); border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0; padding: 11px 15px;
+    font-size: 12.5px; line-height: 1.65; color: var(--text);
+    margin-bottom: 12px;
+  }
+  .script-quote em { display: block; font-style: normal; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; font-weight: 700; }
+
+  .analysis-row { margin-bottom: 13px; }
+  .ar-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .ar-body { font-size: 13px; line-height: 1.65; color: var(--text); }
+  .ar-body strong { color: var(--gold); font-weight: 600; }
+  .ar-body em { font-style: normal; color: var(--teal); }
+
+  .moment-list { list-style: none; }
+  .moment-list li {
+    font-size: 13px; line-height: 1.55; padding: 5px 0 5px 20px;
+    position: relative; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .moment-list li:last-child { border-bottom: none; }
+  .moment-list li::before { content: attr(data-t); position: absolute; left: 0; font-size: 10px; font-weight: 700; font-family: monospace; color: var(--gold); line-height: 2; }
+
+  .spec-box {
+    font-family: 'Courier New', monospace; font-size: 11.5px;
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    border-radius: 4px; padding: 10px 14px; color: var(--muted); line-height: 1.8;
+    margin-top: 8px;
+  }
+
+  /* ── ref grids ── */
+  .ref-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+    margin: 28px 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ref-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* video cards (analysis tab) */
+  .ref-video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .ref-img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .video-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .video-card:hover { border-color: rgba(200,146,58,0.35); transform: translateY(-2px); }
+  .video-card.verified { border-color: rgba(58,138,92,0.45); }
+
+  .video-embed {
+    position: relative; width: 100%; padding-top: 56.25%;
+    background: #0a0d14; overflow: hidden; cursor: pointer;
+  }
+  .video-embed iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    border: none; display: none;
+  }
+  .video-embed iframe.loaded { display: block; }
+  .video-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.3s; }
+  .thumb-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.28); transition: background 0.2s;
+  }
+  .video-embed:hover .thumb-overlay { background: rgba(0,0,0,0.1); }
+  .play-btn {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(200,146,58,0.9);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    transition: transform 0.15s;
+  }
+  .video-embed:hover .play-btn { transform: scale(1.1); }
+  .play-btn svg { margin-left: 4px; }
+
+  .video-info { padding: 13px 15px; }
+  .video-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; flex-wrap: wrap; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px; border-radius: 3px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .bv { background: rgba(58,138,92,0.2); color: #5BC48A; border: 1px solid rgba(58,138,92,0.35); }
+  .bf { background: rgba(58,106,158,0.2); color: #6BA3D6; border: 1px solid rgba(58,106,158,0.35); }
+  .bp { background: rgba(200,146,58,0.2); color: var(--gold); border: 1px solid rgba(200,146,58,0.35); }
+  .bt { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+
+  .video-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.4; }
+  .video-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .video-desc strong { color: var(--gold); font-weight: 600; }
+  .yt-link {
+    display: inline-flex; align-items: center; gap: 5px; margin-top: 9px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--teal); text-decoration: none; opacity: 0.7; transition: opacity 0.15s;
+  }
+  .yt-link:hover { opacity: 1; }
+
+  /* image reference cards */
+  .img-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .img-card:hover { border-color: rgba(63,155,174,0.4); transform: translateY(-2px); }
+  .img-thumb-wrap { position: relative; width: 100%; padding-top: 56.25%; overflow: hidden; background: #0a0d14; }
+  .img-thumb-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.75) 100%);
+    display: flex; align-items: flex-end; padding: 10px 12px;
+  }
+  .img-timestamp {
+    font-size: 10px; font-weight: 700; font-family: monospace;
+    background: rgba(200,146,58,0.9); color: #000;
+    padding: 2px 7px; border-radius: 3px;
+  }
+  .img-info { padding: 12px 14px; }
+  .img-focus { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 5px; }
+  .img-title { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .img-note { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+  .img-note strong { color: var(--text); }
+
+  /* segment divider */
+  .seg-divider { height: 1px; background: var(--border); margin: 20px 0 36px; }
+
+  /* ═══════════════════════════════════
+     TAB 2 — 場景參考影片 (original)
+  ═══════════════════════════════════ */
+  .scene-section { padding-top: 44px; scroll-margin-top: 62px; }
+  .scene-heading {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
+  }
+  .scene-num-badge {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bg); background: var(--gold); padding: 3px 9px; border-radius: 3px; flex-shrink: 0;
+  }
+  .scene-heading h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+  .scene-heading p { font-size: 12px; color: var(--muted); margin-left: auto; text-align: right; flex-shrink: 0; }
+  .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 14px; }
+
+  /* settings */
+  .globals-section { margin-top: 60px; padding-top: 36px; border-top: 1px solid var(--border); }
+  .globals-heading { font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+  .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .setting-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 13px 15px; }
+  .s-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 5px; }
+  .s-value { font-family: 'Courier New', monospace; font-size: 12px; color: var(--gold); line-height: 1.6; }
+
+  /* footer */
+  footer { text-align: center; padding: 28px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); max-width: 1320px; margin: 0 auto; }
+
+  @media (max-width: 600px) {
+    .video-grid, .ref-video-grid, .ref-img-grid { grid-template-columns: 1fr; }
+    main { padding: 0 16px 60px; }
+    .header-inner { padding: 0 16px; gap: 12px; }
+    .top-tab { padding: 5px 9px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-title">ASUS EAP <span>·</span> AE 參考指南</div>
+    <div class="hdivider"></div>
+    <div class="top-tabs">
+      <button class="top-tab active" onclick="switchTab('analysis', this)">📋 腳本分析</button>
+      <button class="top-tab" onclick="switchTab('videos', this)">▶ 場景參考影片</button>
+    </div>
+    <div class="hdivider" id="scene-nav-divider"></div>
+    <nav class="scene-nav" id="sceneNav" style="display:none">
+      <button class="nav-btn active" onclick="scrollTo2('scene1',this)">S1 開場</button>
+      <button class="nav-btn" onclick="scrollTo2('scene2',this)">S2 四大優勢</button>
+      <button class="nav-btn" onclick="scrollTo2('scene3a',this)">S3a 優勢細節</button>
+      <button class="nav-btn" onclick="scrollTo2('scene3b',this)">S3b 架構圖</button>
+      <button class="nav-btn" onclick="scrollTo2('scene4',this)">S4 產品展示</button>
+      <button class="nav-btn" onclick="scrollTo2('scene5',this)">S5 生態夥伴</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 1: 腳本分析
+══════════════════════════════════════════════════ -->
+<div class="view active" id="view-analysis">
+
+  <!-- ─────────────── 第一段 ─────────────── -->
+  <section class="segment" id="seg1">
+    <div class="seg-banner seg1">
+      <div class="seg-eyebrow">第一段 · Scene 01 — 03b</div>
+      <h2>產品功能介紹</h2>
+      <div class="seg-sub">從品牌 Reveal 到架構圖完整建立，約 60–90 秒。結束於「Powering the Enterprise Agent.」</div>
+      <div class="seg-tags">
+        <span class="seg-tag">Brand Identity</span>
+        <span class="seg-tag">4 Pillars Reveal</span>
+        <span class="seg-tag">Feature Breakdown</span>
+        <span class="seg-tag">Architecture Stack</span>
+        <span class="seg-tag">Corporate Keynote Tone</span>
+      </div>
+    </div>
+
+    <div class="analysis-layout">
+      <div class="a-panel">
+        <div class="a-panel-title">腳本摘要與段落目的</div>
+        <div class="script-quote">
+          <em>腳本原文節錄</em>
+          ASUS Enterprise Agent Platform<br>
+          Intuitive Agent Experience · Token Efficiency · Enterprise Security<br>
+          → 四大優勢展開（各含 2 個 sub-feature）<br>
+          → One Integrated Stack：Cloud / Model / Agent Infra
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">段落目的</div>
+          <div class="ar-body">建立「這是一個可信、完整、有深度的 Enterprise AI 平台」的印象。邏輯是：<strong>品牌錨點 → 承諾（4大優勢）→ 證明（各優勢細節）→ 技術底氣（架構圖）</strong>。觀眾看完這段應該知道「這個平台有哪四個價值主張，底層如何運作」。</div>
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">視覺基調</div>
+          <div class="ar-body">深色底 + <em>Aurora 漸層</em>（藍→紫→青）。每一幕都是在「疊加一層」，傳達「建設感」。整體節奏偏沉穩有力，不快，每個 beat 都有停頓呼吸感。類比：<strong>Google Cloud Next 開場 keynote 的節奏感。</strong></div>
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">色彩情緒</div>
+          <div class="ar-body">深藍（信任）+ 紫調（AI/未來感）+ 白色文字（清晰）+ 金/藍強調（品牌感）。<strong>避免太多顏色，保持高級感。</strong></div>
+        </div>
+      </div>
+
+      <div class="a-panel">
+        <div class="a-panel-title">關鍵動畫時刻 · AE Keyframes</div>
+        <ul class="moment-list">
+          <li data-t="0s">ASUS logo + Aurora 光暈從中心浮現，背景漸層微動</li>
+          <li data-t="3s">三個 tagline 以 0.3s 間隔依序 stagger 飛入（Y -12px + fade）</li>
+          <li data-t="7s">標題消退，四個圓形 badge 從中心出現</li>
+          <li data-t="9s">四卡片依序 Shape Morph：圓 → 矩形展開，icon Trim Path 描線</li>
+          <li data-t="14s">切換至各 Pillar 細節：sub-feature 逐行 bullet stagger in</li>
+          <li data-t="30s">Cost-Efficient：Odometer 數字滾動展示 Token 節省量</li>
+          <li data-t="38s">Secure：Shield icon 描線 + 節點亮起保護網</li>
+          <li data-t="46s">Powerful：多 Runtime badges 從四方飛入，連接線 draw-on</li>
+          <li data-t="54s">架構圖：三層由下往上 build-up，漸層連接線生長</li>
+          <li data-t="62s">Camera pull-out 顯示全圖，標題「Powering the Enterprise Agent」</li>
+        </ul>
+        <div class="spec-box">整段 easing: Bezier 0.4, 0, 0.2, 1 (Material Standard)
+場景切換: Light Sweep, 0.5s
+背景微動: wiggle(0.3, 6) on gradient hue
+總時長建議: 65–80s</div>
+      </div>
+    </div>
+
+    <div class="ref-section-title">▶ 第一段 — 參考影片</div>
+    <div class="ref-video-grid">
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'Md4Fs-Zc3tg')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/Md4Fs-Zc3tg/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/Md4Fs-Zc3tg?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">整體結構首選</span></div>
+          <div class="video-title">Google Cloud Next '25 Opening Keynote</div>
+          <div class="video-desc">與 ASUS 腳本<strong>結構最接近</strong>的單一參考：Brand Reveal → Feature Cards → Architecture → Partner Ecosystem。完整觀看整段開場約前 12 分鐘。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=Md4Fs-Zc3tg" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'6GvlaNx2SEY')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/6GvlaNx2SEY/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/6GvlaNx2SEY?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">Brand Reveal Style</span></div>
+          <div class="video-title">Google Cloud Next 2024 Opening Keynote</div>
+          <div class="video-desc">Google Enterprise AI 視覺語言的完整範本。分層 Kinetic Typography、Pillar Cards 展開方式，對照 2025 版看設計語言演進。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=6GvlaNx2SEY" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'jDYMFHNzJVE')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/jDYMFHNzJVE/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/jDYMFHNzJVE?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">架構圖 AE Tutorial</span></div>
+          <div class="video-title">Animated Architecture Diagram — After Effects</div>
+          <div class="video-desc">直接針對架構圖 layer build-up + 連接線 draw-on 的 AE 教學。<strong>架構圖場景（Scene 3b）首選教材。</strong></div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=jDYMFHNzJVE" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'fjAewvI4gtw')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/fjAewvI4gtw/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/fjAewvI4gtw?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">卡片展開 AE Tutorial</span></div>
+          <div class="video-title">Flipping Chart Card Animation — After Effects 2024</div>
+          <div class="video-desc">四大優勢卡片展開動作（rotateY + Shape Morph）的直接技術參考。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=fjAewvI4gtw" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ref-section-title">🖼 第一段 — 參考圖像（時間戳標示擷取重點）</div>
+    <div class="ref-img-grid">
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/Md4Fs-Zc3tg/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">0:45 開場</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Aurora 背景 + Brand Reveal</div>
+          <div class="img-title">Google Cloud Next '25 — Opening Frame</div>
+          <div class="img-note">參考<strong>背景色調</strong>：深藍漸層 + 光暈從中心擴散。ASUS logo reveal 的背景氛圍對照此幀。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/6GvlaNx2SEY/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">2:10 Pillar Cards</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Feature Pillar Cards Layout</div>
+          <div class="img-title">Google Cloud Next '24 — Card Grid</div>
+          <div class="img-note">參考<strong>四卡片並排排版</strong>方式、卡片間距、icon 與文字的比例關係。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/qbqZQFOVfA8/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">0:05 Overall Mood</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">AI 產品整體色調</div>
+          <div class="img-title">Google AI Mode — Visual Tone</div>
+          <div class="img-note">參考 Google 最新 AI 產品影片的<strong>整體色彩情緒</strong>：背景處理、文字對比、漸層方向。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/jDYMFHNzJVE/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">Architecture Style</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">三層架構圖 Layout</div>
+          <div class="img-title">Architecture Diagram — Layer Structure</div>
+          <div class="img-note">參考架構圖的<strong>層次間距、連接線粗細、節點大小</strong>，以及文字標籤的排版方式。</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="seg-divider"></div>
+  </section>
+
+  <!-- ─────────────── 第二段 ─────────────── -->
+  <section class="segment" id="seg2">
+    <div class="seg-banner seg2">
+      <div class="seg-eyebrow">第二段 · 案例一</div>
+      <h2>MyAgent — The Intuitive Agent Experience</h2>
+      <div class="seg-sub">從技術描述轉向「使用者體驗」的展示，以真實 UI 操作畫面為主角。約 30–45 秒。</div>
+      <div class="seg-tags">
+        <span class="seg-tag">Browser + Canvas UI</span>
+        <span class="seg-tag">Cursor Interaction</span>
+        <span class="seg-tag">IM Trigger</span>
+        <span class="seg-tag">Token Management</span>
+        <span class="seg-tag">Workspace &amp; Skills</span>
+      </div>
+    </div>
+
+    <div class="analysis-layout">
+      <div class="a-panel">
+        <div class="a-panel-title">腳本摘要與段落目的</div>
+        <div class="script-quote">
+          <em>腳本功能列表</em>
+          Secure Zero-Install Cloud · Intuitive Visual Experience<br>
+          Unified multi-tool interface · Seamless Agent-Human Collaboration<br>
+          Integrated Workspace &amp; Skills · 24/7 Proactive IM Command &amp; Control<br>
+          Cost-Efficient Operations
+        </div>
+        <div class="script-quote">
+          <em>展示指示</em>
+          Show browser &amp; canvas &amp; Workspace &amp; Skills<br>
+          IM Trigger → Token 管理 → AgentPod Service 引出
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">段落目的</div>
+          <div class="ar-body">從「平台能做什麼」轉向「使用者每天怎麼用它」。<strong>重點在於「直覺感」</strong>——畫面應該讓觀眾覺得「這個工具用起來很自然」，而不是「功能很多很複雜」。情感目標：信任 + 想要馬上試用。</div>
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">視覺基調轉換</div>
+          <div class="ar-body">從第一段的「暗底建構感」轉向<em>偏亮、偏白的 UI 主導</em>感。類比：Apple 產品 Demo 的風格——UI 是主角，背景退後。游標移動要有<strong>人性化的速度感</strong>（不能太快、不能太慢）。</div>
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">敘事結構建議</div>
+          <div class="ar-body">建議用「<strong>一個完整的使用情境</strong>」串連七個功能，而非逐條列出。例如：一個員工打開 MyAgent → 看到 Workspace → 發出 IM 指令 → AI 回應 → Token 計數出現 → 完成任務。這樣比單純的功能列表更有說服力。</div>
+        </div>
+      </div>
+
+      <div class="a-panel">
+        <div class="a-panel-title">關鍵動畫時刻 · AE Keyframes</div>
+        <ul class="moment-list">
+          <li data-t="0s">MyAgent 標題 + tagline fade in，背景從深藍過渡到較亮的 UI 調性</li>
+          <li data-t="2s">Browser frame 從螢幕中央 scale-in 出現（帶微陰影）</li>
+          <li data-t="5s">Canvas + Workspace 佈局在 browser 內展開（panel 依序 slide-in）</li>
+          <li data-t="10s">游標緩慢移動到 Skills 圖示，hover ring 出現，tooltip 浮現</li>
+          <li data-t="14s">左側 IM 窗格出現，一條訊息打字中（typewriter cursor 閃爍）</li>
+          <li data-t="18s">AI 回應逐字生成，同時右側 Canvas 出現對應內容</li>
+          <li data-t="23s">Token 計數器出現，數字動態增加（Odometer 效果）</li>
+          <li data-t="28s">Feature list 七項依序出現（左側欄 bullet stagger），搭配畫面對應功能亮起</li>
+          <li data-t="35s">畫面 zoom-in 到 AgentPod 按鈕，作為下一段的引橋</li>
+        </ul>
+        <div class="spec-box">Browser frame: border-radius 12px, shadow 0 20px 60px 0.4
+Cursor: ease position, 1.2s per movement
+Typewriter: sourceText expression, char/frame = 1.5
+Token counter: valueAtTime + easeOut, 3s
+UI panel stagger: 0.15s delay per panel</div>
+      </div>
+    </div>
+
+    <div class="ref-section-title">▶ 第二段 — 參考影片</div>
+    <div class="ref-video-grid">
+
+      <div class="video-card verified">
+        <div class="video-embed" onclick="loadVideo(this,'pF0Q_q2WZ08')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/pF0Q_q2WZ08/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/pF0Q_q2WZ08?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bv">✓ Verified</span><span class="badge bt">No Plugins</span></div>
+          <div class="video-title">3D Floating UI Animation — After Effects</div>
+          <div class="video-desc"><strong>研究唯一 3-0 對抗驗證確認。</strong>純原生 AE 製作 3D 懸浮 UI，直接適用 MyAgent browser + canvas 展示。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=pF0Q_q2WZ08" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'qbqZQFOVfA8')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/qbqZQFOVfA8/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/qbqZQFOVfA8?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bp">★ 指定參考</span><span class="badge bt">UI Interaction Style</span></div>
+          <div class="video-title">Google AI Mode — UI Demo</div>
+          <div class="video-desc">重點觀察 <strong>0:30–1:30</strong>：browser mock 框 UI、游標移動節奏、對話框 slide-up、typewriter 效果。MyAgent 展示場景直接對照。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=qbqZQFOVfA8" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'gVcyghMTrtU')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/gVcyghMTrtU/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/gVcyghMTrtU?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">Complete SaaS Demo</span></div>
+          <div class="video-title">Enterprise AI Explainer — Synoptix.AI</div>
+          <div class="video-desc">已完成的企業 AI SaaS 產品影片。完整案例參考：功能列表 + UI 展示的<strong>並行方式</strong>（左側文字 / 右側 UI）。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=gVcyghMTrtU" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ref-section-title">🖼 第二段 — 參考圖像</div>
+    <div class="ref-img-grid">
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/pF0Q_q2WZ08/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">3D Float UI</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Browser Frame 3D 視角</div>
+          <div class="img-title">3D Floating UI — Frame Reference</div>
+          <div class="img-note">參考 Browser frame 在 3D 空間中的<strong>角度、陰影、景深</strong>處理，MyAgent UI 展示的空間感對照此。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/qbqZQFOVfA8/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">0:35 Cursor Moment</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">游標互動 + UI Layout</div>
+          <div class="img-title">Google AI Mode — Cursor &amp; UI</div>
+          <div class="img-note">參考游標在 UI 上的<strong>移動路徑、highlight ring 大小、點擊 ripple</strong>。游標應與 UI 元素產生明確的互動感。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/gVcyghMTrtU/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">Feature Panel</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">左側功能列表 + 右側 UI</div>
+          <div class="img-title">SaaS Demo — Split Layout</div>
+          <div class="img-note">參考左欄 feature 逐條出現 + 右欄 UI demo 並行的<strong>版面分割比例</strong>，七個功能點的排版密度。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/hQCYaQKEXjY/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">IM + Chat UI</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">IM / Chat 介面動畫</div>
+          <div class="img-title">SaaS UI Demo — Chat Interface</div>
+          <div class="img-note">參考 IM trigger 視覺化方式：<strong>訊息 bubble 出現順序、打字動效、AI 回應 typewriter</strong> 的節奏感。</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="seg-divider"></div>
+  </section>
+
+  <!-- ─────────────── 第三段 ─────────────── -->
+  <section class="segment" id="seg3">
+    <div class="seg-banner seg3">
+      <div class="seg-eyebrow">第三段 · 案例二 + 生態</div>
+      <h2>AgentPod Service + Vertical Agent Apps + 生態夥伴</h2>
+      <div class="seg-sub">從使用者體驗層深入到基礎設施層，展示平台的技術能量與生態廣度。約 35–50 秒。</div>
+      <div class="seg-tags">
+        <span class="seg-tag">AgentPod Panel UI</span>
+        <span class="seg-tag">Multi-Runtime Node Graph</span>
+        <span class="seg-tag">Sandbox / Guardrail</span>
+        <span class="seg-tag">Vertical Apps</span>
+        <span class="seg-tag">AI Partner Ecosystem</span>
+      </div>
+    </div>
+
+    <div class="analysis-layout">
+      <div class="a-panel">
+        <div class="a-panel-title">腳本摘要與段落目的</div>
+        <div class="script-quote">
+          <em>AgentPod Service 功能列表</em>
+          Diverse Multi-Runtime Selection · Instant Deployment &amp; Execution<br>
+          Dynamic Runtime &amp; Model Orchestration<br>
+          Secure Enterprise Sandbox Isolation
+        </div>
+        <div class="script-quote">
+          <em>展示指示</em>
+          AgentPod Panel 入口 → Launch → 多 model 選擇<br>
+          Sandbox / Guardrail 警示 → Vertical Apps（IT/SRE/多場景）<br>
+          生態夥伴：GPT-5.5 / Gemini 3.1 Pro / Claude Sonnet 4.6 / Claude Opus 4.7
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">段落目的</div>
+          <div class="ar-body">從「好用」升級到「強大」。這段要讓觀眾感受到 AgentPod 是一個<strong>真正的技術引擎</strong>，能同時調度多個 AI 模型、跨 Runtime 執行，同時保有企業級的安全控制。情感目標：<em>敬畏感</em> + 技術可信度。</div>
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">視覺基調再轉換</div>
+          <div class="ar-body">從 MyAgent 的「人性化 UI 感」轉向更<em>技術性、工程感的視覺語言</em>。Node graph、連接線、多節點並發——類比 <strong>AWS re:Invent 或 Kubernetes 視覺化圖表</strong>的風格。色調可以加入更多紫/青調，強調 AI infrastructure 的感覺。</div>
+        </div>
+        <div class="analysis-row">
+          <div class="ar-label">Vertical Apps + 生態的處理</div>
+          <div class="ar-body">Vertical Apps 建議用<strong>卡片翻轉</strong>快速切換行業場景（IT → SRE → 法律 → 財務），每次翻轉 0.5s，不停留太久。生態夥伴（GPT/Gemini/Claude）作為<strong>收尾的高潮</strong>，用 bouncy logo reveal + Aurora 漸層做首尾呼應的 bookend 結構。</div>
+        </div>
+      </div>
+
+      <div class="a-panel">
+        <div class="a-panel-title">關鍵動畫時刻 · AE Keyframes</div>
+        <ul class="moment-list">
+          <li data-t="0s">AgentPod Service 標題 + tagline，背景轉換為更深、更技術感的色調</li>
+          <li data-t="2s">AgentPod Panel UI 從畫面中央出現（與 MyAgent browser frame 相似但更工程感）</li>
+          <li data-t="5s">游標點擊 Launch → 動態 loading ring 旋轉</li>
+          <li data-t="7s">多個 Model badge（GPT / Claude / Gemini）從四方飛入中心，連接線 draw-on</li>
+          <li data-t="12s">連接線帶流動光點（沿 path 的 position 動畫），模擬 token 流動</li>
+          <li data-t="17s">Sandbox 視覺化：邊框閃爍 → Guardrail 警示出現（shield icon 亮起）</li>
+          <li data-t="22s">Vertical Apps：卡片翻轉 × 3–4 次，快速展示不同行業場景</li>
+          <li data-t="28s">生態夥伴 logo grid reveal（bouncy entrance, 0.12s stagger）</li>
+          <li data-t="33s">最終 tagline「Built for Your Enterprise Agent」+ Aurora 從中心擴散收尾</li>
+        </ul>
+        <div class="spec-box">Node graph: null parent + position ease per badge
+Flow dot: valueAtTime along Bezier path
+Sandbox border: opacity pulse 0.8→1, 0.4s loop
+Card flip: rotateY 0→180, backface hidden
+Logo bounce: Scale 0→115→100%, 0.35s
+Aurora finale: Gradient Ramp scale + opacity fade-out</div>
+      </div>
+    </div>
+
+    <div class="ref-section-title">▶ 第三段 — 參考影片</div>
+    <div class="ref-video-grid">
+
+      <div class="video-card verified">
+        <div class="video-embed" onclick="loadVideo(this,'pF0Q_q2WZ08')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/pF0Q_q2WZ08/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/pF0Q_q2WZ08?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bv">✓ Verified</span><span class="badge bt">AgentPod Panel UI</span></div>
+          <div class="video-title">3D Floating UI Animation — After Effects</div>
+          <div class="video-desc">AgentPod Panel 的 UI 展示方式與 MyAgent 相似，但角度更傾斜、更工程感。<strong>同一技術，不同鏡頭角度。</strong></div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=pF0Q_q2WZ08" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'9UNFamTYarA')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/9UNFamTYarA/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/9UNFamTYarA?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">Node Graph / Infographic</span></div>
+          <div class="video-title">Tech Explainer Infographic — After Effects</div>
+          <div class="video-desc">多節點連接、流動光點、Hub-and-Spoke 圖形的 AE 技術參考。<strong>AgentPod multi-runtime node graph 場景直接適用。</strong></div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=9UNFamTYarA" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'5LVfwQyclzo')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/5LVfwQyclzo/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/5LVfwQyclzo?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">Logo Grid · 生態夥伴</span></div>
+          <div class="video-title">Logo Grid Reveal — After Effects Tutorial</div>
+          <div class="video-desc">Bouncy entrance + stagger delay 的 logo grid reveal，<strong>直接適用 GPT / Gemini / Claude 生態夥伴場景收尾。</strong></div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=5LVfwQyclzo" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="video-embed" onclick="loadVideo(this,'Md4Fs-Zc3tg')">
+          <img class="video-thumb" src="https://img.youtube.com/vi/Md4Fs-Zc3tg/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          <iframe data-src="https://www.youtube.com/embed/Md4Fs-Zc3tg?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+          <div class="video-meta"><span class="badge bf">~ Found</span><span class="badge bt">Ecosystem Finale Style</span></div>
+          <div class="video-title">Google Cloud Next '25 — Partner Ecosystem</div>
+          <div class="video-desc">觀察 Google 如何在影片結尾做 Partner Ecosystem 展示：Aurora 收尾 + 大字 tagline 的首尾呼應結構。</div>
+          <a class="yt-link" href="https://www.youtube.com/watch?v=Md4Fs-Zc3tg" target="_blank"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>YouTube</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ref-section-title">🖼 第三段 — 參考圖像</div>
+    <div class="ref-img-grid">
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/9UNFamTYarA/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">Node Graph</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Multi-Runtime Node Graph</div>
+          <div class="img-title">Hub-and-Spoke Connection Layout</div>
+          <div class="img-note">參考 AgentPod 節點圖的<strong>中心 Hub + 輻射 Spoke 結構</strong>，以及連接線寬度、節點間距、光點流動速度。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/jDYMFHNzJVE/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">Sandbox Layer</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Sandbox 隔離視覺化</div>
+          <div class="img-title">Architecture Diagram — Isolation Layer</div>
+          <div class="img-note">參考如何用<strong>邊框 + 背景色塊</strong>表達隔離/sandbox 概念，Guardrail 警示的視覺設計語言。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/5LVfwQyclzo/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">Logo Grid</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Partner Logo Grid 排版</div>
+          <div class="img-title">Logo Grid Reveal — Spacing &amp; Size</div>
+          <div class="img-note">參考四個 AI partner logo 的<strong>網格間距、logo 圓形容器大小、入場排序方向</strong>（建議從中心向外展開）。</div>
+        </div>
+      </div>
+
+      <div class="img-card">
+        <div class="img-thumb-wrap">
+          <img src="https://img.youtube.com/vi/Md4Fs-Zc3tg/maxresdefault.jpg" alt="" loading="lazy">
+          <div class="img-overlay"><span class="img-timestamp">Aurora Finale</span></div>
+        </div>
+        <div class="img-info">
+          <div class="img-focus">Aurora 收尾 + Tagline</div>
+          <div class="img-title">Google Cloud Next '25 — Closing Frame</div>
+          <div class="img-note">參考<strong>收尾 tagline 的字體大小、Aurora 漸層的飽和度與方向</strong>，以及與開場的視覺呼應方式。</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /view-analysis -->
+
+
+<!-- ══════════════════════════════════════════════════
+     TAB 2: 場景參考影片
+══════════════════════════════════════════════════ -->
+<div class="view" id="view-videos">
+
+  <section class="scene-section" id="scene1">
+    <div class="scene-heading"><span class="scene-num-badge">Scene 01</span><h2>Opening — Brand Identity Reveal</h2><p>ASUS logo + tagline 三連發</p></div>
+    <div class="video-grid">
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'qbqZQFOVfA8')"><img class="video-thumb" src="https://img.youtube.com/vi/qbqZQFOVfA8/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/qbqZQFOVfA8?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bp">★</span><span class="badge bt">Overall Style</span></div><div class="video-title">Google AI Mode — Introducing AI Mode</div><div class="video-desc">整體視覺基調參考，Aurora 開場、tagline 節奏。<a class="yt-link" href="https://www.youtube.com/watch?v=qbqZQFOVfA8" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'6GvlaNx2SEY')"><img class="video-thumb" src="https://img.youtube.com/vi/6GvlaNx2SEY/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/6GvlaNx2SEY?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">Keynote 2024</span></div><div class="video-title">Google Cloud Next 2024 Opening Keynote</div><div class="video-desc">Enterprise AI 視覺語言完整範本。<a class="yt-link" href="https://www.youtube.com/watch?v=6GvlaNx2SEY" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'Md4Fs-Zc3tg')"><img class="video-thumb" src="https://img.youtube.com/vi/Md4Fs-Zc3tg/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/Md4Fs-Zc3tg?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">Keynote 2025</span></div><div class="video-title">Google Cloud Next '25 — Opening</div><div class="video-desc">2025 最新版，結構最接近 ASUS 腳本。<a class="yt-link" href="https://www.youtube.com/watch?v=Md4Fs-Zc3tg" target="_blank">YouTube</a></div></div></div>
+    </div>
+  </section>
+
+  <section class="scene-section" id="scene2">
+    <div class="scene-heading"><span class="scene-num-badge">Scene 02</span><h2>四大核心優勢 — Card Reveal</h2><p>Intuitive / Cost-Efficient / Powerful / Secure</p></div>
+    <div class="video-grid">
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'fjAewvI4gtw')"><img class="video-thumb" src="https://img.youtube.com/vi/fjAewvI4gtw/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/fjAewvI4gtw?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial 2024</span></div><div class="video-title">Flipping Chart Card Animation — After Effects</div><div class="video-desc">卡片翻轉揭露 3D rotateY 技術。<a class="yt-link" href="https://www.youtube.com/watch?v=fjAewvI4gtw" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'qQJ_aXU_elQ')"><img class="video-thumb" src="https://img.youtube.com/vi/qQJ_aXU_elQ/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/qQJ_aXU_elQ?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial</span></div><div class="video-title">After Effects Card Reveal Animation</div><div class="video-desc">卡片 stagger + mask wipe 文字出現。<a class="yt-link" href="https://www.youtube.com/watch?v=qQJ_aXU_elQ" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'E2mynWb-P9U')"><img class="video-thumb" src="https://img.youtube.com/vi/E2mynWb-P9U/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/E2mynWb-P9U?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial</span></div><div class="video-title">Feature Grid Animation — After Effects</div><div class="video-desc">四卡片網格排列入場方式。<a class="yt-link" href="https://www.youtube.com/watch?v=E2mynWb-P9U" target="_blank">YouTube</a></div></div></div>
+    </div>
+  </section>
+
+  <section class="scene-section" id="scene3a">
+    <div class="scene-heading"><span class="scene-num-badge">Scene 03a</span><h2>各優勢細節 — Feature Breakdown</h2><p>typewriter · 數據 · 節點脈衝</p></div>
+    <div class="video-grid">
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'gVcyghMTrtU')"><img class="video-thumb" src="https://img.youtube.com/vi/gVcyghMTrtU/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/gVcyghMTrtU?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">Enterprise AI Demo</span></div><div class="video-title">Enterprise AI Explainer — Synoptix.AI</div><div class="video-desc">Feature breakdown 結構的完成品參考。<a class="yt-link" href="https://www.youtube.com/watch?v=gVcyghMTrtU" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'mW6epsfK944')"><img class="video-thumb" src="https://img.youtube.com/vi/mW6epsfK944/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/mW6epsfK944?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial</span></div><div class="video-title">Motion Graphics Feature Section — After Effects</div><div class="video-desc">Bullet stagger + mask wipe 技巧。<a class="yt-link" href="https://www.youtube.com/watch?v=mW6epsfK944" target="_blank">YouTube</a></div></div></div>
+    </div>
+  </section>
+
+  <section class="scene-section" id="scene3b">
+    <div class="scene-heading"><span class="scene-num-badge">Scene 03b</span><h2>架構圖 — Three-Layer Stack</h2><p>Cloud → Model → Agent Infra</p></div>
+    <div class="video-grid">
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'jDYMFHNzJVE')"><img class="video-thumb" src="https://img.youtube.com/vi/jDYMFHNzJVE/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/jDYMFHNzJVE?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">直接命中</span></div><div class="video-title">Animated Architecture Diagram — After Effects</div><div class="video-desc">架構圖場景首選教材。<a class="yt-link" href="https://www.youtube.com/watch?v=jDYMFHNzJVE" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'9UNFamTYarA')"><img class="video-thumb" src="https://img.youtube.com/vi/9UNFamTYarA/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/9UNFamTYarA?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial</span></div><div class="video-title">Tech Explainer Infographic — After Effects</div><div class="video-desc">節點 + 連接線生長技巧。<a class="yt-link" href="https://www.youtube.com/watch?v=9UNFamTYarA" target="_blank">YouTube</a></div></div></div>
+    </div>
+  </section>
+
+  <section class="scene-section" id="scene4">
+    <div class="scene-heading"><span class="scene-num-badge">Scene 04</span><h2>三大產品展示 — MyAgent · AgentPod · Vertical</h2><p>UI demo · Node graph · 多場景切換</p></div>
+    <div class="video-grid">
+      <div class="video-card verified"><div class="video-embed" onclick="loadVideo(this,'pF0Q_q2WZ08')"><img class="video-thumb" src="https://img.youtube.com/vi/pF0Q_q2WZ08/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/pF0Q_q2WZ08?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bv">✓ Verified</span><span class="badge bt">No Plugins</span></div><div class="video-title">3D Floating UI Animation — After Effects</div><div class="video-desc">唯一 3-0 對抗驗證確認。<a class="yt-link" href="https://www.youtube.com/watch?v=pF0Q_q2WZ08" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'qbqZQFOVfA8')"><img class="video-thumb" src="https://img.youtube.com/vi/qbqZQFOVfA8/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/qbqZQFOVfA8?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bp">★</span><span class="badge bt">UI Demo Style</span></div><div class="video-title">Google AI Mode — UI Demo Section</div><div class="video-desc">0:30–1:30 重點觀察 cursor + UI 互動。<a class="yt-link" href="https://www.youtube.com/watch?v=qbqZQFOVfA8" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'gVcyghMTrtU')"><img class="video-thumb" src="https://img.youtube.com/vi/gVcyghMTrtU/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/gVcyghMTrtU?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">Complete Product Video</span></div><div class="video-title">Enterprise AI — Synoptix Demo</div><div class="video-desc">Node graph + UI 並行完整案例。<a class="yt-link" href="https://www.youtube.com/watch?v=gVcyghMTrtU" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'hQCYaQKEXjY')"><img class="video-thumb" src="https://img.youtube.com/vi/hQCYaQKEXjY/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/hQCYaQKEXjY?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial</span></div><div class="video-title">SaaS App UI Demo — After Effects</div><div class="video-desc">游標動畫 + UI stagger 技巧。<a class="yt-link" href="https://www.youtube.com/watch?v=hQCYaQKEXjY" target="_blank">YouTube</a></div></div></div>
+    </div>
+  </section>
+
+  <section class="scene-section" id="scene5">
+    <div class="scene-heading"><span class="scene-num-badge">Scene 05</span><h2>生態夥伴 — Ecosystem Finale</h2><p>GPT · Gemini · Claude · ASUS Platform</p></div>
+    <div class="video-grid">
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'Md4Fs-Zc3tg')"><img class="video-thumb" src="https://img.youtube.com/vi/Md4Fs-Zc3tg/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/Md4Fs-Zc3tg?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">Partner Grid</span></div><div class="video-title">Google Cloud Next '25 — Partner Section</div><div class="video-desc">Grid reveal + Aurora 收尾方式。<a class="yt-link" href="https://www.youtube.com/watch?v=Md4Fs-Zc3tg" target="_blank">YouTube</a></div></div></div>
+      <div class="video-card"><div class="video-embed" onclick="loadVideo(this,'5LVfwQyclzo')"><img class="video-thumb" src="https://img.youtube.com/vi/5LVfwQyclzo/maxresdefault.jpg" alt="" loading="lazy"><div class="thumb-overlay"><div class="play-btn"><svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><iframe data-src="https://www.youtube.com/embed/5LVfwQyclzo?autoplay=1" allow="autoplay;encrypted-media" allowfullscreen></iframe></div><div class="video-info"><div class="video-meta"><span class="badge bf">~</span><span class="badge bt">AE Tutorial</span></div><div class="video-title">Logo Grid Reveal — After Effects</div><div class="video-desc">Bouncy entrance + stagger 生態夥伴場景直接適用。<a class="yt-link" href="https://www.youtube.com/watch?v=5LVfwQyclzo" target="_blank">YouTube</a></div></div></div>
+    </div>
+  </section>
+
+  <section class="globals-section">
+    <h2 class="globals-heading">全片 AE 全域設定</h2>
+    <div class="settings-grid">
+      <div class="setting-card"><div class="s-label">Resolution / FPS</div><div class="s-value">1920×1080 / 60fps</div></div>
+      <div class="setting-card"><div class="s-label">Background</div><div class="s-value">#0D1117 (dark)</div></div>
+      <div class="setting-card"><div class="s-label">Aurora Gradient</div><div class="s-value">#1A73E8 → #7B4FFF → #00BCD4</div></div>
+      <div class="setting-card"><div class="s-label">Standard Easing</div><div class="s-value">Bezier 0.4, 0, 0.2, 1</div></div>
+      <div class="setting-card"><div class="s-label">Overshoot Scale</div><div class="s-value">0→110→100%, 1.08×</div></div>
+      <div class="setting-card"><div class="s-label">Transition</div><div class="s-value">Light Sweep 0.4–0.6s</div></div>
+      <div class="setting-card"><div class="s-label">Typography</div><div class="s-value">Google Sans / Inter</div></div>
+      <div class="setting-card"><div class="s-label">Plugins</div><div class="s-value">Flow · Motion4 · Trapcode</div></div>
+    </div>
+  </section>
+
+</div><!-- /view-videos -->
+
+</main>
+
+<footer>
+  ASUS Enterprise Agent Platform · AE Animation Reference Guide &nbsp;·&nbsp;
+  3 段落分析 · 13 參考影片 · 12 參考圖像
+</footer>
+
+<script>
+  function loadVideo(el, id) {
+    const iframe = el.querySelector('iframe');
+    const thumb  = el.querySelector('.video-thumb');
+    const overlay = el.querySelector('.thumb-overlay');
+    if (!iframe.classList.contains('loaded')) {
+      iframe.src = iframe.dataset.src;
+      iframe.classList.add('loaded');
+      if (thumb)   thumb.style.opacity = '0';
+      if (overlay) overlay.style.opacity = '0';
+    }
+  }
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.top-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + tab).classList.add('active');
+    const sceneNav = document.getElementById('sceneNav');
+    const divider  = document.getElementById('scene-nav-divider');
+    if (tab === 'videos') {
+      sceneNav.style.display = 'flex';
+      divider.style.display  = 'block';
+    } else {
+      sceneNav.style.display = 'none';
+      divider.style.display  = 'none';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function scrollTo2(id, btn) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  // IntersectionObserver for scene nav (tab 2)
+  const sceneIds = ['scene1','scene2','scene3a','scene3b','scene4','scene5'];
+  const navBtns  = document.querySelectorAll('.nav-btn');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = sceneIds.indexOf(e.target.id);
+        if (i >= 0) { navBtns.forEach(b => b.classList.remove('active')); if (navBtns[i]) navBtns[i].classList.add('active'); }
+      }
+    });
+  }, { threshold: 0.3 });
+  sceneIds.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+</script>
+</body>
+</html>

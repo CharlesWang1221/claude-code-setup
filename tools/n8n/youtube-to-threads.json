@@ -1,0 +1,150 @@
+{
+  "name": "YouTube 新影片 → Threads 自動發文",
+  "active": false,
+  "nodes": [
+    {
+      "id": "sticky1",
+      "name": "設定說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-200, -260],
+      "parameters": {
+        "width": 460,
+        "height": 320,
+        "content": "## 匯入後要做 3 件事\n\n1. 在「YouTube RSS」節點把 url 裡的 REPLACE_WITH_CHANNEL_ID 換成你頻道的 Channel ID（去 YouTube Studio → 設定 → 頻道 → 進階設定 複製）\n2. 在「Create Threads Container」「Publish Threads Post」兩個節點把 REPLACE_WITH_THREADS_USER_ID 換成你的 Threads User ID\n3. 建立一個 n8n Credential，類型選「Query Auth」，Name 填 access_token，Value 填 Threads Access Token，套用到上面那兩個 HTTP Request 節點\n\n測過一次成功再把左上角 Active 打開。"
+      }
+    },
+    {
+      "id": "trigger1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-200, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rss1",
+      "name": "YouTube RSS",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [40, 300],
+      "parameters": {
+        "url": "https://www.youtube.com/feeds/videos.xml?channel_id=REPLACE_WITH_CHANNEL_ID"
+      }
+    },
+    {
+      "id": "code1",
+      "name": "Filter New Videos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 300],
+      "parameters": {
+        "jsCode": "const staticData = getWorkflowStaticData('global');\nif (!staticData.postedVideoIds) staticData.postedVideoIds = [];\n\nconst results = [];\nfor (const item of $input.all()) {\n  const link = item.json.link || '';\n  const m = link.match(/v=([a-zA-Z0-9_-]{6,})/);\n  const videoId = m ? m[1] : null;\n  if (!videoId) continue;\n  if (staticData.postedVideoIds.includes(videoId)) continue;\n\n  const title = item.json.title || '';\n  const caption = `🎤 新影片上線：${title}\\n\\n${link}\\n\\n#不標準答案 #Podcast`;\n\n  results.push({\n    json: {\n      videoId,\n      title,\n      link,\n      caption,\n    },\n  });\n}\nreturn results;"
+      }
+    },
+    {
+      "id": "http1",
+      "name": "Create Threads Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [520, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.threads.net/v1.0/REPLACE_WITH_THREADS_USER_ID/threads",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "media_type", "value": "TEXT" },
+            { "name": "text", "value": "={{ $json.caption }}" }
+          ]
+        },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth"
+      },
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "",
+          "name": "Threads Access Token"
+        }
+      }
+    },
+    {
+      "id": "wait1",
+      "name": "Wait 30s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [760, 300],
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      }
+    },
+    {
+      "id": "http2",
+      "name": "Publish Threads Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 300],
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.threads.net/v1.0/REPLACE_WITH_THREADS_USER_ID/threads_publish",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "creation_id", "value": "={{ $json.id }}" }
+          ]
+        },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth"
+      },
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "",
+          "name": "Threads Access Token"
+        }
+      }
+    },
+    {
+      "id": "code2",
+      "name": "Mark Video As Posted",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 300],
+      "parameters": {
+        "jsCode": "const staticData = getWorkflowStaticData('global');\nif (!staticData.postedVideoIds) staticData.postedVideoIds = [];\n\nfor (const item of $input.all()) {\n  const videoId = $('Filter New Videos').item.json.videoId;\n  if (videoId && !staticData.postedVideoIds.includes(videoId)) {\n    staticData.postedVideoIds.push(videoId);\n  }\n}\nif (staticData.postedVideoIds.length > 500) {\n  staticData.postedVideoIds = staticData.postedVideoIds.slice(-500);\n}\nreturn $input.all();"
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [[{ "node": "YouTube RSS", "type": "main", "index": 0 }]]
+    },
+    "YouTube RSS": {
+      "main": [[{ "node": "Filter New Videos", "type": "main", "index": 0 }]]
+    },
+    "Filter New Videos": {
+      "main": [[{ "node": "Create Threads Container", "type": "main", "index": 0 }]]
+    },
+    "Create Threads Container": {
+      "main": [[{ "node": "Wait 30s", "type": "main", "index": 0 }]]
+    },
+    "Wait 30s": {
+      "main": [[{ "node": "Publish Threads Post", "type": "main", "index": 0 }]]
+    },
+    "Publish Threads Post": {
+      "main": [[{ "node": "Mark Video As Posted", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

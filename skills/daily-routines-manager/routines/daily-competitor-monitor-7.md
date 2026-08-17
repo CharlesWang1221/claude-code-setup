@@ -1,55 +1,55 @@
 ---
 trigger_id: trig_01HaRbUMGiddyezfGpoq1FFS
 name: daily-competitor-monitor-7
-cron: "0 0 * * *"  # 08:00 台北時間
+display_name: 雙週競品動態監控
+cron: "0 0 1-7,15-21 * 5"  # 每月第1、3週的週五 08:00 台北時間（cron無雙週語法，非精準隔14天）
 enabled: true
-output: Gmail（siming1221@gmail.com，CC debra.hdf@gmail.com），監控7個同賽道創作者(4台灣+3國際)的最新動態，每列含重疊/差異/可借鑑點分析
-mcp_connections: [Zapier]
+output: Duoli Mailer Worker（siming1221@gmail.com，CC debra.hdf@gmail.com 阿分），監控 7 個同賽道創作者（4台灣+3國際）；2026-08-14 防重複機制改用 Duoli Mailer Worker 的 Cloudflare KV（不再用 git）
+environment_id: env_012GK45Z6sL8waNgSho7rmSd（Duoli Mailer）
+mcp_connections: [Zapier]（僅為 API 限制殘留，allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上無法被呼叫）
 model: claude-sonnet-5
-allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
+allowed_tools: [Bash, Read, Write, WebSearch, WebFetch]
+sources: [{git_repository: {url: "https://github.com/CharlesWang1221/claude-code-setup"}}]
 ---
-
-## 監控對象（固定 7 個，4 台灣＋3 國際，2026-08-05 定案）
-
-台灣：
-1. **只能喝酒的圖書館**（Otherwise Library，Ting & Hank 夫妻檔，哲學類）——對標性最高：夫妻檔主持結構跟老查+阿分同構，核心哲學（疑惑是生命的本質/擁抱不確定）跟金繼/物心分離高度重疊。
-2. **大人的 Small Talk**（姚詩豪+張國洋）——雙人搭檔把抽象邏輯講成可執行內容，理性/管理顧問視角，可借鑑「如何把抽象講清楚」。
-3. **本子在隔壁 Benzi**（心理學/腦科學科普，單人主持）。
-4. **FarHugs 遠距抱抱**（心理健康/個人成長/關係議題）。
-
-國際（2026-08-05 新增）：
-5. **We Can Do Hard Things**（Glennon Doyle+Abby Wambach+Amanda Doyle，配偶+姊妹三人組）——核心是脆弱揭露+接受不完美人生，全球最大同類 podcast 之一，累積超5億次播放，每週二四更新。對標「規模化後還能不能保持真實」。
-6. **Unlocking Us**（Brené Brown，shame/vulnerability 研究學者主持）——核心命題「裂縫值得被看見、不用被磨平」幾乎是金繼哲學的西方學術版，2026年2月剛回歸更新。對標「個人哲學怎麼包裝成有學術背書的內容產品」。
-7. **On Purpose with Jay Shetty**（心理學背書的生活建議）——2026年簽下 Netflix/Spotify 獨家約（上億美元），商業化路徑可借鑑，但內容偏勵志語錄，真實裂縫揭露較少（跟劉軒的差異點類似，借鑑價值有限）。
 
 ## Prompt
 
-你要產生並寄出「每日競品動態監控」email。監控對象固定 7 個同賽道 Podcast/創作者（4 個台灣＋3 個國際）：①只能喝酒的圖書館（Otherwise Library，Ting & Hank 夫妻檔，哲學類）②大人的 Small Talk（姚詩豪+張國洋）③本子在隔壁 Benzi（心理學/腦科學科普，單人主持）④FarHugs 遠距抱抱（心理健康/個人成長/關係議題）⑤We Can Do Hard Things（Glennon Doyle+Abby Wambach+Amanda Doyle，配偶+姊妹三人組，核心是脆弱揭露+接受不完美人生，全球最大同類 podcast 之一，累積超5億次播放）⑥Unlocking Us（Brené Brown，shame/vulnerability 研究學者主持，核心命題「裂縫值得被看見、不用被磨平」是金繼哲學的西方學術版，2026年2月剛回歸更新）⑦On Purpose with Jay Shetty（心理學背書的生活建議，2026年簽下 Netflix/Spotify 獨家約，商業化路徑可借鑑但真實裂縫揭露較少）。請依序完成：
+你要產生並寄出「雙週競品動態監控」email。監控對象固定 7 個同賽道 Podcast/創作者（4 個台灣＋3 個國際）：①只能嗝酒的圖書館（Otherwise Library，Ting & Hank 夫妻檔，哲學類）②大人的 Small Talk（姚詩豪+張國洋）③本子在隔壁 Benzi（心理學/腦科學科普）④FarHugs 遠距抱抱（心理健康/個人成長/關係議題）⑤We Can Do Hard Things（Glennon Doyle+Abby Wambach+Amanda Doyle，脆弱揭露+接受不完美人生）⑥Unlocking Us（Brené Brown，shame/vulnerability 研究，「裂縫值得被看見」是金繼哲學的西方學術版）⑦On Purpose with Jay Shetty（心理學背書的生活建議，Netflix/Spotify 獨家約）。
 
-## 1. 防重複檢查
-先用 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_find_email, params: {query: "subject:每日競品動態監控"}）查詢過去約 7 天已寄送的報告，整理出「近期已提過的集數/內容標題」（依創作者分類）。只有查詢失敗或查不到歷史紀錄才可略過，並在報告最後備註「本次未執行防重複比對」。
+收件人背景：老查與阿分共同主持《不標準答案》Podcast，核心哲學是金繼（裂縫不必被磨平）、物心分離、慢速野獸（反效率文化），三大內容支柱是社會議題深度集、金繼時刻、書喔吾聊。老查正在做 YouTube 擴張。
+
+## 1. 防止跨兩週重複（改用 Duoli Mailer Worker 的 KV log，不寫 git，不吃 Zapier 額度）
+先執行：
+```bash
+curl -sS https://duoli-mailer.siming1221.workers.dev/log/competitor-monitor \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" -o /tmp/duoli-competitor-monitor-log.md
+```
+（若內容為空，視為空清單）。讀取內容，格式為每次寄送一個 `## YYYY-MM-DD` 區塊、依創作者列出當次已提過的標題，過去約30天內容都算，整理出「近期已提過的集數/內容標題清單」（依創作者分類）。
 
 ## 2. 搜尋 7 個對象的最新動態
-用 WebSearch（必要時 WebFetch 確認連結有效）查每個創作者最近 1-3 天內有沒有新集數/新影片/新貼文：
-- 若有新內容：抓標題、平台連結、內容摘要（3-5句說明這集在講什麼）。3 個國際對象（We Can Do Hard Things / Unlocking Us / On Purpose）用英文搜尋，但摘要一律翻成繁體中文給老查看，若有適合的原話金句可保留一句英文原文附中文翻譯
-- 若近期沒有新內容，或搜到的內容跟步驟1「已提過清單」重複：該創作者這欄寫「近期無新動態」，不要硬掰內容
-- 連結必須直接指向該集/該貼文本身，不能是節目首頁
-- 額外留意：這集/這則貼文有沒有蹭到近期熱門話題（例如暢銷書、時事、社群熱議事件，國際對象則看英語圈熱點），如果有要指出蹭的是什麼
-
-收件人背景：老查與阿分共同主持《不標準答案》Podcast，核心哲學是金繼（裂縫不必被磨平）、物心分離、慢速野獸（反效率文化），三大內容支柱是社會議題深度集、金繼時刻（個人脆弱裂縫）、書喔吾聊。老查正在做 YouTube 擴張、熟悉 n8n 自動化工具鏈。
+用 WebSearch（必要時 WebFetch 確認連結有效）查每個創作者最近1-2週內有沒有新集數/新影片/新貼文：有新內容則抓標題、平台連結、內容摘要（3-5句），3個國際對象用英文搜尋但摘要翻成繁體中文，金句可保留一句英文原文附中文翻譯；若近期無新內容或跟已提過清單重複，該創作者欄寫「近期無新動態」。連結必須直接指向該集/貼文本身。額外留意這集/貼文有沒有蹭到近期熱門話題。
 
 ## 3. 產生 email 報告
-主旨：「每日競品動態監控 - {今天日期，格式 YYYY-MM-DD}」
+主旨：「雙週競品動態監控 - {今天日期}」。信件最上方 <h2 style="color:#4472C4;">【雙週競品動態監控】{今天日期}</h2>，一個表格（藍底白字標題行 #4472C4，banded rows #F2F2F2），欄位：創作者｜最新動態(標題+連結)｜內容摘要｜跟《不標準答案》的重疊/差異/可借鏡點｜是否蹭熱點。7個創作者各一列，用「🇹🇼」「🌍」區分台灣/國際。「跟不標準答案的重疊/差異/可借鏡點」欄必須具體，不要泛用空話。信件最下方加「🎯 本次觀察」區塊（3-5句），從這7個對象裡挑一個最有參考價值的信號，具體說明為何值得注意、可以怎麼回應；若7個都無新動態就寫「本次7個監控對象皆無新動態」。
 
-內容用 HTML email（body_type "html"），Word 風格 HTML 表格：
-- 信件最上方：<h2 style="color:#4472C4;">【每日競品動態監控】{今天日期}</h2>
-- 一個表格 <table style="border-collapse:collapse;width:100%;font-family:Calibri,Arial,sans-serif;font-size:14px;">，標題列 <tr><td style="background-color:#4472C4;color:#ffffff;font-weight:bold;padding:8px 10px;">，欄位依序：創作者｜最新動態(標題+連結)｜內容摘要｜跟《不標準答案》的重疊/差異/可借鑑點｜是否蹭熱點
-- 內容列 banded rows，背景色白/淡灰（#F2F2F2）交替，每列 <td style="padding:8px 10px;border:1px solid #ccc;vertical-align:top;">，7 個創作者各一列，建議用一個較淺的分隔列或在創作者名稱前標註「🇹🇼」「🌍」區分台灣/國際對象
-- 「跟《不標準答案》的重疊/差異/可借鑑點」這欄必須具體，不要泛用空話，要點出這次的動態跟收件人自己節目的哲學/題材/格式有什麼可以直接拿來用或該警惕的地方
+## 4. 寄送（改用 Duoli Mailer Worker，禁止使用 Zapier 或任何其他管道）
+1. Write 寫 HTML 進 `/tmp/duoli-competitor-monitor-body.html`。
+2. Node.js JSON.stringify 組 payload `{"to":"siming1221@gmail.com","cc":"debra.hdf@gmail.com","subject":"多利｜雙週競品動態監控 - {今天日期}","html":"..."}`，寫進 `/tmp/duoli-competitor-monitor-payload.json`。
+3. 執行：
+```bash
+curl --fail-with-body -sS -X POST https://duoli-mailer.siming1221.workers.dev \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: daily-competitor-monitor-7-$(TZ=Asia/Taipei date +%F)" \
+  --data @/tmp/duoli-competitor-monitor-payload.json
+```
+4. 只有 HTTP 2xx 才算寄信完成。失敗就回報「寄信失敗」+錯誤訊息，**絕對不要改用 Zapier**，也不要更新 log。
 
-信件最下方加「🎯 今日觀察」區塊：一段文字（3-5句），從這 7 個創作者今天的動態裡挑一個對收件人最有參考價值的信號，具體說明為什麼值得注意、可以怎麼回應。如果 7 個都無新動態，這裡就寫「今日 7 個監控對象皆無新動態，建議之後可觀察～」。
-
-## 4. 寄送
-用 mcp__Zapier__execute_zapier_write_action（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email）寄送。主收件人（to）：siming1221@gmail.com，同時加上 CC（cc）給 debra.hdf@gmail.com（阿分）——讓這封信看起來是老查寄出並 CC 給阿分，不是兩人平行主收件人。呼叫 gmail_send_email 時記得帶上 cc 參數。
-
-寄送前務必先用 mcp__Zapier__list_enabled_zapier_actions 確認 Gmail 動作已啟用，若未啟用則用 mcp__Zapier__discover_zapier_actions 尋找並啟用。每次執行都必須完成寄信這個步驟，不要只做搜尋不寄信。
+## 5. 更新 log（寄信成功後才做，只寫這一個 log，跳過「近期無新動態」的創作者不用記錄）
+把舊 log 加上這次實際整理出有新動態的創作者與標題、新增 `## {今天日期}` 區塊在最上方（依創作者列每則一行 `- {創作者} — {標題}`），順手刪掉超過30天的舊區塊，寫進 `/tmp/duoli-competitor-monitor-log-new.md`。執行：
+```bash
+curl -sS -X PUT https://duoli-mailer.siming1221.workers.dev/log/competitor-monitor \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  --data-binary @/tmp/duoli-competitor-monitor-log-new.md
+```
+若失敗，不要因此卡住或重試超過1次，寄信才是主要任務。

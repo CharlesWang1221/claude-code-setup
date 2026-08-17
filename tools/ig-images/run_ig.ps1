@@ -25,9 +25,10 @@ if ($LASTEXITCODE -ne 0) { exit 1 }
 
 Write-Host ""
 Write-Host "[2/2] Capturing screenshots (8 images)..." -ForegroundColor Yellow
+$prefix = $EpSlug.ToUpper()
 foreach ($html in (Get-ChildItem "$OUTDIR\html\*.html" | Sort-Object Name)) {
     $name = [IO.Path]::GetFileNameWithoutExtension($html.Name)
-    node "$TOOLS\capture_ig.mjs" $html.FullName "$OUTDIR\$name.png" 1080 1080
+    node "$TOOLS\capture_ig.mjs" $html.FullName "$OUTDIR\${prefix}_$name.png" 1080 1080
     if ($LASTEXITCODE -ne 0) { Write-Error "Failed: $($html.Name)"; exit 1 }
 }
 

@@ -41,8 +41,13 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 關鍵字 | Skill |
 |---|---|
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
+| 「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
+| 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
+| 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
+| 「做 IG 內容」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
+| 「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
 | 「做圖卡」「/cards」「社群圖卡」 | `social-cards` |
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
@@ -53,6 +58,16 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
 | 「影碩」「剪紙效果影片」「用剪紙效果做」 | `video-explainer`（載入剪紙風格模組） |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
+
+### 居易跨電腦落檔規則
+
+- 居易完成並經老查核准的文章，Google Drive 備份一律放在 `不標準答案/2026/網誌/未發布/{文章完整中文標題}/{article-slug}.md`。
+- 模式 A、模式 B 都用 frontmatter 的完整中文 `title` 命名資料夾，不再用 episode slug。
+- 2026-08-17 已存在的 `s3ep3` 資料夾維持原名，不回溯更名；規則從下一篇開始套用。
+
+### Podcast 預告音檔硬規則
+
+- 預告秒數只能當目標，不能為湊固定長度切斷句子。先用逐字時間碼找完整語意終點，再用靜音偵測或波形確認自然停頓；句尾預設保留約 0.3 至 0.8 秒後才接片尾。若自然斷點超出目標秒數，影片長度跟著聲音調整。
 
 ## 角色水墨插圖 SOP（《不標準答案》）
 
@@ -67,6 +82,14 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 > 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞目前只對 Claude Code 有效——它們是叫出 Claude 的 auto-memory 專案記憶，Codex 讀不到那套記憶，遇到這幾句要主動跟老查確認情境，不要假裝知道細節。
 
+### 影片素材判讀閘門
+
+- 老查交來影片素材，或明確標記「真人」「訪談」時，小查先不進入製作。先檢查素材類型、長度、聲音、逐字稿可用性，以及是否有可剪成鉤子的段落。
+- 「真人」預設建議 `shorts-pipeline`：從原始真人素材找精華、重組節奏、加字幕與必要的 B-roll，輸出 Shorts。
+- 「訪談」預設建議 `talking-head-recut`：保留受訪者與對談的連續性，以動態標題、金句、lower-third 與資訊卡補強，不把它剪成另一支泛用 Shorts。
+- 小查只回覆「建議啟動的 Skill、判斷理由、預計交付物、缺少的素材」。老查回覆「確認製作」或指定另一條 Skill 後，才開始剪輯、生成素材或渲染。
+- 若標記與素材目標矛盾（例如標「真人」卻要保留完整訪談），小查要指出衝突並請老查選擇，不可自行猜測。
+
 > **「工作站」固定指 Creator OS**：這是《不標準答案》的私人內容營運工作站，程式位於 `apps/creator-os`。MVP 已完成「今日推進、內容流轉、節奏日曆、復盤沉澱、規則庫」與本機瀏覽器 `localStorage` 保存；目前尚未接 Supabase、n8n、Google Calendar 或平台數據。老查說「工作站」時，先讀這個目錄與其 README（若存在），再依需求續作，不要誤解為電腦硬體或另開一個網站。
 
 > **`video-explainer`（影碩）是影片製作總控**：VOX 技術解說是核心能力，剪紙效果是第一個可插拔風格模組。使用者明確說「影碩」或「剪紙效果影片」時直接啟動；未指定風格時，再由「小查」依題材建議。未來新增風格只加入影碩的 `references/` 模組庫，不另建會搶觸發詞的獨立 skill。
@@ -77,12 +100,17 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 > 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 
-## 已知限制（雙棲健檢，2026-07-27）
+## 已知限制（雙棲健檢，2026-07-27；連結器現況更新於 2026-08-11 換電腦盤點）
 
 - Codex 沒有等同 Claude auto-memory 的長期記憶機制，這份檔案是手動抽出來的，之後老查如果調整核心偏好，記得也回來更新這份 `AGENTS.md`
-- claude.ai 上的遠端 MCP connector（目前只留 Ahref、VidIQ、Zapier；Adobe/Asana/Figma/Semrush/Artlist.io/Atlassian Rovo/Similarweb/Meltwater/Anthropic Economic Index 於 2026-07-28 因零使用紀錄斷開）是 Claude 平台專屬，Codex 沒有對應機制，別假設能用
-- 本機 MCP（`playwright`、`firecrawl`、`cloudflare`、`google-workspace`、`plaud`）已經在 Codex 端設定，`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
-- `plaud`（2026-07-31 新增，用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
+- claude.ai 上的遠端 MCP connector 是**帳號層級**設定，不是機器層級，換電腦不會重置它，2026-07-28 斷開過的那批有些已被重新啟用。2026-08-11 `claude mcp list` 實測現況：`Ahref`、`VidIQ`、`Zapier`、`Higgsfield`、`Semrush`、`Adobe for creativity`、`Asana`、`Canva`、`Anthropic Economic Index` 已連線；`Similarweb`、`Meltwater`、`Artlist.io`、`Adobe Experience Manager`、`Figma`、`Atlassian Rovo` 顯示待授權（未斷開，只是沒登入）。這批對 Codex 沒有對應機制，別假設能用，也別憑這份文件的舊紀錄判斷，實況要問老查或看 Claude 端 `claude mcp list`
+- 目前工作機為 Windows PC（2026-08-11）。Codex MCP 實測已啟用 `playwright`、`firecrawl`、`cloudflare`、`google-workspace`；`notion` 未列出，不可假設可用。`google-workspace` 仍須確認 OAuth 是否有效；Claude CLI 目前需重新登入才能讀取 MCP 狀態。`plaud` 在新機器上完全沒設定，換電腦後兩邊都要重新加回去；`.codex/config.toml` 含明文 API key，已加進 `.gitignore`，不要移除該規則；`filesystem` 已於 2026-07-28 移除（跟內建 Read/Write/Edit 完全重複）
+- `plaud`（用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
+
+## 剪紙效果
+
+- 老查說「剪紙效果」「剪紙風」「紙雕動畫」「做成舊地圖拼貼」或給劇本要製作這類型社群影片時，先讀 `skills/paper-collage-video/SKILL.md`。
+- 這套流程的重點是劇本拆解、物件分層與有動作原因的紙雕動畫，不能只生成一張插圖後整張推鏡。
 
 ## 跨電腦品牌記憶
 

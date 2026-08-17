@@ -1,0 +1,3 @@
+asset_id,filename,asset_type,alpha_layer,tags,visual_state,reusable,source_episode,source_or_license,last_used_at,notes
+example-map-aged-01,map-aged-01.png,background,no,"old-map,travel,history",base,yes,template,generated,2026-08-14,"Independent full-frame background; no episode-specific text"
+example-microphone-paper-01,microphone-paper-01.png,hero,yes,"podcast,microphone,conversation",idle,yes,template,generated,2026-08-14,"RGBA PNG with transparent background; use as hero or supporting object"

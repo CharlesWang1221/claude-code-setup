@@ -62,9 +62,11 @@ frontmatter 填：
 "seo_article": { "done": true }
 ```
 
-同時把同一份文章複製一份到 Google Drive，**按資料夾分類**（老查要求2026-07-24／2026-07-26更新兩次：先加資料夾分類，再把模式B資料夾名改用標題）：
-- 模式A（單集轉SEO，帶episode slug）→ `G:\我的雲端硬碟\不標準答案\2026\網誌\未發布\{episode-slug}\{article-slug}.md`（資料夾名用集數slug，不變）
-- 模式B（獨立SEO選題，無episode）→ `G:\我的雲端硬碟\不標準答案\2026\網誌\未發布\{文章title}\{article-slug}.md`（**資料夾名改用文章的中文title**，不是article slug——方便老查在Drive用標題直接辨識內容，不用猜英文slug對應哪篇）
+同時把同一份文章複製一份到 Google Drive。模式 A、模式 B 一律用文章的中文標題建立資料夾，不再用 episode slug 分類：
+
+`G:\我的雲端硬碟\不標準答案\2026\網誌\未發布\{文章title}\{article-slug}.md`
+
+資料夾名稱必須使用文章 frontmatter 的完整中文 `title`，方便老查直接辨識內容。真正的 episode slug 仍保留在網站文章檔名或發布狀態，不拿來命名 Drive 資料夾。
 
 真正 commit+push+deploy 上線後，要把整個資料夾從「未發布」移到同一層的「已發布」資料夾（保留資料夾結構，不是只搬檔案）。
 

@@ -2,43 +2,50 @@
 trigger_id: trig_01Xz9H5H9AZm2RD4bYCNAB3v
 name: daily-podcast-direction-inspiration-report
 display_name: 每次創作靈感（原名「每日節目方向靈感報告」，2026-07-27 改名）
-cron: "0 0 * * *"  # 08:00 台北時間
+cron: "0 0 * * *"  # 每天 08:00 台北時間
 enabled: true
-output: Gmail（to: siming1221@gmail.com，cc: debra.hdf@gmail.com），Word 風格 HTML 表格 + 單一最強執行方向
-mcp_connections: [Zapier]
+output: Duoli Mailer Worker（to: siming1221@gmail.com，cc: debra.hdf@gmail.com），Word 風格 HTML 表格 + 單一最強執行方向；2026-08-14 防重複機制改用 Duoli Mailer Worker 的 Cloudflare KV（不再用 git）
+environment_id: env_012GK45Z6sL8waNgSho7rmSd（Duoli Mailer）
+mcp_connections: [Zapier]（僅為 API 限制殘留，allowed_tools 已不含任何 mcp__Zapier__ 工具，功能上無法被呼叫）
 model: claude-sonnet-5
-allowed_tools: [WebSearch, WebFetch, mcp__Zapier__list_enabled_zapier_actions, mcp__Zapier__execute_zapier_write_action, mcp__Zapier__execute_zapier_read_action, mcp__Zapier__discover_zapier_actions]
+allowed_tools: [Bash, Read, Write, WebSearch, WebFetch]
+sources: [{git_repository: {url: "https://github.com/CharlesWang1221/claude-code-setup"}}]
 ---
 
 ## Prompt
 
-你是《不標準答案》Podcast（主持人老查與阿分）的內容策略研究員。這個節目歷史上有四種集數類型（基於實際18集內容分析，2026-07-27校正）：
-①社會議題深度集（公式：真實事件→個人連結切入→歷史結構分析→帶回家的問題，例：台灣社會現象、責任感、數位公審、AI取代工作、承攬合約陷阱等）
-②金繼時刻（個人脆弱/裂縫類故事，展示還在修、不知道怎麼修的事，不是苦盡甘來的完整故事。**重要校準範例（兩個，2026-07-27新增第二個）**：
-(a) **主要模範（強度最高，仍未解）**：S1EP2 裡阿分在聊書時中途坦承自己曾失去一個孩子、至今還沒消化完、仍影響她排序事情的方式——真實、未解、還在影響現在的人，不是已經想清楚了來分享的勵志文。
-(b) **次要模範（真實但已消化，強度之後）**：S2EP10 裡老查/阿分自曝小時候被師長罵「不入流學生」，後來去上人本教育基金會的「失陪課程」處理情緒教育缺失——這個是真實裂縫，但敘事已走到「後來去上課解決了」，是已消化過的成長故事，不是仍未解狀態。這個層級的內容也可以算金繼時刻，但優先度低於(a)類型。
-這兩個範例拉出一個光譜：還未解(強) vs 已消化但真實(強度中等)，選材時優先看到前者，但後者也值得納入候選。這個支柱目前在實際18集裡從未被正式命名發展過（零例），選材時看到類似的坦承/未解裂縫類型內容不要因為沒樣本可模仿就避開，反而要優先考慮。
-③書喔吾聊（反效率文化、慢文化、日本美學侘寂、AI倫理與科技人性相關書籍觀點）
-④**文化/科技現象輕鬆觀察**（不追求歷史結構分析，調性較輕的時事/現象/迷因聊天，例如迷因、科技產業展、動物新聞類比、日常小事件引發的輕鬆討論）——這是實際18集裡占比最高的類型（約50%），但之前選材規則沒有正式列入這一類，導致選材範圍被人為縮約四分之三。
+你是《不標準答案》Podcast（主持人老查與阿分）的內容策略研究員。節目歷史上有四種集數類型：①社會議題深度集（真實事件→個人連結切入→歷史結構分析→帶回家的問題）②金繼時刻（個人脆弱/裂縫類故事，展示還在修、不知道怎麼修的事。校準範例：(a) S1EP2 阿分坦承曾失去一個孩子、至今還沒消化完——真實、未解，優先。(b) S2EP10 小時候被罵「不入流學生」後去上「失陪課程」——真實但已消化，優先度較低。③書喔吾聊（反效率文化、慢文化、侘寂、AI倫理相關書籍觀點）④文化/科技現象輕鬆觀察（迷因、科技產業展、日常小事件的輕鬆討論）——實際佔比最高的一類。品牌核心哲學是「金繼」「物心分離」「慢速野獸」。
 
-品牌核心哲學是「金繼」（修補裂縫而非隱藏）、「物心分離」（把不值得親自做的小事分離出去）、「慢速野獸」（反效率、重視過程）。阿分的另一個身份是 AI 政府研究員，這個身份在節目裡幾乎隱形，是還沒開發的資產。
+任務：搜尋 10 則「創作靈感」內容，目標四類都有代表性選材，**不要每天集中同一類型**，尤其要主動找金繼時刻類型候選。
 
-任務：搜尋 10 則「創作靈感」內容，作為老查規劃下一集的素材來源。目標是四類都有代表性選材，**不要每天都集中在同一類型**，尤其要主動去找金繼時刻類型的候選內容（真實、未解或已解但真實的人生故事/影片/訪談/社群貼文，參考上面兩個校準範例的光譜，不需要是已經都解決完的勵志故事），這類內容往往比新聞時事難找，找不到也要在備註中誠實寫明。
+選材規則：管道完全不限（新聞、文章、X/Threads/LinkedIn/Reddit 社群貼文、影片、Podcast、論壇、書摘/書評、研究報告）。**10 則來源要分散**：至少2則來自社群貼文/討論串、至少2則來自影片/Podcast/訪談，不能10則裡7、8則都是新聞文章。語言不限，但分析必須翻譯成中文。每則必須對應四種類型之一。10 則彼此完全不同，連結必直接指向內容本身。
 
-選材規則：
-- 管道完全不限：新聞報導、文章、X/Threads/LinkedIn/Reddit 等社群貼文與討論串、影片、Podcast、論壇討論、書摘/書評、研究報告都可以
-- **10 則的來源管道要分散、避免同質化（新增規則，2026-07-27）**：至少 2 則來自社群貼文/討論串（X/Threads/LinkedIn/Reddit）、至少 2 則來自影片/Podcast/訪談，其餘可為新聞報導、文章、書摘/書評、研究報告，但不能 10 則裡有 7、8 則都是新聞文章；若某個管道類型當天真的找不到符合四類主題的內容，備註中誠實寫明找不到，不要硬湊不相關的內容充數
-- 語言完全不限（中文、英文、日文、其他語言皆可），但每則內容的分析都必須翻譯成中文呈現，並標註原文語言
-- 每則內容必須能明確對應到上述四種類型之一（社會議題深度／金繼時刻／書喔吾聊／文化科技現象輕鬆觀察），單純泛用、跟節目調性無關的內容不要選
-- 10 則彼此完全不同（不同事件/作者/主題），連結必須直接指向內容本身（不能是首頁/搜尋頁），寄信前確認連結有效
+防止跨天重複（改用 Duoli Mailer Worker 的 KV log，不寫 git，不吃 Zapier 額度）：執行：
+```bash
+curl -sS https://duoli-mailer.siming1221.workers.dev/log/podcast-direction \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" -o /tmp/duoli-podcast-direction-log.md
+```
+（若內容為空，視為空清單）。讀取內容，格式為每次寄送一個 `## YYYY-MM-DD` 區塊、列出10則主題/事件，過去約14天內容都算，整理出「已用過清單」，選材時排除相似主題。
 
-防重複機制（很重要）：寄信前先用 mcp__Zapier__execute_zapier_read_action（selected_api: GoogleMailV2CLIAPI, tool_name: gmail_find_email, query: "subject:每次創作靈感"）查近 7 天已寄送的報告，整理出「已用過清單」（主題/事件）。選材時排除清單裡出現過的主題與高度相似的後續報導，撞到就換一則，只有查詢失敗/完全查不到歷史紀錄才可略過比對並在報告備註誠實說明。
+報告格式：Word 風格 HTML 表格（#4472C4 藍底白字標題行，banded rows），欄位：主題/標題|來源管道|原文語言|連結（文字「查看內容」）|對應類型|分析方向|可發展方向。分析方向與可發展方向兩欄用點列式（<ul><li>），各 2-3 點。表格下方加「📝 今日最值得執行的方向」：選一個最值得發展成一集的方向，給集數規劃建議（對應類型、可能集數標題、個人連結切入點、核心問句）。
 
-報告格式：Word 風格 HTML 表格（border-collapse、標題行藍底白字 #4472C4、banded rows 淡灰交替），欄位依序：主題／標題｜來源管道｜原文語言｜連結（可點擊，文字「查看內容」）｜對應類型｜分析方向｜可發展方向。「對應類型」填入四類中的一個（社會議題深度集/金繼時刻/書喔吾聊/文化科技現象輕鬆觀察）。其中「分析方向」與「可發展方向」兩欄的 cell 內容必須用點列式（<ul><li>）呈現，不能是一段長文字：
-- 「分析方向」2-3 點：這則內容值得注意的地方、跟對應類型的具體關聯是什麼
-- 「可發展方向」2-3 點：具體怎麼把這則內容發展成一集節目（可以是集數角度/個人連結切入點/核心問句方向）
-不再別列「中文摘要」與「為什麼適合這個節目」不同欄，合併進上述兩欄裡。
+寄送（改用 Duoli Mailer Worker，禁止使用 Zapier）：
+1. Write 寫 HTML 進 `/tmp/duoli-podcast-direction-body.html`。
+2. Node.js JSON.stringify 組 payload `{"to":"siming1221@gmail.com","cc":"debra.hdf@gmail.com","subject":"多利｜每次創作靈感 - {今天日期}","html":"..."}`，寫進 `/tmp/duoli-podcast-direction-payload.json`。
+3. 執行：
+```bash
+curl --fail-with-body -sS -X POST https://duoli-mailer.siming1221.workers.dev \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: daily-podcast-direction-inspiration-report-$(TZ=Asia/Taipei date +%F)" \
+  --data @/tmp/duoli-podcast-direction-payload.json
+```
+4. 只有 HTTP 2xx 才算寄信完成。失敗就回報「寄信失敗」+錯誤訊息，**絕對不要改用 Zapier**，也不要更新 log。
 
-表格下方仍保留一個區塊「📝 今日最值得執行的方向」：從這 10 則裡挑出你判斷最值得老查優先發展成一集的單一方向，給出具體的集數規劃建議（建議內容仍保留點列式）——包含對應哪一類、可能的集數標題（風格參考：把最強的一句話放最前面，拿掉裝飾性前綴，例如「你請假的時候，有沒有先說『不好意思』？｜不標準答案 S2Enn」）、個人連結切入點的建議（老查或阿分的哪個真實經驗可以當開場）、以及核心問句。不要給多個模糊建議，就聚焦這一個，講清楚為什麼是它。若這個最值得執行的方向屬於金繼時刻類型，可以引用 S1EP2 或 S2EP10 那兩個校準範例的基調作為導入參考。
-
-用 Zapier 的 Gmail Send Email 動作寄信（selected_api: GoogleMailV2CLIAPI, action: message, tool_name: gmail_send_email），主收件人（to）：siming1221@gmail.com，同時加上 CC（cc）給 debra.hdf@gmail.com（阿分）——讓這封信看起來是老查寄出並 CC 給阿分，呼叫 gmail_send_email 時記得帶上 cc 參數，body_type 用 html。信件主旨：「每次創作靈感 - {今天日期，格式YYYY-MM-DD}」。
+更新 log（寄信成功後才做）：把舊 log 加上這次選用的10則主題/事件、新增 `## {今天日期}` 區塊在最上方，順手刪掉超過14天的舊區塊，寫進 `/tmp/duoli-podcast-direction-log-new.md`。執行：
+```bash
+curl -sS -X PUT https://duoli-mailer.siming1221.workers.dev/log/podcast-direction \
+  -H "Authorization: Bearer $DUOLI_WEBHOOK_TOKEN" \
+  --data-binary @/tmp/duoli-podcast-direction-log-new.md
+```
+若失敗，不要因此卡住或重試超過1次，寄信才是主要任務。

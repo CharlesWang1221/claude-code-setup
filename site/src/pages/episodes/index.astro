@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getFeed } from '../../lib/feed';
 
-const { episodes } = await getFeed();
+const { episodes, meta } = await getFeed();
 ---
 
 <Base title="所有集數" description="《不標準答案》所有集數列表">
@@ -12,17 +12,23 @@ const { episodes } = await getFeed();
       <p style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;">{episodes.length} 集 · 每週一更新</p>
     </div>
 
-    <ul class="episode-list">
+    <div class="cards-2col">
       {episodes.map((ep) => (
-        <li class="episode-item" onclick={`location.href='/episodes/${ep.slug}'`}>
-          <span class="ep-num">{ep.episodeLabel}</span>
-          <div>
-            <div class="ep-title">{ep.title}</div>
-            <div class="ep-date">{ep.pubDateFormatted}</div>
+        <a href={`/episodes/${ep.slug}`} class="media-card">
+          <div class="media-card-thumb">
+            <img src={ep.image || meta.image} alt={ep.title} loading="lazy" />
+            <span class="media-card-badge">{ep.episodeLabel}</span>
           </div>
-          <span class="ep-dur">{ep.duration}</span>
-        </li>
+          <div class="media-card-body">
+            <h2 class="media-card-title">{ep.title}</h2>
+            <div class="media-card-meta">
+              <time>{ep.pubDateFormatted}</time>
+              <span>·</span>
+              <span>{ep.duration}</span>
+            </div>
+          </div>
+        </a>
       ))}
-    </ul>
+    </div>
   </main>
 </Base>
