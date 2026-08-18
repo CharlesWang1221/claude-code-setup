@@ -31,3 +31,6 @@ google-mcp/credentials.json
 
 # 暫存工作區（渲染輸出、草稿，不進 git）
 tmp/
+
+# 外部工具 clone（含 .venv/自己的 .git，太大不進 git，需要時各機自行 clone）
+tools/video-use/

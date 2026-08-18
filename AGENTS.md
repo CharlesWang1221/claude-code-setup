@@ -55,9 +55,9 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
+| 「書本蒸餾」「讀書筆記整理」「把這本書變成內容」 | `book-knowledge-distiller` |
+| 「人物蒸餾」「整理某人的觀點」「把訪談變成觀點卡」 | `person-perspective-distiller` |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
-
-> 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞目前只對 Claude Code 有效——它們是叫出 Claude 的 auto-memory 專案記憶，Codex 讀不到那套記憶，遇到這幾句要主動跟老查確認情境，不要假裝知道細節。
 
 ### 影片素材判讀閘門
 
@@ -66,6 +66,8 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 「訪談」預設建議 `talking-head-recut`：保留受訪者與對談的連續性，以動態標題、金句、lower-third 與資訊卡補強，不把它剪成另一支泛用 Shorts。
 - 小查只回覆「建議啟動的 Skill、判斷理由、預計交付物、缺少的素材」。老查回覆「確認製作」或指定另一條 Skill 後，才開始剪輯、生成素材或渲染。
 - 若標記與素材目標矛盾（例如標「真人」卻要保留完整訪談），小查要指出衝突並請老查選擇，不可自行猜測。
+
+> 「做網頁」「換電腦」「狀態列跑掉了」這幾個觸發詞目前只對 Claude Code 有效——它們是叫出 Claude 的 auto-memory 專案記憶，Codex 讀不到那套記憶，遇到這幾句要主動跟老查確認情境，不要假裝知道細節。
 
 > **「工作站」固定指 Creator OS**：這是《不標準答案》的私人內容營運工作站，程式位於 `apps/creator-os`。MVP 已完成「今日推進、內容流轉、節奏日曆、復盤沉澱、規則庫」與本機瀏覽器 `localStorage` 保存；目前尚未接 Supabase、n8n、Google Calendar 或平台數據。老查說「工作站」時，先讀這個目錄與其 README（若存在），再依需求續作，不要誤解為電腦硬體或另開一個網站。
 

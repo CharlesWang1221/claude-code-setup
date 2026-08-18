@@ -1,0 +1,11 @@
+{
+  "duration": 15,
+  "maxStaticSec": 2,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#beat-1", "bySec": 0.1 },
+    { "kind": "before", "a": "#beat-1", "b": "#beat-2" },
+    { "kind": "before", "a": "#beat-2", "b": "#beat-3" },
+    { "kind": "staysInFrame", "selector": "#cover-frame" },
+    { "kind": "keepsMoving", "withinSelector": "#root" }
+  ]
+}

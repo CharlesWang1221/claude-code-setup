@@ -12,7 +12,9 @@
       "Bash(cp \"D:/hot data/CCoode/output/ep-s2ep9/ig/\"*.png \"G:/我的雲端硬碟/不標準答案/2026/IG/s2ep9/\")",
       "Bash(cp \"D:/hot data/CCoode/output/ep-s2ep9/ig-caption.txt\" \"G:/我的雲端硬碟/不標準答案/2026/IG/s2ep9/\")",
       "Read(//g/我的雲端硬碟/不標準答案/2026/IG/**)",
-      "mcp__claude_ai_VidIQ__vidiq_user_channels"
+      "mcp__claude_ai_VidIQ__vidiq_user_channels",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_snapshot"
     ]
   }
 }

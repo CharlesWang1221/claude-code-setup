@@ -1,0 +1,15 @@
+[Script Info]
+Title: S3EP2 history in picture book
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Quote,Microsoft JhengHei,56,&H0017120D,&H000000FF,&H0017120D,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,2,80,80,145,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.80,0:00:05.00,Quote,,0,0,0,,歷史不能只存在博物館裡面
+Dialogue: 0,0:00:05.00,0:00:10.60,Quote,,0,0,0,,它早就在我們這個客廳的繪本裡了

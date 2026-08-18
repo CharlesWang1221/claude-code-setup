@@ -1,0 +1,16 @@
+[Script Info]
+Title: S3EP2 dream awakens
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Quote,Microsoft JhengHei,56,&H0017120D,&H000000FF,&H0017120D,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,2,80,80,115,1
+Style: TopQuote,Microsoft JhengHei,56,&H0017120D,&H000000FF,&H0017120D,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,8,80,80,125,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.70,0:00:04.40,TopQuote,,0,0,0,,而且它在我們的夢中會甦醒
+Dialogue: 0,0:00:04.40,0:00:10.80,Quote,,0,0,0,,讀了很多以後，看到展物時\N你會覺得：嘿，你終於來了

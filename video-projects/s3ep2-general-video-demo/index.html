@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-Hant" data-resolution="portrait">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=1080, height=1920" /><script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "PodcastTC"; src: local("Microsoft JhengHei"); } * { box-sizing: border-box; }
+      html,body { margin:0; width:1080px; height:1920px; overflow:hidden; background:#01101A; } body { font-family:"PodcastTC",sans-serif; }
+      #root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#01101A; } .clip { position:absolute; inset:0; }
+      #hero { position:absolute; width:1080px; height:1250px; overflow:hidden; transform-origin:50% 42%; } #hero img { width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.12); }
+      #shade { position:absolute; inset:0; background:linear-gradient(180deg,rgba(1,16,26,.15) 25%,#01101A 91%); } #gate { position:absolute; inset:0; border:2px solid rgba(109,227,234,.55); }
+      .copy { position:absolute; left:74px; right:74px; color:#fff; } .eyebrow { top:108px; color:#6DE3EA; font-family:"JetBrains Mono",monospace; font-size:27px; letter-spacing:4px; }
+      .opening { top:1330px; font-size:78px; font-weight:700; line-height:1.13; letter-spacing:-2px; } .thesis { top:1300px; font-size:72px; font-weight:700; line-height:1.19; letter-spacing:-2px; opacity:0; } .lockup { top:1300px; font-size:54px; line-height:1.35; opacity:0; }
+      .accent { position:absolute; left:76px; top:1582px; width:138px; height:9px; background:#4AB897; transform-origin:left; } .footer { position:absolute; left:76px; bottom:112px; color:#6DE3EA; font-size:28px; letter-spacing:2px; } .time { position:absolute; right:72px; bottom:112px; color:rgba(255,255,255,.68); font-family:"JetBrains Mono",monospace; font-size:23px; }
+    </style></head>
+  <body><div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+    <section id="visual-scene" class="clip" data-start="0" data-duration="15" data-track-index="0"><div id="hero" data-layout-allow-overflow><img src="assets/cover.png" alt="埃及展插畫封面" /></div><div id="shade"></div><div id="gate"></div></section>
+    <section id="copy-scene" class="clip" data-start="0" data-duration="15" data-track-index="1"><p id="eyebrow" class="copy eyebrow">不標準答案 · S3EP2</p><h1 id="opening" class="copy opening">台南。埃及。<br />一家人。</h1><h2 id="thesis" class="copy thesis">不是帶孩子<br />去看展。</h2><h2 id="lockup" class="copy lockup">是在一個下午，<br />和 4 千年前的世界<br />打個照面。</h2><div id="accent" class="accent"></div><p id="footer" class="footer">完整對話，在 Podcast</p><p id="time" class="time">15 SEC / 09:16</p></section>
+    <audio id="hook-audio" src="assets/s3ep2-hook.mp3" data-start="0" data-duration="15" data-track-index="10" data-volume="1"></audio></div>
+    <script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});tl.set('#hero',{scale:1},0).set('#opening, #eyebrow, #footer, #time',{autoAlpha:1},0).set('#accent',{scaleX:1},0).to('#hero img',{keyframes:[{scale:1.07,duration:6.1,ease:'power1.inOut'},{scale:1.02,duration:8.9,ease:'power1.inOut'}]},0).to('#opening',{autoAlpha:0,y:-42,duration:.45,ease:'power2.in'},5.35).fromTo('#thesis',{autoAlpha:0,y:70},{autoAlpha:1,y:0,duration:.62,ease:'power3.out',immediateRender:false},5.8).to('#thesis',{autoAlpha:0,y:-42,duration:.45,ease:'power2.in'},10.65).fromTo('#lockup',{autoAlpha:0,y:70},{autoAlpha:1,y:0,duration:.62,ease:'power3.out',immediateRender:false},11.1);window.__timelines.main=tl;</script>
+  </body>
+</html>

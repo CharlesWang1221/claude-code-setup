@@ -1,0 +1,11 @@
+{
+  "duration": 15,
+  "maxStaticSec": 2,
+  "assertions": [
+    { "kind": "appearsBy", "selector": "#opening", "bySec": 0.1 },
+    { "kind": "appearsBy", "selector": "#thesis", "bySec": 6 },
+    { "kind": "appearsBy", "selector": "#lockup", "bySec": 12.5 },
+    { "kind": "staysInFrame", "selector": "#hero" },
+    { "kind": "keepsMoving", "withinSelector": "#root" }
+  ]
+}
