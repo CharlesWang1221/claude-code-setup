@@ -174,6 +174,17 @@ else
     echo -e "${GRAY}      找不到 skills/ 目錄，跳過${NC}"
 fi
 
+# 外部 Skill：video-shotcraft（影片頭，第三方 Remotion 鏡頭庫，只 clone 不 commit 進 repo）
+mkdir -p "$SKILLS_DEST"
+VIDEO_SHOTCRAFT_DEST="$SKILLS_DEST/video-shotcraft"
+if [[ -d "$VIDEO_SHOTCRAFT_DEST/.git" ]]; then
+    echo -e "${GRAY}      video-shotcraft 已存在，git pull 更新...${NC}"
+    git -C "$VIDEO_SHOTCRAFT_DEST" pull --ff-only
+else
+    git clone --depth 1 https://github.com/Vincentwei1021/video-shotcraft.git "$VIDEO_SHOTCRAFT_DEST"
+fi
+echo -e "${GREEN}      已安裝 video-shotcraft（影片頭）${NC}"
+
 # 同步 skills + 本地 MCP servers 到 Codex CLI（實測 Codex 讀取的是 ~/.codex/skills，不是 ~/.agents/skills）
 SYNC_CODEX_SCRIPT="$SCRIPT_DIR/tools/sync-codex.sh"
 if [[ -f "$SYNC_CODEX_SCRIPT" ]] && command -v codex &>/dev/null; then

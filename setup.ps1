@@ -102,6 +102,17 @@ if (Test-Path $skillsSrc) {
     Write-Host "      找不到 skills/ 目錄，跳過" -ForegroundColor Gray
 }
 
+# 外部 Skill：video-shotcraft（影片頭，第三方 Remotion 鏡頭庫，只 clone 不 commit 進 repo）
+New-Item -ItemType Directory -Force $skillsDest | Out-Null
+$videoShotcraftDest = Join-Path $skillsDest "video-shotcraft"
+if (Test-Path (Join-Path $videoShotcraftDest ".git")) {
+    Write-Host "      video-shotcraft 已存在，git pull 更新..." -ForegroundColor Gray
+    git -C $videoShotcraftDest pull --ff-only
+} else {
+    git clone --depth 1 https://github.com/Vincentwei1021/video-shotcraft.git $videoShotcraftDest
+}
+Write-Host "      已安裝 video-shotcraft（影片頭）" -ForegroundColor Green
+
 # 鏡像到 Agents 與 Codex 會掃描的路徑
 $agentsSkillsDest = Join-Path $env:USERPROFILE ".agents\skills"
 if (Test-Path $skillsDest) {

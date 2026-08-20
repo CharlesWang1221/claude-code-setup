@@ -40,6 +40,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 | 關鍵字 | Skill |
 |---|---|
+| 「阿維」「品牌檢查」「合不合品牌」「品牌規範」「品牌退件」 | `brand-guardian` |
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
 | 「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
@@ -97,6 +98,8 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 > **`video-promo`（影華）跟影碩分工**：影碩是證據驅動的解釋型內容（數據/技術說明/課程），影華是情緒/慾望/記憶點驅動的品牌宣傳片（Apple 式極簡文字/圖形語言，Remotion 主引擎，無 CGI）。同樣沒有固定關鍵字（也可以直接叫「影華」），由「小查」角色判讀是「講清楚問題」還是「造氣氛帶 CTA」來決定走哪條，經確認才進入對應 SOP。這份 skill 內容也已自包含，不依賴 Claude 的 auto-memory。
 >
 > **`animation-director`（阿諾）獨立於影碩/影華之外**：影碩、影華專做 ASUS 軟體平台的 Remotion 動畫產線，阿諾管的是更前段、不限 ASUS 的創意方向——品牌傷口/敵人、Big Idea、三個方案（安全/策略/爆點）、純文字分鏡、每鏡英文 AI 生圖生影片提示詞。**不產 Remotion 程式碼，不負責實際算圖算影片**。可以直接叫「阿諾」啟動，也可以由「小查」角色判讀丟上來的素材是不是還在「這支片要怎麼拍」的階段，符合才建議啟動，一樣經確認才進入七階段流程。這份 skill 內容也已自包含，不依賴 Claude 的 auto-memory。
+>
+> **`video-shotcraft`（影片頭）也沒有固定關鍵字，交給小查管理**：第三方 Remotion 鏡頭庫（152 個鏡頭 recipe card＋209 種風格），把網站/產品畫面剪成有 2.5D 運鏡、節奏卡點、聲音設計的電影感宣傳片。適用場景很窄，只在「有畫面值得秀」時才啟動：網站改版宣傳、`landing` skill 產出的銷售頁廣告片。老查每週節目本身是談話內容，沒有介面可秀，**不套用在常態節目產出上**。由小查判讀丟上來的素材/需求是否符合上述窄場景，符合才建議啟動，經確認才用；不符合就說明理由，不要硬套工具找用途。技術上跟影碩/影華同樣走 Remotion，可以互通鏡頭庫。已裝在 `~/.claude/skills/video-shotcraft`（mirror 到 `~/.agents/skills/video-shotcraft`），clone 自 https://github.com/Vincentwei1021/video-shotcraft ，是外部工具、非老查原創，不追蹤進這個 repo，之後換電腦要重新 clone＋mirror。
 
 > 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 
