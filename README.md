@@ -2,6 +2,8 @@
 
 Claude Code MCP 工具一鍵安裝腳本，支援 Windows 與 macOS。
 
+> Mac 與 Windows PC 都以 Codex 為主要工作代理；Claude Cloud／Claude Code 僅作輔助。兩套安裝腳本都直接從 repo 安裝 Codex Skills，不以 Claude 設定反向覆蓋 Codex。
+
 ## 換電腦還原步驟
 
 ### Step 1 — 安裝 Git + GitHub CLI
@@ -52,7 +54,6 @@ chmod +x setup.sh
 腳本會自動安裝：
 - Node.js
 - Playwright Chromium
-- Filesystem MCP（Desktop / Documents / Downloads）
 - Playwright MCP
 - Cloudflare MCP
 - Firecrawl MCP（輸入 API Key）
@@ -71,7 +72,6 @@ wrangler login
 
 | 工具 | 用途 |
 |------|------|
-| Filesystem MCP | 存取 Desktop / Documents / Downloads |
 | Playwright MCP | 操作瀏覽器、截圖、填表單 |
 | Firecrawl MCP | 讀取任何網頁內容（免費 500 次/月） |
 | Cloudflare MCP | 查詢 Cloudflare Workers 日誌 |

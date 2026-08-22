@@ -51,12 +51,7 @@ echo -e "${YELLOW}[3/5] 加入 MCP 工具...${NC}"
 
 USERNAME_HOME="$HOME"
 
-# Filesystem（桌面 / Documents / Downloads）
-claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem \
-    "$USERNAME_HOME/Desktop" \
-    "$USERNAME_HOME/Documents" \
-    "$USERNAME_HOME/Downloads"
-echo -e "${GREEN}      Filesystem 加入完成${NC}"
+# Filesystem MCP 已淘汰。Claude Code 與 Codex 都有內建檔案工具，避免重複權限與設定。
 
 # Playwright
 claude mcp add playwright -- npx -y @playwright/mcp
@@ -185,13 +180,19 @@ else
 fi
 echo -e "${GREEN}      已安裝 video-shotcraft（影片頭）${NC}"
 
-# 同步 skills + 本地 MCP servers 到 Codex CLI（實測 Codex 讀取的是 ~/.codex/skills，不是 ~/.agents/skills）
-SYNC_CODEX_SCRIPT="$SCRIPT_DIR/tools/sync-codex.sh"
-if [[ -f "$SYNC_CODEX_SCRIPT" ]] && command -v codex &>/dev/null; then
-    bash "$SYNC_CODEX_SCRIPT"
-elif [[ -f "$SYNC_CODEX_SCRIPT" ]]; then
-    echo -e "${GRAY}      未偵測到 codex 指令，跳過 Codex 同步（之後裝好可手動執行 tools/sync-codex.sh）${NC}"
-fi
+# Codex 是主要工作代理。直接從 repo 安裝 Skills，不再以 Claude 設定反向覆蓋 Codex。
+CODEX_SKILLS_DEST="$HOME/.codex/skills"
+mkdir -p "$CODEX_SKILLS_DEST"
+for dir in "$SKILLS_SRC"/*/; do
+    [[ -d "$dir" ]] || continue
+    name=$(basename "$dir")
+    [[ "$name" == "skill-creator" ]] && continue
+    mkdir -p "$CODEX_SKILLS_DEST/$name"
+    cp -R "$dir"/. "$CODEX_SKILLS_DEST/$name/"
+done
+mkdir -p "$CODEX_SKILLS_DEST/video-shotcraft"
+cp -R "$VIDEO_SHOTCRAFT_DEST"/. "$CODEX_SKILLS_DEST/video-shotcraft/"
+echo -e "${GREEN}      已直接安裝 Skills 到 Codex（Codex 主、Claude 輔）${NC}"
 
 CODEX_AGENTS_SRC="$SCRIPT_DIR/codex/AGENTS.global.md"
 CODEX_HOME_DIR="$HOME/.codex"

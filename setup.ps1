@@ -31,13 +31,7 @@ Write-Host "      Playwright 瀏覽器安裝完成" -ForegroundColor Green
 Write-Host ""
 Write-Host "[3/5] 加入 MCP 工具..." -ForegroundColor Yellow
 
-# Filesystem（桌面 / Documents / Downloads）
-$username = $env:USERNAME
-claude mcp add filesystem -- npx -y @modelcontextprotocol/server-filesystem `
-    "C:\Users\$username\Desktop" `
-    "C:\Users\$username\Documents" `
-    "C:\Users\$username\Downloads"
-Write-Host "      Filesystem 加入完成" -ForegroundColor Green
+# Filesystem MCP 已淘汰。Claude Code 與 Codex 都有內建檔案工具，避免重複權限與設定。
 
 # Playwright
 claude mcp add playwright -- npx -y @playwright/mcp
@@ -83,21 +77,30 @@ Write-Host "      *** 重要：請在安裝完成後手動執行以下指令登�
 Write-Host "      wrangler login" -ForegroundColor Cyan
 Write-Host "      （會開啟瀏覽器，點 Allow 完成授權）" -ForegroundColor Gray
 
-# ── 6. Claude Code Skills ────────────────────────────────────
+# ── 6. Codex 主力 Skills + Claude 輔助 Skills ───────────────
 Write-Host ""
-Write-Host "[6/7] 安裝 Claude Code Skills..." -ForegroundColor Yellow
+Write-Host "[6/7] 安裝 Codex 主力 Skills 與 Claude 輔助 Skills..." -ForegroundColor Yellow
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $skillsSrc = Join-Path $scriptDir "skills"
+$codexSkillsDest = Join-Path $env:USERPROFILE ".codex\skills"
 $skillsDest = Join-Path $env:USERPROFILE ".claude\skills"
 
 if (Test-Path $skillsSrc) {
-    if (-not (Test-Path $skillsDest)) {
-        New-Item -ItemType Directory -Force $skillsDest | Out-Null
+    New-Item -ItemType Directory -Force $codexSkillsDest | Out-Null
+    New-Item -ItemType Directory -Force $skillsDest | Out-Null
+    Get-ChildItem $skillsSrc -Directory | ForEach-Object {
+        if ($_.Name -ne "skill-creator") {
+            $codexSkill = Join-Path $codexSkillsDest $_.Name
+            New-Item -ItemType Directory -Force $codexSkill | Out-Null
+            Copy-Item -Recurse -Force (Join-Path $_.FullName "*") $codexSkill
+        }
+        $claudeSkill = Join-Path $skillsDest $_.Name
+        New-Item -ItemType Directory -Force $claudeSkill | Out-Null
+        Copy-Item -Recurse -Force (Join-Path $_.FullName "*") $claudeSkill
     }
-    Copy-Item -Recurse -Force "$skillsSrc\*" $skillsDest
     $count = (Get-ChildItem $skillsSrc -Directory).Count
-    Write-Host "      已安裝 $count 個 skill 到 $skillsDest" -ForegroundColor Green
+    Write-Host "      已從 repo 安裝 $count 個 Skills（Codex 主、Claude 輔）" -ForegroundColor Green
 } else {
     Write-Host "      找不到 skills/ 目錄，跳過" -ForegroundColor Gray
 }
@@ -113,17 +116,16 @@ if (Test-Path (Join-Path $videoShotcraftDest ".git")) {
 }
 Write-Host "      已安裝 video-shotcraft（影片頭）" -ForegroundColor Green
 
-# 鏡像到 Agents 與 Codex 會掃描的路徑
-$agentsSkillsDest = Join-Path $env:USERPROFILE ".agents\skills"
-if (Test-Path $skillsDest) {
-    New-Item -ItemType Directory -Force $agentsSkillsDest | Out-Null
-    Copy-Item -Recurse -Force "$skillsDest\*" $agentsSkillsDest
-    Write-Host "      已鏡像到 $agentsSkillsDest" -ForegroundColor Green
+# video-shotcraft 同步給 Codex 與相容的 Agents 路徑；來源仍是 repo／外部 Git，不以 Claude 為母版。
+$codexVideoShotcraftDest = Join-Path $codexSkillsDest "video-shotcraft"
+New-Item -ItemType Directory -Force $codexVideoShotcraftDest | Out-Null
+Copy-Item -Recurse -Force "$videoShotcraftDest\*" $codexVideoShotcraftDest
 
-    $codexSkillsDest = Join-Path $env:USERPROFILE ".codex\skills"
-    New-Item -ItemType Directory -Force $codexSkillsDest | Out-Null
-    Copy-Item -Recurse -Force "$skillsDest\*" $codexSkillsDest
-    Write-Host "      已鏡像到 $codexSkillsDest（Codex 讀取用）" -ForegroundColor Green
+$agentsSkillsDest = Join-Path $env:USERPROFILE ".agents\skills"
+if (Test-Path $codexSkillsDest) {
+    New-Item -ItemType Directory -Force $agentsSkillsDest | Out-Null
+    Copy-Item -Recurse -Force "$codexSkillsDest\*" $agentsSkillsDest
+    Write-Host "      已由 Codex 鏡像到 $agentsSkillsDest" -ForegroundColor Green
 }
 
 $codexAgentsSrc = Join-Path $scriptDir "codex\AGENTS.global.md"
@@ -216,6 +218,6 @@ Write-Host "      調整顯示：編輯 ~/.claude/statusline-command.sh 頂部�
 Write-Host ""
 Write-Host "=== 安裝完成 ===" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "請重新啟動 Claude Code 讓 MCP 工具、Skills 與狀態列生效。" -ForegroundColor White
-Write-Host "驗證指令：claude mcp list" -ForegroundColor Gray
+Write-Host "請重新啟動 Codex；Claude Code 僅作輔助。" -ForegroundColor White
+Write-Host "驗證指令：codex mcp list；claude mcp list" -ForegroundColor Gray
 Write-Host ""

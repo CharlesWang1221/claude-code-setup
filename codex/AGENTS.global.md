@@ -12,6 +12,7 @@
 
 ## 主要工作專案
 
+- 無論使用 Mac 或 Windows PC，主要工作代理固定是 Codex；Claude Cloud／Claude Code 僅作輔助。跨工具同步時以 Codex 的規則、Skills 與 MCP 設定為主，不得再把 Claude 設定當成母版覆蓋 Codex。
 - 《不標準答案》Podcast 內容生產與自動化工具鏈，repo 是 `CharlesWang1221/claude-code-setup`（**公開 repo**，機敏內容不要進去），本機路徑依電腦而定（Windows 常見在 `Code/claude-code-setup` 或 `hot data/CCoode`，Mac 在 `~/Code/claude-code-setup`）
 - 該專案更完整的規則、SOP、觸發詞見專案根目錄內的 `AGENTS.md`
 - 遇到老查提到專案細節但這裡跟專案 `AGENTS.md` 都沒寫到的，主動確認情境，不要假裝知道

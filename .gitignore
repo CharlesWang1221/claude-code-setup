@@ -15,6 +15,7 @@ package-lock.json
 tools/client_secret.json
 tools/client_secret.json.json
 tools/youtube-token.json
+tools/firstory-upload/browser-session/
 
 # 影片檔（太大，不進 git）
 output/**/*.mp4
