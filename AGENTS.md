@@ -75,6 +75,8 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 週四 10:00：與 Podcast 音檔無關的品牌網誌（有合格內容才發，每月先抓 2 篇）；20:30：同篇 FB 長文＋啊問核准主圖。
 - 週五 12:00：第 2 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。週四已發的網誌不重複推送。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
+- Windows PC 換機後，在 repo 執行 `git pull`、`.\setup.ps1`，再重新啟動 Codex。`setup.ps1` 會把 repo 內的 Skills 複製到 `%USERPROFILE%\.codex\skills`，不可只複製聊天紀錄或沿用舊版 Claude 設定。
+- Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 
 ### Podcast 預告音檔硬規則
 
