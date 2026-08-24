@@ -1,0 +1,4 @@
+interface:
+  display_name: "啊問"
+  short_description: "閱讀網誌後建議並製作符合品牌的圖片敘事與視覺呈現方式"
+  default_prompt: "讀取這篇網誌，建議最適合的圖片呈現方式，等我確認後再製作。"

@@ -1,6 +1,6 @@
 ---
 name: podcast-publish
-description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——自動判斷這一集做到哪一步（逐字稿/文案/IG圖/影片/YouTube/Firstory/Shorts/FB預告），接續執行到底或回報缺什麼輸入。觸發詞「上架」「新集數」「這集上架」「星期天」。
+description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、各比例視覺、正片、一般預告、兩支剪紙精華，以及 YouTube、Firstory、IG、FB、Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
 ---
 
 # 星期天 — Podcast 上架統一入口
@@ -23,13 +23,35 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
   "content_decision": { "approved": false, "core_claim": null, "brand_anchor": null, "audience": null, "listener_problem": null, "episode_promise": null, "title": null, "thumbnail_text": null },
   "brand_review": { "passed": false, "rejected_reasons": [] },
   "content_files": false,
-  "teaser_video": { "quote_selected": false, "rendered": false, "quote": null, "start": null, "end": null },
+  "inputs": { "audio": null, "transcript": null, "images_dir": null, "assets_classified": false },
+  "teaser_video": { "quote_selected": false, "rendered": false, "approved": false, "quote": null, "start": null, "end": null },
+  "paper_highlights": [
+    { "slot": 1, "quote_selected": false, "rendered": false, "approved": false, "quote": null, "start": null, "end": null, "render": null },
+    { "slot": 2, "quote_selected": false, "rendered": false, "approved": false, "quote": null, "start": null, "end": null, "render": null }
+  ],
   "ig_images": false,
+  "instagram": { "approved": false, "published": false, "postId": null, "url": null },
   "video_rendered": false,
   "youtube": { "uploaded": false, "videoId": null },
   "firstory": { "uploaded": false },
+  "release_schedule": {
+    "target_at": null,
+    "timezone": "Asia/Taipei",
+    "experiment_episode": null,
+    "youtube_scheduled": false,
+    "firstory_scheduled": false,
+    "ig_topic_at": null,
+    "fb_topic_at": null,
+    "teaser_at": null,
+    "paper_highlight_1_at": null,
+    "paper_highlight_2_at": null
+  },
   "shorts": { "applicable": false, "done": false },
-  "fb_promo": { "applicable": false, "done": false }
+  "fb_promo": { "applicable": false, "done": false, "scheduled": false, "postId": null, "url": null },
+  "paper_highlight_publish": [
+    { "slot": 1, "scheduled": false, "instagram": null, "facebook": null, "youtubeShorts": null },
+    { "slot": 2, "scheduled": false, "instagram": null, "facebook": null, "youtubeShorts": null }
+  ]
 }
 ```
 
@@ -41,8 +63,10 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 ## 執行步驟
 
-### 0. 輸入
-需要 `{slug}`（必填）。視情況可能還需要：Plaud 逐字稿連結、Firstory Studio 連結、音檔路徑（Downloads）、封面圖路徑（Google Drive）。老查沒主動給，就在對應步驟卡住時再問，不要一開始就把所有問題一次問完。
+### 0. 輸入與素材分類
+需要 `{slug}`（必填）。接受本機音檔、Plaud 連結或本機逐字稿（`.txt`／`.md`／`.docx`），以及圖片檔或圖片資料夾。老查已一次提供的素材先全部登錄到 `inputs`，不要在後段重問同一路徑。
+
+收到圖片資料夾後先建立素材清單，依實際比例與內容分成：IG 1:1、FB／Reels 9:16、YouTube 16:9、角色／場景來源圖。不能拿錯比例的圖片硬裁來補缺口；缺少必要比例時，在真正使用前回報。
 
 ### 0.5 品牌基準
 
@@ -50,9 +74,18 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 以心維空間為母品牌、《不標準答案》為旗下產品。所有標題、縮圖、Show Notes、社群文案、預告字卡與 CTA 都必須服從 `BRAND_CONTEXT.md`；不可把兩者寫成並列品牌。
 
+### 0.6 發布時段與 6 集實驗
+
+- 2026-08-24 起，Podcast 正片固定排程於每週一 07:00（Asia/Taipei, UTC+8）公開，連續執行 6 集；不得因單集波動自行改時段。
+- 啟動單集流程時，先確認該集預定發布日期，將完整 ISO 8601 時間（含 `+08:00`）寫入 `release_schedule.target_at`，並標記這是實驗第幾集。若日期無法由現有資料判斷，只問老查「這集排哪個週一」，不可自行猜日期。
+- 製作目標：前一週五 18:00 前完成內容決策與品牌審查；週日 18:00 前完成成品、平台文案與上傳；週一 07:00 正片公開。時間不足時要回報風險，不可默默改成即時發布。
+- 社群錯峰：週一 12:15 發 FB／IG 主題文，週一 20:30 發一般預告，週三 20:30 發第 1 支剪紙精華，週五 12:00 發第 2 支剪紙精華。兩支剪紙精華使用同一支 9:16 成品分別排到 IG Reels、FB Reels、YouTube Shorts；若任一平台不支援預約或當下無法完成，保留草稿並明確回報，不得假裝已排程。
+- 從 `target_at` 自動計算同週的 `ig_topic_at`、`fb_topic_at`、`teaser_at`、`paper_highlight_1_at`、`paper_highlight_2_at`，全部寫完整 ISO 8601 與 `+08:00`。除非老查明確要求單次改為立即發布，否則沿用上述時段。
+- 第 6 集發布滿 7 天後，回報應進行時段復盤；比較上線後 24 小時播放量、7 天完播率、首日播放占比、實際收聽尖峰與社群導流，再由老查決定是否調整。
+
 ### 1. 逐字稿 — `transcript: false` 時
-老查有給 Plaud 連結（`https://web.plaud.ai/s/pub_xxxx...`）→ 用 `firecrawl_scrape`（`waitFor: 5000`）抓取，存到 `output/ep-{slug}/transcript/`。
-沒給連結 → 停在這一步，回報「需要 Plaud 逐字稿連結才能繼續」。
+老查有給 Plaud 連結（`https://web.plaud.ai/s/pub_xxxx...`）→ 用 `firecrawl_scrape`（`waitFor: 5000`）抓取；有給本機 `.txt`／`.md`／`.docx` → 直接讀取並複製到 `output/ep-{slug}/transcript/`。兩者都有時以本機修訂版為準，Plaud 只用來補時間碼。
+完全沒有逐字稿來源才停在這一步，回報「需要 Plaud 逐字稿連結或逐字稿檔案才能繼續」。
 完成後 `transcript: true`。
 
 ### 2. 內容決策關 — `content_decision.approved: false` 時
@@ -72,12 +105,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 同時列出 10 句逐字稿原話金句，附講者與可靠時間碼。不可把改寫句冒充原話；找不到可靠時間碼就標示待確認。
 
-停下來讓老查核准：最終標題、縮圖文字、5 句金句，以及其中 1 句節目預告主句。未核准不得產生平台文案，也不得把 `content_decision.approved` 設為 `true`。
+停下來讓老查核准：最終標題、縮圖文字、5 句金句、其中 1 句一般預告主句，以及 2 段剪紙精華。兩支剪紙精華應各自表達一個完整觀點，優先使用不同段落，長度以 25 至 45 秒為目標，但不能為湊秒數切斷完整語意。未核准不得產生平台文案，也不得把 `content_decision.approved` 設為 `true`。
 
 核准後把結果寫入 `.publish-status.json`，再進入下一步。
 
-### 2.1 四個文案檔 — `content_decision.approved: true` 且 `content_files: false` 時
-以核准的核心主張、品牌錨點、標題與金句為唯一母稿，產出 `fb-post.txt`（800 字 FB 長文）／`ig-caption.txt`（150 字＋hashtag）／`youtube.txt`（標題＋說明＋章節）／`show-notes.md`（Firstory Show Notes）。細節格式見記憶 `project_podcast_production`。
+### 2.1 平台文案 — `content_decision.approved: true` 且 `content_files: false` 時
+以核准的核心主張、品牌錨點、標題與金句為唯一母稿，產出 `fb-post.txt`（800 字 FB 長文）／`ig-caption.txt`（150 字＋hashtag）／`youtube.txt`（標題＋說明＋章節）／`show-notes.md`（Firstory Show Notes）／`paper-highlight-1-caption.txt`／`paper-highlight-2-caption.txt`。兩支精華文案各自只服務該段觀點，不能貼同一篇通用摘要。細節格式見記憶 `project_podcast_production`。
 
 寫作時套用記憶 `feedback_interaction_style` 的語氣禁用詞、排版規則，以及以下平台硬規則與發布前品牌關（取自 `social-media-assistant` 技能包，2026-08-06 併入）：
 
@@ -121,7 +154,17 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 只有在老查從已選 5 句金句中指定 1 句主句後才執行。把主句與時間碼寫入 `teaser_video.quote`、`start`、`end`，再呼叫 `podcast-teaser-video` skill。
 
-它以主句為剪輯錨點，從原始音檔取 12 至 18 秒，製作 9:16、15 秒、3 段重點卡的節目預告。必須先讓老查確認關鍵畫面才渲染；成品驗證完畢後才設 `teaser_video.rendered: true`。不在這個流程自行上傳。
+它以主句為剪輯錨點，從原始音檔取 12 至 18 秒，製作 9:16 一般預告。人物版依序使用老查、阿分、大寶、小寶特寫，每張必須有肉眼可辨的景別差異；場景之間用漫畫翻頁，最後翻到完整全圖與 9:16 片尾。片尾固定列 YouTube、Firstory、Spotify、Apple Podcast。
+
+必須先讓老查確認關鍵畫面才渲染，成品驗證後集中讓老查核准。核准後設定 `teaser_video.rendered: true`、`approved: true`，並立即銜接 FB Reel 草稿與排程，不再等老查另外提醒。
+
+### 2.6 兩支剪紙節目精華
+
+`paper_highlights` 任一支未完成時，呼叫 `paper-collage-video` skill。兩支都使用內容決策關核准的原話、講者、起訖時間碼與原始音檔，不得自行另寫旁白或把改寫句冒充節目原話。
+
+每支先產鏡頭表與分層物件清單。兩支共用同一套紙張材質與字幕系統，只需做一次代表鏡頭 proof；老查確認風格後，再批次完成兩支 1080 × 1920、30 fps 成品。完成後一次交付兩支預覽、逐字引用、長度與發布槽位，經核准才把各自 `rendered`、`approved` 設為 `true`。
+
+第 1 支對應週三 20:30，第 2 支對應週五 12:00。兩支完成後直接進入 IG Reels、FB Reels、YouTube Shorts 的草稿與排程步驟，不與真人 Shorts 的 `raw.mp4` 判斷綁在一起。
 
 ### 3. IG 圖 — `content_files: true` 且 `ig_images: false` 時
 先讀專案根目錄 `DESIGN.md`，讓封面、輪播與金句圖服從品牌色、字體與視覺規則；找不到就停止視覺生成並回報。
@@ -134,10 +177,12 @@ powershell -ExecutionPolicy Bypass -File tools\ig-images\run_ig.ps1 -EpSlug {slu
 
 產完後，把整個 `output/ep-{slug}/ig/` 資料夾內容（carousel + quote 圖）連同 `ig-caption.txt` 一起複製到 Google Drive：`G:\我的雲端硬碟\不標準答案\2026\IG\{slug}\`（老查要求2026-07-26，方便他之後直接去這裡貼文，不用回頭找 repo 路徑）。
 
-完成後 `ig_images: true`。
+IG 輪播與片尾固定使用 1:1；一般預告與剪紙精華固定使用 9:16；YouTube 封面與正片固定使用 16:9。三種片尾不得共用一張圖硬裁，分別輸出 `end-card-square.png`、`end-card-vertical.png`、`end-card-youtube.png`，並列出 YouTube、Firstory、Spotify、Apple Podcast。
+
+完成後 `ig_images: true`。列出輪播順序與 `ig-caption.txt` 讓老查審核；核准後建立 IG 草稿，正式分享或排程前再確認一次。成功後才寫回 `instagram.approved`、`published`、`postId`、`url`。
 
 ### 4. 集數影片 — `video_rendered: false` 時
-問老查「音檔路徑（Downloads 裡的 mp3）+ 封面圖路徑（Google Drive）」。拿到後直接執行 FFmpeg（不產生 `make-video.ps1` 中間檔，直接跑）：
+優先使用 `inputs.audio` 與素材分類中的 16:9 YouTube 圖；只有缺少時才問老查，不得重問已提供的路徑。拿到後直接執行 FFmpeg（不產生 `make-video.ps1` 中間檔，直接跑）：
 ```powershell
 $audio  = "<老查給的音檔路徑>"
 $cover  = "<老查給的封面圖路徑>"
@@ -150,40 +195,58 @@ ffmpeg -y -loop 1 -i $cover -i $audio -c:v libx264 -tune stillimage -crf 18 -c:a
 ```powershell
 node tools/youtube-upload.js --episode ep-{slug}
 ```
-上傳後把回傳的 videoId 寫入 `.publish-status.json`（`youtube.uploaded: true`, `youtube.videoId: "<id>"`），回報 YouTube Studio 連結（`https://studio.youtube.com/video/{videoId}/edit`）。預設私人，老查自行確認後改公開。
+上傳後把回傳的 videoId 寫入 `.publish-status.json`（`youtube.uploaded: true`, `youtube.videoId: "<id>"`），回報 YouTube Studio 連結（`https://studio.youtube.com/video/{videoId}/edit`）。目前腳本只會上傳為私人；必須依 `release_schedule.target_at` 在 YouTube Studio 設定排程公開，確認後才把 `release_schedule.youtube_scheduled` 設為 `true`。未確認排程成功，不得只回報「已完成」。
 
 ### 6. Firstory 上傳 — 有音檔路徑且 `firstory.uploaded: false` 時
 ```
 node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 ```
-這是半自動：開瀏覽器、自動填標題+說明+上傳音檔，停在發布頁讓老查手動確認發布。老查確認發布後才把 `firstory.uploaded` 設為 `true`（不要在腳本跑完就設定，因為它本來就不會自動按發布）。
+這是半自動：開瀏覽器、自動填標題+說明+上傳音檔，停在發布頁。依 `release_schedule.target_at` 設定預約發布；若 Firstory 當下介面或方案不支援預約，停止在確認頁並明確回報，不得改成提前公開。老查確認預約成功後，才把 `firstory.uploaded` 與 `release_schedule.firstory_scheduled` 設為 `true`（不要在腳本跑完就設定，因為它本來就不會自動按發布）。
 
-### 7. Shorts + FB 預告（條件式）
-檢查 `video-projects/{slug}-short/01-raw/raw.mp4` 是否存在：
-- **不存在** → `shorts.applicable: false`，跳過。這是正常狀態，不是卡住——不是每集都會另外錄短影音素材。
-- **存在** → 依 `shorts-pipeline` skill（`~/.claude/skills/shorts-pipeline/SKILL.md`）的 6 個步驟執行完，`shorts.done: true`。接著跑 FB 預告（細節見記憶 `project_fb_promo_pipeline`）：
-  ```powershell
-  cd tools\fb-promo; npm install   # 首次需要
-  tools\fb-promo\run.bat video-projects\{slug}-short
-  ```
-  完成後 `fb_promo.done: true`。
+### 7. 對外草稿與排程
+
+所有對外發布都先把成品、文案、身分、公開範圍與時間設定到最後一步，再向老查做動作確認。收到明確確認後才正式發布或建立平台排程；成功訊息、內容編號與網址讀回後，才可標成完成。
+
+#### 7.1 一般預告
+
+只要 `teaser_video.rendered: true` 且 `approved: true`，`fb_promo.applicable` 就是 `true`，與真人 Shorts 是否存在無關。使用 9:16 成品與核准文案建立 FB Reel，預設排程週一 20:30；單集若由老查指定立即發布，就只覆寫該集。
+
+#### 7.2 兩支剪紙精華
+
+兩支 `paper_highlights` 都核准後，依各自 caption 建立下列排程：
+
+| 成品 | 發布時間（Asia/Taipei） | 平台 |
+| --- | --- | --- |
+| 剪紙精華 1 | 週三 20:30 | IG Reels、FB Reels、YouTube Shorts |
+| 剪紙精華 2 | 週五 12:00 | IG Reels、FB Reels、YouTube Shorts |
+
+逐平台讀回排程狀態、內容編號與可用網址，寫入 `paper_highlight_publish`。同一支影片在三個平台中有一個失敗，不能把整支標成 `scheduled: true`；列出失敗平台並保留其他已成功排程的結果，避免重複上傳。
+
+#### 7.3 額外真人 Shorts（條件式）
+
+檢查 `video-projects/{slug}-short/01-raw/raw.mp4` 是否存在。不存在就把 `shorts.applicable: false`，這只代表沒有額外真人短片，不影響一般預告與兩支剪紙精華。存在才依 `shorts-pipeline` skill 執行並安排額外發布槽位；不得擠掉週三、週五的兩支剪紙精華。
 
 ### 8. 結尾報告
-每次執行完，列出這集 11 個項目的狀態表：
+每次執行完，列出這集 16 個項目的狀態表：
 
 | 項目 | 狀態 |
 |------|------|
 | 逐字稿 | ✅/❌/⏸️缺輸入 |
 | 內容決策 | ✅/❌/⏸️待核准 |
 | 品牌審查 | ✅/❌ REJECTED/⏸️待修正 |
-| 文案4檔 | ... |
+| 平台文案 | ... |
 | 節目預告 | ✅/❌/⏸️待選金句 |
+| 剪紙精華1 | ✅/❌/⏸️待選段或待審核 |
+| 剪紙精華2 | ✅/❌/⏸️待選段或待審核 |
 | IG圖 | ... |
+| IG上架 | ... |
 | 集數影片 | ... |
 | YouTube | ... |
 | Firstory | ... |
 | Shorts | ✅/❌/➖不適用 |
 | FB預告 | ... |
+| 精華1跨平台排程 | ✅/❌/⏸️待確認 |
+| 精華2跨平台排程 | ✅/❌/⏸️待確認 |
 
 清楚標示完成、缺什麼輸入、還是不適用，讓老查一眼看出下一步要給什麼。
 
@@ -200,6 +263,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - `tools/fb-promo/run.bat` / `run.sh`
 - `shorts-pipeline` skill（步驟 7 直接引用其步驟，不要複製貼上整份內容）
 - `podcast-teaser-video` skill（步驟 2.5 只在老查選定預告主句後呼叫）
+- `paper-collage-video` skill（步驟 2.6 固定製作兩支精華，不與真人 Shorts 綁定）
 - `seo-article-writer` skill（居易，選配步驟 9 引用，不要複製貼上整份內容）
 
 ## 相關記憶

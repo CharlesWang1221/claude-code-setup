@@ -45,6 +45,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
 | 「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
+| 「啊問」「網誌圖片」「網誌主圖」「文章適合什麼圖片」「分隔漫畫」 | `blog-image-director` |
 | 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
 | 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
 | 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
@@ -66,6 +67,14 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 居易完成並經老查核准的文章，Google Drive 備份一律放在 `不標準答案/2026/網誌/未發布/{文章完整中文標題}/{article-slug}.md`。
 - 模式 A、模式 B 都用 frontmatter 的完整中文 `title` 命名資料夾，不再用 episode slug。
 - 2026-08-17 已存在的 `s3ep3` 資料夾維持原名，不回溯更名；規則從下一篇開始套用。
+
+### 跨電腦每週發布節奏
+
+- 週一 07:00：Podcast 正片；12:15：FB／IG 本集主題文；20:30：限動或預告。
+- 週三 20:30：第 1 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。
+- 週四 10:00：與 Podcast 音檔無關的品牌網誌（有合格內容才發，每月先抓 2 篇）；20:30：同篇 FB 長文＋啊問核准主圖。
+- 週五 12:00：第 2 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。週四已發的網誌不重複推送。
+- 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
 
 ### Podcast 預告音檔硬規則
 
