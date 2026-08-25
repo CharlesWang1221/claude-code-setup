@@ -52,6 +52,7 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
+| 「鍋子」 | 先問要蒸餾「人物」或「書本」，再載入 `person-perspective-distiller` 或 `book-knowledge-distiller` |
 
 ### 居易跨電腦落檔規則
 
