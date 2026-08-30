@@ -122,6 +122,13 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 目前主力工作機為 Apple Silicon Mac（2026-08-22）。Codex 是主要代理，已啟用 `playwright`、`firecrawl`、`cloudflare`、`google-workspace`、`plaud`；Claude Code 同款本機 MCP 只作輔助。`filesystem` 已從兩邊移除（跟內建檔案工具重複）。`.codex/config.toml` 含 API key，已加進 `.gitignore`，不要移除該規則。
 - `plaud`（用於會議錄音逐字稿/摘要）用 `tools/sync-codex.sh` 同步時發現：若 Codex 端已有同名 server 手動加在同步標記區塊外，重跑同步會產生重複 `[mcp_servers.x]` table，`codex mcp list` 會直接報 `failed to load configuration`——踩到先檢查 `~/.codex/config.toml` 有無重複區塊
 
+## 跨日任務交接
+
+- 只有跨天、對話即將結束，或需要由另一個工作階段續作的複雜任務，才在任務根目錄建立 `HANDOFF.md`。以 `docs/HANDOFF_TEMPLATE.md` 為範本。
+- `HANDOFF.md` 固定寫：目標、已完成、目前狀態、阻塞、下一步、驗證與避坑。下一個工作階段先讀它，再繼續執行。
+- `HANDOFF.md` 只記當前任務，不能充當長期記憶或規則庫。可跨任務重複的經驗，提煉後只更新一個唯一母版：`AGENTS.md`、對應 `SKILL.md`、`BRAND_CONTEXT.md` 或專案 README。
+- 任務完成後保留 `HANDOFF.md` 作為該任務的歷程；內容若涉及 API key、私人資料或未公開資訊，不得寫入公開 repo。
+
 ## 剪紙效果
 
 - 老查說「剪紙效果」「剪紙風」「紙雕動畫」「做成舊地圖拼貼」或給劇本要製作這類型社群影片時，先讀 `skills/paper-collage-video/SKILL.md`。
