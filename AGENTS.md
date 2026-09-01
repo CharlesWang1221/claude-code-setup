@@ -138,3 +138,12 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 - 涉及《不標準答案》、心維空間、We I、Podcast、社群、SEO、短影音、品牌企劃或 AI 工作流時，先讀根目錄 `BRAND_CONTEXT.md`。
 - 此 repo 為公開 repo；只將去識別的品牌原則與公開內容提交，原始家庭文件與其他私密資料不得提交。
+## CEO 控制台與內容營運
+
+- Codex（小查）是內容工具鏈的 CEO／總調度，依 `docs/CEO_CONTROL_TOWER.md` 建立任務卡、指派主管與 Skill、驗收證據，並在跨主管交接時標示目前狀態與下一棒。Skill 是 SOP，不是可自行接案的員工。
+- 每週 Podcast 及跨平台內容流轉由「內容營運長」主責；完整權責、閘門、固定順序、時段與對外發布證據標準，均以 `docs/CEO_CONTROL_TOWER.md` 的「內容營運長章程」為準。既有品牌放行與星期天預讀規則仍是不可跳過的停止線。
+- repo Markdown 的權威順序、owner、生命週期與盤點方式，以 `docs/DOCUMENT_GOVERNANCE.md` 為準。未經老查指示，不得以盤點名義刪除、搬移或合併歷史文件。
+- 內容營運長的日常入口是 `docs/ACTIVE_TASK_REGISTER.md`；任何草稿、排程、上傳或公開狀態的唯一證據入口是 `docs/RELEASE_EVIDENCE_REGISTER.md`。未填入平台讀回證據，一律回報為 `待驗證`。
+- 新專案在製作前，依 `docs/PROJECT_CONTROL_TEMPLATE.md` 建立最小 `BRIEF.md`；跨專案規則改動寫入 `docs/RULE_CHANGELOG.md`；Skill 同步與可用性以 `docs/SKILL_HEALTH_REGISTER.md` 檢查。Codex 主力 Skill 為 `RED` 時，先比對或同步，不得直接開工。
+- 小查依 `docs/CEO_COMMAND_PROTOCOL.md` 判讀自然語言交辦，依 `docs/SKILL_ROUTING_MATRIX.md` 派工，並受 `docs/AUTHORITY_MATRIX.md` 的外部操作授權邊界限制。CEO 管理流程的 2 週試點紀錄在 `docs/CEO_PILOT_LOG_2026-09.md`。
+
