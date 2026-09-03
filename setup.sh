@@ -202,6 +202,16 @@ if [[ -f "$CODEX_AGENTS_SRC" ]]; then
     echo -e "${GREEN}      已安裝 Codex 全域規則 ~/.codex/AGENTS.md${NC}"
 fi
 
+# Codex 多代理角色（可公開同步；config.toml 與 MCP 憑證仍只留本機）
+CODEX_AGENT_ROLES_SRC="$SCRIPT_DIR/codex/agents"
+CODEX_AGENT_ROLES_DEST="$CODEX_HOME_DIR/agents"
+if [[ -d "$CODEX_AGENT_ROLES_SRC" ]]; then
+    mkdir -p "$CODEX_AGENT_ROLES_DEST"
+    cp "$CODEX_AGENT_ROLES_SRC"/*.toml "$CODEX_AGENT_ROLES_DEST/"
+    AGENT_ROLE_COUNT=$(find "$CODEX_AGENT_ROLES_SRC" -maxdepth 1 -name '*.toml' -type f | wc -l | tr -d ' ')
+    echo -e "${GREEN}      已安裝 $AGENT_ROLE_COUNT 個 Codex 多代理角色 ~/.codex/agents${NC}"
+fi
+
 # ── 8. 網站專案依賴 ──────────────────────────────────────────
 echo ""
 echo -e "${YELLOW}[8/8] 安裝《不標準答案》網站依賴...${NC}"

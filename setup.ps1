@@ -136,6 +136,16 @@ if (Test-Path $codexAgentsSrc) {
     Write-Host "      已安裝 Codex 全域規則 ~/.codex/AGENTS.md" -ForegroundColor Green
 }
 
+# Codex 多代理角色（可公開同步；config.toml 與 MCP 憑證仍只留本機）
+$codexAgentRolesSrc = Join-Path $scriptDir "codex\agents"
+$codexAgentRolesDest = Join-Path $codexHome "agents"
+if (Test-Path $codexAgentRolesSrc) {
+    New-Item -ItemType Directory -Force $codexAgentRolesDest | Out-Null
+    Copy-Item -Force (Join-Path $codexAgentRolesSrc "*.toml") $codexAgentRolesDest
+    $agentRoleCount = (Get-ChildItem $codexAgentRolesSrc -Filter "*.toml" -File).Count
+    Write-Host "      已安裝 $agentRoleCount 個 Codex 多代理角色 ~/.codex/agents" -ForegroundColor Green
+}
+
 # ── 7. 網站專案依賴 ──────────────────────────────────────────
 Write-Host ""
 Write-Host "[7/7] 安裝《不標準答案》網站依賴..." -ForegroundColor Yellow

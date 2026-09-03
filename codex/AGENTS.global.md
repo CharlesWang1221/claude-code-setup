@@ -16,3 +16,9 @@
 - 《不標準答案》Podcast 內容生產與自動化工具鏈，repo 是 `CharlesWang1221/claude-code-setup`（**公開 repo**，機敏內容不要進去），本機路徑依電腦而定（Windows 常見在 `Code/claude-code-setup` 或 `hot data/CCoode`，Mac 在 `~/Code/claude-code-setup`）
 - 該專案更完整的規則、SOP、觸發詞見專案根目錄內的 `AGENTS.md`
 - 遇到老查提到專案細節但這裡跟專案 `AGENTS.md` 都沒寫到的，主動確認情境，不要假裝知道
+
+## 多代理調度與額度
+
+- 預設用 `GPT-5.6 Terra / medium` 做日常主調度；`GPT-5.6 Luna / medium` 只處理可獨立、唯讀的搜尋與盤點；`GPT-5.6 Sol` 只用於高風險架構、複雜除錯或最終裁決。
+- 多代理是用額度換時間與交叉驗證。只在任務可平行拆分時才啟動，避免多個可寫入 worker 同時修改同一檔案。
+- 使用 repo 同步的 `luna_worker`、`explorer`、`reviewer`、`implementer` 角色。先探索／研究，再由單一 worker 實作，最後需要時交 reviewer 驗收。
