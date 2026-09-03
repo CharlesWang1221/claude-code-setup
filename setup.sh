@@ -210,6 +210,7 @@ if [[ -d "$CODEX_AGENT_ROLES_SRC" ]]; then
     cp "$CODEX_AGENT_ROLES_SRC"/*.toml "$CODEX_AGENT_ROLES_DEST/"
     AGENT_ROLE_COUNT=$(find "$CODEX_AGENT_ROLES_SRC" -maxdepth 1 -name '*.toml' -type f | wc -l | tr -d ' ')
     echo -e "${GREEN}      已安裝 $AGENT_ROLE_COUNT 個 Codex 多代理角色 ~/.codex/agents${NC}"
+    echo -e "${GRAY}      日常主調度請在 Codex 選 GPT-5.6 Terra / medium；Sol 僅用於高風險任務${NC}"
 fi
 
 # ── 8. 網站專案依賴 ──────────────────────────────────────────
