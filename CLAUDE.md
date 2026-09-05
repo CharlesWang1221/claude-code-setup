@@ -44,7 +44,7 @@ skills 已同步在 `~/.claude/skills/`（和 Codex 端 `~/.agents/skills/` 內�
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
-| 「做圖卡」「/cards」「社群圖卡」 | `social-cards` |
+| 「做圖卡」「/cards」「社群圖卡」 | Podcast 單集走 `podcast-publish` 的 IG 圖步驟；其他圖卡只有在已確認外部 `social-cards` Skill 可用時才派工。 |
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
 | 「動手前先想清楚」「/brainstorm」 | `brainstorm` |

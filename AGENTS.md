@@ -49,9 +49,10 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
 | 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
 | 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
-| 「做 IG 內容」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
+| 「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
+| 「做 IG 內容」 | 先判斷交付物：要音檔短片走 `podcast-teaser-video`；要輪播／圖卡走 `podcast-publish` 的 IG 圖步驟；只說「做 IG 內容」且無法判斷時，先列兩種交付物，不得直接生成。不得派不存在的 `social-cards`。 |
 | 「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
-| 「做圖卡」「/cards」「社群圖卡」 | `social-cards` |
+| 「做圖卡」「/cards」「社群圖卡」 | 若屬 Podcast 單集，走 `podcast-publish` 的 IG 圖步驟；其他圖卡先判斷是否有對應 Skill，不得憑關鍵字硬派。 |
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
 | 「動手前先想清楚」「/brainstorm」 | `brainstorm` |
@@ -59,7 +60,8 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
 | 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
-| 「影碩」「剪紙效果影片」「用剪紙效果做」 | `video-explainer`（載入剪紙風格模組） |
+| 「影碩」 | `video-explainer`（只限 ASUS／技術解說型影片） |
+| 「剪紙效果影片」「用剪紙效果做」「剪紙風」「節目精選」 | Podcast 節目精選走 `paper-collage-video`；其他題材先判斷目的，不得因關鍵字直接派給 `video-explainer`。 |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
 
 ### 居易跨電腦落檔規則
@@ -90,6 +92,8 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 角色不得混用：阿分＝圓潤鮑伯頭眼鏡女性、白 T／深色長褲；老查＝圓潤短髮眼鏡男性、白 T／深色長褲；大寶＝較年長女孩、及肩髮、連帽上衣／短裙；小寶＝較年幼女孩、長髮、彼得潘領連身裙。
 - 生成時以當次使用者提供的角色三視圖作為 reference；多角色場景要明確指定每人姓名、性別、年齡感、髮型、服裝、動作與畫面位置。禁止依名稱自行臆測角色。
 - 工作順序：先出 1 張完整構圖 → 檢查角色是否互換、服裝髮型是否漂移、姿勢／層次是否符合 → 每次只針對 1 個明確問題精修，並在 prompt 寫明「其他元素不變」。
+- 任何含角色的影片先建立角色／場景資產表，列出出場者、固定位置、畫面比例、道具與禁用變形；完整構圖未經核准，不得拆層、做動態或批次生成。
+- 「特寫」一律代表獨立景別與獨立構圖，不得用整張圖的 `zoom in`／`zoom out` 冒充。若要求老查、阿分、大寶、小寶依序特寫，四個角色都必須先各有一張可辨識關鍵畫面，最後才接完整合照與片尾。
 - 圖內中文、台詞、數字以後製排版為準；生成階段只保留乾淨留白或圖示。需要保留物件數字時，先接受模型可能失準，再個別修圖。
 - 最終交付位置由私有的 `chibi-ink-illustrations` 設定檔決定；公開 repo 不記錄個人雲端帳號或絕對路徑。生成器先產出暫存檔，確認後再轉移。不得覆蓋既有成品，檔名採「主題＿場景＿版本.png」。
 

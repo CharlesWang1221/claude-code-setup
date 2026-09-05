@@ -32,6 +32,15 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
   "ig_images": false,
   "instagram": { "approved": false, "published": false, "postId": null, "url": null },
   "video_rendered": false,
+  "youtube_assets": {
+    "scene_brief": false,
+    "living_room_locked": false,
+    "background_plates": 0,
+    "character_layout_approved": false,
+    "thumbnail_ready": false,
+    "end_card_ready": false,
+    "qc_passed": false
+  },
   "youtube": { "uploaded": false, "videoId": null },
   "firstory": { "uploaded": false },
   "release_schedule": {
@@ -79,7 +88,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 2026-08-24 起，Podcast 正片固定排程於每週一 07:00（Asia/Taipei, UTC+8）公開，連續執行 6 集；不得因單集波動自行改時段。
 - 啟動單集流程時，先確認該集預定發布日期，將完整 ISO 8601 時間（含 `+08:00`）寫入 `release_schedule.target_at`，並標記這是實驗第幾集。若日期無法由現有資料判斷，只問老查「這集排哪個週一」，不可自行猜日期。
 - 製作目標：前一週五 18:00 前完成內容決策與品牌審查；週日 18:00 前完成成品、平台文案與上傳；週一 07:00 正片公開。時間不足時要回報風險，不可默默改成即時發布。
-- 社群錯峰：週一 12:15 發 FB／IG 主題文，週一 20:30 發一般預告，週三 20:30 發第 1 支剪紙精華，週五 12:00 發第 2 支剪紙精華。兩支剪紙精華使用同一支 9:16 成品分別排到 IG Reels、FB Reels、YouTube Shorts；若任一平台不支援預約或當下無法完成，保留草稿並明確回報，不得假裝已排程。
+- 社群錯峰：週一 12:15 發 FB／IG 主題文，週一 20:30 發一般預告，週三 20:30 發第 1 支剪紙精華，週五 12:00 發第 2 支剪紙精華。兩支剪紙精華各自使用自己的 9:16 成品，分別排到 IG Reels、FB Reels、YouTube Shorts；若任一平台不支援預約或當下無法完成，保留草稿並明確回報，不得假裝已排程。
 - 從 `target_at` 自動計算同週的 `ig_topic_at`、`fb_topic_at`、`teaser_at`、`paper_highlight_1_at`、`paper_highlight_2_at`，全部寫完整 ISO 8601 與 `+08:00`。除非老查明確要求單次改為立即發布，否則沿用上述時段。
 - 第 6 集發布滿 7 天後，回報應進行時段復盤；比較上線後 24 小時播放量、7 天完播率、首日播放占比、實際收聽尖峰與社群導流，再由老查決定是否調整。
 
@@ -156,7 +165,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 它以主句為剪輯錨點，從原始音檔取 12 至 18 秒，製作 9:16 一般預告。人物版依序使用老查、阿分、大寶、小寶特寫，每張必須有肉眼可辨的景別差異；場景之間用漫畫翻頁，最後翻到完整全圖與 9:16 片尾。片尾固定列 YouTube、Firstory、Spotify、Apple Podcast。
 
-必須先讓老查確認關鍵畫面才渲染，成品驗證後集中讓老查核准。核准後設定 `teaser_video.rendered: true`、`approved: true`，並立即銜接 FB Reel 草稿與排程，不再等老查另外提醒。
+必須先讓老查確認四角色特寫、完整合照與片尾關鍵畫面才渲染，成品驗證後集中讓老查核准。只交一張完整圖的縮放 proof，不算關鍵畫面確認。核准後設定 `teaser_video.rendered: true`、`approved: true`，並立即銜接 FB Reel 草稿與排程，不再等老查另外提醒。
 
 ### 2.6 兩支剪紙節目精華
 
@@ -182,6 +191,8 @@ IG 輪播與片尾固定使用 1:1；一般預告與剪紙精華固定使用 9:1
 完成後 `ig_images: true`。列出輪播順序與 `ig-caption.txt` 讓老查審核；核准後建立 IG 草稿，正式分享或排程前再確認一次。成功後才寫回 `instagram.approved`、`published`、`postId`、`url`。
 
 ### 4. 集數影片 — `video_rendered: false` 時
+
+YouTube 正片不是「封面＋音檔」的預設套版。若老查指定星空客廳對話版，先建立 `BRIEF.md`、`character-layout-notes.md` 與背景資產表；沒有完成以下前置條件不得渲染：固定客廳母版、至少 3 張同鏡位主題背景、老查與阿分固定位置、已核准的說話者特寫、YouTube 專屬縮圖、YouTube 片尾。背景只能替換窗戶內容，不得重新生成整間客廳或讓角色越過窗框／沙發安全區。
 優先使用 `inputs.audio` 與素材分類中的 16:9 YouTube 圖；只有缺少時才問老查，不得重問已提供的路徑。拿到後直接執行 FFmpeg（不產生 `make-video.ps1` 中間檔，直接跑）：
 ```powershell
 $audio  = "<老查給的音檔路徑>"
@@ -195,12 +206,12 @@ ffmpeg -y -loop 1 -i $cover -i $audio -c:v libx264 -tune stillimage -crf 18 -c:a
 
 YouTube 正片不可只用單張封面配音。若有場景圖與角色去背圖，依下列順序製作：
 
-1. **開場**：老查與阿分從 `0:00` 就出現；先保留純星空客廳 10 秒，窗戶主題圖在 `0:10` 以 1 秒淡入帶入。不可讓人物跟著主題圖延後出現。
+1. **開場**：老查與阿分從 `0:00` 就出現；先保留固定星空客廳，窗戶主題圖依分鏡淡入。不可讓人物跟著主題圖延後出現。
 2. **主題翻頁**：依內容段落替換窗戶內的主題圖（例如機器人 → 鍵盤），保留客廳、角色與前景層，不把整張主題圖蓋到沙發或人物上。
 3. **說話者特寫**：特寫必須依「時間軸＋講者」切換。老查說話切老查，阿分說話切阿分；每個特寫至少維持 5 至 10 秒，並帶到人物腰部，不裁成只剩臉或胸像。
 4. **逐字稿輸入**：製作前要求逐段時間碼與講者，例如 `00:08–00:22 老查：台詞`。只有講者沒有時間軸時，不得宣稱特寫已對嘴，應先標記為節奏測試版。
 5. **角色配置基準**：主畫面先定稿，再同步遠景與所有特寫。位置、比例與版本寫入專案的 `character-layout-notes.md`，避免各張圖使用不同座標。
-6. **交付檢查**：抽查 `0:01`（人物＋星空）、`0:10–0:11`（主題淡入）、每段特寫第一秒（講者是否正確、是否帶到腰部），並用 `ffprobe` 確認 MP4 同時含 H.264 與 AAC 音軌。
+6. **交付檢查**：抽查 `0:01`（人物＋星空）、每張背景切換、每段特寫第一秒（講者是否正確、是否帶到腰部）、窗框／沙發邊界、片尾最後 5 秒，並用 `ffprobe` 確認 MP4 同時含 H.264 與 AAC 音軌。若任何角色位置漂移、人物進入窗外或片尾缺失，回到資產層修正，不得用裁切或縮放掩蓋。
 
 這套流程的座右銘是「聲音決定鏡頭，時間碼決定切點」。沒有可靠時間碼，就只交構圖與節奏預覽，不直接當成可上架成品。
 
@@ -213,6 +224,7 @@ YouTube 縮圖是獨立交付物，不把正片第一幀直接當縮圖。每集
 - 文字放在留白區，不能壓住老查、阿分或主題人物的臉；副標同樣要避開臉部並保持高對比。
 - 完成後抽查手機縮圖尺寸，確認主標、副標、品牌名與集數仍能辨識，再把縮圖路徑寫入 `inputs.thumbnail`。
 - 檔名固定為 `youtube-thumbnail-{slug}-v{版本}.jpg`，上傳前保留最後核准版本，不覆蓋舊版。
+- 縮圖核准後才將 `youtube_assets.thumbnail_ready` 設為 `true`；片尾完成且抽查最後 5 秒後才將 `youtube_assets.end_card_ready` 設為 `true`。`youtube_assets.qc_passed` 未為 `true`，不得把 `video_rendered` 設為 `true`。
 
 ### 5. YouTube 上傳 — `video_rendered: true` 且 `youtube.uploaded: false` 時
 ```powershell
