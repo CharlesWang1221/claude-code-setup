@@ -12,6 +12,7 @@
 | 2026-09-05 | 修正 Podcast 視覺調度：一般預告固定先做老查、阿分、大寶、小寶四張獨立特寫，再接完整合照與片尾；YouTube 客廳版固定背景母版、主題背景系列、角色座標、專屬縮圖與片尾；移除不存在的 `social-cards` 路由 | 修改 | 連續出現整張圖 Zoom 冒充特寫、角色缺漏、客廳人物越界與 YouTube 包裝漏件 | `AGENTS.md`、`skills/podcast-teaser-video/SKILL.md`、`skills/podcast-publish/SKILL.md`、`docs/SKILL_ROUTING_MATRIX.md`、`docs/CEO_CONTROL_TOWER.md` | 下一個 Podcast 專案必須先通過角色／場景資產表與關鍵畫面 proof；狀態檔記錄 YouTube 資產與 QC flags |
 | 2026-09-09 | YouTube 上傳工具遇到多個 MP4 候選時必須中止；正式檔由 `.publish-status.json` 的 `youtube_assets.render_file` 唯一指定，並要求上傳前核對影音規格 | 修改 | S3EP4 誤抓舊版 MP4，造成私人誤上傳 | `tools/youtube-upload.js`、`docs/LEARNING_NOTES.md`、`docs/RELEASE_EVIDENCE_REGISTER.md` | 以 S3EP4 同時存在舊／新版 MP4 實測：未指定時中止，指定後只上傳 `s3ep4-youtube-living-room-v2.mp4` |
 | 2026-09-14 | IG 內容固定只留在《不標準答案》Instagram，禁止同步至 Si Ming Wang 個人 Facebook；星期天建立與提交前必須核對 IG 身分及交叉發布設定 | 修改 | S3EP7 發布時發現 IG／Facebook 個人頁連動風險 | `AGENTS.md`、`skills/podcast-publish/SKILL.md` | 下一集 IG 流程需讀回品牌帳號名稱，並確認 Facebook 交叉發布為關閉後才可提交 |
+| 2026-09-14 | 預告人物版沿用 S3EP7「全圖風格重製」：從核准全圖延伸一致筆觸與角色設定，逐一重製四張具有獨立情境的個人畫面，禁止裁切或單純 Zoom | 新增 | 老查確認 S3EP7 預告的角色詮釋方式應成為後續固定做法 | `AGENTS.md`、`skills/podcast-teaser-video/SKILL.md` | 下一支預告交付前檢查四張特寫是否各自重製、風格一致且非全圖裁切 |
 
 ## 新增變更模板
 

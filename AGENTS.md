@@ -76,6 +76,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 週三 20:30：第 1 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。
 - 週四 10:00：與 Podcast 音檔無關的品牌網誌（有合格內容才發，每月先抓 2 篇）；20:30：同篇 FB 長文＋啊問核准主圖。
 - 週五 12:00：第 2 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。週四已發的網誌不重複推送。
+- 預告人物版固定沿用 S3EP7 的「全圖風格重製」：以核准全圖作為線稿、比例、筆觸、服裝與色調母版，為老查、阿分、大寶、小寶各自重新繪製一張有獨立動作／道具／景別的個人畫面，再接四人完整合圖；禁止裁切全圖或單純 Zoom 冒充特寫。
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
 - Windows PC 換機後，在 repo 執行 `git pull`、`.\setup.ps1`，再重新啟動 Codex。`setup.ps1` 會把 repo 內的 Skills 複製到 `%USERPROFILE%\.codex\skills`，不可只複製聊天紀錄或沿用舊版 Claude 設定。
