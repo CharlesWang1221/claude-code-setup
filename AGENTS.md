@@ -79,6 +79,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - 預告人物版固定沿用 S3EP7 的「全圖風格重製」：以核准全圖作為線稿、比例、筆觸、服裝與色調母版，為老查、阿分、大寶、小寶各自重新繪製一張有獨立動作／道具／景別的個人畫面，再接四人完整合圖；禁止裁切全圖或單純 Zoom 冒充特寫。
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
+- 交接紀錄同步例外：不要每次自動把任務交接檔複製到 Google Drive；跨電腦接續以 repo／GitHub 為預設。只有老查明確要求時才同步交接紀錄；S3EP7 的 Google Drive 交接是特例。
 - Windows PC 換機後，在 repo 執行 `git pull`、`.\setup.ps1`，再重新啟動 Codex。`setup.ps1` 會把 repo 內的 Skills 複製到 `%USERPROFILE%\.codex\skills`，不可只複製聊天紀錄或沿用舊版 Claude 設定。
 - Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 

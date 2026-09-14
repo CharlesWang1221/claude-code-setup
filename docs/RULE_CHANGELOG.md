@@ -13,6 +13,7 @@
 | 2026-09-09 | YouTube 上傳工具遇到多個 MP4 候選時必須中止；正式檔由 `.publish-status.json` 的 `youtube_assets.render_file` 唯一指定，並要求上傳前核對影音規格 | 修改 | S3EP4 誤抓舊版 MP4，造成私人誤上傳 | `tools/youtube-upload.js`、`docs/LEARNING_NOTES.md`、`docs/RELEASE_EVIDENCE_REGISTER.md` | 以 S3EP4 同時存在舊／新版 MP4 實測：未指定時中止，指定後只上傳 `s3ep4-youtube-living-room-v2.mp4` |
 | 2026-09-14 | IG 內容固定只留在《不標準答案》Instagram，禁止同步至 Si Ming Wang 個人 Facebook；星期天建立與提交前必須核對 IG 身分及交叉發布設定 | 修改 | S3EP7 發布時發現 IG／Facebook 個人頁連動風險 | `AGENTS.md`、`skills/podcast-publish/SKILL.md` | 下一集 IG 流程需讀回品牌帳號名稱，並確認 Facebook 交叉發布為關閉後才可提交 |
 | 2026-09-14 | 預告人物版沿用 S3EP7「全圖風格重製」：從核准全圖延伸一致筆觸與角色設定，逐一重製四張具有獨立情境的個人畫面，禁止裁切或單純 Zoom | 新增 | 老查確認 S3EP7 預告的角色詮釋方式應成為後續固定做法 | `AGENTS.md`、`skills/podcast-teaser-video/SKILL.md` | 下一支預告交付前檢查四張特寫是否各自重製、風格一致且非全圖裁切 |
+| 2026-09-14 | 任務交接紀錄不再預設同步 Google Drive；只有老查明確要求時才同步，S3EP7 保留為特例 | 修改 | 老查要求降低每次交接的雲端同步負擔 | `AGENTS.md` | 後續換機以 repo／GitHub 交接；收到明確要求時才建立 Drive 交接副本 |
 
 ## 新增變更模板
 
