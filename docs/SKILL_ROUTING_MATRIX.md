@@ -15,6 +15,7 @@
 | SEO 文章 | 成長與知識總監 | `seo-article-writer` | 核准主題或逐字稿、搜尋意圖 | 需品牌與事實檢查；完成稿依既定 Drive 規則落檔 |
 | 留言轉選題與需求 | 成長與知識總監 | `voc-jtbd-demand-map` | 原始留言、討論串、客服紀錄 | 保留原話與來源，不把雜訊當市場結論 |
 | 文章或數據查證 | 成長與知識總監 | `fact-checker` | 待查句子、原始來源或文章 | 找不到可靠來源就撤句或標未證實 |
+| 課程、提案、演講、工作坊或決策簡報 | CEO＋系統與資產總監 | `presentation-architect` → `Presentations` | 主題、受眾、場合／時長、行動目標、現有資料或模板 | 不把大綱當成成品；先讀 `DESIGN.md` 與 `docs/PRESENTATION_PLAYBOOK.md`，輸出前必須渲染抽檢 PPTX |
 | 品牌與對外文案放行 | 品牌總監 | `brand-guardian` | 完整文案／視覺、平台與公開範圍 | 非 `ALLOW` 就停；不得拿部分放行套用新版本 |
 | 網誌主圖或分隔漫畫 | 品牌總監 | `blog-image-director` | 已定稿文章、發布位置、品牌需求 | 先提視覺敘事並等確認，再生成 |
 | 角色水墨插圖 | 品牌總監＋製作總監 | `chibi-ink-illustrations` | 當次角色三視圖、人物／動作／位置 | 不寫入私人 reference 路徑；圖中文字後製 |

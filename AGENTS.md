@@ -59,7 +59,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「銷售頁」「landing page」「$landing」 | `landing` |
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
 | 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
-| 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | `presentation-architect` |
+| 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | 先用 `presentation-architect` 完成訊息與口語藍圖，再用 `Presentations` 產出、渲染抽檢與修正可編輯 PPTX；完整標準見 `docs/PRESENTATION_PLAYBOOK.md`。不得把大綱或逐字稿當成簡報成品。 |
 | 「影碩」 | `video-explainer`（只限 ASUS／技術解說型影片） |
 | 「剪紙效果影片」「用剪紙效果做」「剪紙風」「節目精選」 | Podcast 節目精選走 `paper-collage-video`；其他題材先判斷目的，不得因關鍵字直接派給 `video-explainer`。 |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |

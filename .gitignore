@@ -32,3 +32,7 @@ google-mcp/credentials.json
 
 # 暫存工作區（渲染輸出、草稿，不進 git）
 tmp/
+
+# 文件轉檔工具的本機 Python 環境
+tools/markdown-intake/.venv/
+tools/markdown-intake/.packages/
