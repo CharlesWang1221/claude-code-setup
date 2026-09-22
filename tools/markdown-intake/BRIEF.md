@@ -3,7 +3,7 @@ task_id: WORKFLOW-MARKDOWN-INTAKE
 status: LOCKED
 owner: 系統與資產總監
 created_at: 2026-09-22 10:49 Asia/Taipei
-last_updated: 2026-09-22 12:17 Asia/Taipei
+last_updated: 2026-09-22 12:40 Asia/Taipei
 ---
 
 # 文件 Markdown 入口
@@ -30,6 +30,6 @@ last_updated: 2026-09-22 12:17 Asia/Taipei
 ## 目前狀態
 
 - 狀態：LOCKED。
-- 已完成：安裝 MarkItDown 0.1.8 的 PDF、DOCX、PPTX、XLSX 解析依賴；以 `docs/PROJECT_CONTROL_TEMPLATE.md` 成功轉出 `tmp/markdown-intake/project-control-template.md` 並抽查內容。
+- 已完成：安裝 MarkItDown 0.1.8 的 PDF、DOCX、PPTX、XLSX 解析依賴；以 `docs/PROJECT_CONTROL_TEMPLATE.md` 成功轉出 `tmp/markdown-intake/project-control-template.md` 並抽查內容；提供 Windows 與 macOS 入口。
 - 阻塞或待確認：無。
 - 下一個動作、主責與 Asia/Taipei 時點：下次收到外部研究資料時，先用此入口轉換並依對應 Skill 做查證與產出。

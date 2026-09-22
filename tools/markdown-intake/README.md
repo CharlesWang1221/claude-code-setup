@@ -4,18 +4,29 @@
 
 ## 一次性安裝
 
-在 repo 根目錄執行。Windows 本機 Python 的隔離環境目前無法建立 `pip`，因此套件安裝在目前使用者帳號，不影響 repo 或系統管理員環境：
+在 repo 根目錄執行。套件安裝在目前使用者帳號，不進入 repo：
 
 ```powershell
+# Windows
 py -m pip install --user -r tools/markdown-intake/requirements.txt
+
+# macOS
+python3 -m pip install --user -r tools/markdown-intake/requirements.txt
 ```
 
 ## 轉換
 
 ```powershell
+# Windows
 pwsh -File tools/markdown-intake/Convert-ToMarkdown.ps1 `
   -InputPath 'D:\來源\研究報告.pdf' `
   -OutputPath 'tmp/markdown-intake/研究報告.md'
+
+# macOS
+chmod +x tools/markdown-intake/convert_to_markdown.sh
+tools/markdown-intake/convert_to_markdown.sh \
+  '/Users/你的帳號/Downloads/研究報告.pdf' \
+  'tmp/markdown-intake/研究報告.md'
 ```
 
 輸出檔已存在時，腳本會停止，避免蓋掉人工修訂。確認要重新產生才加上 `-Force`。
