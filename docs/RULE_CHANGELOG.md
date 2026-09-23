@@ -14,6 +14,7 @@
 | 2026-09-14 | IG 內容固定只留在《不標準答案》Instagram，禁止同步至 Si Ming Wang 個人 Facebook；星期天建立與提交前必須核對 IG 身分及交叉發布設定 | 修改 | S3EP7 發布時發現 IG／Facebook 個人頁連動風險 | `AGENTS.md`、`skills/podcast-publish/SKILL.md` | 下一集 IG 流程需讀回品牌帳號名稱，並確認 Facebook 交叉發布為關閉後才可提交 |
 | 2026-09-14 | 預告人物版沿用 S3EP7「全圖風格重製」：從核准全圖延伸一致筆觸與角色設定，逐一重製四張具有獨立情境的個人畫面，禁止裁切或單純 Zoom | 新增 | 老查確認 S3EP7 預告的角色詮釋方式應成為後續固定做法 | `AGENTS.md`、`skills/podcast-teaser-video/SKILL.md` | 下一支預告交付前檢查四張特寫是否各自重製、風格一致且非全圖裁切 |
 | 2026-09-14 | 任務交接紀錄不再預設同步 Google Drive；只有老查明確要求時才同步，S3EP7 保留為特例 | 修改 | 老查要求降低每次交接的雲端同步負擔 | `AGENTS.md` | 後續換機以 repo／GitHub 交接；收到明確要求時才建立 Drive 交接副本 |
+| 2026-09-23 | Codex 核心 Skill 改為只接受 repo 母版；停止 Claude → Codex 反向同步，隔離 `.agents` 同名副本，總控流程啟動前執行來源檢查；Mac／Windows 使用同一套來源規則 | 修改 | 同名舊 Skill 被同時探索，造成星期天與其他角色誤用舊規則、浪費額度與時間 | `AGENTS.md`、`setup.sh`、`setup.ps1`、`tools/sync-codex.sh`、`tools/sync-codex.ps1`、`tools/check-skill-authority.*`、`tools/isolate-legacy-skills.*` | Mac 執行 `tools/check-skill-authority.sh`、Windows 執行 `tools/check-skill-authority.ps1`，均須回傳 `PASS`；`.agents/skills` 不得存在 repo 核心 Skill 同名目錄 |
 
 ## 新增變更模板
 

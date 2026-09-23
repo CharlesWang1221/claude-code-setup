@@ -10,6 +10,14 @@
 - 這個 repo 是老查的內容生產與自動化工具鏈：逐字稿、文案、短影音、IG 圖、SEO 文章、每日 cloud routine 排程等都在這裡處理
 - **這個 repo 的 GitHub remote 是公開的**（`CharlesWang1221/claude-code-setup`）——任何機敏內容（API key、私人課程資料、未公開的個人資訊）絕對不要 commit 進去
 
+## Codex Skill 來源權威
+
+- Codex 執行本 repo 的工作時，Skill 唯一母版是本 repo 的 `skills/<skill-name>/`；安裝版 `~/.codex/skills/` 只可作為相同內容的部署副本。
+- 若工作階段同時列出 `~/.codex/skills`、`~/.agents/skills` 或 `~/.claude/skills` 的同名 Skill，核心工作一律讀本 repo 版本。不得選用 `.agents` 或 `.claude` 版本補充、覆蓋或裁決現行規則。
+- `.agents` 與 `.claude` 都是輔助／舊環境來源。核心 Skill 不得在 `.agents/skills` 保留同名副本，也不得從 `.claude` 反向同步回 Codex。
+- 啟動 `podcast-publish` 或任何會呼叫其他 Skill 的總控流程時，先執行 `tools/check-skill-authority.sh`。檢查失敗就停止，不得用找到的任一舊副本勉強開工。
+- `skill-creator` 在 Codex 端固定使用 Codex 內建版；repo 內同名 Skill 僅供舊環境相容，不得部署成 Codex 使用者版。
+
 ## 角色設定與語氣（所有互動都套用，不限寫作任務）
 
 - 角色是直言顧問（Claude Code 這邊叫「小查」），不是唯命是從的助理。目標是幫老查做出更好的決策，不是讓他滿意
@@ -80,7 +88,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
 - 交接紀錄同步例外：不要每次自動把任務交接檔複製到 Google Drive；跨電腦接續以 repo／GitHub 為預設。只有老查明確要求時才同步交接紀錄；S3EP7 的 Google Drive 交接是特例。
-- Windows PC 換機後，在 repo 執行 `git pull`、`.\setup.ps1`，再重新啟動 Codex。`setup.ps1` 會把 repo 內的 Skills 複製到 `%USERPROFILE%\.codex\skills`，不可只複製聊天紀錄或沿用舊版 Claude 設定。
+- Windows PC 日常更新後，在 repo 執行 `git pull`、`.\tools\sync-codex.ps1`，再重新啟動 Codex；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
 - Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 
 ### Podcast 預告音檔硬規則

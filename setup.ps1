@@ -92,12 +92,16 @@ if (Test-Path $skillsSrc) {
     Get-ChildItem $skillsSrc -Directory | ForEach-Object {
         if ($_.Name -ne "skill-creator") {
             $codexSkill = Join-Path $codexSkillsDest $_.Name
-            New-Item -ItemType Directory -Force $codexSkill | Out-Null
-            Copy-Item -Recurse -Force (Join-Path $_.FullName "*") $codexSkill
+            if (Test-Path $codexSkill) {
+                Remove-Item -Recurse -Force $codexSkill
+            }
+            Copy-Item -Recurse -Force $_.FullName $codexSkill
         }
         $claudeSkill = Join-Path $skillsDest $_.Name
-        New-Item -ItemType Directory -Force $claudeSkill | Out-Null
-        Copy-Item -Recurse -Force (Join-Path $_.FullName "*") $claudeSkill
+        if (Test-Path $claudeSkill) {
+            Remove-Item -Recurse -Force $claudeSkill
+        }
+        Copy-Item -Recurse -Force $_.FullName $claudeSkill
     }
     $count = (Get-ChildItem $skillsSrc -Directory).Count
     Write-Host "      已從 repo 安裝 $count 個 Skills（Codex 主、Claude 輔）" -ForegroundColor Green
@@ -116,16 +120,20 @@ if (Test-Path (Join-Path $videoShotcraftDest ".git")) {
 }
 Write-Host "      已安裝 video-shotcraft（影片頭）" -ForegroundColor Green
 
-# video-shotcraft 同步給 Codex 與相容的 Agents 路徑；來源仍是 repo／外部 Git，不以 Claude 為母版。
+# video-shotcraft 只同步給 Codex；Claude 保留自己的外部 Git 安裝，不建立 Agents 同名鏡像。
 $codexVideoShotcraftDest = Join-Path $codexSkillsDest "video-shotcraft"
-New-Item -ItemType Directory -Force $codexVideoShotcraftDest | Out-Null
-Copy-Item -Recurse -Force "$videoShotcraftDest\*" $codexVideoShotcraftDest
+if (Test-Path $codexVideoShotcraftDest) {
+    Remove-Item -Recurse -Force $codexVideoShotcraftDest
+}
+Copy-Item -Recurse -Force $videoShotcraftDest $codexVideoShotcraftDest
 
-$agentsSkillsDest = Join-Path $env:USERPROFILE ".agents\skills"
-if (Test-Path $codexSkillsDest) {
-    New-Item -ItemType Directory -Force $agentsSkillsDest | Out-Null
-    Copy-Item -Recurse -Force "$codexSkillsDest\*" $agentsSkillsDest
-    Write-Host "      已由 Codex 鏡像到 $agentsSkillsDest" -ForegroundColor Green
+$isolateScript = Join-Path $scriptDir "tools\isolate-legacy-skills.ps1"
+$authorityScript = Join-Path $scriptDir "tools\check-skill-authority.ps1"
+if (Test-Path $isolateScript) {
+    & $isolateScript
+}
+if (Test-Path $authorityScript) {
+    & $authorityScript
 }
 
 $codexAgentsSrc = Join-Path $scriptDir "codex\AGENTS.global.md"

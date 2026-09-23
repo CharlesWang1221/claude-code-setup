@@ -188,11 +188,19 @@ for dir in "$SKILLS_SRC"/*/; do
     name=$(basename "$dir")
     [[ "$name" == "skill-creator" ]] && continue
     mkdir -p "$CODEX_SKILLS_DEST/$name"
-    cp -R "$dir"/. "$CODEX_SKILLS_DEST/$name/"
+    rsync -a --delete "$dir"/ "$CODEX_SKILLS_DEST/$name/"
 done
 mkdir -p "$CODEX_SKILLS_DEST/video-shotcraft"
 cp -R "$VIDEO_SHOTCRAFT_DEST"/. "$CODEX_SKILLS_DEST/video-shotcraft/"
-echo -e "${GREEN}      已直接安裝 Skills 到 Codex（Codex 主、Claude 輔）${NC}"
+echo -e "${GREEN}      已從 repo 安裝 Skills 到 Codex；未讀取 Claude／.agents Skill${NC}"
+
+if [[ -x "$SCRIPT_DIR/tools/isolate-legacy-skills.sh" ]]; then
+    "$SCRIPT_DIR/tools/isolate-legacy-skills.sh"
+fi
+
+if [[ -x "$SCRIPT_DIR/tools/check-skill-authority.sh" ]]; then
+    "$SCRIPT_DIR/tools/check-skill-authority.sh"
+fi
 
 CODEX_AGENTS_SRC="$SCRIPT_DIR/codex/AGENTS.global.md"
 CODEX_HOME_DIR="$HOME/.codex"
