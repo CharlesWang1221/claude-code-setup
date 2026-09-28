@@ -1,0 +1,4 @@
+interface:
+  display_name: "油管"
+  short_description: "由小查管理的 YouTube 長影片製作流程，獨立處理腳本、視覺、縮圖、驗收與上架交接"
+  default_prompt: "使用 $you-guan 接手這支 YouTube 長影片，先檢查既有素材與進度，再提出製作方案。"

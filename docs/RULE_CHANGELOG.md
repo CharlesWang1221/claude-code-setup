@@ -15,6 +15,8 @@
 | 2026-09-14 | 預告人物版沿用 S3EP7「全圖風格重製」：從核准全圖延伸一致筆觸與角色設定，逐一重製四張具有獨立情境的個人畫面，禁止裁切或單純 Zoom | 新增 | 老查確認 S3EP7 預告的角色詮釋方式應成為後續固定做法 | `AGENTS.md`、`skills/podcast-teaser-video/SKILL.md` | 下一支預告交付前檢查四張特寫是否各自重製、風格一致且非全圖裁切 |
 | 2026-09-14 | 任務交接紀錄不再預設同步 Google Drive；只有老查明確要求時才同步，S3EP7 保留為特例 | 修改 | 老查要求降低每次交接的雲端同步負擔 | `AGENTS.md` | 後續換機以 repo／GitHub 交接；收到明確要求時才建立 Drive 交接副本 |
 | 2026-09-23 | Codex 核心 Skill 改為只接受 repo 母版；停止 Claude → Codex 反向同步，隔離 `.agents` 同名副本，總控流程啟動前執行來源檢查；Mac／Windows 使用同一套來源規則 | 修改 | 同名舊 Skill 被同時探索，造成星期天與其他角色誤用舊規則、浪費額度與時間 | `AGENTS.md`、`setup.sh`、`setup.ps1`、`tools/sync-codex.sh`、`tools/sync-codex.ps1`、`tools/check-skill-authority.*`、`tools/isolate-legacy-skills.*` | Mac 執行 `tools/check-skill-authority.sh`、Windows 執行 `tools/check-skill-authority.ps1`，均須回傳 `PASS`；`.agents/skills` 不得存在 repo 核心 Skill 同名目錄 |
+| 2026-09-28 | 新增獨立 Skill「實透」，星期天管理核准金句原音、內容拆解、實景照片、動態腳本審閱、角色關鍵畫面與 Flow 動畫；實透改為每週 2 支主力、剪紙每週 1 支；編輯安排為週二 20:30 剪紙、週三 20:30 與週五 12:00 實透，三支採不同原音段落、觀點或切角與動作情境；保留既有外部排程與公開證據 | 新增 | 老查核准流程並命名，要求由星期天管理及與阿維討論發布時機 | `skills/shi-tou/`、`skills/podcast-publish/SKILL.md`、`AGENTS.md`、`docs/SKILL_ROUTING_MATRIX.md`、`docs/CEO_CONTROL_TOWER.md`、`BRAND_CONTEXT.md`、`skills/paper-collage-video/SKILL.md` | Skill 結構檢查、repo → Codex 副本比對及來源檢查；未進行付費生成或平台發布 |
+| 2026-09-28 | YouTube 長片移出星期天，建立獨立「油管」Skill，由小查接令管理；沿用核准視覺、縮圖、QC 與上傳規則，獨立狀態與日期；YouTube Shorts 留在星期天 | 新增／修改 | 老查指出長片製作耗時，明確要求拆出獨立人物與流程 | `skills/you-guan/`、`skills/podcast-publish/SKILL.md`、`AGENTS.md`、`BRAND_CONTEXT.md`、`docs/CEO_CONTROL_TOWER.md`、`docs/CEO_COMMAND_PROTOCOL.md`、`docs/SKILL_ROUTING_MATRIX.md` | Skill 結構與 JSON 檢查、角色路由與不阻塞情境檢查、repo → Codex 整樹比對；未生成長片或操作平台 |
 
 ## 新增變更模板
 

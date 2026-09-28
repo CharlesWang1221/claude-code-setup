@@ -34,9 +34,9 @@
 
 | 主管 | 範圍 | 直屬 Skill | 對 CEO 的交付 |
 | --- | --- | --- | --- |
-| 內容營運長 | 每週 Podcast 與跨平台內容流轉 | `podcast-publish`、`podcast-audio-edit`、`podcast-teaser-video`、`paper-collage-video`、`shorts-pipeline`、`talking-head-recut`、`daily-routines-manager` | 單集狀態、缺件、放行結果、排程證據、復盤待辦；Podcast 圖卡由 `podcast-publish` 的 IG 圖步驟處理，不派不存在的 `social-cards` |
+| 內容營運長 | 每週 Podcast 與跨平台內容流轉 | `podcast-publish`、`podcast-audio-edit`、`podcast-teaser-video`、`paper-collage-video`、`shi-tou`（實透）、`shorts-pipeline`、`talking-head-recut`、`daily-routines-manager` | 單集狀態、缺件、放行結果、排程證據、復盤待辦；Podcast 圖卡由 `podcast-publish` 的 IG 圖步驟處理，不派不存在的 `social-cards` |
 | 品牌總監（阿維） | 對外文字、視覺、主題與合作是否服從品牌 | `brand-guardian`、`blog-image-director`、`chibi-ink-illustrations` | `ALLOW`／`REVISE`／`REJECTED` 與具體原因 |
-| 製作總監 | 影片、動畫、圖片、音訊的技術品質與成片版本 | `video-explainer`、`video-promo`、`animation-director`、`video-shotcraft`、`hyperframes`、`general-video`、`media-use`、`imagegen` | 成品路徑、版本、QC 畫面、未解風險 |
+| 製作總監 | 影片、動畫、圖片、音訊的技術品質與成片版本 | `you-guan`（油管，小查直接管理）、`video-explainer`、`video-promo`、`animation-director`、`video-shotcraft`、`hyperframes`、`general-video`、`media-use`、`imagegen` | 成品路徑、版本、QC 畫面、未解風險 |
 | 成長與知識總監 | 選題、SEO、留言需求、事實查證與內容復盤 | `seo-article-writer`、`voc-jtbd-demand-map`、`podcast-performance-review`、`fact-checker`、知識蒸餾 Skill | 可驗證洞見、來源、建議行動與不確定性 |
 | 系統與資產總監 | Creator OS、資料落檔、文件、平台整合與規則維護 | Creator OS、Google Drive、Notion、Docs、Sheets、Slides、Canva、Figma、Sites、Skill／Plugin 管理 | 資產位置、同步／備份證據、權限與公開風險 |
 
@@ -48,7 +48,7 @@
 
 內容營運長只管內容「能否按正確順序，完整地走到已排程或已發布」。它不替品牌總監放行，也不替老查決定題目與觀點；它負責讓已決定的單集不漏件、不插隊、不把半成品送出去。
 
-範圍包含 Podcast 正片、主題文、一般預告、IG 圖、YouTube 長片、兩支剪紙精華、跨平台排程，以及第 7／30 天復盤任務。與 Podcast 無關的品牌網誌，交由成長與知識總監主責，內容營運長只協調發布時段避免撞車。
+範圍包含 Podcast 正片、主題文、一般預告、IG 圖、兩支實透與一支剪紙精華、跨平台排程，以及第 7／30 天復盤任務。YouTube 長片獨立交由小查管理的油管，使用獨立任務與 `.youtube-status.json`；星期天不自動啟動、不等待、不以長片狀態判定完成。精華到 YouTube Shorts 的發布仍在星期天範圍。與 Podcast 無關的品牌網誌，交由成長與知識總監主責，內容營運長只協調發布時段避免撞車。
 
 ### 單集最小輸入
 
@@ -65,18 +65,18 @@
 | 2. 品牌放行 | 品牌總監 | 所有對外文字與視覺草稿 | 每一項皆為 `ALLOW` | `REVISE` 或 `REJECTED`，不得建草稿、上傳或排程 |
 | 3. 一般預告 | 內容營運長＋製作總監 | 已放行主句、音檔與時間碼、四角色關鍵畫面 | 完整語意終點、自然停頓、四角色特寫／完整合照／片尾 proof、成片 QC | 回到圖片與鏡頭規劃；不可用整張圖 Zoom 冒充特寫 |
 | 4. IG 圖與主題文 | 內容營運長＋品牌總監 | 已放行文案、視覺規格 | 圖文均完成品牌檢查 | 回到品牌修訂 |
-| 5. 正片上架 | 內容營運長 | 音檔、show notes、封面、平台資料；YouTube 另需客廳母版、主題背景系列、固定角色座標、專屬縮圖與片尾 | Firstory 與 YouTube 各自有草稿／排程成功讀回證據，且 YouTube 成片先通過場景與片尾 QC | 停在對應平台，不假稱上架；缺 YouTube 視覺資產時不得先渲染 |
-| 6. 剪紙精華 | 內容營運長＋製作總監 | 已放行金句、時間碼、最終成片 | 通過構圖、字幕與最終檔 4 幀 QC | `REVISE`，不可建立草稿或排程 |
+| 5. Podcast 音檔上架 | 內容營運長 | 音檔、show notes、封面、平台資料 | Firstory 有草稿／排程成功讀回證據 | 停在 Firstory，不假稱已上架；YouTube 長片不構成此階段阻塞 |
+| 6. 實透與剪紙精華 | 內容營運長＋製作總監 | 已放行金句、時間碼、最終成片 | 通過構圖、字幕與最終檔 4 幀 QC | `REVISE`，不可建立草稿或排程 |
 | 7. 跨平台排程 | 內容營運長 | 最終檔、文案、平台帳號狀態 | 各平台排程成功證據與可讀回網址／識別資料 | 明記未完成的平台與原因 |
 | 8. 復盤 | 成長與知識總監 | 第 7／30 天數據 | 記錄假設、結果、下次可驗證調整 | 不因單集波動改節奏 |
 
-第 3 至第 7 階段的不可改動順序是：一般預告製作與排程 → IG 圖製作與排程 → Firstory 上架排程 → YouTube 正片製作與上傳排程 → 兩支剪紙精華與跨平台排程。工具比較順手不是改順序的理由。
+第 3 至第 7 階段的不可改動順序是：一般預告製作與排程 → IG 圖製作與排程 → Firstory 上架排程 → 兩支實透與一支剪紙精華與跨平台排程。YouTube 長片另由小查叫用油管，不插入上述順序；長片製作完成也不代表星期天其他項目完成。
 
 ### 時段與編輯席位
 
-所有時間均為 Asia/Taipei。週一 07:00 Podcast 正片，12:15 FB／IG 本集主題文，20:30 限動或一般預告；週三 20:30 剪紙精華 1；週四 10:00 品牌網誌（有合格稿才發），20:30 同篇 FB 長文與主圖；週五 12:00 剪紙精華 2。只有老查明確覆寫時，才改用當週另一個已核准內容。
+所有時間均為 Asia/Taipei。週一 07:00 Podcast 正片，12:15 FB／IG 本集主題文，20:30 限動或一般預告；週二 20:30 剪紙精華；週三 20:30 實透精華 1；週四 10:00 品牌網誌（有合格稿才發），20:30 同篇 FB 長文與主圖；週五 12:00 實透精華 2。只有老查明確覆寫時，才改用當週另一個已核准內容。
 
-週四已發布的網誌不得在週五重複推送。週五是共用編輯席位，內容營運長必須在排程前標明該時段選了什麼、因此放棄了什麼。
+週四已發布的網誌不得在週五重複推送。週五預留實透精華 2，只有老查單集明確覆寫才改用其他內容；`highlight_plan.items` 為三支精華的必做／必排清單，歷史第二支剪紙不觸發追加製作。
 
 ### 對外發布的硬性證據
 

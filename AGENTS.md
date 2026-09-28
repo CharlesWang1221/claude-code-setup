@@ -51,6 +51,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 |---|---|
 | 「阿維」「品牌檢查」「合不合品牌」「品牌規範」「品牌退件」 | `brand-guardian` |
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
+| 「油管」「小查做 YouTube 長影片」「YouTube 正片」 | `you-guan`（小查管理，獨立製作與排期；不阻擋星期天，Shorts 仍由星期天安排） |
 | 「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「啊問」「網誌圖片」「網誌主圖」「文章適合什麼圖片」「分隔漫畫」 | `blog-image-director` |
@@ -59,6 +60,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 | 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
 | 「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
 | 「做 IG 內容」 | 先判斷交付物：要音檔短片走 `podcast-teaser-video`；要輪播／圖卡走 `podcast-publish` 的 IG 圖步驟；只說「做 IG 內容」且無法判斷時，先列兩種交付物，不得直接生成。不得派不存在的 `social-cards`。 |
+| 「實透」「金句做實景角色動畫」 | `shi-tou`（星期天管理；先拆解原音、等實景照片、審動態腳本再進 Flow） |
 | 「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
 | 「做圖卡」「/cards」「社群圖卡」 | 若屬 Podcast 單集，走 `podcast-publish` 的 IG 圖步驟；其他圖卡先判斷是否有對應 Skill，不得憑關鍵字硬派。 |
 | 「多利」 | `daily-routines-manager` |
@@ -80,10 +82,12 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 
 ### 跨電腦每週發布節奏
 
-- 週一 07:00：Podcast 正片；12:15：FB／IG 本集主題文；20:30：限動或預告。
-- 週三 20:30：第 1 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。
+- YouTube 長片由小查管理「油管」獨立接令、製作與排期，不納入星期天必做或阻塞條件；精華到 YouTube Shorts 的發布仍由星期天管理。
+- 週一 07:00：Podcast 音檔正片；12:15：FB／IG 本集主題文；20:30：限動或預告。
+- 週二 20:30：每週 1 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。
 - 週四 10:00：與 Podcast 音檔無關的品牌網誌（有合格內容才發，每月先抓 2 篇）；20:30：同篇 FB 長文＋啊問核准主圖。
-- 週五 12:00：第 2 支剪紙效果節目精華，同步安排 IG Reels、FB Reels、YouTube Shorts。週四已發的網誌不重複推送。
+- 週三 20:30：實透精華 1，同步安排 IG Reels、FB Reels、YouTube Shorts。
+- 週五 12:00：實透精華 2，同步安排 IG Reels、FB Reels、YouTube Shorts。週四已發的網誌不重複推送。
 - 預告人物版固定沿用 S3EP7 的「全圖風格重製」：以核准全圖作為線稿、比例、筆觸、服裝與色調母版，為老查、阿分、大寶、小寶各自重新繪製一張有獨立動作／道具／景別的個人畫面，再接四人完整合圖；禁止裁切全圖或單純 Zoom 冒充特寫。
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。

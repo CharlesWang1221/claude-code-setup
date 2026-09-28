@@ -1,0 +1,4 @@
+interface:
+  display_name: "實透"
+  short_description: "依金句原音與實景照片編排固定家庭角色動畫，由星期天管理製作及發布交接"
+  default_prompt: "使用 $shi-tou 拆解這段金句原音，依我提供的實景照片提出待審閱的動態腳本。"

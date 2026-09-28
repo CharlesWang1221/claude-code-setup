@@ -51,3 +51,21 @@ repo Skill 母版：`skills/<skill-name>/SKILL.md`。
 - Windows `setup.ps1` 在第 62、106、155 行出現 `Unexpected token '}'`，本次未完成整包同步。此錯誤仍待修復，不得宣稱 Windows 換機可直接靠該腳本恢復環境。
 - 為讓本次制度先可用，已手動同步 `short-video-experiment-review`、`podcast-publish`、`podcast-performance-review` 到 Codex 本機 Skill 目錄。
 - repo `skills/` 仍是唯一母版。Mac 端必須先驗證 `./setup.sh` 是否包含並成功複製新 Skill；成功後以 SHA-256 重新更新本表。
+
+## 2026-09-28 11:52（Asia/Taipei）實透與週節奏部署複核
+
+本次僅更新 `shi-tou`、`podcast-publish`、`paper-collage-video` 的部署；保留上方歷史盤點，不以舊表判斷本次狀態。
+
+| Skill | repo → Codex | 驗證 |
+| --- | --- | --- |
+| shi-tou（實透） | `MATCH` | 新建母版、UI 名稱與腳本交接模板；結構驗證通過 |
+| podcast-publish（星期天） | `MATCH` | 新狀態模板 JSON 可解析：2 支實透＋1 支剪紙；獨立流程檢查無重大矛盾 |
+| paper-collage-video | `MATCH` | 每週 1 支；保留原有素材庫與動畫規則 |
+
+`tools/check-skill-authority.sh` 回傳 `PASS`，19 個核心 Skill repo 母版與 Codex 整棵目錄一致，未參與 `.agents`／Claude 反向同步。新流程尚未完成完整音檔至發布的實作驗證；本次未消耗 Flow 點數或改動平台排程。
+
+## 2026-09-28 12:02（Asia/Taipei）油管獨立部署複核
+
+`you-guan`（油管）新建、`podcast-publish`（星期天）拆除長片工作，兩者 repo → Codex 整樹 `MATCH`。結構驗證與兩份狀態模板 JSON 檢查通過；星期天報告維持 16 項，長片不列為完成或阻塞條件，YouTube Shorts 仍保留。
+
+`tools/check-skill-authority.sh` 回傳 `PASS`，20 個核心 Skill 母版與 Codex 一致。既有媒體、任務 ID、平台排程與發布證據未改動；本次未生成、渲染或上傳長片。油管完整實作驗證留待下一次長片交辦。

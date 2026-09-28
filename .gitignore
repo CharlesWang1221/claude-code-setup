@@ -14,7 +14,7 @@ package-lock.json
 # YouTube OAuth 憑證（機敏，勿上傳）
 tools/client_secret.json
 tools/client_secret.json.json
-tools/youtube-token.json
+tools/youtube-token*.json
 tools/firstory-upload/browser-session/
 
 # 影片檔（太大，不進 git）
@@ -36,3 +36,5 @@ tmp/
 # 文件轉檔工具的本機 Python 環境
 tools/markdown-intake/.venv/
 tools/markdown-intake/.packages/
+.tools/
+.flow-tools/
