@@ -34,7 +34,7 @@
 
 | 主管 | 範圍 | 直屬 Skill | 對 CEO 的交付 |
 | --- | --- | --- | --- |
-| 內容營運長 | 每週 Podcast 與跨平台內容流轉 | `podcast-publish`、`podcast-audio-edit`、`podcast-teaser-video`、`paper-collage-video`、`shi-tou`（實透）、`shorts-pipeline`、`talking-head-recut`、`daily-routines-manager` | 單集狀態、缺件、放行結果、排程證據、復盤待辦；Podcast 圖卡由 `podcast-publish` 的 IG 圖步驟處理，不派不存在的 `social-cards` |
+| 內容營運長 | 每週 Podcast 與跨平台內容流轉、發布後社群經營 | `podcast-publish`、`community-operations`、`podcast-audio-edit`、`podcast-teaser-video`、`paper-collage-video`、`shi-tou`（實透）、`shorts-pipeline`、`talking-head-recut`、`daily-routines-manager` | 單集狀態、社群 brief、缺件、放行結果、排程證據、復盤待辦；Podcast 圖卡由 `podcast-publish` 的 IG 圖步驟處理，不派不存在的 `social-cards` |
 | 品牌總監（阿維） | 對外文字、視覺、主題與合作是否服從品牌 | `brand-guardian`、`blog-image-director`、`chibi-ink-illustrations` | `ALLOW`／`REVISE`／`REJECTED` 與具體原因 |
 | 製作總監 | 影片、動畫、圖片、音訊的技術品質與成片版本 | `you-guan`（油管，小查直接管理）、`video-explainer`、`video-promo`、`animation-director`、`video-shotcraft`、`hyperframes`、`general-video`、`media-use`、`imagegen` | 成品路徑、版本、QC 畫面、未解風險 |
 | 成長與知識總監 | 選題、SEO、留言需求、事實查證與內容復盤 | `seo-article-writer`、`voc-jtbd-demand-map`、`podcast-performance-review`、`fact-checker`、知識蒸餾 Skill | 可驗證洞見、來源、建議行動與不確定性 |
@@ -69,6 +69,8 @@
 | 6. 實透與剪紙精華 | 內容營運長＋製作總監 | 已放行金句、時間碼、最終成片 | 通過構圖、字幕與最終檔 4 幀 QC | `REVISE`，不可建立草稿或排程 |
 | 7. 跨平台排程 | 內容營運長 | 最終檔、文案、平台帳號狀態 | 各平台排程成功證據與可讀回網址／識別資料 | 明記未完成的平台與原因 |
 | 8. 復盤 | 成長與知識總監 | 第 7／30 天數據 | 記錄假設、結果、下次可驗證調整 | 不因單集波動改節奏 |
+
+短影音製作前新增社群營運閘門：星期天開始製作一般預告、實透、剪紙精華或其他短影音前，先由小渡交付平台／觀眾／畫面 brief。小市有留言或討論資料時先做 VOC 採證；小查確認任務與版本；星期天再製作；完成後仍須經阿維 `ALLOW`、小查驗收與老查發布授權。小渡提供方向，不取代製作總監的技術判斷，也不取代阿維的品牌否決權。
 
 第 3 至第 7 階段的不可改動順序是：一般預告製作與排程 → IG 圖製作與排程 → Firstory 上架排程 → 兩支實透與一支剪紙精華與跨平台排程。YouTube 長片另由小查叫用油管，不插入上述順序；長片製作完成也不代表星期天其他項目完成。
 
