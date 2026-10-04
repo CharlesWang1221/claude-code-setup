@@ -69,3 +69,9 @@ repo Skill 母版：`skills/<skill-name>/SKILL.md`。
 `you-guan`（油管）新建、`podcast-publish`（星期天）拆除長片工作，兩者 repo → Codex 整樹 `MATCH`。結構驗證與兩份狀態模板 JSON 檢查通過；星期天報告維持 16 項，長片不列為完成或阻塞條件，YouTube Shorts 仍保留。
 
 `tools/check-skill-authority.sh` 回傳 `PASS`，20 個核心 Skill 母版與 Codex 一致。既有媒體、任務 ID、平台排程與發布證據未改動；本次未生成、渲染或上傳長片。油管完整實作驗證留待下一次長片交辦。
+
+## 2026-10-04（Asia/Taipei）小渡逐支 brief 停止線部署複核
+
+已同步 `community-operations`、`podcast-publish`、`shi-tou` 與 `paper-collage-video`。`pwsh -File tools/sync-codex.ps1` 後，`pwsh -File tools/check-skill-authority.ps1` 回傳 `PASS`，22 個核心 Skill 均與 repo 母版 `MATCH`，未使用 Claude 或 `.agents` 同名副本。
+
+星期天狀態模板 JSON 已解析。新規則尚未以新單集跑完整製作驗證；本次未生成、渲染、扣 Flow 點數或操作平台。

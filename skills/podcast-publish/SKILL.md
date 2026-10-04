@@ -15,7 +15,11 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 ### 社群營運前置閘門
 
-星期天開始製作任何一般預告、實透、剪紙精華或其他短影音前，必須先呼叫 `community-operations` 取得當集社群 brief。brief 要說明主要平台、單一任務、觀眾入口、核心摩擦、原話時間碼、畫面／字幕方向與結尾導向。若有留言或討論資料，先交 `voc-jtbd-demand-map` 做 VOC 採證；沒有原始觀眾資料時，標示為內容推論。
+星期天開始製作任何一般預告、實透、剪紙精華或其他短影音前，必須先呼叫 `community-operations`。若有留言或討論資料，先交 `voc-jtbd-demand-map` 做 VOC 採證；沒有原始觀眾資料時，標示為內容推論。
+
+每集的剪紙與 2 支實透採兩段閘門：候選原話列出後，小渡先交 `highlight-allocation.md`，協助老查選出三支不同的任務、觀眾入口與形式；老查核准原音後，小渡再對 `paper-1`、`shitou-1`、`shitou-2` 各交一份逐支 brief。每份 brief 必須寫明主要平台、單一任務、觀眾入口、核心摩擦、不可剪斷的原話與時間碼、畫面／字幕方向及結尾導向，存放於 `output/ep-{slug}/community-briefs/`。
+
+`paper-1` 未有 `community_brief.status: READY` 時，不得開始鏡頭表或物件清單；`shitou-1`／`shitou-2` 未 `READY` 時，不得開始情境拆解、索取照片或動態腳本。這是製作停止線，不因檔期、照片已到或既有 caption 而跳過。
 
 社群 brief 是製作方向，不是品牌放行。星期天依 brief 製作後，仍須送 `brand-guardian` 取得 `ALLOW`，由小查驗收版本與證據，最後依授權矩陣等待老查發布授權。畫面與內容走向衝突時，退回小渡與小查裁決，不得自行改成另一個觀點。
 
@@ -43,6 +47,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
     "rejected_reasons": []
   },
   "content_files": false,
+  "community_allocation": {
+    "status": "PENDING",
+    "path": null,
+    "version": null,
+    "reviewed_by_ceo": false
+  },
   "inputs": {
     "audio": null,
     "transcript": null,
@@ -66,7 +76,13 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
       "quote": null,
       "start": null,
       "end": null,
-      "render": null
+      "render": null,
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null,
+        "reviewed_by_ceo": false
+      }
     }
   ],
   "real_scene_highlights": [
@@ -76,6 +92,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
       "quote": null,
       "start": null,
       "end": null,
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null,
+        "reviewed_by_ceo": false
+      },
       "script_approved": false,
       "keyframes_approved": false,
       "render": null,
@@ -90,6 +112,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
       "quote": null,
       "start": null,
       "end": null,
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null,
+        "reviewed_by_ceo": false
+      },
       "script_approved": false,
       "keyframes_approved": false,
       "render": null,
@@ -165,7 +193,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 }
 ```
 
-既有狀態檔若沒有 `content_decision` 或 `brand_review`，只補上缺少欄位並視為未核准／未通過；不得重設其他已完成旗標。
+既有狀態檔若沒有 `content_decision`、`brand_review`、`community_allocation` 或逐支 `community_brief`，只補上缺少欄位並視為未核准／未就緒；不得重設其他已完成旗標。
 
 2026-09-28 起新集數採每週 2 支實透＋1 支剪紙，`highlight_plan.items` 是當集必做／必排的唯一清單；不可因歷史 `paper_highlights` 中另有未完成項目就追加製作。舊檔保留所有成品、核准與平台證據，補上新清單並明確列出既有內容如何承接；已公開或已排程項目不得自動改動，需單集明確授權。缺 `real_scene_highlights` 時只補缺欄位，不重設既有核准。
 
@@ -218,11 +246,13 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 縮圖文字 3 案，每案 6 至 10 個中文字，不照抄標題。
 - 品牌風險：逐案檢查是否藏有標準答案、販賣焦慮、強迫正向、鼓動比較，或把裂痕／修復當裝飾口號。
 
-同時列出 10 句逐字稿原話金句，附講者與可靠時間碼。不可把改寫句冒充原話；找不到可靠時間碼就標示待確認。
+同時列出 10 句逐字稿原話金句，附講者與可靠時間碼。不可把改寫句冒充原話；找不到可靠時間碼就標示待確認。將這 10 句及可用素材交給小渡，產出 `community-briefs/highlight-allocation.md`，再由小查核對其沒有改寫原話或越過品牌放行。
 
-停下來讓老查核准：最終標題、縮圖文字、5 句金句、其中 1 句一般預告主句，以及 2 段實透精華與 1 段剪紙精華。三支精華應各自表達一個完整觀點，優先使用不同段落，長度以 25 至 45 秒為目標，但不能為湊秒數切斷完整語意。未核准不得產生平台文案，也不得把 `content_decision.approved` 設為 `true`。
+停下來讓老查核准：最終標題、縮圖文字、5 句金句、其中 1 句一般預告主句，以及參照小渡配置後的 2 段實透精華與 1 段剪紙精華。三支精華應各自表達一個完整觀點，優先使用不同段落，長度以 25 至 45 秒為目標，但不能為湊秒數切斷完整語意。未核准不得產生平台文案，也不得把 `content_decision.approved` 設為 `true`。
 
-核准後把結果寫入 `.publish-status.json`，再進入下一步。三支必須使用不同原音段落、主要觀點或切角、動作情境；可共用角色與實景，但不能只換字幕、畫風或運鏡。選段時附三支差異對照，重複就先重選，不等製作後才改。三支選段可按「週二提出問題、週三情境轉折、週五另一個觀點或收束」分工，但依本集內容調整，不固定套模板；不可把同一段原音換三種畫面重播。
+核准後把結果與 `community_allocation` 寫入 `.publish-status.json`，再進入下一步。三支必須使用不同原音段落、主要觀點或切角、動作情境；可共用角色與實景，但不能只換字幕、畫風或運鏡。選段時附三支差異對照，重複就先重選，不等製作後才改。三支選段可按「週二提出問題、週三情境轉折、週五另一個觀點或收束」分工，但依本集內容調整，不固定套模板；不可把同一段原音換三種畫面重播。
+
+老查核准後，先由小渡分別交付 `community-brief-paper-1.md`、`community-brief-shitou-1.md`、`community-brief-shitou-2.md`。小查核對 item ID、原話、時間碼與配置一致後，才將每支 `community_brief.status` 設為 `READY`；任何一支未就緒，只阻塞該支製作，不阻塞已通過的其他工作。
 
 ### 2.1 平台文案 — `content_decision.approved: true` 且 `content_files: false` 時
 以核准的核心主張、品牌錨點、標題與金句為唯一母稿，產出 `fb-post.txt`（800 字 FB 長文）／`ig-caption.txt`（150 字＋hashtag）／`show-notes.md`（Firstory Show Notes）／`paper-highlight-1-caption.txt`／`shitou-highlight-1-caption.txt`／`shitou-highlight-2-caption.txt`。三支精華文案各自只服務該段觀點，不能貼同一篇通用摘要。細節格式見記憶 `project_podcast_production`。
@@ -296,13 +326,13 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 ### 5. 每週一支剪紙節目精華
 
-只處理 `highlight_plan.items` 中 `format: paper` 的項目，呼叫 `paper-collage-video`。使用內容決策關核准的原話、講者、起訖時間碼與來源音檔，不另寫旁白。先鏡頭表與分層物件清單，再做代表鏡頭 proof，風格核准後完成 1080 × 1920、30 fps 成品。
+只處理 `highlight_plan.items` 中 `format: paper` 的項目。先核對 `paper-1` 的 `community_brief.status: READY`、路徑與核准原話一致，未通過就停在「待小渡逐支 brief」，不得開始鏡頭表或物件清單。通過後呼叫 `paper-collage-video`，使用內容決策關核准的原話、講者、起訖時間碼與來源音檔，不另寫旁白。鏡頭表、分層物件清單、字幕密度與結尾導向必須落實該 brief，再做代表鏡頭 proof，風格核准後完成 1080 × 1920、30 fps 成品。
 
 交付預覽、原話、時間碼、長度與 caption，經核准才更新該項 `rendered`、`approved`。預設對應週二 20:30，交回第 6.2 節處理跨平台排程。歷史第二支剪紙未完成不再是新週節奏的必做項，也不刪除舊成品或證據。
 
 ### 5.1 每週兩支實透實景角色精華
 
-呼叫 repo `skills/shi-tou/SKILL.md`，星期天管理每支進度。交接核准金句、上下文、講者、可靠時間碼與來源音檔；實透先擷取精華原音與拆解情境，等老查提供實景照片後完成動態腳本。腳本及關鍵畫面分別獲確認後，才串接角色插圖與 Flow。
+逐支核對 `shitou-1`、`shitou-2` 的 `community_brief.status: READY`、路徑與核准原話一致。任一支未通過，只回報該支待小渡逐支 brief，不得開始情境拆解、索取照片或動態腳本。通過後呼叫 repo `skills/shi-tou/SKILL.md`，星期天管理每支進度。交接核准金句、上下文、講者、可靠時間碼、來源音檔與該支社群 brief；實透先擷取精華原音與拆解情境，等老查提供實景照片後完成動態腳本。腳本及關鍵畫面分別獲確認後，才串接角色插圖與 Flow。
 
 兩支使用不同觀點或情緒轉折，動作由金句與當次場景決定，不固定入場或四人同台。先讓老查看兩支內容拆解與素材需求，可以同批提供照片；每支腳本、關鍵畫面與試片各自核准，不能用一支的放行套另一支。
 
@@ -344,9 +374,9 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 | 品牌審查 | ✅/❌ REJECTED/⏸️待修正 |
 | 平台文案 | ... |
 | 節目預告 | ✅/❌/⏸️待選金句 |
-| 剪紙精華 | ✅/❌/⏸️待選段或待審核 |
-| 實透精華 1 | ✅/❌/⏸️待照片、腳本或成片核准 |
-| 實透精華 2 | ✅/❌/⏸️待照片、腳本或成片核准 |
+| 剪紙精華 | ✅/❌/⏸️待選段、小渡 brief 或待審核 |
+| 實透精華 1 | ✅/❌/⏸️待小渡 brief、照片、腳本或成片核准 |
+| 實透精華 2 | ✅/❌/⏸️待小渡 brief、照片、腳本或成片核准 |
 | IG圖 | ... |
 | IG上架 | ... |
 | Firstory | ... |

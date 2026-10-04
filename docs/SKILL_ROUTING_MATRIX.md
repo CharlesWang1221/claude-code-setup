@@ -9,8 +9,8 @@
 | YouTube 長影片製作與獨立上架交接 | 小查直接管理＋製作總監＋阿維 | `you-guan`（油管） | 工作名稱／集數、原音或影片、逐字稿與時間碼、目的／形式；發布另需日期與公開範圍 | 不由星期天自動啟動；獨立 `.youtube-status.json`，原長片素材承接不重做；非 `ALLOW`／無 QC 或發布授權不得上傳 |
 | 剪 Podcast 音檔 | 內容營運長＋製作總監 | `podcast-audio-edit` | 原始音檔、節目目的、可用逐字稿 | 未確認刪除範圍，不做破壞性覆蓋 |
 | Podcast 一般預告 | 內容營運長＋製作總監 | `podcast-teaser-video` | 已放行主句、時間碼、音檔、四角色關鍵畫面 | 先確認老查／阿分／大寶／小寶各自特寫與完整合照；未確認不渲染／不排程 |
-| 剪紙節目精華 | 內容營運長＋製作總監 | `paper-collage-video` | 已放行金句、時間碼、最終音訊、角色規格 | Skill 為 `RED` 時先比對；QC 失敗不得建草稿 |
-| 實景照片＋家庭插畫角色＋金句原音動畫 | 內容營運長（星期天）＋製作總監＋阿維 | `shi-tou`（實透）；執行串接 `chibi-ink-illustrations`、`flow-video-pilot` | 核准金句、來源音檔與時間碼；老查提供實景後才定動態腳本 | 腳本與關鍵畫面先核准；QC 未過不排程；槽位替換需明確選稿 |
+| 剪紙節目精華 | 內容營運長＋製作總監 | `community-operations` → `paper-collage-video` | 已放行金句、時間碼、最終音訊、`paper-1` 的 `READY` brief、角色規格 | Skill 為 `RED` 時先比對；未有逐支 brief 不得做鏡頭表；QC 失敗不得建草稿 |
+| 實景照片＋家庭插畫角色＋金句原音動畫 | 內容營運長（星期天）＋製作總監＋阿維 | `community-operations` → `shi-tou`（實透）；執行串接 `chibi-ink-illustrations`、`flow-video-pilot` | 核准金句、來源音檔與時間碼；對應實透的 `READY` brief；老查提供實景後才定動態腳本 | 未有逐支 brief 不得情境拆解、索取照片或寫腳本；腳本與關鍵畫面先核准；QC 未過不排程；槽位替換需明確選稿 |
 | 真人素材做 Shorts | 製作總監 | 先素材判讀，再 `shorts-pipeline` | 原始影片、音訊、可用逐字稿、發布目的 | 先向老查提出建議，取得「確認製作」才開始 |
 | 訪談／對談長片重剪 | 製作總監 | 先素材判讀，再 `talking-head-recut` | 原始影片、逐字稿、想保留的對談連續性 | 不把訪談硬改成泛用 Shorts；需老查確認製作 |
 | Podcast 表現與下集調整 | 成長與知識總監 | `podcast-performance-review` | 同觀察口徑的第 7／30 天數據 | 單集不升級為規則；缺原始數據就標不確定 |
