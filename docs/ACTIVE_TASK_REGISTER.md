@@ -14,6 +14,7 @@
 | 任務 ID | 任務與範圍 | 狀態 | 主責主管 | 最終依據／證據 | 阻塞或待放行 | 下一個明確動作 | 時點 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | S3EP5-RELEASE | S3EP5 正片、主題文與一般預告的發布流轉 | `PENDING_APPROVAL` | 內容營運長 | `output/ep-s3ep5/content-decision.md`、`brand-review.md`、`episode-metadata.md` | 品牌複檢 `ALLOW`，但沒有 Firstory、YouTube、FB、IG 的平台讀回證據 | 逐一讀回各平台草稿／排程／公開狀態，填入發布證據庫 | 未設定 |
+| IG-GROWTH-2026Q4 | 《不標準答案》IG 4 週自然曝光冷啟動。僅測 Trial Reels、既有內容導流、協作者候選、主動參與與個人檔案轉換，不含付費廣告或任何平台發布 | `ACTIVE` | 小渡（社群營運長）＋星期天（內容營運長）＋小查 | `docs/IG_GROWTH_EXPERIMENT_2026Q4.md`、每週曝光 brief 與回顧 | 帳號 Bio、名稱、置頂內容與既有流量入口尚待盤點；協作者邀約與任何平台草稿均需老查另行授權 | 小渡完成 Week 1 曝光 brief，星期天依 brief 提出 2 支 Trial Reels 的內容草案 | 2026-10-11 22:14（Asia/Taipei）完成第一週回顧 |
 | S3EP5-H1 | S3EP5 剪紙精華 1 v2 跨平台發布 | `PENDING_APPROVAL` | 內容營運長＋製作總監 | `output/ep-s3ep5/s3ep5-highlight-1-v2-qc.md`，最終 QC 4 項 `PASS` | 未記錄最終檔是否再改、品牌複核與平台草稿／排程證據 | 鎖定最終檔，確認片尾宣稱與文案，完成品牌與平台證據 | 未設定 |
 | S3EP5-H2 | S3EP5 剪紙精華 2 動態確認與發布 | `PENDING_APPROVAL` | 內容營運長＋製作總監 | `output/ep-s3ep5/s3ep5-highlight-2-qc.md` | 文件明載待老查確認完整動態，未上傳、未排程 | 老查確認成片或退回修訂；確認後重做最終檔 QC 與排程 | 未設定 |
 | S3EP5-TEASER | S3EP5 一般預告動態成片 | `PENDING_APPROVAL` | 內容營運長＋製作總監 | `video-projects/s3ep5-hyperframes-teaser/BRIEF.md` | 成品尚待老查確認；未確認不得高畫質渲染或建貼文 | 取得老查確認或改稿方向 | 未設定 |
