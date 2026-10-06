@@ -1,6 +1,6 @@
 ---
 name: chibi-ink-illustrations
-description: Create and edit consistent black-and-white chibi ink-wash scene illustrations for 《不標準答案》 using the locked cast of Old Cha, Ah Fen, Da Bao, and Xiao Bao. Use whenever the user asks for character illustrations, scene art, story images, 「老查阿分大小寶做圖」, or revisions to these images.
+description: Create and edit consistent chibi ink-wash scene illustrations for 《不標準答案》 using the locked cast of Old Cha, Ah Fen, Da Bao, and Xiao Bao. Use whenever the user asks for character illustrations, scene art, story images, 「老查阿分大小寶做圖」, or revisions to these images.
 ---
 
 # 角色水墨插圖
@@ -13,7 +13,13 @@ Use the built-in `imagegen` skill for all raster generation and editing.
 - 老查：圓潤成年男性，短黑髮、矩形眼鏡、白色 T 恤、深色長褲。
 - 大寶：較年長女孩，及肩黑髮、連帽上衣、深色短裙。
 - 小寶：較年幼女孩，長黑髮、彼得潘領連身裙。
-- 固定畫風：3 頭身 Q 版、點點眼、圓潤四肢；純黑白水墨與手繪麥克筆質感、粗有機黑線、暖白紙底與柔灰墨暈。禁止彩色、寫實、3D、浮水印與模型生成中文。
+- 固定畫風：3 頭身 Q 版、點點眼、圓潤四肢；手繪麥克筆質感、粗有機黑線、暖白紙底與柔灰墨暈。預設純黑白水墨；老查明確要求彩色時，改用低飽和彩色水墨，保留主導性的黑色墨線與紙張暈染。禁止寫實、3D、浮水印與模型生成中文。
+
+## 視覺模式
+
+- 未指定色彩時，使用黑白水墨。
+- 明確要求「彩色版」或「彩色水墨」時，使用低飽和、透明疊染的彩墨，不可變成平塗卡通、賽璐璐、3D 或高飽和螢光色。
+- 多角色家庭與桌遊場景的完整工作流程，讀 [references/podcast-cover-workflow.md](references/podcast-cover-workflow.md)。
 
 ## 私有設定與跨電腦使用
 
