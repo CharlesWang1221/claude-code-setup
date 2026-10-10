@@ -15,6 +15,10 @@ def main():
     parser.add_argument('--destination', required=True, type=Path)
     args = parser.parse_args()
     destination = args.destination.expanduser().absolute()
+    public_repo = Path(__file__).resolve().parents[1]
+    resolved = destination.resolve()
+    if resolved == public_repo or public_repo in resolved.parents:
+        raise RuntimeError('Private project must be outside the public sync repo')
     if destination.is_symlink():
         raise RuntimeError('Refusing symlink project destination')
     with zipfile.ZipFile(args.bundle) as archive:

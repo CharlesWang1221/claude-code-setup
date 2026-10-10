@@ -45,10 +45,10 @@ def reset_memory(claude_home, workspace):
     for item in old:
         item.unlink()
     write_verified(memory / 'MEMORY.md', (
-        '# Current project navigation\n\n'
-        'Shared rules use the repo codex/AGENTS.global.md master.\n'
-        'Read this workspace AGENTS.md and the selected project HANDOFF.md.\n'
-        'Do not reuse old task status or overwrite current rules from memory.\n'
+        '# 現行專案導航\n\n'
+        '共用規則以 repo 的 codex/AGENTS.global.md 為母版。\n'
+        '先讀本工作區 AGENTS.md 與所選專案的 HANDOFF.md。\n'
+        '舊記憶不得覆蓋現行規則，不沿用舊任務狀態。\n'
     ).encode('utf-8'))
     print('RESET\tMemory\t' + str(len(old)) + ' old Markdown files')
 

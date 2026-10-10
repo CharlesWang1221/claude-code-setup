@@ -13,7 +13,8 @@ if ($LASTEXITCODE -ne 0) { throw "git pull failed; resolve it before syncing" }
 ```
 
 這個入口先跑 repo → Codex 的既有同步及來源檢查，再同步 Claude 的 23 個核心 Skills 與全域工作規則。
-Python 3.9 以上需已安裝；入口依序偵測 `py -3`、`python3`、`python`。同步後開新的工作階段。
+Python 3.9 以上需已安裝；入口依序偵測 `py -3`、`python3`、`python`。同步後開新的工作階段。既有中文 PowerShell 同步與來源檢查腳本使用 UTF-8 BOM，兼容 Windows PowerShell 5.1。
+中文腳本的編碼處理依 [Microsoft 官方文件](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-5.1)。
 
 第一次淘汰舊 Claude Skills 與記憶，可明確加入清理參數：
 
@@ -35,6 +36,7 @@ Python 3.9 以上需已安裝；入口依序偵測 `py -3`、`python3`、`python
 
 預設安裝到 repo 上一層的 `projects\liaoyu`。自訂位置使用 `-ProjectDirectory "想使用的專案路徑"`。
 安裝工具驗證每個檔案 SHA-256，阻擋路徑穿越與 symlink；遇到已有不同內容的檔案即停止，避免覆蓋 PC 既有進度。
+私人專案必須放在這個公開 repo 外；自訂目的地落在 repo 裡時，工具會拒絕匯入。
 匯入後在專案目錄啟動 Claude Code，新對話先讀 `HANDOFF.md`、`AGENTS.md` 與 `SOURCES.md`。
 
 交接包記錄的是 Mac 的驗證狀態，不能當成 PC 的成功證據。PC 接手後讀回雲端來源，並更新自己的環境驗證與任務進度。

@@ -24,7 +24,7 @@
 
 | 2026-10-10 | 品牌憲法版本引用由 v3 改為已讀回的 v5（2026-09-04 增修）；原文只保存在私人聊遇所工作區，母品牌摘要不納入私密原文，也不覆蓋後續已核准的操作規則 | 修改 | 老查提供總部 Drive；實際 Word 內文已是 Version 5.0，但 repo 引用與雲端索引仍落後 | `BRAND_CONTEXT.md`；私人專案來源索引 | 讀回 Word 版本頁；雲端索引未改動，標示待校正 |
 
-| 2026-10-10 | 新增 Windows 的 Codex＋Claude 單向同步入口、全域規則部署、可選舊 Skills／指定記憶清理，以及私人專案 ZIP 驗證匯入；公開方法走 repo，私人內容走老查指定的 Drive | 新增 | 老查要求本次 Claude 更新與聊遇所交接可同步到 PC | `codex/AGENTS.global.md`、`tools/sync-claude.ps1`、`tools/sync-claude.py`、`tools/import-private-project.py`、`docs/CLAUDE_PC_SYNC.md` | Mac 上驗證 Python 共用引擎、資料雜湊、重跑與漂移偵測；Windows PowerShell 包裝尚待 PC 實機執行 |
+| 2026-10-10 | 新增 Windows 的 Codex＋Claude 單向同步入口、全域規則部署、可選舊 Skills／指定記憶清理，UTF-8 BOM 編碼相容，以及公開 repo 外的私人專案 ZIP 驗證匯入；公開方法走 repo，私人內容走老查指定的 Drive | 新增 | 老查要求本次 Claude 更新與聊遇所交接可同步到 PC | `codex/AGENTS.global.md`、`tools/sync-claude.ps1`、`tools/sync-claude.py`、`tools/import-private-project.py`、`docs/CLAUDE_PC_SYNC.md` | Mac 上驗證 Python 共用引擎、資料雜湊、重跑與漂移偵測；Windows PowerShell 包裝尚待 PC 實機執行 |
 
 ## 新增變更模板
 
