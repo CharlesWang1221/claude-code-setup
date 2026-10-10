@@ -45,7 +45,7 @@
 
 ## 常用 SOP／Skill 觸發詞
 
-skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致），說到以下關鍵字就叫對應 skill：
+核心 Skills 的唯一母版是本 repo 的 `skills/`；Codex 部署至 `~/.codex/skills/`，Claude Code 可由 `tools/sync-claude.py` 單向部署至 `~/.claude/skills/`。`.agents` 不作為同步來源。說到以下關鍵字時，先確認對應 Skill 目前可用：
 
 | 關鍵字 | Skill |
 |---|---|
@@ -92,7 +92,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
 - 交接紀錄同步例外：不要每次自動把任務交接檔複製到 Google Drive；跨電腦接續以 repo／GitHub 為預設。只有老查明確要求時才同步交接紀錄；S3EP7 的 Google Drive 交接是特例。
-- Windows PC 日常更新後，在 repo 執行 `git pull`、`.\tools\sync-codex.ps1`，再重新啟動 Codex；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
+- Windows PC 日常更新後，在 repo 執行 `git pull --ff-only`、`.\tools\sync-codex.ps1`，再重新啟動 Codex；若要同時更新 Claude，改執行 `.\tools\sync-claude.ps1`（包含 Codex 同步），詳見 `docs/CLAUDE_PC_SYNC.md`；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
 - Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 
 ### Podcast 預告音檔硬規則
@@ -130,7 +130,7 @@ skills 已同步在 `~/.agents/skills/`（和 `~/.claude/skills/` 內容一致�
 >
 > **`animation-director`（阿諾）獨立於影碩/影華之外**：影碩、影華專做 ASUS 軟體平台的 Remotion 動畫產線，阿諾管的是更前段、不限 ASUS 的創意方向——品牌傷口/敵人、Big Idea、三個方案（安全/策略/爆點）、純文字分鏡、每鏡英文 AI 生圖生影片提示詞。**不產 Remotion 程式碼，不負責實際算圖算影片**。可以直接叫「阿諾」啟動，也可以由「小查」角色判讀丟上來的素材是不是還在「這支片要怎麼拍」的階段，符合才建議啟動，一樣經確認才進入七階段流程。這份 skill 內容也已自包含，不依賴 Claude 的 auto-memory。
 >
-> **`video-shotcraft`（影片頭）也沒有固定關鍵字，交給小查管理**：第三方 Remotion 鏡頭庫（152 個鏡頭 recipe card＋209 種風格），把網站/產品畫面剪成有 2.5D 運鏡、節奏卡點、聲音設計的電影感宣傳片。適用場景很窄，只在「有畫面值得秀」時才啟動：網站改版宣傳、`landing` skill 產出的銷售頁廣告片。老查每週節目本身是談話內容，沒有介面可秀，**不套用在常態節目產出上**。由小查判讀丟上來的素材/需求是否符合上述窄場景，符合才建議啟動，經確認才用；不符合就說明理由，不要硬套工具找用途。技術上跟影碩/影華同樣走 Remotion，可以互通鏡頭庫。已裝在 `~/.claude/skills/video-shotcraft`（mirror 到 `~/.agents/skills/video-shotcraft`），clone 自 https://github.com/Vincentwei1021/video-shotcraft ，是外部工具、非老查原創，不追蹤進這個 repo，之後換電腦要重新 clone＋mirror。
+> **`video-shotcraft`（影片頭）也沒有固定關鍵字，交給小查管理**：第三方 Remotion 鏡頭庫（152 個鏡頭 recipe card＋209 種風格），把網站/產品畫面剪成有 2.5D 運鏡、節奏卡點、聲音設計的電影感宣傳片。適用場景很窄，只在「有畫面值得秀」時才啟動：網站改版宣傳、`landing` skill 產出的銷售頁廣告片。老查每週節目本身是談話內容，沒有介面可秀，**不套用在常態節目產出上**。由小查判讀丟上來的素材/需求是否符合上述窄場景，符合才建議啟動，經確認才用；不符合就說明理由，不要硬套工具找用途。技術上跟影碩/影華同樣走 Remotion，可以互通鏡頭庫。來源是 https://github.com/Vincentwei1021/video-shotcraft ，屬外部工具、非老查原創，不追蹤進這個 repo；部署與可用性需當次檢查，不再由 Claude 或 `.agents` 副本反向同步 Codex。
 
 > 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 

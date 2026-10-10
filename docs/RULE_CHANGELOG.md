@@ -20,6 +20,12 @@
 | 2026-10-04 | 小渡介入每集 1 剪紙＋2 實透的兩段決策：候選原話後先配置三支任務，原音核准後再逐支交付 `READY` brief；星期天狀態檔記錄配置與各支 brief，剪紙未就緒不得做鏡頭表，實透未就緒不得拆解情境、索取照片或寫腳本 | 修改 | 原本只有總則，實透與剪紙的實作交接沒有小渡停止線，容易在製作後才補策略 | `skills/community-operations/SKILL.md`、`skills/podcast-publish/SKILL.md`、`skills/shi-tou/SKILL.md`、`skills/paper-collage-video/SKILL.md`、`docs/CEO_CONTROL_TOWER.md`、`docs/SKILL_ROUTING_MATRIX.md` | 檢查狀態模板 JSON、3 支不同 item ID 的 brief 欄位、各 Skill 停止線與 repo → Codex 同步後的來源檢查；未操作平台 |
 | 2026-10-06 | 角色水墨插圖改為黑白水墨預設、老查明確要求時可使用低飽和彩色水墨；新增家庭桌遊封面的構圖、角色透視、彩墨與 `1400 × 1400` 交付檢查 | 修改 | 實作家庭桌遊封面時，黑白版完成後需要可保留墨線與紙感的彩色變體；小寶坐在斜棋盤邊緣曾出現腳部與棋盤透視不一致 | `skills/chibi-ink-illustrations/SKILL.md`、`skills/chibi-ink-illustrations/references/podcast-cover-workflow.md` | 檢查四角色服裝、斜棋盤接觸面、無文字與無浮水印；交付黑白與彩色水墨各 1 張 `1400 × 1400` PNG |
 
+| 2026-10-10 | Claude 共用入口改為匯入 Codex 的 AGENTS 母版，子專案亦引用同層 AGENTS；停用過期鏡像、記憶路由與舊 git pull 同步 hook，新增 repo → Claude 單向部署及整樹驗證；其他專案不自動套入 Podcast 產線 | 修改 | 老查要求兩個月未更新的 Claude 與 Codex 現行工作方式同步，並清除舊規則 | `AGENTS.md`、`CLAUDE.md`、`tools/sync-claude.py` | 驗證 23 個 repo Skills 整樹一致、入口引用有效、工作區記憶索引重建；MCP 共用 5 項設定相同，Claude CLI 讀回全部 Connected |
+
+| 2026-10-10 | 品牌憲法版本引用由 v3 改為已讀回的 v5（2026-09-04 增修）；原文只保存在私人聊遇所工作區，母品牌摘要不納入私密原文，也不覆蓋後續已核准的操作規則 | 修改 | 老查提供總部 Drive；實際 Word 內文已是 Version 5.0，但 repo 引用與雲端索引仍落後 | `BRAND_CONTEXT.md`；私人專案來源索引 | 讀回 Word 版本頁；雲端索引未改動，標示待校正 |
+
+| 2026-10-10 | 新增 Windows 的 Codex＋Claude 單向同步入口、全域規則部署、可選舊 Skills／指定記憶清理，以及私人專案 ZIP 驗證匯入；公開方法走 repo，私人內容走老查指定的 Drive | 新增 | 老查要求本次 Claude 更新與聊遇所交接可同步到 PC | `codex/AGENTS.global.md`、`tools/sync-claude.ps1`、`tools/sync-claude.py`、`tools/import-private-project.py`、`docs/CLAUDE_PC_SYNC.md` | Mac 上驗證 Python 共用引擎、資料雜湊、重跑與漂移偵測；Windows PowerShell 包裝尚待 PC 實機執行 |
+
 ## 新增變更模板
 
 ```text

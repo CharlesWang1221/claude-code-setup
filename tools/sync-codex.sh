@@ -29,6 +29,10 @@ for dir in "$SKILLS_SRC"/*/; do
     echo -e "${GREEN}  已同步: $name${NC}"
 done
 
+mkdir -p "$HOME/.codex"
+cp "$REPO_ROOT/codex/AGENTS.global.md" "$HOME/.codex/AGENTS.md"
+echo -e "${GREEN}  已同步 Codex 全域規則${NC}"
+
 echo ""
 "$SCRIPT_DIR/isolate-legacy-skills.sh"
 "$SCRIPT_DIR/check-skill-authority.sh"

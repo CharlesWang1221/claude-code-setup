@@ -75,3 +75,22 @@ repo Skill 母版：`skills/<skill-name>/SKILL.md`。
 已同步 `community-operations`、`podcast-publish`、`shi-tou` 與 `paper-collage-video`。`pwsh -File tools/sync-codex.ps1` 後，`pwsh -File tools/check-skill-authority.ps1` 回傳 `PASS`，22 個核心 Skill 均與 repo 母版 `MATCH`，未使用 Claude 或 `.agents` 同名副本。
 
 星期天狀態模板 JSON 已解析。新規則尚未以新單集跑完整製作驗證；本次未生成、渲染、扣 Flow 點數或操作平台。
+
+## 2026-10-10（Asia/Taipei）Claude 接手前複核
+
+老查授權將 Claude 舊 Skills 與工作規則更新至 Codex 母版，並指定由 Claude 接手另一專案。
+
+- Claude：23 個 repo Skills 整樹 `MATCH`；Codex：22 個核心 Skill 整樹 `MATCH`，`check-skill-authority.sh` 回傳 `PASS`。Codex 的 `skill-creator` 使用內建版，Claude 保留 repo 相容版。
+- 新增 `tools/sync-claude.py`；預設只讀，`--apply` 單向部署。暫存目錄實測完成部署並能偵測內容漂移。
+- Claude 的全域規則、工作區入口與子專案引用已更新；清除工作區的 21 份舊記憶，移除舊 Skills 目錄 `git pull` 的錯誤同步 hook。私人資料沒有進本 repo。
+- 5 個共用 MCP 的 command／args／env 與 Codex 相同，Claude CLI 讀回 Playwright、Cloudflare、Firecrawl、Google Workspace、Plaud 均 `Connected`。此結果只表示連線，未代表外部平台動作或 bot 端到端測試完成。
+- 本機 CLI 為 Claude Code 2.1.224；本次未升級程式。已移除的 22 個非母版舊 Skills 不列為 Claude 可用能力，未從 `.agents` 或 Claude 回寫 Codex。
+
+本段是目前部署狀態；上方歷史表只供追溯，不得用舊版 `DIFF`／`MISSING` 作為現況。
+
+## 2026-10-10（Asia/Taipei）PC 同步交付
+
+- 新增 Windows PowerShell 同步入口，共用 Python 引擎可部署全域規則、核心 Skills、可選舊副本清理與指定工作區記憶重建。
+- 私人 ZIP 匯入逐檔驗 SHA-256；已實測重跑、已有工作保護、危險路徑與損壞資料拒絕。
+- Mac 的來源檢查與 Claude 整樹檢查 PASS；Windows PowerShell 包裝尚未在 PC 實機執行，PC 的 MCP 登入狀態亦待各機驗證。
+- 公開 repo 不包含私人 ZIP、品牌原文、雲端個案或 OAuth token。

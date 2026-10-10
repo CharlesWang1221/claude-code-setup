@@ -1,6 +1,6 @@
 # 短影音自動剪輯 Pipeline
 
-當用戶說「剪這支」、「自動剪」或提供影片路徑時，依照以下流程執行。
+本文件只提供本工具的技術參考，不作為自動製作觸發器。先遵守根目錄 `AGENTS.md` 的素材判讀閘門與 `skills/shorts-pipeline/SKILL.md`；確認製作後才使用下列工具。
 
 ---
 
@@ -121,7 +121,7 @@ python scripts/compose.py `
 
 成品在 `05-render/final.mp4`，確認後用 YouTube 上傳工具或手動上傳 IG/YouTube Shorts。
 
-**只保留 SRT 檔案在本機，影片上傳到社群平台當雲端備份。**
+素材保留與清理由老查指定；不得自行刪除原片，也不得為了備份擅自上傳到社群平台。
 
 ---
 
