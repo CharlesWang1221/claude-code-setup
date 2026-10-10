@@ -1,0 +1,175 @@
+{
+  "policy": "weekly-six-v1",
+  "week_start": null,
+  "approved": false,
+  "items": [
+    {
+      "id": "mon-teaser",
+      "format": "type",
+      "role": "teaser",
+      "weekday_offset": 0,
+      "editorial_time": "20:30",
+      "target_at": null,
+      "source": {
+        "episode": null,
+        "quote": null,
+        "speaker": null,
+        "start": null,
+        "end": null,
+        "audio_version": null,
+        "permission_approved": false
+      },
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null
+      },
+      "render": null,
+      "version": null,
+      "qc_passed": false,
+      "brand_review": null,
+      "approved": false,
+      "platforms": {}
+    },
+    {
+      "id": "tue-paper",
+      "format": "paper",
+      "role": "highlight",
+      "weekday_offset": 1,
+      "editorial_time": "20:30",
+      "target_at": null,
+      "source": {
+        "episode": null,
+        "quote": null,
+        "speaker": null,
+        "start": null,
+        "end": null,
+        "audio_version": null,
+        "permission_approved": false
+      },
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null
+      },
+      "render": null,
+      "version": null,
+      "qc_passed": false,
+      "brand_review": null,
+      "approved": false,
+      "platforms": {}
+    },
+    {
+      "id": "wed-scene",
+      "format": "scene",
+      "role": "highlight",
+      "weekday_offset": 2,
+      "editorial_time": "20:30",
+      "target_at": null,
+      "source": {
+        "episode": null,
+        "quote": null,
+        "speaker": null,
+        "start": null,
+        "end": null,
+        "audio_version": null,
+        "permission_approved": false
+      },
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null
+      },
+      "render": null,
+      "version": null,
+      "qc_passed": false,
+      "brand_review": null,
+      "approved": false,
+      "platforms": {}
+    },
+    {
+      "id": "thu-type",
+      "format": "type",
+      "role": "highlight",
+      "weekday_offset": 3,
+      "editorial_time": "20:30",
+      "target_at": null,
+      "source": {
+        "episode": null,
+        "quote": null,
+        "speaker": null,
+        "start": null,
+        "end": null,
+        "audio_version": null,
+        "permission_approved": false
+      },
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null
+      },
+      "render": null,
+      "version": null,
+      "qc_passed": false,
+      "brand_review": null,
+      "approved": false,
+      "platforms": {}
+    },
+    {
+      "id": "fri-scene",
+      "format": "scene",
+      "role": "highlight",
+      "weekday_offset": 4,
+      "editorial_time": "12:00",
+      "target_at": null,
+      "source": {
+        "episode": null,
+        "quote": null,
+        "speaker": null,
+        "start": null,
+        "end": null,
+        "audio_version": null,
+        "permission_approved": false
+      },
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null
+      },
+      "render": null,
+      "version": null,
+      "qc_passed": false,
+      "brand_review": null,
+      "approved": false,
+      "platforms": {}
+    },
+    {
+      "id": "sat-scene",
+      "format": "scene",
+      "role": "highlight",
+      "weekday_offset": 5,
+      "editorial_time": "20:30",
+      "target_at": null,
+      "source": {
+        "episode": null,
+        "quote": null,
+        "speaker": null,
+        "start": null,
+        "end": null,
+        "audio_version": null,
+        "permission_approved": false
+      },
+      "community_brief": {
+        "status": "PENDING",
+        "path": null,
+        "version": null
+      },
+      "render": null,
+      "version": null,
+      "qc_passed": false,
+      "brand_review": null,
+      "approved": false,
+      "platforms": {}
+    }
+  ]
+}

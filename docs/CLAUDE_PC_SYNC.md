@@ -62,3 +62,9 @@ python3 tools/sync-claude.py --apply --global-rules
 ```
 
 完整私人品牌文件、客戶紀錄、個人雲端連結與 token 不加入共用同步包。本 repo 只保存通用方法與不含私人來源的工具。
+
+## 每週六支短片更新（2026-10-10）
+
+Codex 接手先執行 `git pull --ff-only`，成功後執行 `.\tools\sync-codex.ps1`，再開新工作階段。只需 Codex 時不必跑 Claude 同步入口。
+
+先讀 [短片週母版](SHORT_VIDEO_WEEKLY_POLICY.md) 與 [夥伴更新盤點摘要](PARTNER_UPDATE_AUDIT_2026-10-10.md)。新週計畫為六支、包含預告；Flow 只作特別企劃。私人來源與樣片不進公開 repo，PC 需另從私人交接位置取得。

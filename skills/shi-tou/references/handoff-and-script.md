@@ -14,7 +14,8 @@
 出場者／核准角色參考／道具／相對比例：
 腳本版本／核准證據：
 關鍵畫面版本／核准證據：
-Flow 專案／提交 ID／模型／價格／點數上限／實際扣點：
+製作模式（scene／Flow special）／一次建庫工時／逐支製作工時：
+Flow 特別企劃才填：專案／提交 ID／模型／價格／點數上限／實際扣點：
 試片版本／問題時間碼／QC／核准證據：
 最終檔／原音與字幕核對／品牌結果／老查核准：
 推薦槽位／是否替換既有內容／被替換內容／選稿證據：
@@ -33,22 +34,18 @@ Flow 專案／提交 ID／模型／價格／點數上限／實際扣點：
 
 ## 星期天狀態交接
 
-在該集 `.publish-status.json` 使用 `real_scene_highlights` 陣列，對應 `highlight_plan.items` 的兩支實透。舊檔只補缺欄位，保留既有所有旗標與 `paper_highlights`，不變更已排程或已發布項目。缺輸入用 `stage` 表示，不假裝完成。
+新任務以 `output/weekly-shorts/{week-start}/weekly-plan.json` 的 `wed-scene`、`fri-scene`、`sat-scene` 追蹤；單集狀態只保存來源引用。歷史 `.publish-status.json` 的 `real_scene_highlights` 與 `highlight_plan.items` 保留，不再作每週數量要求。舊檔只補缺欄位，保留既有所有旗標與 `paper_highlights`，不變更已排程或已發布項目。缺輸入用 `stage` 表示，不假裝完成。
 
 每項包含：`id`、`stage`、`quote`、`speaker`、`start`、`end`、`audio_clip`、`script`、`script_approved`、`keyframes_approved`、`render`、`qc_passed`、`brand_review`、`approved`、`release_selection`、`platforms`。核准須能追溯到當次版本與對話證據。
 
-`stage` 使用 `QUOTE_ANALYSIS`、`WAITING_PHOTO`、`SCRIPT_REVIEW`、`KEYFRAMES_REVIEW`、`FLOW_PROOF`、`REVISION_REQUIRED`、`FINAL_REVIEW`、`READY_FOR_RELEASE`。這些是製作階段，不表示外部已上傳或排程。
+`stage` 使用 `QUOTE_ANALYSIS`、`WAITING_PHOTO`、`SCRIPT_REVIEW`、`KEYFRAMES_REVIEW`、`CUTOUT_PROOF`（日常）或 `FLOW_PROOF`（特別企劃）、`REVISION_REQUIRED`、`FINAL_REVIEW`、`READY_FOR_RELEASE`。這些是製作階段，不表示外部已上傳或排程。
 
 `release_selection` 記錄候選完整時間（含 `+08:00`）、取代的內容 ID（若有）、選稿是否核准與理由。`platforms` 分別記錄 Instagram、Facebook、YouTube Shorts 的狀態、內容 ID、網址、平台讀回證據；一個成功不能代表全部成功。
 
 沒有品牌 `ALLOW`、最終 QC 和老查核准，不能進入 `READY_FOR_RELEASE`。沒有核准金句、當集槽位與發布授權，不能提交排程。平台讀回成功後才登錄成功，並更新 `docs/RELEASE_EVIDENCE_REGISTER.md`。
 
-## 三支差異對照（選段時交星期天）
+## 六支差異對照（選段時交星期天）
 
-| 槽位／風格 | 原音起訖／原句 | 主要觀點或切角 | 動作情境 | 與另外兩支的差異 |
-| --- | --- | --- | --- | --- |
-| 週二／剪紙 | 核准段落 | 當集內容 | 物件因果動作 | 具體差異 |
-| 週三／實透 1 | 另一核准段落 | 當集內容 | 照片到來前先提方向 | 具體差異 |
-| 週五／實透 2 | 第三核准段落 | 當集內容 | 照片到來前先提方向 | 具體差異 |
+依 [短片週母版](../../../docs/SHORT_VIDEO_WEEKLY_POLICY.md) 六個 item ID 逐支列出來源集數、原音起訖、原句、觀點、動作情境與差異。實透接其中三個 scene item，其餘由星期天交字卡與剪紙製作。
 
-三段各有完整意思，不能把同一段原音切碎後換畫風重播。可共用場地與角色，但每支要有自己的觀點與動作理由。
+每段各有完整意思，不把同一段原音切碎後換畫風重播。可共用場地與角色，但每支要有自己的觀點與動作理由；同段原音雙版本僅用於未公開的風格比較樣片。

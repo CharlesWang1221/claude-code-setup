@@ -1,6 +1,6 @@
 ---
 name: podcast-publish
-description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、社群視覺、Podcast 音檔正片、一般預告、每週兩支實透實景角色精華與一支剪紙精華，以及 Firstory、IG、FB、YouTube Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
+description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、社群視覺、Podcast 音檔正片、每週 6 支短影片（含一般預告），以及 Firstory、IG、FB、YouTube Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
 ---
 
 # 星期天 — Podcast 上架統一入口
@@ -17,15 +17,15 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 星期天開始製作任何一般預告、實透、剪紙精華或其他短影音前，必須先呼叫 `community-operations`。若有留言或討論資料，先交 `voc-jtbd-demand-map` 做 VOC 採證；沒有原始觀眾資料時，標示為內容推論。
 
-每集的剪紙與 2 支實透採兩段閘門：候選原話列出後，小渡先交 `highlight-allocation.md`，協助老查選出三支不同的任務、觀眾入口與形式；老查核准原音後，小渡再對 `paper-1`、`shitou-1`、`shitou-2` 各交一份逐支 brief。每份 brief 必須寫明主要平台、單一任務、觀眾入口、核心摩擦、不可剪斷的原話與時間碼、畫面／字幕方向及結尾導向，存放於 `output/ep-{slug}/community-briefs/`。
+依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md) 建立跨集週計畫。小渡先配置六支任務與來源，再由老查核准原音，逐支交付 READY brief。每份 brief 需有 item ID、主要平台、單一任務、觀眾入口、核心摩擦、完整原話與時間碼、畫面／字幕方向及結尾導向。
 
-`paper-1` 未有 `community_brief.status: READY` 時，不得開始鏡頭表或物件清單；`shitou-1`／`shitou-2` 未 `READY` 時，不得開始情境拆解、索取照片或動態腳本。這是製作停止線，不因檔期、照片已到或既有 caption 而跳過。
+任一項未 READY，或原話／時間碼／版本不一致，不得開始該支的鏡頭表、素材生成或動畫；只阻塞該支。歷史 paper-1、shitou-1、shitou-2 為舊識別，不固定限制新週數量。
 
 社群 brief 是製作方向，不是品牌放行。星期天依 brief 製作後，仍須送 `brand-guardian` 取得 `ALLOW`，由小查驗收版本與證據，最後依授權矩陣等待老查發布授權。畫面與內容走向衝突時，退回小渡與小查裁決，不得自行改成另一個觀點。
 
 ### 直式短影片安全框（所有 9:16 成品）
 
-一般預告、剪紙精華與兩支實透交付 IG Reels、FB Reels、YouTube Shorts 前，一律以 1080 × 1920 畫布套用同一保守安全框：`x = 76 至 1004 px`（左右各 7%），`y = 250 至 1520 px`（上方 250 px、下方 400 px）。所有字幕、CTA、平台資訊、人物名稱、數字與不可被遮住的關鍵畫面元素都必須完整落在框內；不要只把文字基線塞進框內。
+每週六支短片交付 IG Reels、FB Reels、YouTube Shorts 前，一律以 1080 × 1920 畫布套用同一保守安全框：`x = 76 至 1004 px`（左右各 7%），`y = 250 至 1520 px`（上方 250 px、下方 400 px）。所有字幕、CTA、平台資訊、人物名稱、數字與不可被遮住的關鍵畫面元素都必須完整落在框內；不要只把文字基線塞進框內。
 
 平台介面、瀏海／前鏡頭區、底部互動列與不同 App 的裁切都會吃掉邊緣。字幕若跨多行，整個字幕底板與陰影範圍也要在框內；沒有必要時不在安全框外放任何關鍵內容。視覺 proof 與最終 QC 都要抽檢至少 1 張中段字幕畫面，逐項確認沒有越界，未通過不得標示為 QC 完成或排程。
 
@@ -73,86 +73,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
     "start": null,
     "end": null
   },
-  "paper_highlights": [
-    {
-      "slot": 1,
-      "quote_selected": false,
-      "rendered": false,
-      "approved": false,
-      "quote": null,
-      "start": null,
-      "end": null,
-      "render": null,
-      "community_brief": {
-        "status": "PENDING",
-        "path": null,
-        "version": null,
-        "reviewed_by_ceo": false
-      }
-    }
-  ],
-  "real_scene_highlights": [
-    {
-      "id": "shitou-1",
-      "stage": "QUOTE_ANALYSIS",
-      "quote": null,
-      "start": null,
-      "end": null,
-      "community_brief": {
-        "status": "PENDING",
-        "path": null,
-        "version": null,
-        "reviewed_by_ceo": false
-      },
-      "script_approved": false,
-      "keyframes_approved": false,
-      "render": null,
-      "qc_passed": false,
-      "brand_review": null,
-      "approved": false,
-      "platforms": {}
-    },
-    {
-      "id": "shitou-2",
-      "stage": "QUOTE_ANALYSIS",
-      "quote": null,
-      "start": null,
-      "end": null,
-      "community_brief": {
-        "status": "PENDING",
-        "path": null,
-        "version": null,
-        "reviewed_by_ceo": false
-      },
-      "script_approved": false,
-      "keyframes_approved": false,
-      "render": null,
-      "qc_passed": false,
-      "brand_review": null,
-      "approved": false,
-      "platforms": {}
-    }
-  ],
+  "paper_highlights": [],
+  "real_scene_highlights": [],
   "highlight_plan": {
-    "policy": "shitou-2-paper-1",
-    "items": [
-      {
-        "id": "paper-1",
-        "format": "paper",
-        "slot": 1,
-        "target_at": null
-      },
-      {
-        "id": "shitou-1",
-        "format": "shitou",
-        "target_at": null
-      },
-      {
-        "id": "shitou-2",
-        "format": "shitou",
-        "target_at": null
-      }
-    ]
+    "policy": "weekly-six-v1",
+    "items": [],
+    "legacy_only": true
   },
   "ig_images": false,
   "instagram": {
@@ -172,9 +98,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
     "ig_topic_at": null,
     "fb_topic_at": null,
     "teaser_at": null,
-    "paper_highlight_1_at": null,
-    "real_scene_highlight_1_at": null,
-    "real_scene_highlight_2_at": null
+    "short_video_policy": "weekly-six-v1"
   },
   "shorts": {
     "applicable": false,
@@ -187,21 +111,14 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
     "postId": null,
     "url": null
   },
-  "paper_highlight_publish": [
-    {
-      "slot": 1,
-      "scheduled": false,
-      "instagram": null,
-      "facebook": null,
-      "youtubeShorts": null
-    }
-  ]
+  "paper_highlight_publish": [],
+  "weekly_plan_refs": []
 }
 ```
 
 既有狀態檔若沒有 `content_decision`、`brand_review`、`community_allocation` 或逐支 `community_brief`，只補上缺少欄位並視為未核准／未就緒；不得重設其他已完成旗標。
 
-2026-09-28 起新集數採每週 2 支實透＋1 支剪紙，`highlight_plan.items` 是當集必做／必排的唯一清單；不可因歷史 `paper_highlights` 中另有未完成項目就追加製作。舊檔保留所有成品、核准與平台證據，補上新清單並明確列出既有內容如何承接；已公開或已排程項目不得自動改動，需單集明確授權。缺 `real_scene_highlights` 時只補缺欄位，不重設既有核准。
+2026-10-10 起依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)，每週一至六共 6 支，含一般預告。以跨集 weekly-plan.json 為短片必做／必排清單，單集只保留來源及週計畫引用，不預設一集切六段。既有成品、核准、平台證據與歷史狀態保留；舊 false 項不得觸發追加製作。
 
 每完成一步就更新寫回。**Firstory 是否上傳過，一律看這個檔案的旗標，不要用「影片檔存在」去猜測**——影片存在不代表已經上傳過。
 
@@ -225,12 +142,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 2026-08-24 起，Podcast 音檔正片固定排程於每週一 07:00（Asia/Taipei, UTC+8）公開，連續執行 6 集；不得因單集波動自行改時段。
 - 啟動單集流程時，先確認該集預定發布日期，將完整 ISO 8601 時間（含 `+08:00`）寫入 `release_schedule.target_at`，並標記這是實驗第幾集。若日期無法由現有資料判斷，只問老查「這集排哪個週一」，不可自行猜日期。
 - 製作目標：前一週五 18:00 前完成內容決策與品牌審查；週日 18:00 前完成星期天範圍內的成品、平台文案與上傳；週一 07:00 正片公開。時間不足時要回報風險，不可默默改成即時發布。
-- 社群錯峰：週一 12:15 發 FB／IG 主題文，週一 20:30 發一般預告，週二 20:30 發剪紙精華，週三 20:30 發實透 1，週五 12:00 發實透 2。三支精華各自使用自己的 9:16 成品，分別排到 IG Reels、FB Reels、YouTube Shorts；若任一平台不支援預約或當下無法完成，保留草稿並明確回報，不得假裝已排程。
+- 社群主題文維持週一 12:15；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支分別排 IG Reels、FB Reels、YouTube Shorts，無平台成功讀回不得標為已排程。
 - IG 發布隔離：IG 圖文與 IG Reels 只發布／排程至《不標準答案》Instagram 品牌帳號；禁止同步至 Si Ming Wang 個人 Facebook 頁面。建立 IG 貼文與提交前，星期天必須逐項核對「目前 IG 身分＝不標準答案」及「分享至 Facebook／交叉發布＝關閉」；任一項不符即停止並修正，不得發布。
-- 從 `target_at` 自動計算同週的 `ig_topic_at`、`fb_topic_at`、`teaser_at`、`paper_highlight_1_at`、`real_scene_highlight_1_at`、`real_scene_highlight_2_at`，全部寫完整 ISO 8601 與 `+08:00`，並同步到 `highlight_plan.items[].target_at`。除非老查明確要求單次改為立即發布，否則沿用上述時段。
+- Podcast target_at 與短片週計畫分開。每項短片寫完整 +08:00 target_at，週計畫引用來源集數；不從正片日期自動追加舊三支精華。
 - 第 6 集發布滿 7 天後，回報應進行時段復盤；比較上線後 24 小時播放量、7 天完播率、首日播放占比、實際收聽尖峰與社群導流，再由老查決定是否調整。
 
-實際製作與對外操作順序依總控章程：一般預告 → IG 圖文 → Firstory → 三支精華。前段內容決策可先完成三支選段與素材需求，但不插入 YouTube 長片工作。每一項對外動作仍在當次核准後提交。
+實際製作與對外操作順序依總控章程：一般預告 → IG 圖文 → Firstory → 週計畫其他短片。前段可先配置週計畫原音與素材需求，但不插入 YouTube 長片工作。每一項對外動作仍在當次核准後提交。
 
 ### 1. 逐字稿 — `transcript: false` 時
 老查有給 Plaud 連結（`https://web.plaud.ai/s/pub_xxxx...`）→ 用 `firecrawl_scrape`（`waitFor: 5000`）抓取；有給本機 `.txt`／`.md`／`.docx` → 直接讀取並複製到 `output/ep-{slug}/transcript/`。兩者都有時以本機修訂版為準，Plaud 只用來補時間碼。
@@ -254,14 +171,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 同時列出 10 句逐字稿原話金句，附講者與可靠時間碼。不可把改寫句冒充原話；找不到可靠時間碼就標示待確認。將這 10 句及可用素材交給小渡，產出 `community-briefs/highlight-allocation.md`，再由小查核對其沒有改寫原話或越過品牌放行。
 
-停下來讓老查核准：最終標題、縮圖文字、5 句金句、其中 1 句一般預告主句，以及參照小渡配置後的 2 段實透精華與 1 段剪紙精華。三支精華應各自表達一個完整觀點，優先使用不同段落，長度以 25 至 45 秒為目標，但不能為湊秒數切斷完整語意。未核准不得產生平台文案，也不得把 `content_decision.approved` 設為 `true`。
+讓老查核准最終標題、縮圖文字、原話金句與週計畫中本集承接的選段。一般預告含在六支內，可由核准歷史素材補足其他槽位，不強迫本集切六段。完整語意優先，不為秒數截斷句子。
 
-核准後把結果與 `community_allocation` 寫入 `.publish-status.json`，再進入下一步。三支必須使用不同原音段落、主要觀點或切角、動作情境；可共用角色與實景，但不能只換字幕、畫風或運鏡。選段時附三支差異對照，重複就先重選，不等製作後才改。三支選段可按「週二提出問題、週三情境轉折、週五另一個觀點或收束」分工，但依本集內容調整，不固定套模板；不可把同一段原音換三種畫面重播。
-
-老查核准後，先由小渡分別交付 `community-brief-paper-1.md`、`community-brief-shitou-1.md`、`community-brief-shitou-2.md`。小查核對 item ID、原話、時間碼與配置一致後，才將每支 `community_brief.status` 設為 `READY`；任何一支未就緒，只阻塞該支製作，不阻塞已通過的其他工作。
+小渡依週計畫提供各支差異與逐支 brief，小查核對 item ID、原話、時間碼及版本後才設 READY。核准寫回單集與週計畫；同段原音換畫風不能算兩支不同發布內容。
 
 ### 2.1 平台文案 — `content_decision.approved: true` 且 `content_files: false` 時
-以核准的核心主張、品牌錨點、標題與金句為唯一母稿，產出 `fb-post.txt`（800 字 FB 長文）／`ig-caption.txt`（150 字＋hashtag）／`show-notes.md`（Firstory Show Notes）／`paper-highlight-1-caption.txt`／`shitou-highlight-1-caption.txt`／`shitou-highlight-2-caption.txt`。三支精華文案各自只服務該段觀點，不能貼同一篇通用摘要。細節格式見記憶 `project_podcast_production`。
+以核准母稿產出 fb-post.txt、ig-caption.txt、show-notes.md，並依週計畫逐 item ID 產出 caption。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
 
 寫作時套用記憶 `feedback_interaction_style` 的語氣禁用詞、排版規則，以及以下平台硬規則與發布前品牌關（取自 `social-media-assistant` 技能包，2026-08-06 併入）：
 
@@ -303,11 +218,9 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 ### 2.5 節目預告 — `teaser_video.rendered: false` 時
 
-只有在老查從已選 5 句金句中指定 1 句主句後才執行。把主句與時間碼寫入 `teaser_video.quote`、`start`、`end`，再呼叫 `podcast-teaser-video` skill。
+只有在老查指定核准主句、可靠切點及週一預告 item 後才製作。一般預告是六支中的動態字卡／物件 1，呼叫 podcast-teaser-video 的預設字卡版，使用核准原音與字幕；依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md) 的輕量路線及逐支 brief 製作。
 
-它以主句為剪輯錨點，從原始音檔取 12 至 18 秒，製作 9:16 一般預告。人物版依序使用老查、阿分、大寶、小寶特寫，每張必須有肉眼可辨的景別差異；場景之間用漫畫翻頁，最後翻到完整全圖與 9:16 片尾。片尾固定列 YouTube、Firstory、Spotify、Apple Podcast。
-
-必須先讓老查確認四角色特寫、完整合照與片尾關鍵畫面才渲染，成品驗證後集中讓老查核准。只交一張完整圖的縮放 proof，不算關鍵畫面確認。核准後設定 `teaser_video.rendered: true`、`approved: true`，並立即銜接 FB Reel 草稿與排程，不再等老查另外提醒。
+老查明確選擇「人物版」時才呼叫 podcast-teaser-video 的四張獨立特寫／合照流程。不要將四角色生成當作每週字卡預告的前置條件。小樣與最終成片分開核准，QC、品牌 ALLOW 與發布證據照常適用。
 
 ### 3. IG 圖 — `content_files: true` 且 `ig_images: false` 時
 先讀專案根目錄 `DESIGN.md`，讓封面、輪播與金句圖服從品牌色、字體與視覺規則；找不到就停止視覺生成並回報。
@@ -330,19 +243,15 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 ```
 這是半自動：開瀏覽器、自動填標題+說明+上傳音檔，停在發布頁。依 `release_schedule.target_at` 設定預約發布；若 Firstory 當下介面或方案不支援預約，停止在確認頁並明確回報，不得改成提前公開。老查確認預約成功後，才把 `firstory.uploaded` 與 `release_schedule.firstory_scheduled` 設為 `true`（不要在腳本跑完就設定，因為它本來就不會自動按發布）。
 
-### 5. 每週一支剪紙節目精華
+### 5. 依週計畫製作短片
 
-只處理 `highlight_plan.items` 中 `format: paper` 的項目。先核對 `paper-1` 的 `community_brief.status: READY`、路徑與核准原話一致，未通過就停在「待小渡逐支 brief」，不得開始鏡頭表或物件清單。通過後呼叫 `paper-collage-video`，使用內容決策關核准的原話、講者、起訖時間碼與來源音檔，不另寫旁白。鏡頭表、分層物件清單、字幕密度與結尾導向必須落實該 brief，並遵守本 Skill 的直式短影片安全框，再做代表鏡頭 proof，風格核准後完成 1080 × 1920、30 fps 成品。
+逐項讀 weekly-plan.json 的 format、role、核准來源、READY brief 與 target_at；不硬派舊 paper-1／shitou-1／shitou-2。
 
-交付預覽、原話、時間碼、長度與 caption，經核准才更新該項 `rendered`、`approved`。預設對應週二 20:30，交回第 6.2 節處理跨平台排程。歷史第二支剪紙未完成不再是新週節奏的必做項，也不刪除舊成品或證據。
+- paper：呼叫 paper-collage-video，完整鏡頭表、分層物件、小樣與 QC。
+- scene：呼叫 shi-tou 的實景紙片模式，先重用透明角色與實景，再做可控圖層動作；不預設 Flow。
+- type：依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md) 做原音動態字卡／物件，原話分句、字幕對齊與物件動作均有聲音依據。
 
-### 5.1 每週兩支實透實景角色精華
-
-逐支核對 `shitou-1`、`shitou-2` 的 `community_brief.status: READY`、路徑與核准原話一致。任一支未通過，只回報該支待小渡逐支 brief，不得開始情境拆解、索取照片或動態腳本。通過後呼叫 repo `skills/shi-tou/SKILL.md`，星期天管理每支進度。交接核准金句、上下文、講者、可靠時間碼、來源音檔與該支社群 brief；實透先擷取精華原音與拆解情境，等老查提供實景照片後完成動態腳本。腳本及關鍵畫面分別獲確認後，才串接角色插圖與 Flow；字幕與不可遮擋的畫面資訊都必須遵守本 Skill 的直式短影片安全框。
-
-兩支使用不同觀點或情緒轉折，動作由金句與當次場景決定，不固定入場或四人同台。先讓老查看兩支內容拆解與素材需求，可以同批提供照片；每支腳本、關鍵畫面與試片各自核准，不能用一支的放行套另一支。
-
-依實透 `references/handoff-and-script.md` 更新 `real_scene_highlights`，並以 `highlight_plan.items` 對應星期三 20:30、星期五 12:00。缺照片、腳本待審或 QC 未過時回報缺口與時程風險，繼續其他可做工作；不為湊每週兩支降低驗收、不自動改成剪紙或增加扣點。
+各支腳本、關鍵畫面、小樣與最終版按適用流程核准；缺照片、原音或 QC 只阻塞該支。Flow 只在明確特別企劃及點數授權後使用，不替六支日常扣點。
 
 ### 6. 對外草稿與排程
 
@@ -352,49 +261,20 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 只要 `teaser_video.rendered: true` 且 `approved: true`，`fb_promo.applicable` 就是 `true`，與真人 Shorts 是否存在無關。使用 9:16 成品與核准文案建立 FB Reel，預設排程週一 20:30；單集若由老查指定立即發布，就只覆寫該集。
 
-#### 6.2 每週三支精華跨平台排程
+#### 6.2 六支週計畫跨平台排程
 
-以 `highlight_plan.items` 為唯一排程清單，逐支核准即可準備該支草稿，不必等另一支照片。每支依自己的最終成片、caption、品牌 `ALLOW`、QC 與老查核准處理。
+以 weekly-plan.json 為唯一短片發布清單（包含第 6.1 節的一般預告，不能重算）。逐支核對最終檔、caption、品牌 ALLOW、QC、人工核准、帳號及 target_at；時段依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。
 
-| 成品 | 發布時間（Asia/Taipei） | 平台 |
-| --- | --- | --- |
-| 剪紙精華 | 週二 20:30 | IG Reels、FB Reels、YouTube Shorts |
-| 實透精華 1 | 週三 20:30 | IG Reels、FB Reels、YouTube Shorts |
-| 實透精華 2 | 週五 12:00 | IG Reels、FB Reels、YouTube Shorts |
+各平台讀回寫入該 item.platforms 與發布證據庫，單集保留引用。三平台任一失敗保留其他成功結果，不重複上傳，也不把整支標為跨平台完成。
 
-這是沿既有節奏安排的編輯方案，不是已驗證的最佳流量時間。週五預留實透 2，網誌不再擠入；老查單集明確覆寫時才改。已排程或公開的舊內容保留，重新安排需另有明確指示。
+#### 6.3 真人或 Flow 特別短片
 
-剪紙平台讀回寫入 `paper_highlight_publish`，實透平台讀回寫入該 `real_scene_highlights` 項目的 `platforms`，並更新發布證據庫。同一支在三個平台中有一個失敗，不能把整支標成完成；保留已成功結果，避免重複上傳。第 6 節的發布確認與 IG 身分／交叉發布隔離規則照常適用。
-
-#### 6.3 額外真人 Shorts（條件式）
-
-檢查 `video-projects/{slug}-short/01-raw/raw.mp4` 是否存在。不存在就把 `shorts.applicable: false`，這只代表沒有額外真人短片，不影響一般預告與三支精華。存在才依 `shorts-pipeline` skill 執行並安排額外發布槽位；不得擠掉週二剪紙、週三及週五實透的固定槽位。
+存在真人 raw.mp4 不自動追加影片。收到明確製作指示時，依對應 Skill 先判素材，再替換核准週計畫槽位；維持總數六支。額外第七支需另行指示。
 
 ### 7. 結尾報告
-每次執行完，列出這集 16 個項目的狀態表：
+回報單集文字／音檔／IG 狀態，以及當週六個 item 的來源、形式、素材、原音、brief、render、QC、品牌、核准與各平台狀態。清楚區分樣片、成片、草稿、排程與公開；標示下一棒及缺件，不再硬列舊三支精華為必做。
 
-| 項目 | 狀態 |
-|------|------|
-| 逐字稿 | ✅/❌/⏸️缺輸入 |
-| 內容決策 | ✅/❌/⏸️待核准 |
-| 品牌審查 | ✅/❌ REJECTED/⏸️待修正 |
-| 平台文案 | ... |
-| 節目預告 | ✅/❌/⏸️待選金句 |
-| 剪紙精華 | ✅/❌/⏸️待選段、小渡 brief 或待審核 |
-| 實透精華 1 | ✅/❌/⏸️待小渡 brief、照片、腳本或成片核准 |
-| 實透精華 2 | ✅/❌/⏸️待小渡 brief、照片、腳本或成片核准 |
-| IG圖 | ... |
-| IG上架 | ... |
-| Firstory | ... |
-| Shorts | ✅/❌/➖不適用 |
-| FB預告 | ... |
-| 剪紙跨平台排程 | ✅/❌/⏸️待確認 |
-| 實透 1 跨平台排程 | ✅/❌/⏸️待確認 |
-| 實透 2 跨平台排程 | ✅/❌/⏸️待確認 |
-
-清楚標示完成、缺什麼輸入、還是不適用，讓老查一眼看出下一步要給什麼。
-
-### 8. SEO 文章（選配，不算在上面 16 項狀態表內）
+### 8. SEO 文章（選配，獨立追蹤）
 若老查想把這集也轉成SEO文章補網站流量，可另外呼叫 `seo-article-writer` skill（老查取名「居易」，模式A，帶入同一個 `{slug}`）。這不是必經步驟，星期天流程本身不會主動觸發它。
 
 ---
@@ -405,9 +285,9 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - `tools/firstory-upload/upload.mjs`
 - `tools/fb-promo/run.bat` / `run.sh`
 - `shorts-pipeline` skill（步驟 6 直接引用其步驟，不要複製貼上整份內容）
-- `podcast-teaser-video` skill（步驟 2.5 只在老查選定預告主句後呼叫）
+- `podcast-teaser-video` skill（步驟 2.5 預設字卡版，人物版僅明確指定時使用）
 - `paper-collage-video` skill（步驟 5 每週一支剪紙精華，不與真人 Shorts 綁定）
-- `shi-tou` skill（實透，步驟 5.1 每週兩支；星期天管理選段、製作交接與發布槽位）
+- `shi-tou` skill（實透，步驟 5 實景紙片預設、Flow 特別企劃；星期天管理選段、製作交接與發布槽位）
 - `seo-article-writer` skill（居易，選配步驟 8 引用，不要複製貼上整份內容）
 
 ## 相關記憶
