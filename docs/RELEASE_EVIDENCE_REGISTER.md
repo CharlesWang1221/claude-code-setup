@@ -1,6 +1,6 @@
 # 平台發布證據庫
 
-最後盤點：2026-09-01 10:41（Asia/Taipei）  
+最後盤點：2026-10-11（Asia/Taipei）
 主責：內容營運長。  
 用途：將「素材已做完」與「平台已處理」切開。未填入平台讀回證據的列，一律視為 `待驗證`，不得對外或對老查宣稱已上傳、已排程或已公開。
 
@@ -16,6 +16,9 @@
 
 | 資產 ID | 平台與用途 | 最終版本／依據 | 目前狀態 | 已有平台證據 | 預定／實際時間 | 公開網址／平台 ID | 下一個驗證動作 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| S3EP11-TEASER-YOUTUBE | YouTube Shorts 一般預告 | `output/ep-s3ep11/s3ep11-teaser-loop-v2.mp4`（33.5 秒，無片尾循環）；核准封面 `output/ep-s3ep11/teaser-cover-v3.png` | `已排程` | Studio 讀回循環版檔名、0:34、影片網址、已排定與核准縮圖已上傳；舊版 `MIWUJSNlXz0` 永久刪除 | 2026-10-12 20:30（Asia/Taipei） | `https://youtube.com/shorts/jwAn70lZiu0`（`jwAn70lZiu0`） | 發布後讀回公開頁，核對封面與影片 |
+| S3EP11-TEASER-FACEBOOK | Facebook Reel 一般預告 | `output/ep-s3ep11/s3ep11-teaser-loop-v2.mp4`；核准封面 `output/ep-s3ep11/teaser-cover-v3.png` | `已排程` | Meta 清單讀回 10/12 20:30、粉專不標準答案；新版 Reel 已建立；舊版內容 ID `1076252961705328` 已刪除 | 2026-10-12 20:30（Asia/Taipei） | `https://www.facebook.com/reel/1787986445866652/`（內容 ID `1624727079039297`） | 發布後讀回公開頁，核對內容與封面 |
+| S3EP11-TEASER-INSTAGRAM | Instagram Reel 一般預告 | `output/ep-s3ep11/s3ep11-teaser-loop-v2.mp4`；帳號 `another20251021`；核准封面 v3 已套用 | `已排程` | Meta 清單只剩新版，讀回 10/12 20:30、帳號與新版內容 ID；舊版 `2282651432511189` 已刪除。時區 Asia/Shanghai（UTC+8），與 Asia/Taipei 同時區 | 2026-10-12 20:30（Asia/Taipei） | Meta 內容 ID `1134958635758935`；公開網址待發布後讀回 | 發布後讀回 Reel 公開網址並核對封面 |
 | S3EP5-FULL-FIRSTORY | Firstory 正片 | `output/ep-s3ep5/episode-metadata.md` | `待驗證` | 無 | 未記錄 | 未記錄 | 讀回草稿、排程或公開狀態；填入 ID 與時間 |
 | S3EP5-FULL-YOUTUBE | YouTube 正片 | S3EP5 metadata 已有；成片版本未在本庫確認 | `待驗證` | 無 | 未記錄 | 未記錄 | 確認最終成片、Studio 狀態與網址／影片 ID |
 | S3EP5-TOPIC-FB | Facebook 本集主題文 | `content-decision.md`、`brand-review.md` | `待驗證` | 品牌 `ALLOW` 不等於平台證據 | 未記錄 | 未記錄 | 讀回 FB 草稿、排程或公開貼文 ID |

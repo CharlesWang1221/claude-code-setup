@@ -1,5 +1,17 @@
 # 學習筆記
 
+## 2026-10-11｜S3EP11 循環預告換版與平台替換
+
+本次按老查指示將 S3EP11 Shorts／Reels 換成無片尾循環版，並清除舊版，避免同題重複排程。製作 QC 與平台排程是兩個不同完成條件：本機影片首尾接點通過，不代表社群平台已換版；每個平台都要讀回新檔或內容、帳號、封面、時間及 ID。
+
+新版是 `s3ep11-teaser-loop-v2.mp4`，33.5 秒，無片尾卡，最後畫面回接開場；封面採核准的 `teaser-cover-v3.png`。YouTube Shorts `jwAn70lZiu0`、Facebook Reel `1787986445866652`（內容 ID `1624727079039297`）、Instagram Reel `1134958635758935`（帳號 `another20251021`）都排定 2026-10-12 20:30（Asia/Taipei）。Instagram 的 Meta 時區顯示 Asia/Shanghai，UTC+8，與台北相同。
+
+舊版 YouTube `MIWUJSNlXz0`、Facebook 內容 ID `1076252961705328`／Reel `1536064398549159`、Instagram 內容 ID `2282651432511189` 均已刪除；Meta 清單讀回只剩新版 Instagram。YouTube Studio 讀回新版檔名、連結、已排定狀態與縮圖；Meta 排程表讀回 Facebook、Instagram 各一筆新版與 20:30。
+
+下次遇到已排程影片換版，依序：辨認並記錄舊 ID → 上傳核准新版 → 逐平台讀回新版版本、帳號、封面與時間 → 新版確認成功後依明確授權刪除舊版 → 確認清單無重複 → 更新狀態檔、製作狀態、QC 與發布證據庫。若新版仍處理中就保留處理中狀態，等待讀回，不把舊版設私人或移草稿誤記為刪除。永久刪除舊片前，必須有明確授權。
+
+平台 ID 與排程結果已寫入 `docs/RELEASE_EVIDENCE_REGISTER.md`；本機成片、QC 快照與 `.publish-status.json` 屬私人製作資料，不隨公開 repo 推送。這是通用替換經驗；影片仍一律遵守 `docs/SHORT_VIDEO_WEEKLY_POLICY.md` 的無片尾與首尾循環規則。
+
 ## 2026-10-10｜代理更新與私人專案跨電腦交接
 
 執行證據見 docs/WORK_LOG_2026-10-10.md；反思見 journals/2026-10-10.md。這段保存已驗證的經驗，不取代 AGENTS 或 Skill 母版。
