@@ -79,3 +79,6 @@ video-projects/s3ep9-hyperframes-teaser/
 /docs/S3EP*_PC_HANDOFF_*.md
 /docs/WORK_LOG_*.md
 /journals/*.md
+
+# 私人論文研究進度，不進公開 repo
+/docs/THESIS_PROGRESS*.md
