@@ -12,6 +12,7 @@ import { readFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import qaGate from '../qa-gate/qa-gate.cjs';
+import { platform } from 'os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -28,7 +29,8 @@ if (!epSlug) {
   process.exit(1);
 }
 
-const ROOT    = 'D:\\hot data\\CCoode';
+// 由腳本位置推回 repo 根目錄，避免綁死 Windows 或特定電腦路徑。
+const ROOT    = resolve(__dirname, '..', '..');
 const EP_DIR  = join(ROOT, 'output', `ep-${epSlug}`);
 const SESSION = join(__dirname, 'browser-session');
 
@@ -82,6 +84,8 @@ console.log('');
 
 // ── 啟動瀏覽器 ────────────────────────────────────────────────────────────────
 const ctx = await chromium.launchPersistentContext(SESSION, {
+  // Google 會拒絕 Chrome for Testing 的 OAuth 登入；改用本機正式版 Chrome。
+  channel: 'chrome',
   headless: false,
   viewport: { width: 1400, height: 900 },
   locale: 'zh-TW',
@@ -91,10 +95,28 @@ const page = await ctx.newPage();
 await page.goto('https://studio.firstory.me', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
 // ── 登入檢查 ──────────────────────────────────────────────────────────────────
-if (page.url().includes('login') || page.url().includes('signin')) {
+const creatorEntry = page.getByText('Podcast 創作者', { exact: false }).first();
+const landingText = await page.locator('body').innerText().catch(() => '');
+const needsLogin = page.url().includes('login') ||
+  page.url().includes('signin') ||
+  landingText.includes('歡迎回來') ||
+  landingText.includes('Podcast 創作者') ||
+  await creatorEntry.isVisible().catch(() => false);
+
+if (needsLogin) {
   console.log('>>> 請在瀏覽器視窗中登入 Firstory Studio（只需一次，之後會記住）');
   console.log('>>> 等待登入中...');
-  await page.waitForURL(url => !url.includes('login') && !url.includes('signin'), { timeout: 120000 });
+  if (await creatorEntry.isVisible().catch(() => false)) {
+    await creatorEntry.click();
+  }
+  await page.waitForFunction(
+    () => !document.body.innerText.includes('歡迎回來') &&
+      !document.body.innerText.includes('Podcast 創作者') &&
+      !location.href.includes('login') &&
+      !location.href.includes('signin'),
+    null,
+    { timeout: 300000 }
+  );
   console.log('登入成功！\n');
 }
 
@@ -161,8 +183,9 @@ try {
   const notesEl = page.locator('[contenteditable="true"]').first();
   if (await notesEl.isVisible().catch(() => false)) {
     await notesEl.click();
-    await page.keyboard.press('Control+a');
-    await page.keyboard.press('Control+v');
+    const modifier = platform() === 'darwin' ? 'Meta' : 'Control';
+    await page.keyboard.press(`${modifier}+a`);
+    await page.keyboard.press(`${modifier}+v`);
     console.log('  ✓ Show Notes（剪貼板）');
   } else {
     console.warn('  ! 請手動貼上節目介紹');
@@ -184,6 +207,7 @@ if (audio) {
       await page.waitForFunction(
         () => !document.querySelector('[class*="progress"][style*="width"]') ||
               document.querySelector('[class*="progress"]')?.style?.width === '100%',
+        null,
         { timeout: 300000 }
       ).catch(() => console.log('  (上傳進度偵測逾時，請自行確認上傳完成)'));
     } catch {

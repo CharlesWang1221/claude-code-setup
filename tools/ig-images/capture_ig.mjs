@@ -5,7 +5,7 @@
  */
 import puppeteer from 'puppeteer';
 import { resolve, dirname } from 'path';
-import { mkdirSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 
 const [,, htmlArg, outArg, wArg, hArg] = process.argv;
 if (!htmlArg || !outArg) {
@@ -17,13 +17,18 @@ const HTML_PATH = resolve(htmlArg).replace(/\\/g, '/');
 const OUT_PNG   = resolve(outArg);
 const W = parseInt(wArg || '1080', 10);
 const H = parseInt(hArg || '1080', 10);
+const systemChrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+const chromeExecutable = process.env.CHROME_PATH || (existsSync(systemChrome) ? systemChrome : undefined);
 
 mkdirSync(dirname(OUT_PNG), { recursive: true });
 
-const browser = await puppeteer.launch({
+const launchOptions = {
   headless: true,
   args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-web-security', '--hide-scrollbars']
-});
+};
+if (chromeExecutable) launchOptions.executablePath = chromeExecutable;
+
+const browser = await puppeteer.launch(launchOptions);
 
 try {
   const page = await browser.newPage();
