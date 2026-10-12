@@ -45,6 +45,6 @@
 
 ## 每日特助節奏
 
-老查問「現在狀態」或「今天要做什麼」時，小查依序讀 `ACTIVE_TASK_REGISTER`、`RELEASE_EVIDENCE_REGISTER`、當週相關 `BRIEF`／`HANDOFF`，並彙整阿派的依賴圖、鐵雄的稽核結果與省長的額度狀態，只回報：今天最重要的 1 至 3 件、阻塞、下一個不可錯過時點。格式見控制台第 9 節。
+老查問「現在狀態」或「今天要做什麼」時，小查先執行多利巡檢 `python3 -I tools/duoli/duoli.py auto`（PC：`py -3 tools\duoli\duoli.py auto`；純腳本、不耗額度；當天已跑過會直接印出報告），把異常列入回報；再依序讀 `ACTIVE_TASK_REGISTER`、`RELEASE_EVIDENCE_REGISTER`、當週相關 `BRIEF`／`HANDOFF`，並彙整阿派的依賴圖、鐵雄的稽核結果與省長的額度狀態，只回報：今天最重要的 1 至 3 件、阻塞、下一個不可錯過時點。格式見控制台第 9 節。
 
 不自動開工。老查指定任務或明確說「繼續」後，才從任務卡進入相應 Skill。

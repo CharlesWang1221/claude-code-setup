@@ -11,33 +11,24 @@ description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿
 
 ## 例行工作（腳本，不耗額度）
 
-| 頻率（Asia/Taipei） | 指令 | 內容 | 交給誰 |
+觸發方式：小查每天第一次回報前，執行 `python3 -I tools/duoli/duoli.py auto`。它只跑「已到時間、且尚未跑過」的工作；當天或當週已跑過，就直接印出已存的報告。老查當天沒有使用 Codex，就不執行，也不補跑。不使用背景排程。
+
+| 時機（Asia/Taipei） | 單獨執行 | 內容 | 交給誰 |
 | --- | --- | --- | --- |
-| 每日 07:30 | `tools/duoli/daily-check.sh` | 排程看門：今明兩天的發布項目、已過預定時間卻仍是「已排程」的項目；Skill 健康：來源檢查；檔案巡邏：待發布檔案是否存在、同資料夾多個 MP4、產線資料夾多個 MP4、超過 30 天的 MP4 容量、磁碟空間 | 星期天、師傅、廠長、鐵雄 |
-| 每週一 07:30 | `tools/duoli/weekly-open.sh` | 從範本建立本週 `output/weekly-shorts/{週一}/weekly-plan.json` 空殼（已存在就跳過，絕不覆蓋）；列出本週到期的第 7／30 天復盤 | 阿派、成析 |
-| 每週日 20:00 | `tools/duoli/ledger-tally.sh` | 從各 item 的 `{lane_dir}/handoff.md` 讀取「重做次數」「付費點數」兩行，整理成原始數字 | 省長 |
+| 每日第一次回報前（07:30 後） | `tools/duoli/daily-check.sh` | 排程看門：今明兩天的發布項目、已過預定時間卻仍是「已排程」的項目；Skill 健康：來源檢查；檔案巡邏：待發布檔案是否存在、同資料夾多個 MP4、產線資料夾多個 MP4、超過 30 天的 MP4 容量、磁碟空間 | 星期天、師傅、廠長、鐵雄 |
+| 每週第一次回報前 | `tools/duoli/weekly-open.sh` | 從範本建立本週 `output/weekly-shorts/{週一}/weekly-plan.json` 空殼（已存在就跳過，絕不覆蓋）；列出本週到期的第 7／30 天復盤 | 阿派、成析 |
+| 週日 20:00 後第一次回報前 | `tools/duoli/ledger-tally.sh` | 從各 item 的 `{lane_dir}/handoff.md` 讀取「重做次數」「付費點數」兩行，整理成原始數字；該週沒有週計畫就略過 | 省長 |
 
-- 三支腳本都可以加 `--dry-run`，只印出內容，不存檔、不寄信、不通知；加 `--force` 會重跑當天或當週已完成的工作。
-- 資料來源：`docs/RELEASE_EVIDENCE_REGISTER.md`、週計畫 JSON、交件包。腳本只讀檔；唯一的寫入是週計畫空殼。
-- 報告與執行紀錄存在 repo 外的 `~/.local/state/duoli/`，不會出現在 git。
+- 三支腳本都可以加 `--dry-run`，只印出內容、不存檔；加 `--force` 會重跑已完成的工作。
+- 資料來源：`docs/RELEASE_EVIDENCE_REGISTER.md`、週計畫 JSON、交件包。腳本只讀檔；唯一的寫入是週計畫空殼與報告。
+- 報告存在 `output/weekly-shorts/duoli-reports/`（git 忽略），由小查彙整進日報，不另外寄信。
+- Mac 與 PC 都能執行（Python 3.9 以上）。PC 用 `py -3 tools\duoli\duoli.py auto`；Skill 健康檢查在 PC 上改跑 `check-skill-authority.ps1`。
 
-### 排程與補跑（macOS）
+### 選用：背景排程與寄信
 
-- 安裝：`python3 -I tools/duoli/duoli.py install`，會依 `tools/duoli/launchd/` 範本填入本機路徑，註冊 launchd 排程 `com.beyondans.duoli`。
-- 移除：`python3 -I tools/duoli/duoli.py uninstall`。
-- launchd 每天 07:30、週日 20:00 執行 `duoli.py auto`，開機或登入時也會執行一次。`auto` 只跑「已到時間、且尚未跑過」的工作，所以錯過的會補跑，不會重複。
-- Windows 版本尚未建立；PC 上目前不執行例行巡檢。
-
-### 通知方式
-
-| 條件 | 行為 |
-| --- | --- |
-| 已設定收件人與 token | 透過 Duoli Mailer Worker 寄信，主旨以「多利｜」開頭 |
-| 缺任一項 | 不寄信，只存檔並跳出 macOS 通知 |
-
-設定方式（都不進 repo）：
-- 收件人：在 `~/.config/duoli/env` 寫入 `DUOLI_TO=<Worker 白名單內的信箱>`。
-- token：由老查本人執行 `security add-generic-password -s duoli-mailer -a token -w`，依提示貼上 `DUOLI_WEBHOOK_TOKEN`。不得把 token 貼進對話、repo 或任務卡。
+老查目前選擇不使用。日後若要啟用：
+- `python3 -I tools/duoli/duoli.py install` 會安裝 macOS launchd 排程；repo 位於 `~/Documents` 時，必須先在「系統設定 → 隱私權與安全性 → 完整取用磁碟」授權 Python.app，否則會被系統擋下。移除用 `uninstall`。
+- 寄信需要鑰匙圈 token（服務 duoli-mailer、帳號 token）與 `~/.config/duoli/env` 的 `DUOLI_TO`；token 由老查本人設定，不得貼進對話或 repo。
 
 ## 選題情報週報（AI，每週 1 次）
 

@@ -2,7 +2,7 @@
 
 狀態：`ACTIVE`，老查於 2026-10-12（Asia/Taipei）核准階段 1。
 
-**過渡期說明**：本版依 `docs/SKILL_MIGRATION_PLAN.md` 分階段上線。階段 2 完成前，解題、招牌仍沿用 `video-explainer`、`video-promo`；多利已於 2026-10-12 轉職為後勤管家（階段 2B），例行巡檢目前只在 Mac 執行，寄信設定完成前改用 macOS 通知；階段 3 完成前，上傳工具還不會自動檢查鐵雄報告，由星期天在上傳前人工核對。子代理能否再派子代理、能否讀取額度用量，實測前依第 5、7 節的保守做法執行。
+**過渡期說明**：本版依 `docs/SKILL_MIGRATION_PLAN.md` 分階段上線。階段 2 完成前，解題、招牌仍沿用 `video-explainer`、`video-promo`；多利已於 2026-10-12 轉職為後勤管家（階段 2B），由小查每天第一次回報前觸發，不使用背景排程；階段 3 完成前，上傳工具還不會自動檢查鐵雄報告，由星期天在上傳前人工核對。子代理能否再派子代理、能否讀取額度用量，實測前依第 5、7 節的保守做法執行。
 本文件是 Codex 影音動畫公司的組織與調度憲章。取代 2026-09-01 版「CEO 控制台」與 `docs/ORG_RESTRUCTURE_PROPOSAL.md`。檔名沿用，避免既有引用失效。
 
 Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不同任務中承擔的職位；管理的單位是「職位＋任務卡＋證據」。
@@ -45,7 +45,7 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
 | 部門 | 主管 | 成員與 Skill | 部門唯一結果 |
 | --- | --- | --- | --- |
 | 特助室 | 小查 | 小簡 `presentation-architect` | 老查交辦的事有結果、有回報 |
-| 營運與後勤 | 阿派 | 多利 `daily-routines-manager`、師傅 `skill-creator` | 每支 item 都有任務卡、依賴、資料夾與狀態；例行檢查每天自動跑完且不耗 AI 額度 |
+| 營運與後勤 | 阿派 | 多利 `daily-routines-manager`、師傅 `skill-creator` | 每支 item 都有任務卡、依賴、資料夾與狀態；例行檢查在小查每日回報前跑完，且不耗 AI 額度 |
 | 內容企劃部 | 小渡 | 社群營運 `community-operations`、阿諾 `animation-director`、小市 `voc-jtbd-demand-map`、居易 `seo-article-writer`、成析 `podcast-performance-review`、真短驗析 `short-video-experiment-review` | 每支 item 開工前都有 `READY` brief 與可驗證假設 |
 | 動畫製作部 | 廠長 | 預報 `podcast-teaser-video`、剪紙 `paper-collage-video`、實透 `shi-tou`、音剪 `podcast-audio-edit`、油管 `you-guan`、解題 `jieti`、招牌 `zhaopai`、真秀 `shorts-pipeline`、啊問 `blog-image-director`、大千 `chibi-ink-illustrations`、流之呼吸 `flow-video-pilot` | 交件包完整：最終檔、版本、雜湊、技術自檢 |
 | 品管合規中心 | 鐵雄 | `codex/agents/qa_auditor.toml` | 每支對外成品都有附條文出處的稽核報告 |
@@ -61,16 +61,18 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
 
 原則：每天跑的工作一律用腳本，不叫 AI、不耗額度。需要 AI 的工作每週最多一次，並且要先有省長核定的預算卡。
 
-| 頻率（Asia/Taipei） | 工作 | 執行方式 | 交給誰 |
+觸發方式：小查每天第一次回報前，先執行 `python3 -I tools/duoli/duoli.py auto`。它只跑已到時間、且尚未跑過的工作；當天已跑過就直接印出已存的報告。老查當天沒有使用 Codex，就不執行，也不補跑。
+
+| 時機（Asia/Taipei） | 工作 | 執行方式 | 交給誰 |
 | --- | --- | --- | --- |
-| 每日 07:30 | 排程看門：列出今明兩天要發布的內容，以及缺少讀回證據的項目 | 本機腳本，讀發布證據庫與週計畫 | 星期天、小查日報 |
-| 每日 07:30 | Skill 健康：執行來源檢查，只有 FAIL 時才通知 | `tools/check-skill-authority.sh` | 師傅 |
-| 每日 07:30 | 檔案巡邏：同一個 item 出現多個 MP4 時警告、過期渲染暫存、磁碟空間 | 本機腳本 | 廠長、鐵雄 |
-| 每週一 07:30 | 開週計畫空殼、列出到期的第 7／30 天復盤 | 本機腳本 | 阿派、成析 |
-| 每週日 20:00 | 整理帳本原始數字：從交件包統計重做次數與付費點數 | 本機腳本 | 省長 |
+| 每日第一次回報前（07:30 後） | 排程看門：列出今明兩天要發布的內容，以及缺少讀回證據的項目 | 本機腳本，讀發布證據庫與週計畫 | 星期天、小查日報 |
+| 同上 | Skill 健康：執行來源檢查，只有 FAIL 時才列出 | `tools/check-skill-authority.sh` | 師傅 |
+| 同上 | 檔案巡邏：同一個 item 出現多個 MP4 時警告、過期渲染暫存、磁碟空間 | 本機腳本 | 廠長、鐵雄 |
+| 每週第一次回報前 | 開週計畫空殼、列出到期的第 7／30 天復盤 | 本機腳本 | 阿派、成析 |
+| 週日 20:00 後第一次回報前 | 整理帳本原始數字：從交件包統計重做次數與付費點數 | 本機腳本 | 省長 |
 | 每週一次 | 選題情報週報：節目方向靈感＋競品動態 | AI，每週 1 次，預算卡 S；執行端待定（見遷移計畫） | 小渡、小市 |
 
-- 通知一律沿用既有的 Duoli Mailer Worker 寄信；腳本只在 Mac 開機時執行，錯過就在下次開機時補跑一次。
+- 報告存在 `output/weekly-shorts/duoli-reports/`（git 忽略），由小查彙整進日報，不另外寄信或推播。
 - AE 分析、每日新聞、UIUX、書摘、AI 創業案例改為按需服務：老查說「多利，幫我查 XX」時才跑一次。
 - 「影片分析每日推薦」取消。
 

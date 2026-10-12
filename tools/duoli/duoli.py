@@ -6,15 +6,13 @@
   python3 -I tools/duoli/duoli.py daily   [--dry-run] [--force]
   python3 -I tools/duoli/duoli.py weekly  [--dry-run] [--force]
   python3 -I tools/duoli/duoli.py ledger  [--dry-run] [--force]
-  python3 -I tools/duoli/duoli.py auto        # launchd 用：只跑已到時間、且尚未跑過的工作
-  python3 -I tools/duoli/duoli.py install     # 安裝 macOS launchd 排程
+  python3 -I tools/duoli/duoli.py auto        # 小查每日第一次回報前執行：只跑已到時間、且尚未跑過的工作
+  python3 -I tools/duoli/duoli.py install     # （選用）安裝 macOS launchd 背景排程，需授權完整取用磁碟
   python3 -I tools/duoli/duoli.py uninstall
 
-報告與執行紀錄存在 repo 外的 ~/.local/state/duoli/。
-寄信設定（不進 repo）：
-  - token：macOS 鑰匙圈，服務名稱 duoli-mailer、帳號 token
-  - 收件人：~/.config/duoli/env 內的 DUOLI_TO=...
-  兩者缺一時不寄信，只存檔並跳出 macOS 通知。
+報告存在 output/weekly-shorts/duoli-reports/（已被 git 忽略）。當天或當週已跑過時，直接印出已存的報告。
+寄信為選用（不進 repo）：token 存 macOS 鑰匙圈（服務 duoli-mailer、帳號 token），收件人寫在
+~/.config/duoli/env 的 DUOLI_TO=...；缺任一項就不寄信。
 """
 import datetime as dt
 import html
@@ -26,11 +24,11 @@ import subprocess
 import sys
 import urllib.request
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
-TZ = ZoneInfo("Asia/Taipei")
+# Asia/Taipei 固定 UTC+8、無日光節約；不用 zoneinfo，Windows 才不需額外安裝 tzdata
+TZ = dt.timezone(dt.timedelta(hours=8), "Asia/Taipei")
 REPO = Path(__file__).resolve().parents[2]
-STATE = Path.home() / ".local" / "state" / "duoli"
+STATE = REPO / "output" / "weekly-shorts" / "duoli-reports"
 CONFIG = Path.home() / ".config" / "duoli" / "env"
 MAILER_URL = "https://duoli-mailer.siming1221.workers.dev"
 EVIDENCE = REPO / "docs" / "RELEASE_EVIDENCE_REGISTER.md"
@@ -119,10 +117,18 @@ def section_schedule(t):
 
 
 def section_skill_health():
-    script = REPO / "tools" / "check-skill-authority.sh"
+    if os.name == "nt":
+        script = REPO / "tools" / "check-skill-authority.ps1"
+        cmd = ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(script)]
+    else:
+        script = REPO / "tools" / "check-skill-authority.sh"
+        cmd = ["bash", str(script)]
     if not script.exists():
-        return "Skill 健康（師傅）", ["找不到來源檢查腳本。"], True
-    p = subprocess.run(["bash", str(script)], cwd=str(REPO), capture_output=True, text=True)
+        return "Skill 健康（師傅）", ["找不到來源檢查腳本：%s" % script.name], True
+    try:
+        p = subprocess.run(cmd, cwd=str(REPO), capture_output=True, text=True, encoding="utf-8", errors="replace")
+    except OSError as e:
+        return "Skill 健康（師傅）", ["無法執行來源檢查：%s" % e], True
     out = (p.stdout + p.stderr).strip().splitlines()
     bad = [l for l in out if l.startswith(("DIFF", "MISSING", "FAIL", "RED"))]
     if p.returncode == 0 and not bad:
@@ -312,8 +318,11 @@ def read_config():
 
 
 def read_token():
-    p = subprocess.run(["security", "find-generic-password", "-s", "duoli-mailer", "-a", "token", "-w"],
-                       capture_output=True, text=True)
+    try:
+        p = subprocess.run(["security", "find-generic-password", "-s", "duoli-mailer", "-a", "token", "-w"],
+                           capture_output=True, text=True)
+    except OSError:  # Windows 沒有 macOS 鑰匙圈
+        return ""
     return p.stdout.strip() if p.returncode == 0 else ""
 
 
@@ -343,12 +352,15 @@ def deliver(kind, key, title, sections, dry_run):
     if dry_run:
         print("（試跑：不存檔、不寄信、不通知）")
         return
-    STATE.mkdir(parents=True, exist_ok=True)
-    (STATE / ("%s-%s.md" % (kind, key))).write_text(text, encoding="utf-8")
     ok, msg = send_mail(title, sections)
-    if not ok:
-        notify("多利", title.replace("多利｜", ""))
-    (STATE / ("done-%s-%s" % (kind, key))).write_text("%s\n%s\n" % (now().isoformat(), msg), encoding="utf-8")
+    if not ok and os.environ.get("XPC_SERVICE_NAME") == LAUNCHD_LABEL:
+        notify("多利", title.replace("多利｜", ""))  # 只有背景排程才跳通知
+    try:
+        STATE.mkdir(parents=True, exist_ok=True)
+        (STATE / ("%s-%s.md" % (kind, key))).write_text(text, encoding="utf-8")
+        (STATE / ("done-%s-%s" % (kind, key))).write_text("%s\n%s\n" % (now().isoformat(), msg), encoding="utf-8")
+    except OSError as e:
+        msg += "；報告未能存檔：%s" % e
     print(msg)
 
 
@@ -356,12 +368,18 @@ def done(kind, key):
     return (STATE / ("done-%s-%s" % (kind, key))).exists()
 
 
+def show_saved(kind, key, label):
+    f = STATE / ("%s-%s.md" % (kind, key))
+    print("%s已完成，以下是已存的報告：\n" % label)
+    print(f.read_text(encoding="utf-8") if f.exists() else "（找不到報告檔）")
+
+
 # ---------- 指令 ----------
 
 def run_daily(t, dry_run, force):
     key = t.date().isoformat()
     if done("daily", key) and not force and not dry_run:
-        print("今日巡檢已完成，跳過。")
+        show_saved("daily", key, "今日巡檢")
         return
     title, sections = build_daily(t)
     deliver("daily", key, title, sections, dry_run)
@@ -370,7 +388,7 @@ def run_daily(t, dry_run, force):
 def run_weekly(t, dry_run, force):
     key = monday_of(t.date()).isoformat()
     if done("weekly", key) and not force and not dry_run:
-        print("本週開檔已完成，跳過。")
+        show_saved("weekly", key, "本週開檔")
         return
     title, sections = build_weekly(t, dry_run)
     deliver("weekly", key, title, sections, dry_run)
@@ -380,7 +398,7 @@ def run_ledger(t, dry_run, force):
     title, sections, week = build_ledger(t)
     key = week.isoformat()
     if done("ledger", key) and not force and not dry_run:
-        print("該週帳本已整理，跳過。")
+        show_saved("ledger", key, "該週帳本")
         return
     deliver("ledger", key, title, sections, dry_run)
 
