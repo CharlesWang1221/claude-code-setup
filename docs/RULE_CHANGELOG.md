@@ -39,3 +39,5 @@
 | 2026-10-10 | 所有短影片取消片尾卡，結尾需設計接回開場形成循環；QC 必須連播檢查尾段與開場，完整原話與自然音訊優先 | 新增 | 老查檢視 S3EP11 預告後明確要求短影片不留片尾並循環播放 | `docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`AGENTS.md`、`skills/podcast-publish/SKILL.md` | S3EP11 循環版 33.5 秒成片檢查通過，尾格回到開場；10/11 三平台新版已讀回排程，舊版已清除 |
 
 | 2026-10-11 | 新增已排程短片換版 SOP：先核對新舊平台 ID，逐平台建立並讀回新版的檔案／內容、帳號、封面與排程，再依明確授權刪除舊版，最後確認沒有重複並更新狀態與證據 | 修改 | S3EP11 循環版替換過程需要同時保住排程、清除舊片並跨平台留證 | `skills/podcast-publish/SKILL.md`；案例見 `docs/LEARNING_NOTES.md` 與 S3EP11 QC | 新版三平台排程 ID／時間讀回；三筆舊版清除；Meta 排程清單無重複；私有狀態 JSON 可解析 |
+
+| 2026-10-12 | Codex 改組為影音動畫公司（階段 1）：小查改為特助與唯一窗口，不產製不放行；新增阿派（營運總監，依賴圖並行派工）、廠長（製作總監）、鐵雄（品管合規，獨立稽核、逐條附出處、FAIL 只有老查能推翻）、省長（額度管理，S／M／L 預算卡）四個角色；製作改為並行，固定順序只約束排程；全員命名；多利、解題、招牌與上傳硬閘門列為後續階段 | 新增／修改 | 老查指出品管常脫離規則、產線串行拖慢進度、小查一人兼多職自己驗自己，並要求控管額度 | `docs/CEO_CONTROL_TOWER.md`、`docs/SKILL_MIGRATION_PLAN.md`、`docs/QUOTA_LEDGER.md`、`codex/agents/` 四個新角色、`codex/AGENTS.global.md`、`AGENTS.md`、`docs/SKILL_ROUTING_MATRIX.md`、`docs/CEO_COMMAND_PROTOCOL.md`、`docs/AUTHORITY_MATRIX.md`、`docs/templates/weekly-plan.template.json`、`tools/sync-codex.sh`、`tools/sync-codex.ps1`（日常同步改為一併部署角色檔，PC 才讀得到） | TOML／JSON 解析、Codex 部署比對、來源檢查 PASS；待 Codex 實測子代理巢狀派工與額度讀取；試運行一週後回看工時、退件率與額度 |

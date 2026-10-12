@@ -33,6 +33,13 @@ mkdir -p "$HOME/.codex"
 cp "$REPO_ROOT/codex/AGENTS.global.md" "$HOME/.codex/AGENTS.md"
 echo -e "${GREEN}  已同步 Codex 全域規則${NC}"
 
+# Codex 多代理角色（阿派、廠長、鐵雄、省長等；config.toml 與 MCP 憑證仍只留本機）
+if [[ -d "$REPO_ROOT/codex/agents" ]]; then
+    mkdir -p "$HOME/.codex/agents"
+    cp "$REPO_ROOT/codex/agents"/*.toml "$HOME/.codex/agents/"
+    echo -e "${GREEN}  已同步 $(find "$REPO_ROOT/codex/agents" -maxdepth 1 -name '*.toml' -type f | wc -l | tr -d ' ') 個 Codex 多代理角色${NC}"
+fi
+
 echo ""
 "$SCRIPT_DIR/isolate-legacy-skills.sh"
 "$SCRIPT_DIR/check-skill-authority.sh"

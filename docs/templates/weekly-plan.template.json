@@ -29,7 +29,12 @@
       "qc_passed": false,
       "brand_review": null,
       "approved": false,
-      "platforms": {}
+      "platforms": {},
+      "depends_on": [],
+      "lane_dir": null,
+      "lane_status": "WAITING",
+      "budget": null,
+      "qa_report": null
     },
     {
       "id": "tue-paper",
@@ -57,7 +62,12 @@
       "qc_passed": false,
       "brand_review": null,
       "approved": false,
-      "platforms": {}
+      "platforms": {},
+      "depends_on": [],
+      "lane_dir": null,
+      "lane_status": "WAITING",
+      "budget": null,
+      "qa_report": null
     },
     {
       "id": "wed-scene",
@@ -85,7 +95,12 @@
       "qc_passed": false,
       "brand_review": null,
       "approved": false,
-      "platforms": {}
+      "platforms": {},
+      "depends_on": [],
+      "lane_dir": null,
+      "lane_status": "WAITING",
+      "budget": null,
+      "qa_report": null
     },
     {
       "id": "thu-type",
@@ -113,7 +128,12 @@
       "qc_passed": false,
       "brand_review": null,
       "approved": false,
-      "platforms": {}
+      "platforms": {},
+      "depends_on": [],
+      "lane_dir": null,
+      "lane_status": "WAITING",
+      "budget": null,
+      "qa_report": null
     },
     {
       "id": "fri-scene",
@@ -141,7 +161,12 @@
       "qc_passed": false,
       "brand_review": null,
       "approved": false,
-      "platforms": {}
+      "platforms": {},
+      "depends_on": [],
+      "lane_dir": null,
+      "lane_status": "WAITING",
+      "budget": null,
+      "qa_report": null
     },
     {
       "id": "sat-scene",
@@ -169,7 +194,12 @@
       "qc_passed": false,
       "brand_review": null,
       "approved": false,
-      "platforms": {}
+      "platforms": {},
+      "depends_on": [],
+      "lane_dir": null,
+      "lane_status": "WAITING",
+      "budget": null,
+      "qa_report": null
     }
   ]
 }

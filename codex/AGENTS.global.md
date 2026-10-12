@@ -34,4 +34,5 @@
 
 - 預設用 `GPT-5.6 Terra / medium` 做日常主調度；`GPT-5.6 Luna / medium` 只處理可獨立、唯讀的搜尋與盤點；`GPT-5.6 Sol` 只用於高風險架構、複雜除錯或最終裁決。
 - 多代理是用額度換時間與交叉驗證。只在任務可平行拆分時才啟動，避免多個可寫入 worker 同時修改同一檔案。
-- 使用 repo 同步的 `luna_worker`、`explorer`、`reviewer`、`implementer` 角色。先探索／研究，再由單一 worker 實作，最後需要時交 reviewer 驗收。
+- 使用 repo 同步的 `luna_worker`、`explorer`、`reviewer`、`implementer` 角色。先探索／研究，再由單一 worker 實作，最後需要時交 reviewer 驗收。程式與設定交 `reviewer`；對外內容成品交 `qa_auditor`（鐵雄），製作者不得稽核自己的成品。
+- 《不標準答案》內容產線另有 `dispatcher`（阿派）、`production_lead`（廠長）、`qa_auditor`（鐵雄）、`quota_officer`（省長）四個角色，權責以該 repo 的 `docs/CEO_CONTROL_TOWER.md` 為準，不套用到其他專案。

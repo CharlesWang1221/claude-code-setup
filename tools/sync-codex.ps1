@@ -27,6 +27,16 @@ New-Item -ItemType Directory -Force $codexHome | Out-Null
 Copy-Item -Force $globalRulesSrc (Join-Path $codexHome "AGENTS.md")
 Write-Host "  已同步 Codex 全域規則" -ForegroundColor Green
 
+# Codex 多代理角色（阿派、廠長、鐵雄、省長等；config.toml 與 MCP 憑證仍只留本機）
+$codexAgentRolesSrc = Join-Path $repoRoot "codex\agents"
+$codexAgentRolesDest = Join-Path $codexHome "agents"
+if (Test-Path $codexAgentRolesSrc) {
+    New-Item -ItemType Directory -Force $codexAgentRolesDest | Out-Null
+    Copy-Item -Force (Join-Path $codexAgentRolesSrc "*.toml") $codexAgentRolesDest
+    $agentRoleCount = (Get-ChildItem $codexAgentRolesSrc -Filter "*.toml" -File).Count
+    Write-Host "  已同步 $agentRoleCount 個 Codex 多代理角色" -ForegroundColor Green
+}
+
 & (Join-Path $scriptDir "isolate-legacy-skills.ps1")
 & (Join-Path $scriptDir "check-skill-authority.ps1")
 
