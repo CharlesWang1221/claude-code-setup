@@ -11,13 +11,22 @@ AGENTS_SKILLS="$HOME/.agents/skills"
 failures=0
 checked=0
 
+if command -v shasum >/dev/null 2>&1; then
+    hash_cmd=(shasum -a 256)
+elif command -v sha256sum >/dev/null 2>&1; then
+    hash_cmd=(sha256sum)
+else
+    printf 'FAIL\t找不到 SHA-256 工具（shasum 或 sha256sum）。停止總控流程。\n' >&2
+    exit 1
+fi
+
 hash_tree() {
     local root="$1"
     find "$root" -type f ! -name '.DS_Store' -print0 \
         | LC_ALL=C sort -z \
-        | xargs -0 shasum -a 256 \
-        | sed "s#  $root/#  #" \
-        | shasum -a 256 \
+        | xargs -0 "${hash_cmd[@]}" \
+        | sed "s# [* ]$root/#  #" \
+        | "${hash_cmd[@]}" \
         | awk '{print $1}'
 }
 

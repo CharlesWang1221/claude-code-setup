@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-IG 圖片 HTML 產生器（金句圖 × 3 + 輪播 × 5）
+IG 圖片 HTML 產生器（金句圖 × 5 + 輪播 × 5）
 用法: python build_ig.py <show_notes.md> <cover_image> <output_dir>
 """
 import base64, os, sys, re, html as _html
@@ -76,8 +76,8 @@ if not quotes:
     for m in re.finditer(r'^>\s*「([^」]{10,})」', md, re.MULTILINE):
         quotes.append({'text': m.group(1).strip(), 'speaker': '老查 × 阿分'})
 
-quotes = quotes[:3]
-while len(quotes) < 3:
+quotes = quotes[:5]
+while len(quotes) < 5:
     quotes.append(quotes[0] if quotes else {'text': title_clean, 'speaker': '老查 × 阿分'})
 
 # ── 重點（## 核心討論 下的 H3 標題）─────────────────────────────────────────────
