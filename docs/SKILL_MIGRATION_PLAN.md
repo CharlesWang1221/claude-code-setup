@@ -122,6 +122,8 @@
 
 ## 階段 3：硬閘門（要改程式碼，另開任務）
 
+**狀態（2026-10-12）**：已部署。共用閘門 `tools/qa-gate/qa-gate.cjs`；YouTube 上傳新影片前、Firstory 帶 `--audio` 時都會先檢查；IG／FB 由星期天上傳前手動執行同一支檢查並把輸出貼進證據庫；緊急放行以 `QA_OVERRIDE_REASON` 記錄，多利每日回報。測試：PASS、FAIL、無報告、版本不符、明確指定報告、檔案不存在、程式內放行與拒絕共 8 種情況，以及 Firstory 工具實際執行時在開啟瀏覽器前擋下。YouTube 工具只做語法檢查，未實際上傳。
+
 - `tools/youtube-upload.js`、`tools/firstory-upload/upload.mjs`，以及 IG／FB 發布工具，在上傳前讀取 `{lane_dir}/qa/report.md`：
   - 總結必須是 PASS。
   - 報告裡的 SHA-256 必須等於要上傳的檔案。

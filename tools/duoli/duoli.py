@@ -187,7 +187,24 @@ def section_files(t):
                     stale_n += 1
     if stale_n:
         lines.append("- 超過 %d 天未動的 MP4：%d 個，共 %.1f GB（只回報，不自動刪除）" % (STALE_DAYS, stale_n, stale_bytes / 1e9))
-    # 4. 磁碟空間
+    # 4. 鐵雄閘門緊急放行紀錄（近 7 天）
+    olog = WEEKLY_DIR / "qa-overrides.log"
+    if olog.exists():
+        recent = []
+        for line in olog.read_text(encoding="utf-8").splitlines():
+            parts = line.split("\t")
+            if len(parts) >= 4:
+                try:
+                    when = dt.datetime.fromisoformat(parts[0])
+                except ValueError:
+                    continue
+                if (t - when).days < 7:
+                    recent.append("- %s｜%s｜理由：%s" % (when.strftime("%m/%d %H:%M"), parts[1], parts[3]))
+        if recent:
+            lines.append("近 7 天鐵雄閘門緊急放行（需確認任務卡已記錄老查的決定）：")
+            lines.extend(recent)
+            alert = True
+    # 5. 磁碟空間
     free_gb = shutil.disk_usage(str(REPO)).free / 1e9
     if free_gb < DISK_WARN_GB:
         lines.append("- 磁碟剩餘 %.0f GB，低於 %d GB" % (free_gb, DISK_WARN_GB))

@@ -11,6 +11,7 @@ import { chromium } from 'playwright';
 import { readFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import qaGate from '../qa-gate/qa-gate.cjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -67,6 +68,16 @@ const showNotes = md
 console.log(`\n=== Firstory 上傳 — ep-${epSlug} ===`);
 console.log(`標題: ${title}`);
 if (audio) console.log(`音檔: ${audio}`);
+
+// 鐵雄稽核閘門：上傳音檔前需有 PASS 報告且雜湊一致；可用 --qa-report 指定報告位置。
+if (audio) {
+  try {
+    qaGate.assertQaPass(audio, { report: getArg('qa-report') });
+  } catch (err) {
+    console.error(`\n${err.message}`);
+    process.exit(1);
+  }
+}
 console.log('');
 
 // ── 啟動瀏覽器 ────────────────────────────────────────────────────────────────

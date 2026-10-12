@@ -5,6 +5,9 @@
  *   node tools/youtube-upload.js --episode ep-s2ep7
  *   node tools/youtube-upload.js --episode ep-s2ep7 --update <videoId>
  *
+ * 上傳新影片前會先通過鐵雄稽核閘門（tools/qa-gate/qa-gate.cjs）：需有 PASS 報告且雜湊一致。
+ * 報告位置可在 .publish-status.json 以 qa_report 指定；只更新說明欄（--update）不經閘門。
+ *
  * 第一次執行會打開瀏覽器要求 Google 授權，之後 token 會快取在 tools/youtube-token.json
  *
  * 前置需求：
@@ -16,6 +19,7 @@ const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const { assertQaPass } = require('./qa-gate/qa-gate.cjs');
 
 const SCOPES = ['https://www.googleapis.com/auth/youtube.upload'];
 const TOKEN_PATH  = path.join(__dirname, 'youtube-token.json');
@@ -236,6 +240,8 @@ async function upload(auth, videoPath, thumbnailPath, meta) {
       await updateMetadata(auth, videoId, meta);
     } else {
       const videoPath = findVideo(episodeDir);
+      const status = readPublishStatus(episodeDir);
+      assertQaPass(videoPath, { report: status?.qa_report || status?.youtube_assets?.qa_report });
       const thumbnailPath = findThumbnail(episodeDir);
       await upload(auth, videoPath, thumbnailPath, meta);
     }
