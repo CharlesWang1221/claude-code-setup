@@ -1,6 +1,6 @@
 ---
 name: shorts-pipeline
-description: 全自動短影音製作 pipeline：從原始錄影到 YouTube Shorts 上傳。當用戶說「剪短影片」「做 Shorts」「自動剪」「幫我剪一支」「用 XX 集做短影音」時必須使用此 skill。輸入一段原始影片，自動完成：Whisper 字幕、Auto-Editor 去靜音、Pexels B-roll 語意比對、FFmpeg 三區版型合成、YouTube 上傳。
+description: 「真秀」——《不標準答案》動畫製作部的真人短影音產線。全自動短影音製作 pipeline：從原始錄影到 YouTube Shorts 上傳。當用戶說「剪短影片」「做 Shorts」「自動剪」「幫我剪一支」「用 XX 集做短影音」時必須使用此 skill。輸入一段原始影片，自動完成：Whisper 字幕、Auto-Editor 去靜音、Pexels B-roll 語意比對、FFmpeg 三區版型合成、YouTube 上傳。
 ---
 
 # 短影音自動製作 Pipeline

@@ -1,6 +1,6 @@
 ---
 name: podcast-audio-edit
-description: 《不標準答案》Podcast 音檔全自動剪輯流程。當用戶說「剪音檔」「幫我剪這集」「處理音檔」「podcast 剪輯」「剪 ep」「剪輯音檔」「出這集」時，立即執行此 skill。輸入 Adobe Audition .sesx 專案資料夾，自動完成：分軌合併、降噪、normalize、加片頭片尾、壓縮停頓、Whisper 逐字稿，輸出成品 MP3。
+description: 「音剪」——《不標準答案》動畫製作部的音檔剪輯產線。《不標準答案》Podcast 音檔全自動剪輯流程。當用戶說「剪音檔」「幫我剪這集」「處理音檔」「podcast 剪輯」「剪 ep」「剪輯音檔」「出這集」時，立即執行此 skill。輸入 Adobe Audition .sesx 專案資料夾，自動完成：分軌合併、降噪、normalize、加片頭片尾、壓縮停頓、Whisper 逐字稿，輸出成品 MP3。
 ---
 
 # Podcast 音檔自動剪輯

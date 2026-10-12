@@ -1,0 +1,4 @@
+interface:
+  display_name: "招牌"
+  short_description: "製作節目片頭、新一季宣傳與頻道預告等頻道形象動畫"
+  default_prompt: "使用 $zhaopai，依品牌規範規劃並製作頻道形象動畫。"

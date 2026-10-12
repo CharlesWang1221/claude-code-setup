@@ -239,6 +239,12 @@ def build_weekly(t, dry_run):
         lines.extend(due)
     else:
         lines.append("本週沒有到期的復盤。")
+    intel = plan_dir / "intel-report.md"
+    if intel.exists():
+        lines.append("本週選題情報週報已完成：%s" % intel.relative_to(REPO))
+    else:
+        lines.append("提醒：本週選題情報週報尚未執行。請小查用 Codex 手動跑一次（預算卡 S），存到 %s，交小渡、小市。"
+                     % intel.relative_to(REPO))
     title = "多利｜週計畫開檔 %s" % week.strftime("%m/%d")
     return title, [("週計畫與復盤（阿派、成析）", lines, False)]
 

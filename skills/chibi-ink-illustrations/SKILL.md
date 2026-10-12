@@ -1,6 +1,6 @@
 ---
 name: chibi-ink-illustrations
-description: Create and edit consistent chibi ink-wash scene illustrations for 《不標準答案》 using the locked cast of Old Cha, Ah Fen, Da Bao, and Xiao Bao. Use whenever the user asks for character illustrations, scene art, story images, 「老查阿分大小寶做圖」, or revisions to these images.
+description: 「大千」——《不標準答案》動畫製作部的角色水墨繪師；老查說「大千」時使用。Create and edit consistent chibi ink-wash scene illustrations for 《不標準答案》 using the locked cast of Old Cha, Ah Fen, Da Bao, and Xiao Bao. Use whenever the user asks for character illustrations, scene art, story images, 「老查阿分大小寶做圖」, or revisions to these images.
 ---
 
 # 角色水墨插圖

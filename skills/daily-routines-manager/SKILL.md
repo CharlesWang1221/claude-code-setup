@@ -34,7 +34,8 @@ description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿
 
 - 內容：節目方向靈感＋競品動態，合併成一份週報，交小渡與小市。prompt 樣板沿用 `routines/daily-podcast-direction-inspiration-report.md`、`routines/daily-competitor-monitor-7.md`。
 - 跑之前先確認省長已發預算卡（S 級）。
-- 執行端待老查決定：claude.ai routine 或 Codex 每週手動跑一次。決定之前不建立自動排程。
+- 執行方式（2026-10-12 老查決定）：由 Codex 每週手動跑一次，不建立自動排程。研究搜尋可用 Luna（唯讀），成果存到 `output/weekly-shorts/{週一}/intel-report.md`。
+- 多利每週開檔時會檢查這個檔案；本週還沒有就提醒小查。
 
 ## 按需查詢（老查說了才跑）
 

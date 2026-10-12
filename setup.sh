@@ -169,16 +169,7 @@ else
     echo -e "${GRAY}      找不到 skills/ 目錄，跳過${NC}"
 fi
 
-# 外部 Skill：video-shotcraft（影片頭，第三方 Remotion 鏡頭庫，只 clone 不 commit 進 repo）
-mkdir -p "$SKILLS_DEST"
-VIDEO_SHOTCRAFT_DEST="$SKILLS_DEST/video-shotcraft"
-if [[ -d "$VIDEO_SHOTCRAFT_DEST/.git" ]]; then
-    echo -e "${GRAY}      video-shotcraft 已存在，git pull 更新...${NC}"
-    git -C "$VIDEO_SHOTCRAFT_DEST" pull --ff-only
-else
-    git clone --depth 1 https://github.com/Vincentwei1021/video-shotcraft.git "$VIDEO_SHOTCRAFT_DEST"
-fi
-echo -e "${GREEN}      已安裝 video-shotcraft（影片頭）${NC}"
+# video-shotcraft（影片頭）已於 2026-10-12 下架，不再安裝。
 
 # Codex 是主要工作代理。直接從 repo 安裝 Skills，不再以 Claude 設定反向覆蓋 Codex。
 CODEX_SKILLS_DEST="$HOME/.codex/skills"
@@ -190,8 +181,6 @@ for dir in "$SKILLS_SRC"/*/; do
     mkdir -p "$CODEX_SKILLS_DEST/$name"
     rsync -a --delete "$dir"/ "$CODEX_SKILLS_DEST/$name/"
 done
-mkdir -p "$CODEX_SKILLS_DEST/video-shotcraft"
-cp -R "$VIDEO_SHOTCRAFT_DEST"/. "$CODEX_SKILLS_DEST/video-shotcraft/"
 echo -e "${GREEN}      已從 repo 安裝 Skills 到 Codex；未讀取 Claude／.agents Skill${NC}"
 
 if [[ -x "$SCRIPT_DIR/tools/isolate-legacy-skills.sh" ]]; then

@@ -30,6 +30,8 @@
 
 ## 階段 2：Skill 轉職與下架
 
+**狀態（2026-10-12）**：已部署。資料夾以 `git mv` 改名保留歷史；兩個 Skill 依新職務重寫並改用 HyperFrames；舊剪紙模組封存至 `skills/paper-collage-video/references/legacy-paper-cut-effect.md`；影片頭自 setup 移除；各 Skill 說明補上員工名稱。尚待：用真實節目概念各做一支小樣（屬製作工作，交廠長在第一個真實任務時驗證）；本機 `video-shotcraft` 副本是否刪除由老查決定。
+
 ### 影碩 → 解題（`video-explainer` → `jieti`）
 
 - **新職務**：知識解說動畫師。把節目裡的觀念、數據、因果關係做成動畫，用於 YouTube 長片的圖解段落與知識型短片。
@@ -72,7 +74,7 @@
 
 ## 階段 2B：多利轉職為後勤管家
 
-**狀態（2026-10-12）**：已部署。舊 routine 讀回確認早已刪除，不需外部操作；腳本整合為 `tools/duoli/duoli.py` 加三支 `.sh` 入口。老查選擇不用背景排程（launchd 需授權 Python 完整取用磁碟），改由小查每天第一次回報前執行 `duoli.py auto`，Mac 與 PC 都適用，報告不寄信。launchd 範本保留為選用。尚待：選題情報週報的執行端。
+**狀態（2026-10-12）**：已部署。舊 routine 讀回確認早已刪除，不需外部操作；腳本整合為 `tools/duoli/duoli.py` 加三支 `.sh` 入口。老查選擇不用背景排程（launchd 需授權 Python 完整取用磁碟），改由小查每天第一次回報前執行 `duoli.py auto`，Mac 與 PC 都適用，報告不寄信。launchd 範本保留為選用。選題情報週報由 Codex 每週手動執行一次（2026-10-12 老查決定）。
 
 可以和階段 2 同時進行，兩者不改同一批檔案。
 

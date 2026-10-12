@@ -52,26 +52,32 @@
 | 「阿維」「品牌檢查」「合不合品牌」「品牌規範」「品牌退件」 | `brand-guardian` |
 | 「上架」「新集數」「這集上架」「星期天」 | `podcast-publish` |
 | 「油管」「小查做 YouTube 長影片」「YouTube 正片」 | `you-guan`（小查管理，獨立製作與排期；不阻擋星期天，Shorts 仍由星期天安排） |
-| 「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
+| 「成析」「節目復盤」「成效復盤」「這集表現如何」「檢討這集數據」 | `podcast-performance-review` |
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「啊問」「網誌圖片」「網誌主圖」「文章適合什麼圖片」「分隔漫畫」 | `blog-image-director` |
-| 「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
+| 「真秀」「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
 | 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
 | 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
-| 「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
+| 「預報」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
 | 「做 IG 內容」 | 先判斷交付物：要音檔短片走 `podcast-teaser-video`；要輪播／圖卡走 `podcast-publish` 的 IG 圖步驟；只說「做 IG 內容」且無法判斷時，先列兩種交付物，不得直接生成。不得派不存在的 `social-cards`。 |
 | 「實透」「金句做實景角色動畫」 | `shi-tou`（星期天管理；先拆解原音、等實景照片、審動態腳本再進 Flow） |
-| 「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
+| 「剪紙」「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
 | 「做圖卡」「/cards」「社群圖卡」 | 若屬 Podcast 單集，走 `podcast-publish` 的 IG 圖步驟；其他圖卡先判斷是否有對應 Skill，不得憑關鍵字硬派。 |
 | 「多利」 | `daily-routines-manager` |
 | 「寫日記」「今天結束了」「journal」 | `learning-journal` |
 | 「動手前先想清楚」「/brainstorm」 | `brainstorm` |
 | 「銷售頁」「landing page」「$landing」 | `landing` |
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
-| 「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
-| 「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | 先用 `presentation-architect` 完成訊息與口語藍圖，再用 `Presentations` 產出、渲染抽檢與修正可編輯 PPTX；完整標準見 `docs/PRESENTATION_PLAYBOOK.md`。不得把大綱或逐字稿當成簡報成品。 |
-| 「影碩」 | `video-explainer`（只限 ASUS／技術解說型影片） |
-| 「剪紙效果影片」「用剪紙效果做」「剪紙風」「節目精選」 | Podcast 節目精選走 `paper-collage-video`；其他題材先判斷目的，不得因關鍵字直接派給 `video-explainer`。 |
+| 「正風」「幫我查證這篇」「這個數字對不對」「查證引擎」 | `fact-checker` |
+| 「小簡」「幫我做簡報」「簡報架構」「逐字稿怎麼寫」 | 先用 `presentation-architect` 完成訊息與口語藍圖，再用 `Presentations` 產出、渲染抽檢與修正可編輯 PPTX；完整標準見 `docs/PRESENTATION_PLAYBOOK.md`。不得把大綱或逐字稿當成簡報成品。 |
+| 「解題」「這個概念做成動畫」「圖解這段」「知識動畫」 | `jieti`（知識解說動畫；2026-10-12 由影碩轉職，不再接 ASUS 或剪紙） |
+| 「招牌」「做片頭」「新一季宣傳」「頻道預告」「宣傳片」 | `zhaopai`（頻道形象動畫；2026-10-12 由影華轉職） |
+| 「音剪」「剪音檔」「幫我剪這集」 | `podcast-audio-edit` |
+| 「大千」「角色插圖」「老查阿分大小寶做圖」 | `chibi-ink-illustrations` |
+| 「流之呼吸」「Flow 試片」 | `flow-video-pilot`（特別企劃，需明確付費授權） |
+| 「真短驗析」「短片實驗」「短片成效」 | `short-video-experiment-review` |
+| 「阿派」「鐵雄」「省長」「廠長」 | 公司職位，不是 Skill；依 `docs/CEO_CONTROL_TOWER.md` 的權責與 `codex/agents/` 角色處理 |
+| 「剪紙效果影片」「用剪紙效果做」「剪紙風」「節目精選」 | Podcast 節目精選走 `paper-collage-video`；其他題材先判斷目的，不得因關鍵字派給解題（`jieti`）。 |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
 
 ### 居易跨電腦落檔規則
@@ -121,13 +127,13 @@
 
 > **「工作站」固定指 Creator OS**：這是《不標準答案》的私人內容營運工作站，程式位於 `apps/creator-os`。MVP 已完成「今日推進、內容流轉、節奏日曆、復盤沉澱、規則庫」與本機瀏覽器 `localStorage` 保存；目前尚未接 Supabase、n8n、Google Calendar 或平台數據。老查說「工作站」時，先讀這個目錄與其 README（若存在），再依需求續作，不要誤解為電腦硬體或另開一個網站。
 
-> **`video-explainer`（影碩）是影片製作總控**：VOX 技術解說是核心能力，剪紙效果是第一個可插拔風格模組。使用者明確說「影碩」或「剪紙效果影片」時直接啟動；未指定風格時，再由「小查」依題材建議。未來新增風格只加入影碩的 `references/` 模組庫，不另建會搶觸發詞的獨立 skill。
+> **`jieti`（解題）是知識解說動畫師**：把節目裡的觀念、數據、因果與時間線做成證據驅動的解說動畫，用於 YouTube 長片圖解段落或知識短片，以 HyperFrames 製作，事實先交正風查證。2026-10-12 由影碩（`video-explainer`）轉職，ASUS 與 SaaS 解說已移除；剪紙類一律歸剪紙（`paper-collage-video`），舊剪紙模組封存於該 Skill 的 `references/legacy-paper-cut-effect.md`。
 >
-> **`video-promo`（影華）跟影碩分工**：影碩是證據驅動的解釋型內容（數據/技術說明/課程），影華是情緒/慾望/記憶點驅動的品牌宣傳片（Apple 式極簡文字/圖形語言，Remotion 主引擎，無 CGI）。同樣沒有固定關鍵字（也可以直接叫「影華」），由「小查」角色判讀是「講清楚問題」還是「造氣氛帶 CTA」來決定走哪條，經確認才進入對應 SOP。這份 skill 內容也已自包含，不依賴 Claude 的 auto-memory。
+> **`zhaopai`（招牌）是頻道形象動畫師**：負責節目片頭、新一季宣傳、頻道預告與活動宣傳；文字與色塊為主角，結構為 Hook → Promise → Beats → Proof → Close，色彩字體依 `DESIGN.md`，以 HyperFrames 製作。直式社群版本同樣不加片尾卡、首尾循環。2026-10-12 由影華（`video-promo`）轉職，ASUS 內容已移除。
 >
-> **`animation-director`（阿諾）獨立於影碩/影華之外**：影碩、影華專做 ASUS 軟體平台的 Remotion 動畫產線，阿諾管的是更前段、不限 ASUS 的創意方向——品牌傷口/敵人、Big Idea、三個方案（安全/策略/爆點）、純文字分鏡、每鏡英文 AI 生圖生影片提示詞。**不產 Remotion 程式碼，不負責實際算圖算影片**。可以直接叫「阿諾」啟動，也可以由「小查」角色判讀丟上來的素材是不是還在「這支片要怎麼拍」的階段，符合才建議啟動，一樣經確認才進入七階段流程。這份 skill 內容也已自包含，不依賴 Claude 的 auto-memory。
+> **`animation-director`（阿諾）是內容企劃部的編導**：管前段創意方向，包括品牌傷口與敵人、Big Idea、三個方案、純文字分鏡與每鏡生成提示詞；**不寫 composition、不負責算圖算影片**，方案核准後交廠長派給對應產線（解題、招牌、剪紙、實透等）。可以直接叫「阿諾」，或在素材仍處於「這支片要怎麼拍」的階段時由阿派建議啟動，經確認才進入七階段流程。
 >
-> **`video-shotcraft`（影片頭）也沒有固定關鍵字，交給小查管理**：第三方 Remotion 鏡頭庫（152 個鏡頭 recipe card＋209 種風格），把網站/產品畫面剪成有 2.5D 運鏡、節奏卡點、聲音設計的電影感宣傳片。適用場景很窄，只在「有畫面值得秀」時才啟動：網站改版宣傳、`landing` skill 產出的銷售頁廣告片。老查每週節目本身是談話內容，沒有介面可秀，**不套用在常態節目產出上**。由小查判讀丟上來的素材/需求是否符合上述窄場景，符合才建議啟動，經確認才用；不符合就說明理由，不要硬套工具找用途。技術上跟影碩/影華同樣走 Remotion，可以互通鏡頭庫。來源是 https://github.com/Vincentwei1021/video-shotcraft ，屬外部工具、非老查原創，不追蹤進這個 repo；部署與可用性需當次檢查，不再由 Claude 或 `.agents` 副本反向同步 Codex。
+> **`video-shotcraft`（影片頭）已於 2026-10-12 下架**：它是 ASUS 時期用於網站與產品宣傳的第三方 Remotion 鏡頭庫，節目用不到。`setup.sh`／`setup.ps1` 不再安裝；本機既有副本是否刪除由老查決定。
 
 > 做任何視覺產出（圖卡、簡報、Landing Page、網站頁面）前，先讀根目錄 `DESIGN.md`，裡面有實際色碼和字體，不要憑空猜配色。
 

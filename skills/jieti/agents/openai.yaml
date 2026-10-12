@@ -1,0 +1,4 @@
+interface:
+  display_name: "解題"
+  short_description: "把節目裡的觀念、數據與因果做成證據驅動的知識解說動畫"
+  default_prompt: "使用 $jieti，把指定的節目段落或概念規劃成知識解說動畫。"
