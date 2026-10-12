@@ -38,3 +38,40 @@ tools/markdown-intake/.venv/
 tools/markdown-intake/.packages/
 .tools/
 .flow-tools/
+
+# S3EP9 未公開製作素材與私有輸入
+output/ep-s3ep9/
+output/ep-s3ep11/
+output/weekly-shorts/
+video-projects/s3ep9-hyperframes-teaser/
+
+# 未公開節目輸出、家庭角色圖與影片專案工作檔留在私人素材區
+/output/ep-s3ep*/
+/output/s1s2-youtube-thumbnails/
+/layers/
+/video-projects/s3ep3-hyperframes-teaser/
+/video-projects/s3ep3-paper-quotes/
+/video-projects/s3ep3-youtube-living-room/
+/video-projects/s3ep4-hyperframes-teaser/
+/video-projects/s3ep4-paper-highlight-1/
+/video-projects/s3ep4-paper-highlight-2/
+/video-projects/s3ep4-paper-highlights/
+/video-projects/s3ep4-youtube-living-room/
+/video-projects/s3ep6-hyperframes-teaser/
+/video-projects/s3ep6-paper-highlights/
+/video-projects/s3ep6-youtube-living-room/
+/video-projects/s3ep7-hyperframes-teaser/
+/video-projects/s3ep7-paper-collage/
+/video-projects/s3ep8-hyperframes-teaser/
+/video-projects/s3ep8-live-action-animation-pilot/
+/video-projects/s3ep8-paper-collage/
+/video-projects/s3ep11-hyperframes-teaser/
+/video-projects/youtube-window-s3ep5/
+
+# 個人家庭敘事與未發布文章草稿
+/site/src/content/blog/five-day-breakfast-adventure.md
+/site/src/content/blog/works-are-what-happened-between-you.md
+/site/public/images/five-day-breakfast-adventure*.png
+/docs/S3EP*_PC_HANDOFF_*.md
+/docs/WORK_LOG_*.md
+/journals/*.md
