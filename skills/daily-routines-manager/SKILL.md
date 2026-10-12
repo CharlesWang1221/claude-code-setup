@@ -1,72 +1,73 @@
 ---
 name: daily-routines-manager
-description: 每日 cloud routine 排程總管（老查取名「多利」）——列出/新增/修改/暫停/測試所有每日寄送/寫入的排程內容（AE影片分析、每日新聞、UIUX報告、AI創業案例、書籍摘要、節目方向靈感、影片分析寫入repo等）。觸發詞「多利」。
+description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿派。每天用腳本跑排程看門、Skill 健康檢查與檔案巡邏，每週開週計畫、整理交件包數字給省長，全程不耗 AI 額度；也提供按需查詢（新聞、書摘、AE、UIUX、AI 創業案例），並管理 claude.ai routine 的備份紀錄。觸發詞「多利」。
 ---
 
-# 多利 — 每日排程總管
+# 多利 — 後勤管家
 
-老查一句「多利」或「多利，幫我 XXX」，就叫出這個 skill 來管理所有每天自動執行的 cloud routine（用 `RemoteTrigger` 操作 claude.ai routines API）。老查不用自己去記每個 routine 的 trigger_id、cron 語法或既有樣板，多利負責把要求翻譯成正確的 API 呼叫，並把異動同步寫回這個 repo。
+多利隸屬營運總監阿派。工作原則只有一條：**每天跑的事交給腳本，不叫 AI。** 需要 AI 動腦的工作每週最多一次，並且要先有省長核定的預算卡。
 
-（內部技術識別名維持 `daily-routines-manager`——skill 系統規定 name 只能用小寫英文+數字+橫線，中文名只能放在暱稱/觸發詞，不影響喊「多利」直接叫出這個流程。）
+（技術識別名維持 `daily-routines-manager`，避免部署路徑與觸發詞變動。）
 
----
+## 例行工作（腳本，不耗額度）
 
-## 備份清單：`routines/`
+| 頻率（Asia/Taipei） | 指令 | 內容 | 交給誰 |
+| --- | --- | --- | --- |
+| 每日 07:30 | `tools/duoli/daily-check.sh` | 排程看門：今明兩天的發布項目、已過預定時間卻仍是「已排程」的項目；Skill 健康：來源檢查；檔案巡邏：待發布檔案是否存在、同資料夾多個 MP4、產線資料夾多個 MP4、超過 30 天的 MP4 容量、磁碟空間 | 星期天、師傅、廠長、鐵雄 |
+| 每週一 07:30 | `tools/duoli/weekly-open.sh` | 從範本建立本週 `output/weekly-shorts/{週一}/weekly-plan.json` 空殼（已存在就跳過，絕不覆蓋）；列出本週到期的第 7／30 天復盤 | 阿派、成析 |
+| 每週日 20:00 | `tools/duoli/ledger-tally.sh` | 從各 item 的 `{lane_dir}/handoff.md` 讀取「重做次數」「付費點數」兩行，整理成原始數字 | 省長 |
 
-`routines/README.md` 是目前所有 routine 的索引表，每個 routine 各有一份 `.md` 備份檔（trigger_id、cron、收件方式、完整 prompt）。**這是 git 版本追蹤用的備份，不是即時狀態**——每次被叫出來，第一步一定是用 `RemoteTrigger {action:"list"}` 拉即時清單，跟本地檔案核對，若有落差（老查在別的地方新增/改過、或本地缺記錄）先同步好再繼續。
+- 三支腳本都可以加 `--dry-run`，只印出內容，不存檔、不寄信、不通知；加 `--force` 會重跑當天或當週已完成的工作。
+- 資料來源：`docs/RELEASE_EVIDENCE_REGISTER.md`、週計畫 JSON、交件包。腳本只讀檔；唯一的寫入是週計畫空殼。
+- 報告與執行紀錄存在 repo 外的 `~/.local/state/duoli/`，不會出現在 git。
 
----
+### 排程與補跑（macOS）
 
-## 執行步驟
+- 安裝：`python3 -I tools/duoli/duoli.py install`，會依 `tools/duoli/launchd/` 範本填入本機路徑，註冊 launchd 排程 `com.beyondans.duoli`。
+- 移除：`python3 -I tools/duoli/duoli.py uninstall`。
+- launchd 每天 07:30、週日 20:00 執行 `duoli.py auto`，開機或登入時也會執行一次。`auto` 只跑「已到時間、且尚未跑過」的工作，所以錯過的會補跑，不會重複。
+- Windows 版本尚未建立；PC 上目前不執行例行巡檢。
 
-### 0. 先同步狀態
-呼叫 `RemoteTrigger {action:"list"}`，比對 `routines/README.md` 的表格：
-- 線上有、本地沒有 → 補建一份 `.md` 備份檔 + 補進 README 表格
-- 線上內容跟本地不一致（cron、prompt 改過）→ 更新本地檔案
-- 本地有、線上已被刪除（`ended_reason` 顯示異常或查不到）→ 在 README 標記「已刪除」，檔案可以留著當歷史記錄，不用刪
+### 通知方式
 
-### 1. 依老查的指令分流
+| 條件 | 行為 |
+| --- | --- |
+| 已設定收件人與 token | 透過 Duoli Mailer Worker 寄信，主旨以「多利｜」開頭 |
+| 缺任一項 | 不寄信，只存檔並跳出 macOS 通知 |
 
-**查狀態 / 列清單**（「多利，現在有哪些」「多利，列一下」）
-直接呼叫 `RemoteTrigger list`，整理成表格回報：名稱、時間、輸出方式、下次執行時間、啟用狀態。不用先問，直接執行。
+設定方式（都不進 repo）：
+- 收件人：在 `~/.config/duoli/env` 寫入 `DUOLI_TO=<Worker 白名單內的信箱>`。
+- token：由老查本人執行 `security add-generic-password -s duoli-mailer -a token -w`，依提示貼上 `DUOLI_WEBHOOK_TOKEN`。不得把 token 貼進對話、repo 或任務卡。
 
-**新增一個新的每日報告**（「多利，我要多加一個 XXX」）
-1. 先問清楚：主題/搜尋範圍、輸出方式（寄信 vs 寫入 repo）、收件人（沒說就預設 siming1221@gmail.com）、寄送時間（沒說就預設 08:00 台北 = cron `0 0 * * *`）、要不要防重複機制（預設要）。
-2. 若是寄信類報告，套用既有樣板結構（可直接參考 `routines/daily-book-summaries-3.md` 或 `routines/daily-ai-startup-cases-report.md` 當範本複製修改）：
-   - 防重複：先用 `mcp__Zapier__execute_zapier_read_action`（`gmail_find_email`，query 用 `subject:{報告標題}`）查近 7 天已寄送內容，整理「已用過清單」，撞到就換一個
-   - 內容：用 WebSearch/WebFetch 搜尋，管道與語言不限但外語內容要翻中文，連結必須直接指向內容本身（不能是首頁/搜尋頁）
-   - 格式：Word 風格 HTML 表格（`border-collapse`、標題列 `background-color:#4472C4;color:#ffffff`、內容列 banded rows `#F2F2F2` 交替）
-   - 若老查要求要反思問題，表格下方加「📝 每日反思」區塊，3 個問題要緊扣老查身分脈絡（Podcast主持人/內容創作者，經營《不標準答案》、YouTube擴張、熟悉n8n自動化，見記憶 `user_profile`），不要泛用空泛的問題
-   - 寄送：`mcp__Zapier__list_enabled_zapier_actions` 確認 Gmail 動作可用 →`mcp__Zapier__execute_zapier_write_action`（`gmail_send_email`）寄出
-   - `mcp_connections` 用 Zapier：`{connector_uuid: "4a34f6a9-553f-4645-939f-708b21535f24", name: "Zapier", url: "https://mcp.zapier.com/api/v1/connect"}`
-   - `environment_id`: `env_012PXqxpqYN4yzPvZoiGdmLf`，`model`: `claude-sonnet-5`
-3. 若是寫入 repo 類任務（像「影片分析每日推薦」），套用 `routines/video-analysis-daily.md` 的樣板：獨立分支、檢查歷史避免重複、只在指定資料夾寫檔、commit+push。
-4. 確認內容後用 `RemoteTrigger {action:"create"}` 建立，成功後：在 `routines/` 新增對應 `.md` 檔、更新 `routines/README.md` 表格，並用 git commit（訊息格式：「多利：新增每日排程 {名稱}」）。不要自動 push，除非老查明確要求。
-5. 回報 routine 名稱、trigger_id、下次執行時間、claude.ai 管理連結。
+## 選題情報週報（AI，每週 1 次）
 
-**修改現有 routine**（改時間、改收件人、改搜尋條件、暫停/啟用）
-1. 從 `routines/README.md` 或 `RemoteTrigger list` 找到對應 trigger_id，跟老查確認要改的內容（給出「目前 vs 改成」對照）。
-2. 呼叫 `RemoteTrigger {action:"update", trigger_id, body:{...}}`（partial update，只送要改的欄位）。
-3. 同步更新本地對應 `.md` 檔與 README 表格，git commit（訊息：「多利：更新排程 {名稱}」）。
+- 內容：節目方向靈感＋競品動態，合併成一份週報，交小渡與小市。prompt 樣板沿用 `routines/daily-podcast-direction-inspiration-report.md`、`routines/daily-competitor-monitor-7.md`。
+- 跑之前先確認省長已發預算卡（S 級）。
+- 執行端待老查決定：claude.ai routine 或 Codex 每週手動跑一次。決定之前不建立自動排程。
 
-**暫停 / 重新啟用**
-`RemoteTrigger update`，`body: {enabled: false}` 或 `{enabled: true}`。同步更新本地檔案的 `enabled` 欄位。
+## 按需查詢（老查說了才跑）
 
-**立即測試一次**
-`RemoteTrigger {action:"run", trigger_id}`，回報 session_id，提醒老查等幾分鐘去信箱/repo 確認結果。
+老查說「多利，幫我查 XX」時，只跑一次，不建立每日排程：
 
-**刪除**
-`RemoteTrigger` 的 API 不支援刪除。導去 https://claude.ai/code/routines 讓老查手動刪，刪除後把 `routines/` 對應檔案標記「已刪除」（不用真的移除檔案，留歷史），git commit。
+- AE／動態設計影片分析：`routines/daily-ae-motion-graphics-report.md`
+- 重要新聞整理：`routines/daily-news-digest-15.md`
+- UIUX 文章：`routines/daily-uiux-articles-report.md`
+- 書籍摘要：`routines/daily-book-summaries-3.md`
+- AI 創業案例：`routines/daily-ai-startup-cases-report.md`
 
-### 2. 結尾報告
-每次異動完，用一個簡短表格列出「異動前 → 異動後」，並提醒是否已 commit（有沒有 push）。
+套用樣板時刪掉其中的排程、防重複與寄信步驟，結果直接回覆老查。執行前先說明預估的額度等級。
 
----
+## 管理 claude.ai routine
+
+2026-10-12 讀回確認：原本 8 支每日 routine 已從線上刪除，`routines/` 只保留歷史與樣板。若之後新增 routine：
+
+- 先用 `RemoteTrigger {action:"list"}` 讀回線上狀態，再與 `routines/README.md` 比對。
+- 新增每日 routine 原則上不做；老查堅持時，先請省長評估預算，再由老查確認。
+- 停用或重新啟用用 `RemoteTrigger update`；API 不支援刪除，請老查到 https://claude.ai/code/routines 手動刪除，備份檔標示「已刪除」，不移除檔案。
+- 寄信設定（Duoli Mailer 環境、KV 防重複、Resend 網域）見 `RESEND_MIGRATION.md` 與 `routines/README.md` 的共用設定。
 
 ## 安全邊界
-- 只在 `skills/daily-routines-manager/routines/` 這個路徑下新增/修改檔案，不要動其他 skill 或 output 資料夾。
-- git 只 commit，不主動 push，除非老查明確說要 push。
-- 建立/修改 routine 前，涉及寄送對象、時間、內容範圍的變動一定要跟老查確認過才送出 API 呼叫，不要自己猜著就建立。
 
-## 相關記憶
-`user_profile`、`project_daily_ae_video_report`、`project_daily_news_digest`、`project_daily_uiux_report`、`project_daily_ai_startup_cases_report`、`project_daily_book_summaries_report`、`project_new_computer_setup`
+- 腳本不得修改產線資料夾、發布證據庫或任何 Skill，也不得刪除任何檔案；過期 MP4 只回報容量。
+- 涉及寄送對象、時間或內容範圍的變動，先向老查確認再執行。
+- git 只 commit，不主動 push，除非老查明確要求。

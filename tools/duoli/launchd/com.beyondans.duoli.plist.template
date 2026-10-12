@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- 多利後勤排程範本。由 `python3 -I tools/duoli/duoli.py install` 填入本機路徑後安裝；repo 不存放絕對路徑。 -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.beyondans.duoli</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>{{PYTHON}}</string>
+    <string>-I</string>
+    <string>{{SCRIPT}}</string>
+    <string>auto</string>
+  </array>
+  <!-- 開機或登入時補跑：auto 只執行已到時間、且尚未跑過的工作 -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict>
+      <key>Hour</key><integer>7</integer>
+      <key>Minute</key><integer>30</integer>
+    </dict>
+    <dict>
+      <key>Weekday</key><integer>0</integer>
+      <key>Hour</key><integer>20</integer>
+      <key>Minute</key><integer>0</integer>
+    </dict>
+  </array>
+  <key>StandardOutPath</key>
+  <string>{{LOG}}</string>
+  <key>StandardErrorPath</key>
+  <string>{{LOG}}</string>
+</dict>
+</plist>

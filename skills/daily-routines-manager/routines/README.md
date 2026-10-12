@@ -4,6 +4,8 @@
 
 最後同步時間：2026-08-14（多利：找出並修完 Duoli Mailer 寄信全掛的五層根因（to/cc 格式、Cloud environment 沒切、網路白名單、token 不同步、CC 被 Resend 拒收），7 支寄信 routine 全部改切到獨立的「Duoli Mailer」Cloud environment，改用驗證網域 `mail.beyond-ans.com` 寄信，已實測寄信+CC 都成功。同一天把新聞報告、AI創業案例報告、書籍摘要三支從每週改成每天，補上 CC 阿分，新聞報告日期窗口改抓「過去24小時」。**接著發現防重複 log 的 `git push` 一律 403，根因是 claude.ai 平台規定「cloud session 的 git push 只能推回 session 自己的 working branch」，跟 GitHub 權限無關**，於是把 7 支寄信 routine 的防重複 log 機制整個從 git 改成呼叫 Duoli Mailer Worker 新增的 KV 端點（`/log/{key}`，GET 讀、PUT 寫），完全不再用 git，7 支 routine 的 prompt 已同步更新，`sources.git_repository` 保留但不再被防重複這一步用到。「影片分析每日推薦」不寄信、寫入 git 分支才是它的主任務本體，目前仍受同一個 push 限制，還沒處理，見下方待辦。完整設定見 `../RESEND_MIGRATION.md`。
 
+> **2026-10-12 狀態（多利轉職為後勤管家）**：以 `RemoteTrigger list` 讀回，下表 8 支 routine 已不在線上；抽查 `trig_016qGJ7RpkNm7G4kqFhVvkg5`、`trig_01WoF3zy2i2AVHdhBSHhtQa6` 均回 404，確認已刪除。表格與各 `.md` 檔保留作為歷史與「按需查詢」的 prompt 樣板，不再代表線上排程。後續處理：節目方向靈感＋競品動態合併為「選題情報週報」（執行端待老查決定）；AE、新聞、UIUX、AI 創業案例、書摘改為按需；影片分析每日推薦取消。每日例行工作改由 `tools/duoli/` 腳本執行，不耗 AI 額度。
+
 | 檔案 | routine 名稱 | trigger_id | 頻率 | 輸出方式 |
 |---|---|---|---|---|
 | video-analysis-daily.md | 影片分析每日推薦 | trig_01WoF3zy2i2AVHdhBSHhtQa6 | 每天 08:00 台北 | 寫入 repo「影片分析」分支（不寄信，Default 環境；⚠️ 同樣會撞到 git push 只能推 session working branch 的限制，待處理） |
