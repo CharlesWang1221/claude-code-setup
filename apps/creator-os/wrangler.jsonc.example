@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "creator-os",
+  "main": "worker/src/index.ts",
+  "compatibility_date": "2026-08-25",
+  "triggers": {
+    "crons": ["30 19 * * *"]
+  },
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {
+    "APP_ORIGIN": "http://localhost:3000,https://creator-os.YOUR-SUBDOMAIN.workers.dev",
+    "TEAM_DOMAIN": "https://YOUR-TEAM.cloudflareaccess.com"
+  },
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "run_worker_first": ["/v1/*", "/health"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "creator-os",
+      "database_id": "REPLACE_AFTER_CREATING_D1"
+    }
+  ]
+}
