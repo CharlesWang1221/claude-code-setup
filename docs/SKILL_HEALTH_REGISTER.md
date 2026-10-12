@@ -172,3 +172,14 @@ Explorer 使用 `rg -n` 與 `nl -ba`／`sed -n` 查詢；小查另以 `collabora
 | `bash tools/duoli/ledger-tally.sh --dry-run` | `PASS`；缺少來源資料時明確回報無法統計。 |
 
 判定：三個例行入口的 dry-run 驗證通過；整體階段 2B 尚未完成 3 天連跑、測試資料夾警告驗證或實際寄信，因此不標記為完整驗收。涉及目前排程、素材路徑與數量的警示明細保存在私人工作區盤點清冊。
+
+## 2026-10-12 15:27（Asia/Taipei）控制台能力實測
+
+本次依 `docs/CEO_CONTROL_TOWER.md` 做控制面驗證，未啟動任何 Skill、內容產線、生成、渲染、上傳或平台操作。
+
+| 實測項目 | 結果 | 可讀回證據／限制 |
+| --- | --- | --- |
+| 子代理遞迴派工 | `PASS` | 主代理建立 dispatcher `/root/dispatcher_probe`；dispatcher 成功建立 explorer `/root/dispatcher_probe/repo_read_probe`，並唯讀查詢 `docs/CEO_CONTROL_TOWER.md` 前 20 行，讀到 `## 1. 決策與責任邊界`。表示子代理可再派子代理。 |
+| Codex 額度／用量可見性 | `LIMITED` | 此工作階段無 `/status` 或等價的額度 API。`get_goal` 只回傳 `goal`、`remainingTokens`、`completionBudgetReport`，本次三者均為 `null`；`codex login status` 只顯示「Logged in using ChatGPT」。可確認登入身分，不能讀取方案額度、已用 token、剩餘 token、重置時間、費用或併發額度。 |
+
+結論：階層式派工可作為階段 2／2B 的控制面能力；額度治理目前只能以任務級工作量與子代理數量作營運估算，不能宣稱有即時用量讀回。若要讓額度成為可驗收欄位，需由產品端提供可授權讀取的 usage／quota 端點或 UI 證據。
