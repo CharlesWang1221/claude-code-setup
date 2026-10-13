@@ -29,6 +29,7 @@
 | S3EP3-COLLAGE | S3EP3 剪紙精華構圖 proof 與最終音訊裁切 | `PENDING_APPROVAL` | 內容營運長＋製作總監 | `video-projects/s3ep3-paper-collage/BRIEF.md` | 只允許無聲構圖 proof；構圖與最終音訊時間碼未確認 | 確認構圖與音訊裁切，才可進交付 MP4 | 未設定 |
 | RECORDING-COMPASSION | 「慈悲的傲慢與同行的溫度」錄音前審核 | `REVISE` | 品牌總監＋成長與知識總監 | `output/錄音前審核_慈悲的傲慢與同行的溫度.md` | 真人刑案與其他具體事實尚未查證 | 查證原始來源；無法查證就撤下相關段落 | 未設定 |
 | PERFORMANCE-BASELINE | Podcast 跨集第 7／30 天成效基準累積 | `ACTIVE` | 成長與知識總監 | `output/podcast-performance-patterns.md` | 樣本尚不足以升級為規則 | 下一集按同一口徑補第 7 天資料 | 下次符合觀察日的單集 |
+| PRODUCTION-RETRO | 動畫製作缺失復盤與精進迴路（2026-10-13 老查提出）：把每支成品被退回的原因收集起來，歸因到 Skill 母版的哪一條沒寫清楚或沒被遵守，再改進 SOP，讓製作團隊越做越符合要求。範圍只限製作品質，不含播放成效（成效仍歸成析 T6） | `PENDING_APPROVAL` | 阿派（流程）＋廠長（製作）；鐵雄提供退件證據、師傅改 Skill 母版 | 現有基礎：`docs/CEO_CONTROL_TOWER.md` 每月「重複出現的 FAIL 規則」、2026-10-13 鐵雄 FAIL 分級、`output/ep-s3ep9/SHITOU_PRODUCTION_RETROSPECTIVE.md` 單次復盤範例 | 小查判斷：現行每月檢討只看鐵雄 FAIL，漏掉退件大宗的老查改稿意見與阿維 REVISE；頻率也太慢，一個月內同樣的錯會重犯好幾次。待老查核准：收集來源（鐵雄 FAIL＋阿維 REVISE＋老查改稿）、觸發時機（每支 item 已排程後，或每週一次）、輸出格式（缺失 → 歸因條文 → SOP 修正 → 下一支驗證）、由誰改 Skill 母版 | 小查依上述缺口出方案草稿給老查核准，核准後才改控制台與相關 SKILL.md | 未設定 |
 
 ## 2026-09-28 管理分工更新
 
