@@ -175,7 +175,7 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
 - 每週日 21:00 前交「額度結算」給小查：本週各產線的用量等級、付費點數、重做次數、最燒額度的前 3 項與改善建議。
 - Codex 讀不到帳戶額度（2026-10-12 實測，見 `docs/SKILL_HEALTH_REGISTER.md`）。每週一小查第一次回報時，請老查在 Codex 輸入 `/status`，把顯示的用量與 rate-limit 原文貼回；省長記入 `docs/QUOTA_LEDGER.md` 再開本週預算卡。
 - 老查當週沒貼時，省長照常開卡，但只能用預算卡等級和重做次數當代理指標，並在結算註明「本週無 `/status` 讀數」，不得宣稱已掌握精確用量。
-- 5 小時額度用完後的自動續跑交給 `tools/codex-resume-watch/`（2026-10-13 上線試跑）：排程每 10 分鐘讀本機 `~/.codex/sessions` 最新紀錄的 `rate_limits` 與 `resets_at`，額度卡住且已過恢復時間才對卡住的那個工作階段呼叫一次 `codex exec resume <session id>`，同一個 `resets_at` 只續跑一次，超過 6 小時的舊紀錄不接續，權限沿用 Codex 原本設定。Mac 與 Windows 各自執行一次 `install`；log 在 `output/codex-resume-watch/`（不進 git）。它只是接續最後一個工作階段，不重新判斷任務優先序；試跑期間小查回報時要對照 log 確認有無誤觸發。
+- 5 小時額度用完後的自動續跑交給 `tools/codex-resume-watch/`（2026-10-13 上線試跑）：排程每 10 分鐘讀本機 Codex 工作階段紀錄（有設 `CODEX_HOME` 就讀其下 `sessions`，否則 `~/.codex/sessions`）最新一筆的 `rate_limits` 與 `resets_at`，額度卡住且已過恢復時間才對卡住的那個工作階段呼叫一次 `codex exec resume <session id>`，同一個 `resets_at` 只續跑一次，超過 6 小時的舊紀錄不接續，權限沿用 Codex 原本設定。Mac 與 Windows 各自執行一次 `install`；log 在 `output/codex-resume-watch/`（不進 git）。它只是接續最後一個工作階段，不重新判斷任務優先序；試跑期間小查回報時要對照 log 確認有無誤觸發。
 
 ## 8. 發布排程部（星期天）章程
 
