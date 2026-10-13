@@ -33,6 +33,9 @@ google-mcp/credentials.json
 # 暫存工作區（渲染輸出、草稿，不進 git）
 tmp/
 
+# Codex 額度自動續跑 watchdog 的狀態檔與 log（本機執行紀錄，不進 git）
+output/codex-resume-watch/
+
 # 文件轉檔工具的本機 Python 環境
 tools/markdown-intake/.venv/
 tools/markdown-intake/.packages/

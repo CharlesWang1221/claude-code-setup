@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Codex 額度自動續跑 watchdog 排程範本。由 `python3 tools/codex-resume-watch/codex_resume_watch.py install`
+     填入本機路徑後安裝；repo 不存放絕對路徑。 -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.beyondans.codex-resume-watch</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>{{PYTHON}}</string>
+    <string>{{SCRIPT}}</string>
+    <string>watch</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>{{INTERVAL_SECONDS}}</integer>
+  <key>StandardOutPath</key>
+  <string>{{LOG}}</string>
+  <key>StandardErrorPath</key>
+  <string>{{LOG}}</string>
+</dict>
+</plist>
