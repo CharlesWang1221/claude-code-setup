@@ -172,7 +172,9 @@ fi
 # video-shotcraft（影片頭）已於 2026-10-12 下架，不再安裝。
 
 # Codex 是主要工作代理。直接從 repo 安裝 Skills，不再以 Claude 設定反向覆蓋 Codex。
-CODEX_SKILLS_DEST="$HOME/.codex/skills"
+# Codex 有設 CODEX_HOME 時從那裡讀 Skills、規則與角色，沒設才是 ~/.codex
+CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
+CODEX_SKILLS_DEST="$CODEX_HOME_DIR/skills"
 mkdir -p "$CODEX_SKILLS_DEST"
 for dir in "$SKILLS_SRC"/*/; do
     [[ -d "$dir" ]] || continue
@@ -192,11 +194,10 @@ if [[ -x "$SCRIPT_DIR/tools/check-skill-authority.sh" ]]; then
 fi
 
 CODEX_AGENTS_SRC="$SCRIPT_DIR/codex/AGENTS.global.md"
-CODEX_HOME_DIR="$HOME/.codex"
 if [[ -f "$CODEX_AGENTS_SRC" ]]; then
     mkdir -p "$CODEX_HOME_DIR"
     cp "$CODEX_AGENTS_SRC" "$CODEX_HOME_DIR/AGENTS.md"
-    echo -e "${GREEN}      已安裝 Codex 全域規則 ~/.codex/AGENTS.md${NC}"
+    echo -e "${GREEN}      已安裝 Codex 全域規則 $CODEX_HOME_DIR/AGENTS.md${NC}"
 fi
 
 # Codex 多代理角色（可公開同步；config.toml 與 MCP 憑證仍只留本機）
@@ -206,7 +207,7 @@ if [[ -d "$CODEX_AGENT_ROLES_SRC" ]]; then
     mkdir -p "$CODEX_AGENT_ROLES_DEST"
     cp "$CODEX_AGENT_ROLES_SRC"/*.toml "$CODEX_AGENT_ROLES_DEST/"
     AGENT_ROLE_COUNT=$(find "$CODEX_AGENT_ROLES_SRC" -maxdepth 1 -name '*.toml' -type f | wc -l | tr -d ' ')
-    echo -e "${GREEN}      已安裝 $AGENT_ROLE_COUNT 個 Codex 多代理角色 ~/.codex/agents${NC}"
+    echo -e "${GREEN}      已安裝 $AGENT_ROLE_COUNT 個 Codex 多代理角色 $CODEX_HOME_DIR/agents${NC}"
     echo -e "${GRAY}      日常主調度請在 Codex 選 GPT-5.6 Terra / medium；Sol 僅用於高風險任務${NC}"
 fi
 

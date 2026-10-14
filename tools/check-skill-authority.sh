@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_SRC="$REPO_ROOT/skills"
-CODEX_SKILLS="$HOME/.codex/skills"
+CODEX_SKILLS="${CODEX_HOME:-$HOME/.codex}/skills"
 AGENTS_SKILLS="$HOME/.agents/skills"
 
 failures=0

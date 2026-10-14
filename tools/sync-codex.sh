@@ -6,7 +6,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_SRC="$REPO_ROOT/skills"
-CODEX_SKILLS="$HOME/.codex/skills"
+# Codex 有設 CODEX_HOME 時從那裡讀 Skills、規則與角色，沒設才是 ~/.codex
+CODEX_HOME_DIR="${CODEX_HOME:-$HOME/.codex}"
+CODEX_SKILLS="$CODEX_HOME_DIR/skills"
+echo "Codex 目錄：$CODEX_HOME_DIR"
 
 GREEN='\033[0;32m'
 GRAY='\033[0;90m'
@@ -29,14 +32,14 @@ for dir in "$SKILLS_SRC"/*/; do
     echo -e "${GREEN}  已同步: $name${NC}"
 done
 
-mkdir -p "$HOME/.codex"
-cp "$REPO_ROOT/codex/AGENTS.global.md" "$HOME/.codex/AGENTS.md"
+mkdir -p "$CODEX_HOME_DIR"
+cp "$REPO_ROOT/codex/AGENTS.global.md" "$CODEX_HOME_DIR/AGENTS.md"
 echo -e "${GREEN}  已同步 Codex 全域規則${NC}"
 
 # Codex 多代理角色（阿派、廠長、鐵雄、省長等；config.toml 與 MCP 憑證仍只留本機）
 if [[ -d "$REPO_ROOT/codex/agents" ]]; then
-    mkdir -p "$HOME/.codex/agents"
-    cp "$REPO_ROOT/codex/agents"/*.toml "$HOME/.codex/agents/"
+    mkdir -p "$CODEX_HOME_DIR/agents"
+    cp "$REPO_ROOT/codex/agents"/*.toml "$CODEX_HOME_DIR/agents/"
     echo -e "${GREEN}  已同步 $(find "$REPO_ROOT/codex/agents" -maxdepth 1 -name '*.toml' -type f | wc -l | tr -d ' ') 個 Codex 多代理角色${NC}"
 fi
 
