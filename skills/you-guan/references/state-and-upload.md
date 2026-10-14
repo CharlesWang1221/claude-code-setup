@@ -7,7 +7,7 @@
 ```json
 {
   "owner": "you-guan",
-  "manager": "小查",
+  "manager": "教父",
   "task_id": null,
   "stage": "INPUT_REVIEW",
   "inputs": { "audio": null, "transcript": null, "source_video": null },

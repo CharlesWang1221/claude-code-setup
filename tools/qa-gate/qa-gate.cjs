@@ -13,6 +13,10 @@
  * 報告位置（依序尋找）：明確指定 → 檔案所在資料夾往上最多 3 層的 qa/report.md。
  * 報告格式見 codex/agents/qa_auditor.toml：需有「總結：PASS」與受檢檔的 SHA-256。
  *
+ * 小查凍結：檔案所在資料夾往上最多 3 層有 FROZEN.md，或任一 output/weekly-shorts/<週>/weekly-plan.json
+ * 的 item 其 lane_dir 包含此檔且 lane_status 以 FROZEN 開頭，就一律擋下。凍結不吃 QA_OVERRIDE_REASON，
+ * 只有老查解除（刪除 FROZEN.md 並改回 lane_status）後才能通過。
+ *
  * 緊急放行：設定環境變數 QA_OVERRIDE_REASON="<理由>"。只有老查能決定推翻鐵雄，
  * 理由必須另寫入任務卡；每次放行都會記錄在 output/weekly-shorts/qa-overrides.log，由多利每日回報。
  */
@@ -54,7 +58,40 @@ function findReport(file, explicit, projectRoot) {
   return null;
 }
 
-/** 回傳 { ok, lines, report, sha }，不丟例外。 */
+function findFrozen(file, projectRoot) {
+  const abs = path.resolve(file);
+  const root = path.resolve(projectRoot);
+  let dir = path.dirname(abs);
+  for (let i = 0; i <= 3; i++) {
+    const marker = path.join(dir, 'FROZEN.md');
+    if (fs.existsSync(marker)) {
+      const reason = fs.readFileSync(marker, 'utf8').trim().split(/\r?\n/)[0] || '（未寫原因）';
+      return { source: marker, reason };
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir || !parent.startsWith(root)) break;
+    dir = parent;
+  }
+  const weeks = path.join(root, 'output', 'weekly-shorts');
+  if (!fs.existsSync(weeks)) return null;
+  for (const week of fs.readdirSync(weeks)) {
+    const plan = path.join(weeks, week, 'weekly-plan.json');
+    if (!fs.existsSync(plan)) continue;
+    let data;
+    try { data = JSON.parse(fs.readFileSync(plan, 'utf8')); } catch { continue; }
+    const items = Array.isArray(data.items) ? data.items : [];
+    for (const item of items) {
+      if (!item || !item.lane_dir || !/^FROZEN/.test(String(item.lane_status || ''))) continue;
+      const lane = path.resolve(root, item.lane_dir);
+      if (abs === lane || abs.startsWith(lane + path.sep)) {
+        return { source: plan, reason: `${item.id || item.item_id || '?'} ${item.lane_status}` };
+      }
+    }
+  }
+  return null;
+}
+
+/** 回傳 { ok, lines, report, sha, frozen }，不丟例外。 */
 function checkQa(file, opts = {}) {
   const projectRoot = opts.projectRoot || PROJECT_ROOT;
   const rel = (p) => path.relative(projectRoot, p) || p;
@@ -65,6 +102,11 @@ function checkQa(file, opts = {}) {
   const actual = sha256(file);
   lines.push(`檔案：${rel(path.resolve(file))}`);
   lines.push(`SHA-256：${actual}`);
+  const frozen = findFrozen(file, projectRoot);
+  if (frozen) {
+    lines.push(`結果：BLOCKED，小查已凍結（${frozen.reason}；來源 ${rel(frozen.source)}），只有老查能解除`);
+    return { ok: false, lines, sha: actual, frozen: true };
+  }
   const report = findReport(file, opts.report, projectRoot);
   if (!report || !fs.existsSync(report)) {
     lines.push('結果：BLOCKED，找不到鐵雄稽核報告（qa/report.md）');
@@ -102,6 +144,9 @@ function assertQaPass(file, opts = {}) {
   const result = checkQa(file, opts);
   for (const l of result.lines) console.log(`  [鐵雄閘門] ${l}`);
   if (result.ok) return result;
+  if (result.frozen) {
+    throw new Error('小查已凍結此 item，緊急放行不適用。只有老查能解除凍結。');
+  }
   const reason = (process.env.QA_OVERRIDE_REASON || '').trim();
   if (reason) {
     logOverride(file, result, reason);

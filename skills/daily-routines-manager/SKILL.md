@@ -11,7 +11,7 @@ description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿
 
 ## 例行工作（腳本，不耗額度）
 
-觸發方式：小查每天第一次回報前，執行 `python3 -I tools/duoli/duoli.py auto`。它只跑「已到時間、且尚未跑過」的工作；當天或當週已跑過，就直接印出已存的報告。老查當天沒有使用 Codex，就不執行，也不補跑。不使用背景排程。
+觸發方式：教父每天第一次回報前，執行 `python3 -I tools/duoli/duoli.py auto`。它只跑「已到時間、且尚未跑過」的工作；當天或當週已跑過，就直接印出已存的報告。老查當天沒有使用 Codex，就不執行，也不補跑。不使用背景排程。
 
 | 時機（Asia/Taipei） | 單獨執行 | 內容 | 交給誰 |
 | --- | --- | --- | --- |
@@ -21,7 +21,7 @@ description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿
 
 - 三支腳本都可以加 `--dry-run`，只印出內容、不存檔；加 `--force` 會重跑已完成的工作。
 - 資料來源：`docs/RELEASE_EVIDENCE_REGISTER.md`、週計畫 JSON、交件包。腳本只讀檔；唯一的寫入是週計畫空殼與報告。
-- 報告存在 `output/weekly-shorts/duoli-reports/`（git 忽略），由小查彙整進日報，不另外寄信。
+- 報告存在 `output/weekly-shorts/duoli-reports/`（git 忽略），由教父彙整進日報，不另外寄信；小查監察時可直接讀取。
 - Mac 與 PC 都能執行（Python 3.9 以上）。PC 用 `py -3 tools\duoli\duoli.py auto`；Skill 健康檢查在 PC 上改跑 `check-skill-authority.ps1`。
 
 ### 選用：背景排程與寄信
@@ -35,7 +35,7 @@ description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿
 - 內容：節目方向靈感＋競品動態，合併成一份週報，交小渡與小市。prompt 樣板沿用 `routines/daily-podcast-direction-inspiration-report.md`、`routines/daily-competitor-monitor-7.md`。
 - 跑之前先確認省長已發預算卡（S 級）。
 - 執行方式（2026-10-12 老查決定）：由 Codex 每週手動跑一次，不建立自動排程。研究搜尋可用 Luna（唯讀），成果存到 `output/weekly-shorts/{週一}/intel-report.md`。
-- 多利每週開檔時會檢查這個檔案；本週還沒有就提醒小查。
+- 多利每週開檔時會檢查這個檔案；本週還沒有就提醒教父。
 
 ## 按需查詢（老查說了才跑）
 
