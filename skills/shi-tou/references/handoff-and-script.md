@@ -34,7 +34,7 @@ Flow 特別企劃才填：專案／提交 ID／模型／價格／點數上限／
 
 ## 星期天狀態交接
 
-新任務以 `output/weekly-shorts/{week-start}/weekly-plan.json` 的 `wed-scene`、`fri-scene`、`sat-scene` 追蹤；單集狀態只保存來源引用。歷史 `.publish-status.json` 的 `real_scene_highlights` 與 `highlight_plan.items` 保留，不再作每週數量要求。舊檔只補缺欄位，保留既有所有旗標與 `paper_highlights`，不變更已排程或已發布項目。缺輸入用 `stage` 表示，不假裝完成。
+新任務以 `output/weekly-shorts/{week-start}/weekly-plan.json` 中被老查點名替換的槽位追蹤（2026-10-14 起槽位 ID 為 `*-quote`，替換後 format 記 `scene`；舊週計畫的 `wed-scene`、`fri-scene`、`sat-scene` 保留原樣）；單集狀態只保存來源引用。歷史 `.publish-status.json` 的 `real_scene_highlights` 與 `highlight_plan.items` 保留，不再作每週數量要求。舊檔只補缺欄位，保留既有所有旗標與 `paper_highlights`，不變更已排程或已發布項目。缺輸入用 `stage` 表示，不假裝完成。
 
 每項包含：`id`、`stage`、`quote`、`speaker`、`start`、`end`、`audio_clip`、`script`、`script_approved`、`keyframes_approved`、`render`、`qc_passed`、`brand_review`、`approved`、`release_selection`、`platforms`。核准須能追溯到當次版本與對話證據。
 

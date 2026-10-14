@@ -1,11 +1,11 @@
 {
-  "policy": "weekly-six-v1",
+  "policy": "weekly-six-v2-quote",
   "week_start": null,
   "approved": false,
   "items": [
     {
-      "id": "mon-teaser",
-      "format": "type",
+      "id": "mon-quote",
+      "format": "quote",
       "role": "teaser",
       "weekday_offset": 0,
       "editorial_time": "20:30",
@@ -24,6 +24,11 @@
         "path": null,
         "version": null
       },
+      "experiment": {
+        "variable": null,
+        "hypothesis_card": null,
+        "d7_review": null
+      },
       "render": null,
       "version": null,
       "qc_passed": false,
@@ -37,8 +42,8 @@
       "qa_report": null
     },
     {
-      "id": "tue-paper",
-      "format": "paper",
+      "id": "tue-quote",
+      "format": "quote",
       "role": "highlight",
       "weekday_offset": 1,
       "editorial_time": "20:30",
@@ -57,6 +62,11 @@
         "path": null,
         "version": null
       },
+      "experiment": {
+        "variable": null,
+        "hypothesis_card": null,
+        "d7_review": null
+      },
       "render": null,
       "version": null,
       "qc_passed": false,
@@ -70,8 +80,8 @@
       "qa_report": null
     },
     {
-      "id": "wed-scene",
-      "format": "scene",
+      "id": "wed-quote",
+      "format": "quote",
       "role": "highlight",
       "weekday_offset": 2,
       "editorial_time": "20:30",
@@ -90,6 +100,11 @@
         "path": null,
         "version": null
       },
+      "experiment": {
+        "variable": null,
+        "hypothesis_card": null,
+        "d7_review": null
+      },
       "render": null,
       "version": null,
       "qc_passed": false,
@@ -103,8 +118,8 @@
       "qa_report": null
     },
     {
-      "id": "thu-type",
-      "format": "type",
+      "id": "thu-quote",
+      "format": "quote",
       "role": "highlight",
       "weekday_offset": 3,
       "editorial_time": "20:30",
@@ -123,6 +138,11 @@
         "path": null,
         "version": null
       },
+      "experiment": {
+        "variable": null,
+        "hypothesis_card": null,
+        "d7_review": null
+      },
       "render": null,
       "version": null,
       "qc_passed": false,
@@ -136,8 +156,8 @@
       "qa_report": null
     },
     {
-      "id": "fri-scene",
-      "format": "scene",
+      "id": "fri-quote",
+      "format": "quote",
       "role": "highlight",
       "weekday_offset": 4,
       "editorial_time": "12:00",
@@ -156,6 +176,11 @@
         "path": null,
         "version": null
       },
+      "experiment": {
+        "variable": null,
+        "hypothesis_card": null,
+        "d7_review": null
+      },
       "render": null,
       "version": null,
       "qc_passed": false,
@@ -169,8 +194,8 @@
       "qa_report": null
     },
     {
-      "id": "sat-scene",
-      "format": "scene",
+      "id": "sat-quote",
+      "format": "quote",
       "role": "highlight",
       "weekday_offset": 5,
       "editorial_time": "20:30",
@@ -188,6 +213,11 @@
         "status": "PENDING",
         "path": null,
         "version": null
+      },
+      "experiment": {
+        "variable": null,
+        "hypothesis_card": null,
+        "d7_review": null
       },
       "render": null,
       "version": null,

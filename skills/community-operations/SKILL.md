@@ -49,7 +49,7 @@ brief 留在週計畫私有工作區；單集資料可保留引用。一支只�
 ```text
 【六支週計畫配置｜YYYY-MM-DD Asia/Taipei】
 單集／素材：
-mon-teaser／tue-paper／wed-scene／thu-type／fri-scene／sat-scene：
+mon-quote／tue-quote／wed-quote／thu-quote／fri-quote／sat-quote（2026-10-14 起六支皆為金句短片；老查點名剪紙／實透時標註替換哪一槽）：
 各支來源／任務／觀眾入口／形式／原話候選：
 六支差異與避免重複：
 

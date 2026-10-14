@@ -58,10 +58,10 @@
 | 「真秀」「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
 | 「真人」 | 小查先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
 | 「訪談」 | 小查先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
-| 「預報」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video` |
+| 「句剪」「金句短片」「節目精選」「預報」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video`（句剪，原名預報；週一至六 6 支金句短片，每支另做專屬封面） |
 | 「做 IG 內容」 | 先判斷交付物：要音檔短片走 `podcast-teaser-video`；要輪播／圖卡走 `podcast-publish` 的 IG 圖步驟；只說「做 IG 內容」且無法判斷時，先列兩種交付物，不得直接生成。不得派不存在的 `social-cards`。 |
-| 「實透」「金句做實景角色動畫」 | `shi-tou`（星期天管理；先拆解原音、等實景照片、審動態腳本再進 Flow） |
-| 「剪紙」「剪紙風」「節目精選」 | `paper-collage-video`（串接 `podcast-teaser-video` 選金句與時間碼） |
+| 「實透」「金句做實景角色動畫」 | `shi-tou`（2026-10-14 起為特別企劃：只有老查點名才啟動，需省長 L 級預算卡；先拆解原音、等實景照片、審動態腳本） |
+| 「剪紙」「剪紙風」 | `paper-collage-video`（2026-10-14 起為特別企劃：只有老查點名才啟動，需省長 L 級預算卡；串接句剪選金句與時間碼） |
 | 「做圖卡」「/cards」「社群圖卡」 | 若屬 Podcast 單集，走 `podcast-publish` 的 IG 圖步驟；其他圖卡先判斷是否有對應 Skill，不得憑關鍵字硬派。 |
 | 「多利」 | `daily-routines-manager` |
 | 「社群營運」「社群管理」「社群 brief」「平台內容方向」 | `community-operations`（小渡／社群營運長）；若屬 Podcast 短影音製作，先由它出 brief，再回 `podcast-publish`（星期天）執行 |
@@ -78,7 +78,7 @@
 | 「流之呼吸」「Flow 試片」 | `flow-video-pilot`（特別企劃，需明確付費授權） |
 | 「真短驗析」「短片實驗」「短片成效」 | `short-video-experiment-review` |
 | 「阿派」「鐵雄」「省長」「廠長」 | 公司職位，不是 Skill；依 `docs/CEO_CONTROL_TOWER.md` 的權責與 `codex/agents/` 角色處理 |
-| 「剪紙效果影片」「用剪紙效果做」「剪紙風」「節目精選」 | Podcast 節目精選走 `paper-collage-video`；其他題材先判斷目的，不得因關鍵字派給解題（`jieti`）。 |
+| 「剪紙效果影片」「用剪紙效果做」「剪紙風」 | 老查點名剪紙的 Podcast 段落走 `paper-collage-video`（特別企劃）；「節目精選」預設改走句剪的金句短片；其他題材先判斷目的，不得因關鍵字派給解題（`jieti`）。 |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
 
 ### 居易跨電腦落檔規則
@@ -172,6 +172,6 @@
 - 小查依 `docs/CEO_COMMAND_PROTOCOL.md` 判讀自然語言交辦，阿派依 `docs/SKILL_ROUTING_MATRIX.md` 派工，並受 `docs/AUTHORITY_MATRIX.md` 的外部操作授權邊界限制。CEO 管理流程的 2 週試點紀錄在 `docs/CEO_PILOT_LOG_2026-09.md`。
 
 
-## 2026-10-10 短片決策
+## 2026-10-14 短片決策
 
-每週一至六共 6 支（含一般預告），預設 3 實景紙片＋2 原音動態字卡／物件＋1 完整剪紙。Flow 實透只作明確特別企劃；週日不新增短片。數量、形式、週槽位、跨集計畫與舊狀態承接以 [每週 6 支短片母版](docs/SHORT_VIDEO_WEEKLY_POLICY.md) 為準。既有公開／排程內容不自動移動；Podcast 週日首發確切時間仍待確認。
+2026-10-14 起每週一至六共 6 支，全部是句剪（原名預報）製作的「金句短片」，週一那支為本集預告；每支另行製作專屬封面，並由真短驗析做流量審核與觀察。剪紙、實透（含 Flow）改為老查另外呼叫的特別企劃，不占固定槽位；週日不新增短片。數量、形式、週槽位、跨集計畫與舊狀態承接以 [每週 6 支短片母版](docs/SHORT_VIDEO_WEEKLY_POLICY.md) 為準。既有公開／排程內容不自動移動；Podcast 週日首發確切時間仍待確認。

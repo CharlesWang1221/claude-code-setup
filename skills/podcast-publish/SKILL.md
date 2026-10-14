@@ -1,6 +1,6 @@
 ---
 name: podcast-publish
-description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、社群視覺、Podcast 音檔正片、每週 6 支短影片（含一般預告），以及 Firstory、IG、FB、YouTube Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
+description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、社群視覺、Podcast 音檔正片、每週 6 支金句短片（句剪製作，週一為本集預告，每支另做專屬封面），以及 Firstory、IG、FB、YouTube Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
 ---
 
 # 星期天 — Podcast 上架統一入口
@@ -23,7 +23,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 ### 社群營運前置閘門
 
-星期天開始製作任何一般預告、實透、剪紙精華或其他短影音前，必須先呼叫 `community-operations`。若有留言或討論資料，先交 `voc-jtbd-demand-map` 做 VOC 採證；沒有原始觀眾資料時，標示為內容推論。
+星期天開始製作任何金句短片（含週一預告），或老查另外點名的剪紙、實透特別企劃前，必須先呼叫 `community-operations`。若有留言或討論資料，先交 `voc-jtbd-demand-map` 做 VOC 採證；沒有原始觀眾資料時，標示為內容推論。
 
 依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md) 建立跨集週計畫。小渡先配置六支任務與來源，再由老查核准原音，逐支交付 READY brief。每份 brief 需有 item ID、主要平台、單一任務、觀眾入口、核心摩擦、完整原話與時間碼、畫面／字幕方向及結尾導向。
 
@@ -243,7 +243,7 @@ powershell -ExecutionPolicy Bypass -File tools\ig-images\run_ig.ps1 -EpSlug {slu
 
 產完後，把整個 `output/ep-{slug}/ig/` 資料夾內容（carousel + quote 圖）連同 `ig-caption.txt` 一起複製到 Google Drive：`G:\我的雲端硬碟\不標準答案\2026\IG\{slug}\`（老查要求2026-07-26，方便他之後直接去這裡貼文，不用回頭找 repo 路徑）。
 
-IG 輪播視覺固定使用 1:1；一般預告、剪紙與實透精華短影片固定使用 9:16。所有短影片不製作片尾卡，最後畫面需回接開場形成循環；細則見 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。YouTube 長影片封面、正片與片尾由油管另行製作，不套用短影片版型。
+IG 輪播視覺固定使用 1:1；金句短片（含週一預告）與剪紙、實透特別企劃短影片固定使用 9:16。所有短影片不製作片尾卡，最後畫面需回接開場形成循環；細則見 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。YouTube 長影片封面、正片與片尾由油管另行製作，不套用短影片版型。
 
 完成後 `ig_images: true`。列出輪播順序與 `ig-caption.txt` 讓老查審核；核准後建立 IG 草稿，正式分享或排程前再確認一次。成功後才寫回 `instagram.approved`、`published`、`postId`、`url`。
 
@@ -257,23 +257,22 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 逐項讀 weekly-plan.json 的 format、role、核准來源、READY brief 與 target_at；不硬派舊 paper-1／shitou-1／shitou-2。
 
-- paper：呼叫 paper-collage-video，完整鏡頭表、分層物件、小樣與 QC。
-- scene：呼叫 shi-tou 的實景紙片模式，先重用透明角色與實景，再做可控圖層動作；不預設 Flow。
-- type：依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md) 做原音動態字卡／物件，原話分句、字幕對齊與物件動作均有聲音依據。
+- quote（2026-10-14 起六支預設）：呼叫 podcast-teaser-video（句剪），原話分句、字幕對齊與畫面動作均有聲音依據；每支同時交專屬封面，重點卡字級依句剪 SKILL.md。開工前先有真短驗析的產前假設卡。
+- paper／scene：只在老查另外點名剪紙或實透、省長開出 L 級預算卡時才出現，替換一個 quote 槽位；分別呼叫 paper-collage-video 與 shi-tou。星期天不得自行把槽位改成 paper 或 scene。
 
-各支腳本、關鍵畫面、小樣與最終版按適用流程核准；缺照片、原音或 QC 只阻塞該支。Flow 只在明確特別企劃及點數授權後使用，不替六支日常扣點。
+各支腳本、關鍵畫面、小樣與最終版按適用流程核准；缺原音或 QC 只阻塞該支。Flow 只在明確特別企劃及點數授權後使用，不替六支日常扣點。
 
 ### 6. 對外草稿與排程
 
 所有對外發布都先把成品、文案、身分、公開範圍與時間設定到最後一步，再向老查做動作確認。收到明確確認後才正式發布或建立平台排程；成功訊息、內容編號與網址讀回後，才可標成完成。
 
-#### 6.1 一般預告
+#### 6.1 週一預告（mon-quote）
 
 只要 `teaser_video.rendered: true` 且 `approved: true`，`fb_promo.applicable` 就是 `true`，與真人 Shorts 是否存在無關。使用 9:16 成品與核准文案建立 FB Reel，預設排程週一 20:30；單集若由老查指定立即發布，就只覆寫該集。
 
 #### 6.2 六支週計畫跨平台排程
 
-以 weekly-plan.json 為唯一短片發布清單（包含第 6.1 節的一般預告，不能重算）。逐支核對最終檔、caption、品牌 ALLOW、QC、人工核准、帳號及 target_at；時段依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。
+以 weekly-plan.json 為唯一短片發布清單（包含第 6.1 節的一般預告，不能重算）。逐支核對最終檔、專屬封面、caption、品牌 ALLOW、QC、人工核准、帳號及 target_at；三平台都要套用專屬封面並讀回封面已生效；時段依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。
 
 各平台讀回寫入該 item.platforms 與發布證據庫，單集保留引用。三平台任一失敗保留其他成功結果，不重複上傳，也不把整支標為跨平台完成。
 
@@ -303,9 +302,9 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - `tools/firstory-upload/upload.mjs`
 - `tools/fb-promo/run.bat` / `run.sh`
 - `shorts-pipeline` skill（步驟 6 直接引用其步驟，不要複製貼上整份內容）
-- `podcast-teaser-video` skill（步驟 2.5 預設字卡版，人物版僅明確指定時使用）
-- `paper-collage-video` skill（步驟 5 每週一支剪紙精華，不與真人 Shorts 綁定）
-- `shi-tou` skill（實透，步驟 5 實景紙片預設、Flow 特別企劃；星期天管理選段、製作交接與發布槽位）
+- `podcast-teaser-video` skill（句剪，原名預報；步驟 5 每週六支金句短片與專屬封面，人物版僅明確指定時使用）
+- `paper-collage-video` skill（剪紙，2026-10-14 起只在老查點名時作特別企劃，不占固定槽位）
+- `shi-tou` skill（實透，2026-10-14 起只在老查點名時作特別企劃；被點名時星期天管理選段、製作交接與發布槽位）
 - `seo-article-writer` skill（居易，選配步驟 8 引用，不要複製貼上整份內容）
 
 ## 相關記憶

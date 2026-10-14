@@ -3,7 +3,8 @@
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Split-Path -Parent $scriptDir
 $skillsSrc = Join-Path $repoRoot "skills"
-$codexSkills = Join-Path $env:USERPROFILE ".codex\skills"
+$codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }
+$codexSkills = Join-Path $codexHome "skills"
 $agentsSkills = Join-Path $env:USERPROFILE ".agents\skills"
 $failures = 0
 $checked = 0

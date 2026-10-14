@@ -3,9 +3,11 @@
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Split-Path -Parent $scriptDir
 $skillsSrc = Join-Path $repoRoot "skills"
-$codexSkills = Join-Path $env:USERPROFILE ".codex\skills"
+# Codex 有設 CODEX_HOME 時從那裡讀 Skills、規則與角色（Windows 這台是 %LOCALAPPDATA%\CodexCLI），沒設才是 ~/.codex
+$codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }
+$codexSkills = Join-Path $codexHome "skills"
 $globalRulesSrc = Join-Path $repoRoot "codex\AGENTS.global.md"
-$codexHome = Join-Path $env:USERPROFILE ".codex"
+Write-Host "Codex 目錄：$codexHome"
 
 Write-Host "=== 同步 Skills（repo → Codex）===" -ForegroundColor Cyan
 New-Item -ItemType Directory -Force $codexSkills | Out-Null

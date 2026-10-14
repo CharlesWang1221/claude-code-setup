@@ -11,7 +11,7 @@ description: 「真短驗析」——《不標準答案》內容企劃部的短�
 
 1. 完整讀取根目錄 `AGENTS.md` 與 `BRAND_CONTEXT.md`。
 2. 讀 `brand-guardian`，先完成內容的品牌放行；焦慮、比較、唯一解或未經同意的私人細節，不能拿來當測試變因。
-3. 若短片源自 Podcast，讀 `podcast-publish`，只使用已核准的核心主張、原話與時間碼。實景紙片、動態字卡、完整剪紙與人物版預告依每週 6 支母版與各自 Skill 製作。
+3. 若短片源自 Podcast，讀 `podcast-publish`，只使用已核准的核心主張、原話與時間碼。2026-10-14 起週一至六 6 支都是句剪（`podcast-teaser-video`）製作的金句短片，本 Skill 負責每支的產前假設卡與第 7 天驗證卡，並在試行 2 週後彙整 12 支結果；剪紙、實透只在老查點名時作特別企劃。
 4. 不重寫節目觀點以迎合數據。實驗只可改變「如何把觀眾帶進觀點」，不可偷換觀點本身。
 
 ## 檔案與週期
@@ -28,7 +28,7 @@ description: 「真短驗析」——《不標準答案》內容企劃部的短�
 ```md
 ## {asset-id}｜產前假設卡
 
-- 形式／平台／發布槽位：完整剪紙 1｜IG Reels、FB Reels、YouTube Shorts｜週二 20:30（Asia/Taipei）
+- 形式／平台／發布槽位：金句短片 tue-quote｜IG Reels、FB Reels、YouTube Shorts｜週二 20:30（Asia/Taipei）
 - 不可改動的核心觀點：
 - 來源依據：逐字稿原話／時間碼，或老查核准的原創內容
 - 對象正在卡住的具體場景：

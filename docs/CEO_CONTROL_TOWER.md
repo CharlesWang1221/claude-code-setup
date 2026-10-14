@@ -15,7 +15,7 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
       ├─ 阿派（營運總監）：派工、依賴圖、並行調度
       │    ├─ 後勤：多利（例行腳本）、師傅（Skill 治理）
       │    ├─ 內容企劃部：小渡（主編）、阿諾（編導）、小市、居易、成析、真短驗析
-      │    ├─ 動畫製作部：廠長＋預報、剪紙、實透、音剪、油管、解題、招牌、真秀、啊問、大千、流之呼吸
+      │    ├─ 動畫製作部：廠長＋句剪（常態主力）、音剪、油管、解題、招牌、真秀、啊問、大千；特別企劃：剪紙、實透、流之呼吸
       │    └─ 發布排程部：星期天
       ├─ 品管合規中心：鐵雄（獨立，有退件權）
       ├─ 品牌部：阿維＋正風（獨立，有否決權）
@@ -47,7 +47,7 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
 | 特助室 | 小查 | 小簡 `presentation-architect` | 老查交辦的事有結果、有回報 |
 | 營運與後勤 | 阿派 | 多利 `daily-routines-manager`、師傅 `skill-creator` | 每支 item 都有任務卡、依賴、資料夾與狀態；例行檢查在小查每日回報前跑完，且不耗 AI 額度 |
 | 內容企劃部 | 小渡 | 社群營運 `community-operations`、阿諾 `animation-director`、小市 `voc-jtbd-demand-map`、居易 `seo-article-writer`、成析 `podcast-performance-review`、真短驗析 `short-video-experiment-review` | 每支 item 開工前都有 `READY` brief 與可驗證假設 |
-| 動畫製作部 | 廠長 | 預報 `podcast-teaser-video`、剪紙 `paper-collage-video`、實透 `shi-tou`、音剪 `podcast-audio-edit`、油管 `you-guan`、解題 `jieti`、招牌 `zhaopai`、真秀 `shorts-pipeline`、啊問 `blog-image-director`、大千 `chibi-ink-illustrations`、流之呼吸 `flow-video-pilot` | 交件包完整：最終檔、版本、雜湊、技術自檢 |
+| 動畫製作部 | 廠長 | 常態：句剪 `podcast-teaser-video`（原名預報）、音剪 `podcast-audio-edit`、油管 `you-guan`、解題 `jieti`、招牌 `zhaopai`、真秀 `shorts-pipeline`、啊問 `blog-image-director`、大千 `chibi-ink-illustrations`。特別企劃（老查點名＋L 級預算卡才啟動）：剪紙 `paper-collage-video`、實透 `shi-tou`、流之呼吸 `flow-video-pilot` | 交件包完整：最終檔、版本、雜湊、技術自檢 |
 | 品管合規中心 | 鐵雄 | `codex/agents/qa_auditor.toml` | 每支對外成品都有附條文出處的稽核報告 |
 | 品牌部 | 阿維 | 阿維 `brand-guardian`、正風 `fact-checker` | 對外內容符合品牌、事實、隱私與合作底線 |
 | 發布排程部 | 星期天 | `podcast-publish` | 已放行內容走到有讀回證據的排程或發布 |
@@ -55,7 +55,7 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
 
 `jieti`（解題）、`zhaopai`（招牌）於 2026-10-12 由 `video-explainer`（影碩）與 `video-promo`（影華）轉職而來，遷移紀錄見 `docs/SKILL_MIGRATION_PLAN.md`。
 
-員工名冊（名稱 → 職務）：預報＝一般預告與字卡；剪紙＝剪紙精華（全公司的剪紙類影片都由剪紙負責，解題不接）；音剪＝音檔剪輯；真秀＝真人 Shorts；大千＝角色水墨；流之呼吸＝Flow 特別企劃；正風＝查證編輯；成析＝成效分析；真短驗析＝短片實驗；小簡＝簡報；師傅＝Skill 治理。
+員工名冊（名稱 → 職務）：句剪（原名預報，2026-10-14 改名）＝週一至六 6 支金句短片與其專屬封面，週一那支為本集預告；剪紙＝剪紙精華特別企劃（全公司的剪紙類影片都由剪紙負責，解題不接）；實透＝實景紙片特別企劃；音剪＝音檔剪輯；真秀＝真人 Shorts；大千＝角色水墨；流之呼吸＝Flow 特別企劃；正風＝查證編輯；成析＝成效分析；真短驗析＝短片實驗；小簡＝簡報；師傅＝Skill 治理。
 
 ### 多利（後勤管家）
 
@@ -275,4 +275,4 @@ Skill 是 SOP，不是會自己接案的員工。所有角色都是 Codex 在不
 
 ## 2026-10-10 短片決策
 
-每週一至六共 6 支（含一般預告），預設 3 實景紙片＋2 原音動態字卡／物件＋1 完整剪紙。Flow 實透只作明確特別企劃；週日不新增短片。數量、形式、週槽位與跨集計畫以 [每週 6 支短片母版](SHORT_VIDEO_WEEKLY_POLICY.md) 為準。
+2026-10-14 起每週一至六共 6 支，全部是句剪（原名預報）製作的「金句短片」，週一那支為本集預告；每支另行製作專屬封面，並由真短驗析做流量審核與觀察。剪紙、實透（含 Flow）改為老查另外呼叫的特別企劃，不占固定槽位；週日不新增短片。數量、形式、週槽位與跨集計畫以 [每週 6 支短片母版](SHORT_VIDEO_WEEKLY_POLICY.md) 為準。
