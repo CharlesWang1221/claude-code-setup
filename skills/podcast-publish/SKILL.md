@@ -291,6 +291,8 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 以 weekly-plan.json 為唯一短片發布清單（包含第 6.1 節的一般預告，不能重算）。逐支核對最終檔、專屬封面、caption、品牌 ALLOW、QC、人工核准、帳號及 target_at；三平台都要套用專屬封面並讀回封面已生效；時段依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。
 
+YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.render> --meta <該支 youtube.txt> --thumbnail <專屬封面> --qa-report <鐵雄報告> --publish-at <item.target_at>` 一次完成上傳、封面與預約公開；工具核對平台回傳的預約時間，不符就停下且不重傳。上傳前先讀 `item.platforms.youtube`，已有 id 就跳過。封面另到 Studio 讀回；若 Shorts 封面沒生效，該列記「封面未生效」，不為此重傳影片。
+
 各平台讀回寫入該 item.platforms 與發布證據庫，單集保留引用。三平台任一失敗保留其他成功結果，不重複上傳，也不把整支標為跨平台完成。
 
 ##### 已排程短片換版

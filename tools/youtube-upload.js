@@ -6,8 +6,13 @@
  *   node tools/youtube-upload.js --episode ep-s2ep7 --update <videoId>
  *   node tools/youtube-upload.js --episode ep-s2ep7 --publish-at 2026-10-20T07:00:00+08:00
  *
+ *   node tools/youtube-upload.js --video output/ep-s3ep11/s3ep11-teaser-v3.mp4 \
+ *     --meta <youtube.txt> --thumbnail <封面> --publish-at 2026-10-20T20:30:00+08:00
+ *
  * --publish-at：上傳時直接設定 YouTube 預約公開時間（須含 +08:00 時區且晚於現在），
  * 影片保持私人直到該時間自動公開；不加此參數則只上傳為私人。
+ * --video／--meta／--thumbnail／--qa-report：直接指定檔案（週計畫 Shorts 用），
+ * 不再從 --episode 資料夾自動尋找；--video 存在時可省略 --episode。
  *
  * 上傳新影片前會先通過鐵雄稽核閘門（tools/qa-gate/qa-gate.cjs）：需有 PASS 報告且雜湊一致。
  * 報告位置可在 .publish-status.json 以 qa_report 指定；只更新說明欄（--update）不經閘門。
@@ -32,17 +37,35 @@ const OUTPUT_ROOT = path.join(__dirname, '..', 'output');
 const PROJECT_ROOT = path.join(__dirname, '..');
 
 // ── 取得 episode 參數 ──────────────────────────────────────────
+function argValue(name) {
+  const i = process.argv.indexOf(name);
+  if (i === -1) return null;
+  const v = process.argv[i + 1];
+  if (!v || v.startsWith('--')) throw new Error(`${name} 後面需要值`);
+  return v;
+}
+
+function explicitFile(name) {
+  const v = argValue(name);
+  if (!v) return null;
+  const p = path.resolve(PROJECT_ROOT, v);
+  if (!fs.existsSync(p)) throw new Error(`${name} 指定的檔案不存在：${v}`);
+  return p;
+}
+
 const epArg = process.argv.indexOf('--episode');
-if (epArg === -1 || !process.argv[epArg + 1]) {
+const hasVideoArg = process.argv.includes('--video');
+if ((epArg === -1 || !process.argv[epArg + 1]) && !hasVideoArg) {
   console.error('用法：node tools/youtube-upload.js --episode <資料夾名稱>');
+  console.error('　或：node tools/youtube-upload.js --video <mp4> --meta <youtube.txt> [--thumbnail <圖>] [--publish-at <時間>]');
   console.error('範例：node tools/youtube-upload.js --episode ep-s2ep7');
   process.exit(1);
 }
-const episodeDir = path.join(OUTPUT_ROOT, process.argv[epArg + 1]);
+const episodeDir = epArg !== -1 ? path.join(OUTPUT_ROOT, process.argv[epArg + 1]) : null;
 
 // ── 讀取 youtube.txt，解析標題與說明 ─────────────────────────
-function parseYoutubeMeta(dir) {
-  const txt = fs.readFileSync(path.join(dir, 'youtube.txt'), 'utf8');
+function parseYoutubeMeta(dir, metaPath) {
+  const txt = fs.readFileSync(metaPath || path.join(dir, 'youtube.txt'), 'utf8');
 
   const titleMatch = txt.match(/【YouTube 標題】\s*\n([^\n]+)/)
     || txt.match(/^標題[：:]\s*(.+)$/m);
@@ -90,6 +113,7 @@ async function updateMetadata(auth, videoId, meta) {
 
 // ── 找正式影片與縮圖 ───────────────────────────────────────────
 function readPublishStatus(dir) {
+  if (!dir) return null;
   const statusPath = path.join(dir, '.publish-status.json');
   if (!fs.existsSync(statusPath)) return null;
   return JSON.parse(fs.readFileSync(statusPath, 'utf8'));
@@ -257,7 +281,9 @@ async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
 // ── 主流程 ────────────────────────────────────────────────────
 (async () => {
   try {
-    const meta = parseYoutubeMeta(episodeDir);
+    const metaPath = explicitFile('--meta');
+    if (!episodeDir && !metaPath) throw new Error('未指定 --episode 時必須提供 --meta');
+    const meta = parseYoutubeMeta(episodeDir, metaPath);
     const publishAt = parsePublishAt();
     const auth = await authenticate();
     const updateArg = process.argv.indexOf('--update');
@@ -270,10 +296,11 @@ async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
     if (videoId) {
       await updateMetadata(auth, videoId, meta);
     } else {
-      const videoPath = findVideo(episodeDir);
+      const videoPath = explicitFile('--video') || findVideo(episodeDir);
       const status = readPublishStatus(episodeDir);
-      assertQaPass(videoPath, { report: status?.qa_report || status?.youtube_assets?.qa_report });
-      const thumbnailPath = findThumbnail(episodeDir);
+      const qaReport = explicitFile('--qa-report');
+      assertQaPass(videoPath, { report: qaReport || status?.qa_report || status?.youtube_assets?.qa_report });
+      const thumbnailPath = explicitFile('--thumbnail') || (episodeDir ? findThumbnail(episodeDir) : null);
       await upload(auth, videoPath, thumbnailPath, meta, publishAt);
     }
   } catch (err) {

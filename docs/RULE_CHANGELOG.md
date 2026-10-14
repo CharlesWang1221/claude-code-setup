@@ -30,6 +30,8 @@
 
 | 2026-10-14 | 油管長片比照上架授權包：老查回「可以上架」後，`youtube-upload.js --publish-at` 一次完成上傳、縮圖與預約公開，工具核對平台回傳的預約時間；不再另進 Studio 手動排程 | 修改 | 老查要求 YouTube 上架也不必守在電腦前 | `skills/you-guan/SKILL.md`、`skills/you-guan/references/state-and-upload.md`、`tools/youtube-upload.js`、`docs/CEO_COMMAND_PROTOCOL.md` | 時間格式與已過時間的拒絕邏輯已本機測試；實際上傳與 `publishAt` 回傳尚待下一支長片首次實測 |
 
+| 2026-10-14 | YouTube Shorts 納入上架授權包的自動執行：`youtube-upload.js` 新增 `--video`／`--meta`／`--thumbnail`／`--qa-report` 直接指定週計畫單支檔案，搭配 `--publish-at` 一次上傳、套封面並預約公開；已有 videoId 即跳過 | 修改 | 老查要求 YouTube 短影片也不必逐支確認 | `skills/podcast-publish/SKILL.md`、`tools/youtube-upload.js` | 參數缺漏、檔案不存在、時間已過三種錯誤路徑已本機測試；實際 Shorts 上傳、預約與封面生效尚待首次實測 |
+
 ## 新增變更模板
 
 ```text
