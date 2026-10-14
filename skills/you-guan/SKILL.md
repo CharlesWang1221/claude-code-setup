@@ -27,6 +27,7 @@ repo `skills/you-guan/` 是唯一母版。老查交辦 YouTube 長影片時，�
 6. **驗收**：核對原音完整、影音同步、段落切點、每種背景／說話者特寫、字幕、角色邊界、片尾末段與影音編碼。交付最終檔、可播放預覽、QC 證據與待修時間碼。正式檔變更後重做相關 QC。
 7. **上傳授權包與自動排程**：品牌 `ALLOW`、最終 QC、老查成片核准齊備後，比照星期天第 6 節建一份上架授權包 `output/{project-folder}/release-package.json`。預檢頻道與 token 有效、唯一正式 MP4 與縮圖、文案、公開範圍及 `target_at`，記下 MP4、縮圖、`youtube.txt` 的 SHA-256，一次交老查。老查回「可以上架」後，用 `node tools/youtube-upload.js --episode <project-folder> --publish-at <target_at>` 一次完成上傳、縮圖與預約公開，中途不再詢問。
    - 執行前先讀回既有 videoId，已有影片就不重傳；雜湊與包不符、時間已過、token 失效或平台回傳的預約時間不符，就停下並記 `FAILED` 原因，不改時間、不換檔、不改成立即公開。
+   - AI 標示依星期天第 6 節：預設「否」（工具送出 `containsSyntheticMedia: false`）；只有 AI 複製聲音或擬真 AI 人物／場景才加 `--synthetic-media` 選「是」。
    - 工具確認平台回傳的 `publishAt` 與指定時間相同才算成功，再到 Studio 讀回「已排定時間」作為證據。授權只涵蓋包內這支影片與當時雜湊；換版、改時間或改公開範圍須另行授權。
 
 ## 完成與管理界線

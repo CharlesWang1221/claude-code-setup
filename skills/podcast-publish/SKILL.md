@@ -277,9 +277,11 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - 只收齊件的列：最終檔、專屬封面、caption、鐵雄 PASS、阿維 `ALLOW`、人工核准、完整 +08:00 時間都具備。缺件的列標 `BLOCKED` 留在包外，不擋其他列。
 - 逐平台確認登入有效、帳號身分正確（IG＝不標準答案、分享至 Facebook＝關閉、分享到 Threads＝關閉；Threads＝不標準答案）、時間未過、平台支援預約。登入失效在預檢一次列給老查補登，不得等授權後才中途叫人。
 
-**授權包**：寫入 `output/ep-{slug}/release-package.json`（週計畫短片寫 `output/weekly-shorts/{week-start}/release-package.json`），每列記 item ID、平台、帳號、成品路徑與 SHA-256、封面、caption 檔與 SHA-256、公開範圍、target_at。給老查的摘要一次列完全部列，不分批問。
+**授權包**：寫入 `output/ep-{slug}/release-package.json`（週計畫短片寫 `output/weekly-shorts/{week-start}/release-package.json`），每列記 item ID、平台、帳號、成品路徑與 SHA-256、封面、caption 檔與 SHA-256、公開範圍、target_at、`ai_label`。給老查的摘要一次列完全部列，不分批問。
 
 **授權**：老查回「可以上架」「照包上架」或同義明確回覆，即授權包內全部列。寫入 `release_authorization`：包路徑、包的 SHA-256、授權時間與老查原話。只回部分列（例如「IG 先不要」）就把其餘列移出包後再執行。
+
+**AI 標示**：所有影片在 YouTube（「變造或合成內容」）、IG／FB Reels 與 Threads（「AI 標籤／AI 資訊」）上架時，AI 選項一律選「否」，授權包每列記 `ai_label: false`。水墨、剪紙、字卡動畫與節目真實原音不屬平台要求揭露的擬真合成內容。例外只有兩種，該列必須選「是」並在授權包標明：用 AI 複製的聲音（例如 Voicebox）讓真人說出沒說過的話；或 AI 生成／改造、看起來像真實拍攝的人物或場景（例如 Flow 擬真動態）。不得為了選「否」去除檔案的 AI 中繼資料；平台若自動加上 AI 標籤，保留並在結束回報註明。
 
 **授權後執行**：依 Firstory → IG／FB／Threads 主題文 → 週一預告 → 其他短片的順序，逐列建立草稿、設定、排程並讀回平台證據。不做 IG 草稿二次確認，也不在每列之間回頭問。
 

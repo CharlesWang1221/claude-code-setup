@@ -11,6 +11,8 @@
  *
  * --publish-at：上傳時直接設定 YouTube 預約公開時間（須含 +08:00 時區且晚於現在），
  * 影片保持私人直到該時間自動公開；不加此參數則只上傳為私人。
+ * AI 標示：預設送出 containsSyntheticMedia=false（「變造或合成內容」選否）；
+ * 只有 AI 複製聲音或擬真 AI 人物／場景才加 --synthetic-media 改為 true。
  * --video／--meta／--thumbnail／--qa-report：直接指定檔案（週計畫 Shorts 用），
  * 不再從 --episode 資料夾自動尋找；--video 存在時可省略 --episode。
  *
@@ -239,9 +241,11 @@ async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
           defaultLanguage: 'zh-TW',
         },
         // 先上傳為私人；有 publishAt 時由 YouTube 在該時間自動公開
-        status: publishAt
-          ? { privacyStatus: 'private', publishAt: publishAt.toISOString() }
-          : { privacyStatus: 'private' },
+        status: {
+          privacyStatus: 'private',
+          containsSyntheticMedia: process.argv.includes('--synthetic-media'),
+          ...(publishAt ? { publishAt: publishAt.toISOString() } : {}),
+        },
       },
       media: { body: fs.createReadStream(videoPath) },
     },
