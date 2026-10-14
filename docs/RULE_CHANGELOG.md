@@ -28,6 +28,8 @@
 
 | 2026-10-14 | 星期天發布階段改為「上架授權包」：建包前預檢登入、帳號身分與時間；老查回「可以上架」即授權包內全部列，授權後自動完成 Firstory 預約、IG／FB 與短片排程並讀回；異常只停該列、跑完一次回報；取消 IG 草稿二次確認與 Firstory 人工按發布 | 修改 | 老查指出每次上架都被逐項詢問，必須守在電腦前才能完成 | `skills/podcast-publish/SKILL.md`、`docs/AUTHORITY_MATRIX.md`、`docs/CEO_COMMAND_PROTOCOL.md` | 下一集上架時檢查：授權前只有 1 次詢問、授權後無逐列詢問、每列有平台讀回或 FAILED 原因；Firstory 預約由瀏覽器工具完成尚待首次實測 |
 
+| 2026-10-14 | 油管長片比照上架授權包：老查回「可以上架」後，`youtube-upload.js --publish-at` 一次完成上傳、縮圖與預約公開，工具核對平台回傳的預約時間；不再另進 Studio 手動排程 | 修改 | 老查要求 YouTube 上架也不必守在電腦前 | `skills/you-guan/SKILL.md`、`skills/you-guan/references/state-and-upload.md`、`tools/youtube-upload.js`、`docs/CEO_COMMAND_PROTOCOL.md` | 時間格式與已過時間的拒絕邏輯已本機測試；實際上傳與 `publishAt` 回傳尚待下一支長片首次實測 |
+
 ## 新增變更模板
 
 ```text

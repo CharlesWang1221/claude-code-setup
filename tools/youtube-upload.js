@@ -4,6 +4,10 @@
  * 用法：
  *   node tools/youtube-upload.js --episode ep-s2ep7
  *   node tools/youtube-upload.js --episode ep-s2ep7 --update <videoId>
+ *   node tools/youtube-upload.js --episode ep-s2ep7 --publish-at 2026-10-20T07:00:00+08:00
+ *
+ * --publish-at：上傳時直接設定 YouTube 預約公開時間（須含 +08:00 時區且晚於現在），
+ * 影片保持私人直到該時間自動公開；不加此參數則只上傳為私人。
  *
  * 上傳新影片前會先通過鐵雄稽核閘門（tools/qa-gate/qa-gate.cjs）：需有 PASS 報告且雜湊一致。
  * 報告位置可在 .publish-status.json 以 qa_report 指定；只更新說明欄（--update）不經閘門。
@@ -177,7 +181,22 @@ async function authenticate() {
 }
 
 // ── 上傳影片 ──────────────────────────────────────────────────
-async function upload(auth, videoPath, thumbnailPath, meta) {
+// ── 預約公開時間 ──────────────────────────────────────────────
+function parsePublishAt() {
+  const i = process.argv.indexOf('--publish-at');
+  if (i === -1) return null;
+  const raw = process.argv[i + 1];
+  if (!raw || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?\+08:00$/.test(raw)) {
+    throw new Error('--publish-at 需為含 +08:00 的完整時間，例如 2026-10-20T07:00:00+08:00');
+  }
+  const at = new Date(raw);
+  if (Number.isNaN(at.getTime()) || at.getTime() <= Date.now() + 15 * 60 * 1000) {
+    throw new Error(`--publish-at ${raw} 已過或距現在不足 15 分鐘，停止上傳`);
+  }
+  return at;
+}
+
+async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
   const youtube  = google.youtube({ version: 'v3', auth });
   const fileSize = fs.statSync(videoPath).size;
 
@@ -195,7 +214,10 @@ async function upload(auth, videoPath, thumbnailPath, meta) {
           categoryId: '22',         // People & Blogs
           defaultLanguage: 'zh-TW',
         },
-        status: { privacyStatus: 'private' }, // 先上傳為私人，確認後再改公開
+        // 先上傳為私人；有 publishAt 時由 YouTube 在該時間自動公開
+        status: publishAt
+          ? { privacyStatus: 'private', publishAt: publishAt.toISOString() }
+          : { privacyStatus: 'private' },
       },
       media: { body: fs.createReadStream(videoPath) },
     },
@@ -209,6 +231,14 @@ async function upload(auth, videoPath, thumbnailPath, meta) {
 
   console.log(`\n\n上傳完成！`);
   console.log(`影片 ID：${res.data.id}`);
+
+  if (publishAt) {
+    const got = res.data.status?.publishAt;
+    if (!got || new Date(got).getTime() !== publishAt.getTime()) {
+      throw new Error(`影片 ${res.data.id} 已上傳為私人，但平台回傳的預約時間為 ${got || '無'}，與指定時間不符；不要重傳，改到 Studio 核對`);
+    }
+    console.log(`預約公開：${publishAt.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}（平台回傳 ${got}）`);
+  }
 
   if (thumbnailPath) {
     await youtube.thumbnails.set({
@@ -228,6 +258,7 @@ async function upload(auth, videoPath, thumbnailPath, meta) {
 (async () => {
   try {
     const meta = parseYoutubeMeta(episodeDir);
+    const publishAt = parsePublishAt();
     const auth = await authenticate();
     const updateArg = process.argv.indexOf('--update');
     const videoId = updateArg !== -1 ? process.argv[updateArg + 1] : null;
@@ -243,7 +274,7 @@ async function upload(auth, videoPath, thumbnailPath, meta) {
       const status = readPublishStatus(episodeDir);
       assertQaPass(videoPath, { report: status?.qa_report || status?.youtube_assets?.qa_report });
       const thumbnailPath = findThumbnail(episodeDir);
-      await upload(auth, videoPath, thumbnailPath, meta);
+      await upload(auth, videoPath, thumbnailPath, meta, publishAt);
     }
   } catch (err) {
     console.error('\n錯誤：', err.message);

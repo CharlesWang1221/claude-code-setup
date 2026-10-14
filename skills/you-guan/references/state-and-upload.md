@@ -47,4 +47,4 @@ node tools/youtube-upload.js --episode <project-folder>
 
 呼叫前用 `ffprobe` 核對正確 16:9 長片、影音軌與時長，不能讓工具自行在多個 MP4 中挑選。若工具報錯或縮圖上傳失敗，先到平台確認影片是否已成功建立，保存 videoId，避免整支再次上傳。
 
-上傳成功只設 `uploaded` 與 `videoId`，視讀回結果標 `UPLOADED_PRIVATE`；核准並完成 Studio 排程後才設 `scheduled`。`target_at` 必須是當次明確長片日期，含 `+08:00`，不能從 Podcast 發布日自動推定。將平台證據寫回新檔及 `docs/RELEASE_EVIDENCE_REGISTER.md`；必要時局部更新舊長片旗標相容鏡像，但不更新星期天其他完成狀態。
+未帶 `--publish-at` 時，上傳成功只設 `uploaded` 與 `videoId`，標 `UPLOADED_PRIVATE`。帶 `--publish-at` 且工具確認平台回傳的預約時間相符，再於 Studio 讀回已排定時間後，才設 `scheduled` 並標 `SCHEDULED`；工具回報時間不符時保留 videoId，標 `UPLOADED_PRIVATE` 待查，不重傳。`target_at` 必須是當次明確長片日期，含 `+08:00`，不能從 Podcast 發布日自動推定。將平台證據寫回新檔及 `docs/RELEASE_EVIDENCE_REGISTER.md`；必要時局部更新舊長片旗標相容鏡像，但不更新星期天其他完成狀態。
