@@ -135,16 +135,26 @@ if [[ -n "$CLIENT_ID" && -n "$CLIENT_SECRET" ]]; then
   }
 }
 GCREDS
-    # 跑 OAuth 授權（瀏覽器會自動開啟，用 siming1221@gmail.com 登入並按「繼續」）
-    echo -e "${YELLOW}      開始 Google OAuth 授權（瀏覽器會開啟，用 siming1221@gmail.com 登入）...${NC}"
-    GOOGLE_CLIENT_ID="$CLIENT_ID" GOOGLE_CLIENT_SECRET="$CLIENT_SECRET" \
-        npx -y @a-bonus/google-docs-mcp auth
+    # 已有 token 就不重跑 OAuth，避免每次同步都卡在瀏覽器登入；要強制重新授權用 FORCE_GOOGLE_AUTH=1 ./setup.sh
+    GOOGLE_TOKEN="${XDG_CONFIG_HOME:-$HOME/.config}/google-docs-mcp/token.json"
+    if [[ -s "$GOOGLE_TOKEN" && "${FORCE_GOOGLE_AUTH:-0}" != "1" ]]; then
+        echo -e "${GRAY}      已有 Google OAuth token，跳過授權（強制重新授權：FORCE_GOOGLE_AUTH=1 ./setup.sh）${NC}"
+    else
+        # 跑 OAuth 授權（瀏覽器會自動開啟，用 siming1221@gmail.com 登入並按「繼續」）
+        echo -e "${YELLOW}      開始 Google OAuth 授權（瀏覽器會開啟，用 siming1221@gmail.com 登入）...${NC}"
+        GOOGLE_CLIENT_ID="$CLIENT_ID" GOOGLE_CLIENT_SECRET="$CLIENT_SECRET" \
+            npx -y @a-bonus/google-docs-mcp auth
+    fi
 
-    # 註冊到 Claude Code（全域 -s user）
-    claude mcp add -s user google-workspace \
-        -e "GOOGLE_CLIENT_ID=$CLIENT_ID" \
-        -e "GOOGLE_CLIENT_SECRET=$CLIENT_SECRET" \
-        -- npx -y @a-bonus/google-docs-mcp
+    # 註冊到 Claude Code（全域 -s user）；已註冊就不重複加
+    if claude mcp get google-workspace >/dev/null 2>&1; then
+        echo -e "${GRAY}      google-workspace 已註冊，略過 claude mcp add${NC}"
+    else
+        claude mcp add -s user google-workspace \
+            -e "GOOGLE_CLIENT_ID=$CLIENT_ID" \
+            -e "GOOGLE_CLIENT_SECRET=$CLIENT_SECRET" \
+            -- npx -y @a-bonus/google-docs-mcp
+    fi
 
     echo -e "${GREEN}      Google Workspace MCP 加入完成（Gmail / Drive / Docs / Sheets / Calendar）${NC}"
 else
