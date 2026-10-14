@@ -26,6 +26,8 @@
 
 | 2026-10-10 | 新增 Windows 的 Codex＋Claude 單向同步入口、全域規則部署、可選舊 Skills／指定記憶清理，UTF-8 BOM 編碼相容，以及公開 repo 外的私人專案 ZIP 驗證匯入；公開方法走 repo，私人內容走老查指定的 Drive | 新增 | 老查要求本次 Claude 更新與聊遇所交接可同步到 PC | `codex/AGENTS.global.md`、`tools/sync-claude.ps1`、`tools/sync-claude.py`、`tools/import-private-project.py`、`docs/CLAUDE_PC_SYNC.md` | Mac 上驗證 Python 共用引擎、資料雜湊、重跑與漂移偵測；Windows PowerShell 包裝尚待 PC 實機執行 |
 
+| 2026-10-14 | 星期天發布階段改為「上架授權包」：建包前預檢登入、帳號身分與時間；老查回「可以上架」即授權包內全部列，授權後自動完成 Firstory 預約、IG／FB 與短片排程並讀回；異常只停該列、跑完一次回報；取消 IG 草稿二次確認與 Firstory 人工按發布 | 修改 | 老查指出每次上架都被逐項詢問，必須守在電腦前才能完成 | `skills/podcast-publish/SKILL.md`、`docs/AUTHORITY_MATRIX.md`、`docs/CEO_COMMAND_PROTOCOL.md` | 下一集上架時檢查：授權前只有 1 次詢問、授權後無逐列詢問、每列有平台讀回或 FAILED 原因；Firstory 預約由瀏覽器工具完成尚待首次實測 |
+
 ## 新增變更模板
 
 ```text
