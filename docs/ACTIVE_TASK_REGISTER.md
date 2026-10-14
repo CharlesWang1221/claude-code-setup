@@ -27,10 +27,17 @@
 | RECORDING-COMPASSION | 「慈悲的傲慢與同行的溫度」錄音前審核 | `REVISE` | 品牌總監＋成長與知識總監 | `output/錄音前審核_慈悲的傲慢與同行的溫度.md` | 真人刑案與其他具體事實尚未查證 | 查證原始來源；無法查證就撤下相關段落 | 未設定 |
 | PERFORMANCE-BASELINE | Podcast 跨集第 7／30 天成效基準累積 | `ACTIVE` | 成長與知識總監 | `output/podcast-performance-patterns.md` | 樣本尚不足以升級為規則 | 下一集按同一口徑補第 7 天資料 | 下次符合觀察日的單集 |
 | PRODUCTION-RETRO | 動畫製作缺失復盤與精進迴路（2026-10-13 老查提出）：把每支成品被退回的原因收集起來，歸因到 Skill 母版的哪一條沒寫清楚或沒被遵守，再改進 SOP，讓製作團隊越做越符合要求。範圍只限製作品質，不含播放成效（成效仍歸成析 T6） | `ACTIVE` | 阿派（記錄）＋鐵雄（歸因）＋師傅（改 SOP）；廠長提供說明 | `docs/CEO_CONTROL_TOWER.md` 第 6 節「製作復盤與精進迴路」、`docs/PRODUCTION_RETRO_LOG.md`、`codex/agents/qa_auditor.toml`（FAIL 分級與缺失歸因欄） | 2026-10-13 老查核准：三種來源都收（鐵雄 FAIL＋阿維 REVISE／REJECTED＋老查改稿）、每週日 21:00 前交週復盤、只有師傅能改 SOP。紀錄表目前沒有任何資料，第一次週復盤要等有退回才有內容 | 阿派從下一次退回開始記錄；鐵雄下一份報告起填 FAIL 分級與缺失歸因 | 2026-10-18（週日）21:00 第一次週復盤 |
+| ORG-GODFATHER | 新增執行長「教父」與獨立小查監察的上線驗證（2026-10-14 阿分提議、老查核准；commit `3e769bf`）：教父接案件、管後製、向老查回報；小查只聽老查、監察全公司、可凍結違反停止線的 item；`qa-gate` 硬擋 `FROZEN` | `ACTIVE` | 教父（上線）＋小查（監察驗證） | `docs/CEO_CONTROL_TOWER.md` 第 1、2、9 節；`codex/agents/inspector.toml`；`tools/qa-gate/qa-gate.cjs`；`docs/RULE_CHANGELOG.md` 2026-10-14 | Windows 已同步（22 Skill PASS、9 角色），待重開 Codex 實測；Mac 未同步，見 MAC-SYNC-2026-10-14 | 重開 Codex 後實測：「教父，現在狀態？」回【教父日報】格式、「小查，監察一下」開 `inspector` 子代理回【小查監察】格式；第一週每份日報後要附小查監察原文，缺附就記為監察被跳過；第一次真實 `FROZEN` 時確認星期天與 `qa-gate` 都停下 | 2026-10-21（Asia/Taipei）一週後回看 |
+| MAC-SYNC-2026-10-14 | Mac 落後 GitHub 7 個 commit（`e32c05b`～`3e769bf`：自動續跑、製作復盤、六支金句短片、Mac 尊重 `CODEX_HOME`、教父架構），需更新後才能重開 Codex | `PENDING_APPROVAL` | 老查（在 Mac 操作）＋Mac 上的 Codex | 更新步驟：`git status`（有未 commit 修改先停）→ `git pull --ff-only` → `./setup.sh` → `python3 tools/sync-claude.py --apply --global-rules` → `./tools/check-skill-authority.sh` 須 PASS → Codex `agents` 目錄 9 個 `.toml` 含 `inspector.toml` → `python3 tools/codex-resume-watch/codex_resume_watch.py check` | Mac 若有未 commit 修改或 pull 衝突，不得讓 Codex 自行解；Mac 的 `codex-resume-watch` 是否已安裝未知，repo 若在 `~/Documents`，launchd 可能被 macOS 權限擋下（多利 2026-10-12 曾因此放棄 launchd） | 老查把更新指令貼給 Mac 的 Codex，回報每步結果；全部 PASS 後重開 Codex 並做 ORG-GODFATHER 的兩句實測；自動續跑依 `check` 結果決定開權限、搬 repo 或 Mac 不裝 | 下次使用 Mac 前 |
 
 ## 2026-09-28 管理分工更新
 
 YouTube 長片相關任務由教父管理油管，沿用既有 Task ID、素材與核准證據。上表舊單集若仍列 YouTube 缺件，只代表獨立長片尚未完成，不再構成星期天音檔與社群流程阻塞。不得因移交擅自重做影片、取消排程或變更平台狀態。
+
+
+## 2026-10-14 退役紀錄
+
+`auto-resume-work`（Codex Goal＋同一聊天每 15 分鐘續工排程）未進 git 即退役：與 `tools/codex-resume-watch/` 功能重疊、可能重複接續，且未檢查任務卡、預算卡與 `FROZEN`。老查選擇只留 `codex-resume-watch`。Skill 本體移至 `output/retired-skills/auto-resume-work/`（未進 git），全域規則對應那行已刪除，Windows Codex 部署副本已移除；Mac 從未取得。要恢復需先補上述三項檢查並與 `codex-resume-watch` 分工。
 
 ## 新任務列入模板
 
