@@ -32,6 +32,8 @@
 
 | 2026-10-14 | YouTube Shorts 納入上架授權包的自動執行：`youtube-upload.js` 新增 `--video`／`--meta`／`--thumbnail`／`--qa-report` 直接指定週計畫單支檔案，搭配 `--publish-at` 一次上傳、套封面並預約公開；已有 videoId 即跳過 | 修改 | 老查要求 YouTube 短影片也不必逐支確認 | `skills/podcast-publish/SKILL.md`、`tools/youtube-upload.js` | 參數缺漏、檔案不存在、時間已過三種錯誤路徑已本機測試；實際 Shorts 上傳、預約與封面生效尚待首次實測 |
 
+| 2026-10-14 | Threads 納入排程：每集主題文（週一 12:15）、6 支金句短片（同各支時段）、週四網誌導流短文（12:15）；一律另寫 Threads 版文案並過品牌閘門；IG「分享到 Threads」關閉；授權後以 threads.com 原生排程完成並讀回 | 新增 | 老查要求 Threads 也加入排程，選定主題文、金句短片與網誌導流三類，文案另寫 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`AGENTS.md` | 規則與同步檢查；Threads 帳號登入、網頁版原生排程與讀回尚待首次實測；週四 12:15 為編輯預設，無流量實證 |
+
 ## 新增變更模板
 
 ```text

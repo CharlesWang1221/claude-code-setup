@@ -1,6 +1,6 @@
 ---
 name: podcast-publish
-description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、社群視覺、Podcast 音檔正片、每週 6 支金句短片（句剪製作，週一為本集預告，每支另做專屬封面），以及 Firstory、IG、FB、YouTube Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
+description: 《不標準答案》單集上架統一入口（老查取名「星期天」）——接收音檔、逐字稿與圖片後，自動完成內容決策、平台文案、社群視覺、Podcast 音檔正片、每週 6 支金句短片（句剪製作，週一為本集預告，每支另做專屬封面），以及 Firstory、IG、FB、Threads、YouTube Shorts 的審核與錯峰排程。自動判斷進度並接續到下一個真正需要老查決定的節點。觸發詞「上架」「新集數」「這集上架」「星期天」。
 ---
 
 # 星期天 — Podcast 上架統一入口
@@ -152,7 +152,8 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 2026-08-24 起，Podcast 音檔正片固定排程於每週一 07:00（Asia/Taipei, UTC+8）公開，連續執行 6 集；不得因單集波動自行改時段。
 - 啟動單集流程時，先確認該集預定發布日期，將完整 ISO 8601 時間（含 `+08:00`）寫入 `release_schedule.target_at`，並標記這是實驗第幾集。若日期無法由現有資料判斷，只問老查「這集排哪個週一」，不可自行猜日期。
 - 製作目標：前一週五 18:00 前完成內容決策與品牌審查；週日 18:00 前完成星期天範圍內的成品、平台文案與上傳；週一 07:00 正片公開。時間不足時要回報風險，不可默默改成即時發布。
-- 社群主題文維持週一 12:15；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支分別排 IG Reels、FB Reels、YouTube Shorts，無平台成功讀回不得標為已排程。
+- 社群主題文維持週一 12:15，FB、IG、Threads 同時段；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支分別排 IG Reels、FB Reels、YouTube Shorts、Threads，無平台成功讀回不得標為已排程。
+- Threads 只發布／排程在《不標準答案》的 Threads 帳號。IG 發文時「分享到 Threads」一律關閉，Threads 版另以專屬文案排程，避免同一內容出現兩次。
 - IG 發布隔離：IG 圖文與 IG Reels 只發布／排程至《不標準答案》Instagram 品牌帳號；禁止同步至 Si Ming Wang 個人 Facebook 頁面。建立 IG 貼文與提交前，星期天必須逐項核對「目前 IG 身分＝不標準答案」及「分享至 Facebook／交叉發布＝關閉」；任一項不符即停止並修正，不得發布。
 - Podcast target_at 與短片週計畫分開。每項短片寫完整 +08:00 target_at，週計畫引用來源集數；不從正片日期自動追加舊三支精華。
 - 第 6 集發布滿 7 天後，回報應進行時段復盤；比較上線後 24 小時播放量、7 天完播率、首日播放占比、實際收聽尖峰與社群導流，再由老查決定是否調整。
@@ -186,7 +187,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 小渡依週計畫提供各支差異與逐支 brief，教父核對 item ID、原話、時間碼及版本後才設 READY。核准寫回單集與週計畫；同段原音換畫風不能算兩支不同發布內容。
 
 ### 2.1 平台文案 — `content_decision.approved: true` 且 `content_files: false` 時
-以核准母稿產出 fb-post.txt、ig-caption.txt、show-notes.md，並依週計畫逐 item ID 產出 caption。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
+以核准母稿產出 fb-post.txt、ig-caption.txt、threads-post.txt、show-notes.md，並依週計畫逐 item ID 產出 caption 與 Threads 版文案。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
 
 寫作時套用記憶 `feedback_interaction_style` 的語氣禁用詞、排版規則，以及以下平台硬規則與發布前品牌關（取自 `social-media-assistant` 技能包，2026-08-06 併入）：
 
@@ -200,7 +201,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 挑素材裡最有張力、最有記憶點的切角，不是整集摘要
 - 第一行就是全部，後面會被折起來
 
-**發布前品牌閘門（四個文案檔與所有對外字卡都要檢查）**
+**Threads 文案規則**
+- 另寫，不照貼 FB 長文或 IG caption；單篇 500 字元以內，像老查當下想到的一句話，不像公告
+- 拋一個觀點或問題讓人想回，結尾不用「點連結收聽」式 CTA；hashtag 最多 1 個
+- 短片的 Threads 文案只服務該支觀點，跟同支 IG caption 不得是同一段文字
+
+**發布前品牌閘門（五個文案檔、Threads 版文案與所有對外字卡都要檢查）**
 
 逐項記錄 PASS／REJECTED 與具體問題句：
 
@@ -269,13 +275,13 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 **建包前的預檢（可逆，不對外寫入）**
 
 - 只收齊件的列：最終檔、專屬封面、caption、鐵雄 PASS、阿維 `ALLOW`、人工核准、完整 +08:00 時間都具備。缺件的列標 `BLOCKED` 留在包外，不擋其他列。
-- 逐平台確認登入有效、帳號身分正確（IG＝不標準答案、分享至 Facebook＝關閉）、時間未過、平台支援預約。登入失效在預檢一次列給老查補登，不得等授權後才中途叫人。
+- 逐平台確認登入有效、帳號身分正確（IG＝不標準答案、分享至 Facebook＝關閉、分享到 Threads＝關閉；Threads＝不標準答案）、時間未過、平台支援預約。登入失效在預檢一次列給老查補登，不得等授權後才中途叫人。
 
 **授權包**：寫入 `output/ep-{slug}/release-package.json`（週計畫短片寫 `output/weekly-shorts/{week-start}/release-package.json`），每列記 item ID、平台、帳號、成品路徑與 SHA-256、封面、caption 檔與 SHA-256、公開範圍、target_at。給老查的摘要一次列完全部列，不分批問。
 
 **授權**：老查回「可以上架」「照包上架」或同義明確回覆，即授權包內全部列。寫入 `release_authorization`：包路徑、包的 SHA-256、授權時間與老查原話。只回部分列（例如「IG 先不要」）就把其餘列移出包後再執行。
 
-**授權後執行**：依 Firstory → IG／FB 主題文 → 週一預告 → 其他短片的順序，逐列建立草稿、設定、排程並讀回平台證據。不做 IG 草稿二次確認，也不在每列之間回頭問。
+**授權後執行**：依 Firstory → IG／FB／Threads 主題文 → 週一預告 → 其他短片的順序，逐列建立草稿、設定、排程並讀回平台證據。不做 IG 草稿二次確認，也不在每列之間回頭問。
 
 **只停該列、不中途詢問**：成品或 caption 雜湊與包不符、帳號身分不符或交叉發布關不掉、登入失效、時間已過或平台不支援預約、平台報錯或讀回不符、需要付費或新增權限。遇到就把該列標 `FAILED` 並寫原因，不重試上傳、不改時間、不換檔、不換平台、不改成立即公開，繼續下一列。
 
@@ -292,6 +298,8 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 以 weekly-plan.json 為唯一短片發布清單（包含第 6.1 節的一般預告，不能重算）。逐支核對最終檔、專屬封面、caption、品牌 ALLOW、QC、人工核准、帳號及 target_at；三平台都要套用專屬封面並讀回封面已生效；時段依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。
 
 YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.render> --meta <該支 youtube.txt> --thumbnail <專屬封面> --qa-report <鐵雄報告> --publish-at <item.target_at>` 一次完成上傳、封面與預約公開；工具核對平台回傳的預約時間，不符就停下且不重傳。上傳前先讀 `item.platforms.youtube`，已有 id 就跳過。封面另到 Studio 讀回；若 Shorts 封面沒生效，該列記「封面未生效」，不為此重傳影片。
+
+Threads 列（主題文與每支短片）在授權後用瀏覽器工具到 threads.com，以《不標準答案》帳號建立貼文、附上該支成品（主題文附 IG 輪播第一張或純文字）、貼上 Threads 版文案，用原生「排程」設定 target_at；到排程清單讀回時間與內容後才算成功。介面找不到排程功能就標 `FAILED`，不得改成立即發布。
 
 各平台讀回寫入該 item.platforms 與發布證據庫，單集保留引用。三平台任一失敗保留其他成功結果，不重複上傳，也不把整支標為跨平台完成。
 

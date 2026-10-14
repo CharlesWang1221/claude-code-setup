@@ -69,6 +69,8 @@ frontmatter 填：
 
 網站稿與圖片都核准後，若老查要求 Facebook 上架，將文章改成可直接閱讀的 FB 長文排版，文末加 4 至 6 個精準 hashtag，並預設排程週四 20:30（Asia/Taipei）。Facebook 是否排程成功必須以平台顯示的日期與時間為準，不得把已填表誤報為已排程。
 
+同時另寫一篇 Threads 導流短文（500 字元以內，拋文章裡一個可被反駁的觀點，附網站文章連結，不照貼 FB 長文），預設排程週四 12:15（Asia/Taipei），避開網站 10:00 上線前與 20:30 金句短片。與 FB 長文一起交老查核准，品牌閘門同樣適用；以 threads.com 原生排程完成並讀回排程清單，網站文章尚未上線時不排。
+
 ### 7. 落檔
 寫入 `site/src/content/blog/{slug}.md`。若為模式A，順便更新 `output/ep-{slug}/.publish-status.json`，加一個欄位：
 ```json

@@ -90,8 +90,9 @@
 ### 跨電腦每週發布節奏
 
 - YouTube 長片由教父管理「油管」獨立接令、製作與排期，不納入星期天必做或阻塞條件；精華到 YouTube Shorts 的發布仍由星期天管理。
-- 週一 07:00：Podcast 音檔正片；12:15：FB／IG 本集主題文；20:30：限動或預告。
-- 週四 10:00：與 Podcast 音檔無關的品牌網誌（有合格內容才發，每月先抓 2 篇）；20:30：同篇 FB 長文＋啊問核准主圖。
+- 週一 07:00：Podcast 音檔正片；12:15：FB／IG／Threads 本集主題文（Threads 另寫專屬文案）；20:30：限動或預告。
+- 週四 10:00：與 Podcast 音檔無關的品牌網誌（有合格內容才發，每月先抓 2 篇）；12:15：Threads 導流短文；20:30：同篇 FB 長文＋啊問核准主圖。
+- 每週 6 支金句短片同步 IG Reels、FB Reels、YouTube Shorts、Threads；IG「分享到 Threads」一律關閉，Threads 用專屬文案另行排程。
 - 預告人物版固定沿用 S3EP7 的「全圖風格重製」：以核准全圖作為線稿、比例、筆觸、服裝與色調母版，為老查、阿分、大寶、小寶各自重新繪製一張有獨立動作／道具／景別的個人畫面，再接四人完整合圖；禁止裁切全圖或單純 Zoom 冒充特寫。依 `docs/SHORT_VIDEO_WEEKLY_POLICY.md`，短片不加片尾，需設計首尾循環接點。
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
