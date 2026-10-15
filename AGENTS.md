@@ -101,6 +101,12 @@
 - Windows PC 日常更新後，在 repo 執行 `git pull --ff-only`（只有已追蹤檔修改才算未提交，未追蹤檔不擋；有修改或兩邊分岔時依 `docs/CLAUDE_PC_SYNC.md`「本機有修改時」commit 後 `git pull --rebase`）、`.\tools\sync-codex.ps1`，再重新啟動 Codex；若要同時更新 Claude，改執行 `.\tools\sync-claude.ps1`（包含 Codex 同步），詳見 `docs/CLAUDE_PC_SYNC.md`；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
 - Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 
+### 影片封面硬規則
+
+- 2026-10-15 起，只要是要對外發布的影片（句剪、真秀、剪紙、實透、Flow、解題、招牌、油管等任何產線），每支都要有一張專屬封面，由該影片的製作產線一起交件，不能抓影片中的一格或沿用單集封面圖。
+- 直式 9:16 依句剪 SKILL.md「專屬封面」規格與「封面鉤子手法」；橫式 16:9 做 1280 × 720 縮圖（油管另有專屬縮圖規則）。
+- 封面跟成片分開送鐵雄技術審與阿維品牌放行。星期天建授權包時，缺封面的列一律 `BLOCKED`；上架後每個平台都要讀回封面已生效。
+
 ### Podcast 預告音檔硬規則
 
 - 預告秒數只能當目標，不能為湊固定長度切斷句子。先用逐字時間碼找完整語意終點，再用靜音偵測或波形確認自然停頓；完整句尾保留自然呼吸空間，不接片尾卡。依 `docs/SHORT_VIDEO_WEEKLY_POLICY.md`，收尾畫面需帶回開場形成循環。

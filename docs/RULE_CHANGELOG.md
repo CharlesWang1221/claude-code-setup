@@ -94,3 +94,5 @@
 | 2026-10-15 | 網站 FB→IG 同步改為只轉含 `beyond-ans.com/blog/` 連結的居易長文（IG 圖文，過長補全文連結），網站不重複列出；Reels 與主題文不再被轉成 IG 靜態截圖；IG 金句圖與輪播只發 IG、不分享到 FB；週四文章帶 `publishAt` 由週四 10:00 排程部署上線，文章可輸出 FAQPage | 修改 | 老查要求 FB 文章一次發布讓 IG 也讀到，IG 金句圖不得上 FB；盤點發現同步把 Reels 截圖重複發到 IG | `.github/scripts/sync-fb-posts.js`、`.github/workflows/deploy.yml`、`site/src/`、`skills/seo-article-writer/SKILL.md`、`skills/podcast-publish/SKILL.md`、`AGENTS.md`、`BRAND_CONTEXT.md` | 本機 build、publishAt／FAQ 假文章測試、同步函式樣本測試；首篇週四長文當晚 22:00 同步需讀回 IG 貼文與網站未重複 |
 
 | 2026-10-15 | 六支短片的 IG／FB Reels 改在 Meta Business Suite 以同一則 Reel 一次排程兩平台，共用 caption，分別讀回 | 修改 | 老查要求發一次讓兩平台都有，省額度與流程 | `skills/podcast-publish/SKILL.md` | 下一週第一支短片在 Business Suite 排程清單讀回 FB、IG 兩列與封面 |
+
+| 2026-10-15 | 所有要對外發布的影片都必須有專屬封面，由製作產線一起交件：直式沿用句剪封面規格與鉤子，橫式 1280 × 720；缺封面的列在授權包一律 BLOCKED | 新增 | 老查要求「只要做影片就要有封面」，盤點發現真秀、剪紙、實透、解題、招牌、Flow 都沒寫 | `AGENTS.md`、`skills/shorts-pipeline`、`skills/paper-collage-video`、`skills/shi-tou`、`skills/jieti`、`skills/zhaopai`、`skills/flow-video-pilot` | 下一支非句剪影片交件時檢查是否附封面與審核紀錄 |
