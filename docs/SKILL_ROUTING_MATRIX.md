@@ -15,7 +15,7 @@
 | 訪談／對談長片重剪 | 廠長 | 先素材判讀，再 `talking-head-recut` | 原始影片、逐字稿、想保留的對談連續性 | 不把訪談硬改成泛用 Shorts；需老查確認製作 |
 | Podcast 表現與下集調整 | 小渡（成析） | `podcast-performance-review` | 同觀察口徑的第 7／30 天數據 | 單集不升級為規則；缺原始數據就標不確定 |
 | Podcast 單集 IG 輪播／圖卡 | 廠長＋阿維 | `podcast-publish` 的 IG 圖步驟 | 已放行文案、封面與比例規格 | 不存在獨立 `social-cards` Skill；不得另派不存在的 Skill |
-| SEO 文章 | 小渡（居易） | `seo-article-writer` | 核准主題或逐字稿、搜尋意圖 | 需品牌與事實檢查；完成稿依既定 Drive 規則落檔 |
+| SEO 文章 | 小渡（居易） | `seo-article-writer` | 核准主題或逐字稿、搜尋意圖 | 需品牌與事實檢查；完成稿依既定 Drive 規則落檔；每週四固定一篇本週那集的 GEO 文章，與啊問主圖、FB、Threads 同包審 |
 | 留言轉選題與需求 | 小渡（小市） | `voc-jtbd-demand-map` | 原始留言、討論串、客服紀錄 | 保留原話與來源，不把雜訊當市場結論 |
 | 文章或數據查證 | 阿維（正風） | `fact-checker` | 待查句子、原始來源或文章 | 找不到可靠來源就撤句或標未證實 |
 | 課程、提案、演講、工作坊或決策簡報 | 小查（小簡） | `presentation-architect` → `Presentations` | 主題、受眾、場合／時長、行動目標、現有資料或模板 | 不把大綱當成成品；先讀 `DESIGN.md` 與 `docs/PRESENTATION_PLAYBOOK.md`，輸出前必須渲染抽檢 PPTX |

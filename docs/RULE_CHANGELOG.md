@@ -88,3 +88,5 @@
 | 2026-10-15 | 句剪鏡頭表每一鏡必附示意圖：9:16、用預定畫風與角色，每支一張聯絡表＋單張圖並標鏡號、原音起訖、原話與畫面事件；先重用核准素材本機合成，不足才用 ImageGen 並計入常態卡每支 10 次；核准示意圖即為關鍵畫面母版 | 新增 | 老查要求審鏡頭表時就看到圖像實際呈現 | `skills/podcast-teaser-video/SKILL.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下一個鏡頭表包六支都附聯絡表，鏡數與鏡頭表列數一致；核准後關鍵畫面不再整支重畫 |
 
 | 2026-10-15 | 句剪專屬封面新增「封面鉤子手法」：衝突句／半句懸念／角色反應三選一並記 `cover_hook`，全週套固定系列框架；禁用假引號、震驚臉與紅箭頭；角色反應畫面交大千出圖並計入句剪常態卡；封面鉤子列為真短驗析可測的入口變因，同週至少輪替 2 種 | 新增 | 老查要求挑選適合的短影音封面手法作為點閱鉤子 | `skills/podcast-teaser-video/SKILL.md`、`skills/short-video-experiment-review/SKILL.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`docs/SKILL_ROUTING_MATRIX.md` | 下一週 6 支封面皆有 `cover_hook`、至少 2 種類型、系列框架母版經阿維核准；第 7 天驗證卡檢查封面點閱資料是否可取得 |
+
+| 2026-10-15 | 居易改為每週四固定一篇「本週那集主題」的 GEO＋SEO 文章：網站 10:00、Threads 12:15、FB 20:30，不發 IG；新增 GEO 寫法（答案先行、實體明確、問句 H2、常見問題）、三平台標籤分工、啊問 1200 × 630 水墨主圖；金句沿用星期天已選定的；週三一包審；獨立品牌網誌改為點名才寫 | 修改 | 老查要求每週針對節目主題寫 GEO／SEO 文章，讓各平台搜尋讀到並發到 FB、Threads 與網站 | `skills/seo-article-writer/SKILL.md`、`skills/blog-image-director/SKILL.md`、`AGENTS.md`、`BRAND_CONTEXT.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`docs/SKILL_ROUTING_MATRIX.md` | 第一篇週四文章檢查：答案段、FAQ、實體、tags、主圖規格、三平台讀回；網站 FB 自動同步與 robots sitemap 兩項技術問題待處理 |
