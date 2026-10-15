@@ -98,3 +98,5 @@
 | 2026-10-15 | 所有要對外發布的影片都必須有專屬封面，由製作產線一起交件：直式沿用句剪封面規格與鉤子，橫式 1280 × 720；缺封面的列在授權包一律 BLOCKED | 新增 | 老查要求「只要做影片就要有封面」，盤點發現真秀、剪紙、實透、解題、招牌、Flow 都沒寫 | `AGENTS.md`、`skills/shorts-pipeline`、`skills/paper-collage-video`、`skills/shi-tou`、`skills/jieti`、`skills/zhaopai`、`skills/flow-video-pilot` | 下一支非句剪影片交件時檢查是否附封面與審核紀錄 |
 
 | 2026-10-15 | 網站新增「單集重點」：每集寫 `site/src/content/highlights/s{季}ep{集}.md`（摘要、章節時間碼、原話、FAQ、相關文章），單集頁顯示並輸出 Clip／FAQPage；不放完整逐字稿；首頁加 `sameAs` 串起各平台帳號；星期天授權包新增一列，Firstory 公開後才推送 | 新增 | 老查想讓《不標準答案》被 AI 搜尋看見，但完整逐字稿太繁瑣、畫面不好呈現 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md`、`site/src/` | 本機 build、手機寬 390 px 截圖無橫向捲動、章節點擊跳到 750 秒；第一集實際上線待讀回 |
+
+| 2026-10-15 | 內容決策新增「核心搜尋問題＋核心關鍵字」（居易查搜尋量），Firstory 標題、Show Notes、網站單集重點、週四 GEO 文章全部沿用；最終標題必含關鍵字；Show Notes 前 150 字先答問題、含 `00:00` 起的章節時間碼並連回網站 | 修改 | 老查確認要讓 Firstory 標題與介紹配合 GEO，AI 讀 Apple／Spotify 頁面時看到的就是這兩項 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md` | 下一集內容決策有核心問題與關鍵字；Firstory 讀回標題含關鍵字、說明欄前 150 字與章節；Spotify 顯示可點章節 |
