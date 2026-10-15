@@ -80,3 +80,5 @@
 | 2026-10-14 | 新增 Voicebox 本機聲音複製工具（試用）：只在 Mac 安裝（Windows 為公司電腦，禁止安裝外部軟體）；聲音檔不進公開 repo；句剪與原話內容禁用 AI 聲音，阿分須書面同意，大寶小寶禁止；盲聽通過前不得用於對外成品 | 新增 | 老查評估 FB 影片介紹的開源 ElevenLabs 替代方案後核准安裝 | `docs/VOICEBOX_SETUP.md`、`tools/install-voicebox.sh` | Mac 待 `git pull` 後執行腳本；盲聽結果回填本表 |
 
 | 2026-10-15 | PC 更新流程：「未提交修改」只看已追蹤檔（`git status --short --untracked-files=no`），未追蹤檔不擋 pull；有修改時逐檔確認後只 commit 指名檔案，兩邊分岔改 `git pull --rebase`，表格衝突兩邊新列全保留；push 需老查當次同意 | 修改 | PC Codex 因未追蹤的 `video-projects/` 停工，且 `--ff-only` 在 PC／Mac 都有新 commit 時必定失敗 | `docs/CLAUDE_PC_SYNC.md`、`AGENTS.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下次 PC 更新遇未追蹤檔不再停工；有修改時能 rebase 後同步並 `check-skill-authority.ps1` PASS |
+
+| 2026-10-15 | 句剪六支並行：老查審核改為每週原音包、鏡頭表包、小樣包三次；包在未阻塞 item 到齊時交出，退件只退單支；正式渲染同時最多 2 支。新增「句剪常態卡」：WIP 6、Terra、ImageGen 每支 ≤10 次／每週 ≤60 次，省長每週一直接開卡不必重批 | 新增／修改 | 老查實測句剪一支做完才開下一支、進度太慢；原因是原音一次只交一段、每支兩道關卡逐支等待、M 卡並行 2 | `docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`docs/CEO_CONTROL_TOWER.md`、`skills/podcast-publish/SKILL.md`、`skills/podcast-teaser-video/SKILL.md`、`skills/community-operations/SKILL.md`、`AGENTS.md`、`docs/QUOTA_LEDGER.md` | 下一週句剪：六支 brief 同日產出、鏡頭表與小樣各以一包交老查；記錄六支總工時與 2026-10-14 週對照；ImageGen 用量未超常態卡上限 |
