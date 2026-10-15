@@ -64,6 +64,24 @@ function formatDate(isoString) {
   return isoString.substring(0, 10);
 }
 
+// 只有居易網誌的 FB 長文（含網站文章連結）才轉發到 IG。
+// Reels、金句短片與週一主題文在 IG 已由星期天原生發布，轉發只會重複。
+const BLOG_LINK_RE = /https?:\/\/beyond-ans\.com\/blog\/[^\s)）]+/;
+
+function blogLinkOf(post) {
+  const m = (post.message || '').match(BLOG_LINK_RE);
+  return m ? m[0] : null;
+}
+
+function igCaption(post) {
+  const link = blogLinkOf(post);
+  if (post.message.length <= 2200 || !link) return post.message.substring(0, 2200);
+  const tail = `\n\n全文：${link}`;
+  const room = 2200 - tail.length;
+  const cut = post.message.lastIndexOf('\n', room);
+  return post.message.substring(0, cut > room * 0.7 ? cut : room).trim() + tail;
+}
+
 function postToMarkdown(post, igPostId) {
   if (!post.message) return null;
 
@@ -83,6 +101,8 @@ function postToMarkdown(post, igPostId) {
     ...(post.full_picture ? [`image: "${post.full_picture}"`] : []),
     `fbPostId: "${post.id}"`,
     ...(igPostId ? [`igPostId: "${igPostId}"`] : []),
+    // 網站上已有原文：留檔記錄同步狀態，但不顯示成另一篇網誌
+    ...(blogLinkOf(post) ? [`mirrorOf: "${blogLinkOf(post)}"`] : []),
     '---',
     '',
     body,
@@ -102,7 +122,7 @@ async function postToInstagram(post) {
     return null;
   }
 
-  const caption = post.message.substring(0, 2200);
+  const caption = igCaption(post);
 
   // Step 1: Create media container
   const containerRes = await httpsPost(
@@ -173,12 +193,7 @@ async function main() {
   for (const post of posts) {
     if (!post.message) continue;
 
-    // 居易網誌的 FB 長文：原文已在網站上，不轉回網誌、不發 IG
-    if (post.message.includes('beyond-ans.com/blog/')) {
-      console.log(`
-Skip (網站文章導流貼文): ${post.id}`);
-      continue;
-    }
+    const mirrorToIg = Boolean(blogLinkOf(post));
 
     const slug = slugify(post.id);
     const filename = `${slug}.md`;
@@ -188,8 +203,8 @@ Skip (網站文章導流貼文): ${post.id}`);
     console.log(`\nProcessing: ${filename}`);
 
     if (!exists) {
-      // New post: sync to IG + create blog file
-      const igPostId = await postToInstagram(post);
+      // New post: create blog file; only blog-article posts go to IG
+      const igPostId = mirrorToIg ? await postToInstagram(post) : null;
       if (igPostId) newIgCount++;
 
       const result = postToMarkdown(post, igPostId);
@@ -197,7 +212,7 @@ Skip (網站文章導流貼文): ${post.id}`);
       fs.writeFileSync(filePath, result.markdown, 'utf8');
       console.log(`  Blog created: ${filename}`);
       newBlogCount++;
-    } else if (!fileHasIgPostId(filePath)) {
+    } else if (mirrorToIg && !fileHasIgPostId(filePath)) {
       // Existing blog file not yet on IG: catch-up sync
       const igPostId = await postToInstagram(post);
       if (igPostId) {
