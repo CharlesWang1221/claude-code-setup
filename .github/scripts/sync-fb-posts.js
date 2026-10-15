@@ -173,6 +173,13 @@ async function main() {
   for (const post of posts) {
     if (!post.message) continue;
 
+    // 居易網誌的 FB 長文：原文已在網站上，不轉回網誌、不發 IG
+    if (post.message.includes('beyond-ans.com/blog/')) {
+      console.log(`
+Skip (網站文章導流貼文): ${post.id}`);
+      continue;
+    }
+
     const slug = slugify(post.id);
     const filename = `${slug}.md`;
     const filePath = path.join(BLOG_DIR, filename);

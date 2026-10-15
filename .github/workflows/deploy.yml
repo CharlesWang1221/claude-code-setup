@@ -4,6 +4,8 @@ on:
   schedule:
     # 每週一 06:00 台北時間（UTC 週日 22:00）自動 rebuild
     - cron: '0 22 * * 0'
+    # 每週四 10:00 台北時間（UTC 週四 02:00）上線居易的 GEO 文章（publishAt 到期才出現）
+    - cron: '0 2 * * 4'
   push:
     branches: [main]
     paths:

@@ -9,6 +9,8 @@ const blog = defineCollection({
     image: z.string().optional(),
     fbPostId: z.string().optional(),
     tags: z.array(z.string()).optional(),
+    publishAt: z.string().optional(),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
   }),
 });
 

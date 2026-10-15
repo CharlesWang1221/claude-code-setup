@@ -1,16 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getFeed } from '../lib/feed';
-import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../lib/blog';
 
 const { episodes, meta } = await getFeed();
 const latest = episodes[0];
-const blogPosts = (await getCollection('blog'))
+const blogPosts = (await getPublishedPosts())
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 4);
 const cards = episodes.slice(0, 3);
 
-const siteUrl = 'https://podcast-site-9hr.pages.dev';
+const siteUrl = 'https://beyond-ans.com';
 const podcastSchema = {
   '@context': 'https://schema.org',
   '@type': 'PodcastSeries',

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://podcast-site-9hr.pages.dev/sitemap-index.xml
+Sitemap: https://beyond-ans.com/sitemap-index.xml

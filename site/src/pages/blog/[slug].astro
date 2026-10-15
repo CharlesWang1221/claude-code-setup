@@ -1,9 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { getPublishedPosts } from '../../lib/blog';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getPublishedPosts();
   return posts.map(post => ({ params: { slug: post.slug } }));
 }
 
@@ -29,11 +30,26 @@ const schema = {
     { '@type': 'Person', name: '老查' },
     { '@type': 'Person', name: '阿分' },
   ],
+  publisher: { '@type': 'Organization', name: '不標準答案', url: siteUrl },
+  keywords: post.data.tags,
 };
+
+const faqSchema = post.data.faq?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: post.data.faq.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    }
+  : null;
 ---
 
 <Base title={post.data.title} description={post.data.description} ogImage={post.data.image} type="article" keywords={post.data.tags}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
   <article class="blog-post">
     <div class="post-hero">
       <div class="container">

@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../lib/blog';
 
-const posts = (await getCollection('blog')).sort(
+const posts = (await getPublishedPosts()).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 ---
