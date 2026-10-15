@@ -16,6 +16,9 @@
 
 | 資產 ID | 平台與用途 | 最終版本／依據 | 目前狀態 | 已有平台證據 | 預定／實際時間 | 公開網址／平台 ID | 下一個驗證動作 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| S3EP11-TUE-PAPER-IG | Instagram Reel 週二剪紙精華 | P05R2 完整審閱片 v2；25 秒；技術 QA `PASS`、品牌 `ALLOW`；私有上傳包保存雜湊 | `已排程；老查回報已檢查發布，Codex 待驗證公開` | Meta「已排定發佈」清單讀回 `another20251021`、10/13 20:30、公開；老查 10/14 回報已檢查 | 2026-10-13 20:30（Asia/Taipei） | ID／公開網址未取得 | 不重傳；老查另行交辦時只讀補公開頁、ID、帳號與版本 |
+| S3EP11-TUE-PAPER-FB | Facebook Reel 週二剪紙精華 | 同版 P05R2 完整審閱片 v2 | `已排程；老查回報已檢查發布，Codex 待驗證公開` | Meta「已排定發佈」清單讀回《不標準答案》粉專、10/13 20:30、公開；老查 10/14 回報已檢查 | 2026-10-13 20:30（Asia/Taipei） | ID／公開網址未取得 | 不重傳；老查另行交辦時只讀補公開頁、ID、帳號與版本 |
+| S3EP11-TUE-PAPER-YOUTUBE | YouTube Shorts 週二剪紙精華 | 同版 P05R2 完整審閱片 v2；最終標題「為了讓別人好探聽，卻離自己越來越遠｜S3EP11」 | `已排程；老查回報已檢查發布，Codex 待驗證公開` | Studio 排程確認 10/13 20:30；詳情頁讀回最終標題、說明、已儲存與已排定；老查 10/14 回報已檢查 | 2026-10-13 20:30（Asia/Taipei） | `https://youtube.com/shorts/4MIFyxBFa98`（`4MIFyxBFa98`） | 不重傳；老查另行交辦時只讀補公開頁、帳號與版本 |
 | S3EP11-TEASER-YOUTUBE | YouTube Shorts 一般預告 | `output/ep-s3ep11/s3ep11-teaser-loop-v2.mp4`（33.5 秒，無片尾循環）；核准封面 `output/ep-s3ep11/teaser-cover-v3.png` | `已排程` | Studio 讀回循環版檔名、0:34、影片網址、已排定與核准縮圖已上傳；舊版 `MIWUJSNlXz0` 永久刪除 | 2026-10-12 20:30（Asia/Taipei） | `https://youtube.com/shorts/jwAn70lZiu0`（`jwAn70lZiu0`） | 發布後讀回公開頁，核對封面與影片 |
 | S3EP11-TEASER-FACEBOOK | Facebook Reel 一般預告 | `output/ep-s3ep11/s3ep11-teaser-loop-v2.mp4`；核准封面 `output/ep-s3ep11/teaser-cover-v3.png` | `已排程` | Meta 清單讀回 10/12 20:30、粉專不標準答案；新版 Reel 已建立；舊版內容 ID `1076252961705328` 已刪除 | 2026-10-12 20:30（Asia/Taipei） | `https://www.facebook.com/reel/1787986445866652/`（內容 ID `1624727079039297`） | 發布後讀回公開頁，核對內容與封面 |
 | S3EP11-TEASER-INSTAGRAM | Instagram Reel 一般預告 | `output/ep-s3ep11/s3ep11-teaser-loop-v2.mp4`；帳號 `another20251021`；核准封面 v3 已套用 | `已排程` | Meta 清單只剩新版，讀回 10/12 20:30、帳號與新版內容 ID；舊版 `2282651432511189` 已刪除。時區 Asia/Shanghai（UTC+8），與 Asia/Taipei 同時區 | 2026-10-12 20:30（Asia/Taipei） | Meta 內容 ID `1134958635758935`；公開網址待發布後讀回 | 發布後讀回 Reel 公開網址並核對封面 |
