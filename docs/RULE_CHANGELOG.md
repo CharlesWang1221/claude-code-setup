@@ -100,3 +100,5 @@
 | 2026-10-15 | 網站新增「單集重點」：每集寫 `site/src/content/highlights/s{季}ep{集}.md`（摘要、章節時間碼、原話、FAQ、相關文章），單集頁顯示並輸出 Clip／FAQPage；不放完整逐字稿；首頁加 `sameAs` 串起各平台帳號；星期天授權包新增一列，Firstory 公開後才推送 | 新增 | 老查想讓《不標準答案》被 AI 搜尋看見，但完整逐字稿太繁瑣、畫面不好呈現 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md`、`site/src/` | 本機 build、手機寬 390 px 截圖無橫向捲動、章節點擊跳到 750 秒；第一集實際上線待讀回 |
 
 | 2026-10-15 | 內容決策新增「核心搜尋問題＋核心關鍵字」（居易查搜尋量），Firstory 標題、Show Notes、網站單集重點、週四 GEO 文章全部沿用；最終標題必含關鍵字；Show Notes 前 150 字先答問題、含 `00:00` 起的章節時間碼並連回網站 | 修改 | 老查確認要讓 Firstory 標題與介紹配合 GEO，AI 讀 Apple／Spotify 頁面時看到的就是這兩項 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md` | 下一集內容決策有核心問題與關鍵字；Firstory 讀回標題含關鍵字、說明欄前 150 字與章節；Spotify 顯示可點章節 |
+
+| 2026-10-15 | `flow-video-pilot` 新增 Seedance 備援：經 Monica 網頁由 Codex 瀏覽器操作（不用另付費的 API），登入、扣點、單支生成、不自動重送與檔案選擇器停止線比照 Flow；前兩個鏡頭與 Flow 對照測試後依鏡頭類型固定指派；私人照片經第三方需老查當次同意 | 新增 | 老查有 Monica 年訂閱，想善用 Seedance 2.5 不浪費 | `skills/flow-video-pilot/SKILL.md` | Monica 使用條款、Mac 瀏覽器操作、額度計算方式與 Flow／Seedance 對照測試均待首次實測 |
