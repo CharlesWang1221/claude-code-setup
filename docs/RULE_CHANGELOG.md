@@ -82,3 +82,5 @@
 | 2026-10-15 | PC 更新流程：「未提交修改」只看已追蹤檔（`git status --short --untracked-files=no`），未追蹤檔不擋 pull；有修改時逐檔確認後只 commit 指名檔案，兩邊分岔改 `git pull --rebase`，表格衝突兩邊新列全保留；push 需老查當次同意 | 修改 | PC Codex 因未追蹤的 `video-projects/` 停工，且 `--ff-only` 在 PC／Mac 都有新 commit 時必定失敗 | `docs/CLAUDE_PC_SYNC.md`、`AGENTS.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下次 PC 更新遇未追蹤檔不再停工；有修改時能 rebase 後同步並 `check-skill-authority.ps1` PASS |
 
 | 2026-10-15 | 句剪六支並行：老查審核改為每週原音包、鏡頭表包、小樣包三次；包在未阻塞 item 到齊時交出，退件只退單支；正式渲染同時最多 2 支。新增「句剪常態卡」：WIP 6、Terra、ImageGen 每支 ≤10 次／每週 ≤60 次，省長每週一直接開卡不必重批 | 新增／修改 | 老查實測句剪一支做完才開下一支、進度太慢；原因是原音一次只交一段、每支兩道關卡逐支等待、M 卡並行 2 | `docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`docs/CEO_CONTROL_TOWER.md`、`skills/podcast-publish/SKILL.md`、`skills/podcast-teaser-video/SKILL.md`、`skills/community-operations/SKILL.md`、`AGENTS.md`、`docs/QUOTA_LEDGER.md` | 下一週句剪：六支 brief 同日產出、鏡頭表與小樣各以一包交老查；記錄六支總工時與 2026-10-14 週對照；ImageGen 用量未超常態卡上限 |
+
+| 2026-10-15 | 句剪鏡頭表每一鏡必附示意圖：9:16、用預定畫風與角色，每支一張聯絡表＋單張圖並標鏡號、原音起訖、原話與畫面事件；先重用核准素材本機合成，不足才用 ImageGen 並計入常態卡每支 10 次；核准示意圖即為關鍵畫面母版 | 新增 | 老查要求審鏡頭表時就看到圖像實際呈現 | `skills/podcast-teaser-video/SKILL.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下一個鏡頭表包六支都附聯絡表，鏡數與鏡頭表列數一致；核准後關鍵畫面不再整支重畫 |
