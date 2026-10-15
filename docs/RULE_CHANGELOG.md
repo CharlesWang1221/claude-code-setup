@@ -78,3 +78,5 @@
 | 2026-10-14 | 所有句剪改為核准原音帶劇情：先按原話因果寫鏡頭表，再決定角色、場景與視覺；不預設三張字卡或四人出場。S3EP11 週三字卡版退件，老查核准 L 級新繪角色水墨劇情版 | 修改 | 老查以既有 Reel 指出字卡版方法錯誤，明確指定往後所有句剪遵守原音敘事 | `docs/SHORT_VIDEO_WEEKLY_POLICY.md`、`skills/podcast-teaser-video/SKILL.md`、`docs/QUOTA_LEDGER.md` | 週三小樣能逐鏡對回原音，人物／動作／因果成立；獨立關鍵畫面審核後才渲染，首尾連播無片尾卡 |
 
 | 2026-10-14 | 新增 Voicebox 本機聲音複製工具（試用）：只在 Mac 安裝（Windows 為公司電腦，禁止安裝外部軟體）；聲音檔不進公開 repo；句剪與原話內容禁用 AI 聲音，阿分須書面同意，大寶小寶禁止；盲聽通過前不得用於對外成品 | 新增 | 老查評估 FB 影片介紹的開源 ElevenLabs 替代方案後核准安裝 | `docs/VOICEBOX_SETUP.md`、`tools/install-voicebox.sh` | Mac 待 `git pull` 後執行腳本；盲聽結果回填本表 |
+
+| 2026-10-15 | PC 更新流程：「未提交修改」只看已追蹤檔（`git status --short --untracked-files=no`），未追蹤檔不擋 pull；有修改時逐檔確認後只 commit 指名檔案，兩邊分岔改 `git pull --rebase`，表格衝突兩邊新列全保留；push 需老查當次同意 | 修改 | PC Codex 因未追蹤的 `video-projects/` 停工，且 `--ff-only` 在 PC／Mac 都有新 commit 時必定失敗 | `docs/CLAUDE_PC_SYNC.md`、`AGENTS.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下次 PC 更新遇未追蹤檔不再停工；有修改時能 rebase 後同步並 `check-skill-authority.ps1` PASS |

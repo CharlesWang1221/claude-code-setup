@@ -76,7 +76,7 @@ YouTube Shorts 留言與說明網址不可點擊；關聯影片須有進階功�
 
 ## PC 接手
 
-在既有 repo 執行 `git pull --ff-only` 成功後，再執行 `.\tools\sync-codex.ps1`，重新開啟 Codex。
+在既有 repo 執行 `git pull --ff-only`（本機有修改時依 `docs/CLAUDE_PC_SYNC.md`「本機有修改時」處理）成功後，再執行 `.\tools\sync-codex.ps1`，重新開啟 Codex。
 接手短片時讀本檔、repo AGENTS.md、BRAND_CONTEXT.md、當週計畫與任務 BRIEF／HANDOFF。私人素材從老查指定的私人位置取得，不把 Mac 絕對路徑搬進 PC。
 本檔只落實每週 6 支金句短片與特別企劃分流；既有已上傳或已排程的剪紙／實透照原排程，不自動撤下或改期；製作中尚未放行的剪紙／實透 item 暫停，列給老查決定完成或取消。2026-10-10 雲端盤點的其他季規劃、角色命名與時事未因此自動核准。
 

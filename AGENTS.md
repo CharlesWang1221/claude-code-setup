@@ -97,7 +97,7 @@
 - IG 發布隔離規則：Instagram 內容固定只發布／排程在《不標準答案》Instagram 品牌帳號；不得開啟或接受同步到 Si Ming Wang 個人 Facebook 頁面的選項。星期天流程每次建立 IG 貼文前，必須核對 IG 帳號身分與 Facebook 交叉發布設定，確認為關閉後才能提交。
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
 - 交接紀錄同步例外：不要每次自動把任務交接檔複製到 Google Drive；跨電腦接續以 repo／GitHub 為預設。只有老查明確要求時才同步交接紀錄；S3EP7 的 Google Drive 交接是特例。
-- Windows PC 日常更新後，在 repo 執行 `git pull --ff-only`、`.\tools\sync-codex.ps1`，再重新啟動 Codex；若要同時更新 Claude，改執行 `.\tools\sync-claude.ps1`（包含 Codex 同步），詳見 `docs/CLAUDE_PC_SYNC.md`；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
+- Windows PC 日常更新後，在 repo 執行 `git pull --ff-only`（只有已追蹤檔修改才算未提交，未追蹤檔不擋；有修改或兩邊分岔時依 `docs/CLAUDE_PC_SYNC.md`「本機有修改時」commit 後 `git pull --rebase`）、`.\tools\sync-codex.ps1`，再重新啟動 Codex；若要同時更新 Claude，改執行 `.\tools\sync-claude.ps1`（包含 Codex 同步），詳見 `docs/CLAUDE_PC_SYNC.md`；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
 - Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 
 ### Podcast 預告音檔硬規則
