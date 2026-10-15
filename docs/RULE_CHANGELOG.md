@@ -36,6 +36,8 @@
 
 | 2026-10-14 | 影片上架 AI 標示預設選「否」（YouTube 變造或合成內容、Meta AI 標籤、Threads）；授權包每列記 `ai_label`；`youtube-upload.js` 預設送出 `containsSyntheticMedia: false`，`--synthetic-media` 改為是。例外僅 AI 複製聲音、擬真 AI 人物／場景，須選「是」；不得去除 AI 中繼資料 | 新增 | 老查要求影片上架不標注 AI | `skills/podcast-publish/SKILL.md`、`skills/you-guan/SKILL.md`、`tools/youtube-upload.js` | 欄位對照 YouTube Data API 官方文件；實際上傳後於 Studio 讀回「變造或合成內容＝否」尚待首次實測 |
 
+| 2026-10-15 | 新增「教材復盤」Skill（`process-curriculum-retro`）：每週記錄製作流程改了什麼、為什麼改、有沒有證據，並把每項方法改變整理成 8 類教材卡（草稿／已驗證／可教三級），落檔老查 Drive「不標準答案/復盤內容」；每週日製作復盤後由教父提醒；與製作復盤、成析分工不重疊 | 新增 | 老查準備日後開工作坊，要求每週復盤時記錄製作過程變化並整理成分類教材 | `skills/process-curriculum-retro/SKILL.md`、`AGENTS.md`、`docs/SKILL_ROUTING_MATRIX.md`、`docs/CEO_CONTROL_TOWER.md` | 已在 Drive 建立資料夾、README、索引、2026-W42 週紀錄與 10 張教材卡；Skill 同步與 Codex 端首次實跑待驗證 |
+
 ## 新增變更模板
 
 ```text

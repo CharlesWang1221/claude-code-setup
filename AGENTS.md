@@ -77,6 +77,7 @@
 | 「大千」「角色插圖」「老查阿分大小寶做圖」 | `chibi-ink-illustrations` |
 | 「流之呼吸」「Flow 試片」 | `flow-video-pilot`（特別企劃，需明確付費授權） |
 | 「真短驗析」「短片實驗」「短片成效」 | `short-video-experiment-review` |
+| 「教材復盤」「週復盤教材」「整理教材」「記錄製作變化」「工作坊備課素材」 | `process-curriculum-retro`（每週記錄製作流程變化並整理成分類教材，落檔老查 Drive「不標準答案/復盤內容」；不取代製作復盤與成析） |
 | 「教父」「阿派」「鐵雄」「省長」「廠長」 | 公司職位，不是 Skill；依 `docs/CEO_CONTROL_TOWER.md` 的權責與 `codex/agents/` 角色處理 |
 | 「剪紙效果影片」「用剪紙效果做」「剪紙風」 | 老查點名剪紙的 Podcast 段落走 `paper-collage-video`（特別企劃）；「節目精選」預設改走句剪的金句短片；其他題材先判斷目的，不得因關鍵字派給解題（`jieti`）。 |
 | 「工作站」「Creator OS」「內容工作站」 | `apps/creator-os` 專案脈絡 |
