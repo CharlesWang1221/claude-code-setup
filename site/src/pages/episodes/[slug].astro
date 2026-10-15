@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getFeed } from '../../lib/feed';
+import { getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
   const { episodes } = await getFeed();
@@ -16,6 +17,11 @@ const idx = episodes.findIndex((e) => e.slug === ep.slug);
 const prev = idx < episodes.length - 1 ? episodes[idx + 1] : null;
 const next = idx > 0 ? episodes[idx - 1] : null;
 
+const hl = await getEntry('highlights', `s${ep.season}ep${ep.episode}`);
+
+// "12:30" 或 "1:02:30" → 秒
+const toSeconds = (t: string) => t.split(':').map(Number).reduce((acc, n) => acc * 60 + n, 0);
+
 const siteUrl = 'https://beyond-ans.com';
 const cleanDesc = ep.description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 
@@ -23,8 +29,16 @@ const schema = {
   '@context': 'https://schema.org',
   '@type': 'PodcastEpisode',
   name: ep.title,
-  description: cleanDesc.slice(0, 500),
+  description: (hl?.data.summary || cleanDesc).slice(0, 500),
   url: `${siteUrl}/episodes/${ep.slug}`,
+  ...(hl?.data.chapters?.length && {
+    hasPart: hl.data.chapters.map((c) => ({
+      '@type': 'Clip',
+      name: c.title,
+      startOffset: toSeconds(c.time),
+      url: `${siteUrl}/episodes/${ep.slug}#t=${toSeconds(c.time)}`,
+    })),
+  }),
   datePublished: new Date(ep.pubDate).toISOString().split('T')[0],
   timeRequired: `PT${ep.durationSeconds}S`,
   associatedMedia: {
@@ -43,10 +57,23 @@ const schema = {
     { '@type': 'Person', name: '阿分' },
   ],
 };
+
+const faqSchema = hl?.data.faq?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: hl.data.faq.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    }
+  : null;
 ---
 
 <Base title={ep.title} description={cleanDesc.slice(0, 160)} ogImage={ep.image} type="article">
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
   <main>
     <article class="ep-article container">
       <!-- BACK -->
@@ -71,6 +98,50 @@ const schema = {
             你的瀏覽器不支援音頻播放。<a href={ep.audioUrl}>下載音頻</a>
           </audio>
         </div>
+      )}
+
+      <!-- HIGHLIGHTS（單集重點，給讀者與 AI 搜尋） -->
+      {hl && (
+        <section class="highlights">
+          <div class="section-label" style="margin-bottom:1.25rem;">本集重點</div>
+          <p class="hl-summary">{hl.data.summary}</p>
+
+          {hl.data.chapters?.length && (
+            <ol class="hl-chapters">
+              {hl.data.chapters.map((c) => (
+                <li>
+                  <a href={`#t=${toSeconds(c.time)}`} data-seek={toSeconds(c.time)} class="mono hl-time">{c.time}</a>
+                  <span>{c.title}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+
+          {hl.data.quotes?.map((q) => (
+            <blockquote class="hl-quote">
+              <p>「{q.text}」</p>
+              <cite>— {q.speaker}</cite>
+            </blockquote>
+          ))}
+
+          {hl.data.faq?.length && (
+            <div class="hl-faq">
+              <h2>常見問題</h2>
+              {hl.data.faq.map((f) => (
+                <div class="hl-faq-item">
+                  <h3>{f.q}</h3>
+                  <p>{f.a}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {hl.data.related?.length && (
+            <p class="hl-related">延伸閱讀：{hl.data.related.map((url, i) => (
+              <>{i > 0 && '、'}<a href={url}>{url.replace(/^https?:\/\/[^/]+/, '')}</a></>
+            ))}</p>
+          )}
+        </section>
       )}
 
       <!-- SHOW NOTES -->
@@ -109,6 +180,25 @@ const schema = {
     </article>
   </main>
 </Base>
+
+<script>
+  // 章節時間碼：點了跳到音檔該秒數並播放；網址帶 #t=秒 也會直接跳
+  const audio = document.querySelector<HTMLAudioElement>('.audio-wrap audio');
+  const seek = (sec: number) => {
+    if (!audio || Number.isNaN(sec)) return;
+    audio.currentTime = sec;
+    audio.play().catch(() => {});
+  };
+  document.querySelectorAll<HTMLAnchorElement>('[data-seek]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      seek(Number(a.dataset.seek));
+      history.replaceState(null, '', a.getAttribute('href'));
+    });
+  });
+  const m = location.hash.match(/^#t=(\d+)/);
+  if (m && audio) audio.addEventListener('loadedmetadata', () => seek(Number(m[1])), { once: true });
+</script>
 
 <style>
   .ep-article {
@@ -167,6 +257,102 @@ const schema = {
     accent-color: var(--accent);
     height: 40px;
   }
+
+  /* ─── HIGHLIGHTS ─── */
+  .highlights {
+    margin: 2.5rem 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .hl-summary {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--body);
+    margin-bottom: 1.75rem;
+  }
+
+  .hl-chapters {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+  }
+
+  .hl-chapters li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.92rem;
+    color: var(--body);
+    line-height: 1.6;
+  }
+
+  .hl-chapters li:last-child { border-bottom: none; }
+
+  .hl-time {
+    flex-shrink: 0;
+    min-width: 4.2em;
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.15em;
+  }
+
+  .hl-time:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  .hl-quote {
+    margin: 0 0 1.25rem;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  .hl-quote p {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--body);
+    margin-bottom: 0.35rem;
+  }
+
+  .hl-quote cite {
+    font-style: normal;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .hl-faq { margin-top: 2.25rem; }
+
+  .hl-faq h2 {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--body);
+    margin-bottom: 1rem;
+  }
+
+  .hl-faq-item { margin-bottom: 1.25rem; }
+
+  .hl-faq-item h3 {
+    font-size: 0.98rem;
+    color: var(--body);
+    margin-bottom: 0.35rem;
+  }
+
+  .hl-faq-item p {
+    font-size: 0.92rem;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .hl-related {
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  .hl-related a { color: var(--accent); }
 
   /* ─── SHOW NOTES ─── */
   .show-notes {

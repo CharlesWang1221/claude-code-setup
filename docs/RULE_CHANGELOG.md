@@ -96,3 +96,5 @@
 | 2026-10-15 | 六支短片的 IG／FB Reels 改在 Meta Business Suite 以同一則 Reel 一次排程兩平台，共用 caption，分別讀回 | 修改 | 老查要求發一次讓兩平台都有，省額度與流程 | `skills/podcast-publish/SKILL.md` | 下一週第一支短片在 Business Suite 排程清單讀回 FB、IG 兩列與封面 |
 
 | 2026-10-15 | 所有要對外發布的影片都必須有專屬封面，由製作產線一起交件：直式沿用句剪封面規格與鉤子，橫式 1280 × 720；缺封面的列在授權包一律 BLOCKED | 新增 | 老查要求「只要做影片就要有封面」，盤點發現真秀、剪紙、實透、解題、招牌、Flow 都沒寫 | `AGENTS.md`、`skills/shorts-pipeline`、`skills/paper-collage-video`、`skills/shi-tou`、`skills/jieti`、`skills/zhaopai`、`skills/flow-video-pilot` | 下一支非句剪影片交件時檢查是否附封面與審核紀錄 |
+
+| 2026-10-15 | 網站新增「單集重點」：每集寫 `site/src/content/highlights/s{季}ep{集}.md`（摘要、章節時間碼、原話、FAQ、相關文章），單集頁顯示並輸出 Clip／FAQPage；不放完整逐字稿；首頁加 `sameAs` 串起各平台帳號；星期天授權包新增一列，Firstory 公開後才推送 | 新增 | 老查想讓《不標準答案》被 AI 搜尋看見，但完整逐字稿太繁瑣、畫面不好呈現 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md`、`site/src/` | 本機 build、手機寬 390 px 截圖無橫向捲動、章節點擊跳到 750 秒；第一集實際上線待讀回 |
