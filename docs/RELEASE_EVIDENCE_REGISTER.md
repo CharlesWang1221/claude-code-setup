@@ -1,6 +1,6 @@
 # 平台發布證據庫
 
-最後盤點：2026-10-12（Asia/Taipei）
+最後盤點：2026-10-15（Asia/Taipei）
 主責：內容營運長。  
 用途：將「素材已做完」與「平台已處理」切開。未填入平台讀回證據的列，一律視為 `待驗證`，不得對外或對老查宣稱已上傳、已排程或已公開。
 
@@ -52,6 +52,10 @@
 | S3EP5-H2-FB | Facebook Reels 剪紙精華 2 | `s3ep5-highlight-2-qc.md` | `待老查確認` | 文件明載未上傳、未排程 | 目標週五 12:00，實際未記錄 | 未記錄 | 先確認完整動態與最終檔 QC，再建草稿 |
 | S3EP5-H2-SHORTS | YouTube Shorts 剪紙精華 2 | `s3ep5-highlight-2-qc.md` | `待老查確認` | 文件明載未上傳、未排程 | 目標週五 12:00，實際未記錄 | 未記錄 | 先確認完整動態與最終檔 QC，再建草稿 |
 | S3EP1-YT | S3EP1 YouTube 對話版 | `video-projects/youtube-window-s3ep1/HANDOFF.md` | `待老查確認` | 試作通過格式檢查；正式 high quality 未渲染 | 未設定 | 未記錄 | 老查確認渲染後，驗證正式檔並建立 YouTube 證據 |
+| S3EP11-WED-QUOTE-IG | Instagram Reel 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW）；封面 v6 | `已公開` | Meta Business Suite 已發布內容列讀回 Reel 0:25、完整文案、帳號 `another20251021`，內容 ID `18196249963346773`；封面 v6 | 2026-10-14 22:13（Asia/Taipei） | Instagram 內容 ID `18196249963346773` | 後續可補 Instagram 公開 permalink；不得重發 |
+| S3EP11-WED-QUOTE-FB | Facebook Reel 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW）；封面 v6 | `已公開` | Meta 已發布清單讀回粉專「不標準答案」、正確文案與 25 秒影片 | 2026-10-14 22:07（Asia/Taipei） | `https://www.facebook.com/reel/1407270461539470`（`1407270461539470`） | 已讀回；無 |
+| S3EP11-WED-QUOTE-YOUTUBE | YouTube Shorts 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW）；封面 v6 | `已公開` | Studio 讀回「影片已發布」、公開狀態、品牌頻道；著作權與社群檢查無問題 | 2026-10-14（Asia/Taipei） | `https://youtube.com/shorts/Q8CFZIa538Y`（`Q8CFZIa538Y`） | 已讀回；無 |
+| S3EP11-WED-QUOTE-THREADS | Threads 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW） | `已公開` | 公開貼文頁讀回帳號 `another20251021`、正確文案與影片播放器 | 2026-10-14（Asia/Taipei） | `https://www.threads.com/@another20251021/post/Deej87UE5Fn`（`Deej87UE5Fn`） | 已讀回；無 |
 
 ## 新發布資產列入模板
 
