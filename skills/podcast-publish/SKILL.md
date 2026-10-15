@@ -152,7 +152,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 2026-08-24 起，Podcast 音檔正片固定排程於每週一 07:00（Asia/Taipei, UTC+8）公開，連續執行 6 集；不得因單集波動自行改時段。
 - 啟動單集流程時，先確認該集預定發布日期，將完整 ISO 8601 時間（含 `+08:00`）寫入 `release_schedule.target_at`，並標記這是實驗第幾集。若日期無法由現有資料判斷，只問老查「這集排哪個週一」，不可自行猜日期。
 - 製作目標：前一週五 18:00 前完成內容決策與品牌審查；週日 18:00 前完成星期天範圍內的成品、平台文案與上傳；週一 07:00 正片公開。時間不足時要回報風險，不可默默改成即時發布。
-- 社群主題文維持週一 12:15，FB、IG、Threads 同時段；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支分別排 IG Reels、FB Reels、YouTube Shorts、Threads，無平台成功讀回不得標為已排程。
+- 社群主題文維持週一 12:15，FB、IG、Threads 同時段；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支的 IG Reels 與 FB Reels 在 Meta Business Suite 以同一則 Reel 一次排程（2026-10-15），YouTube Shorts、Threads 另排；無平台成功讀回不得標為已排程。
 - IG 金句圖與 IG 輪播（靜態圖）只發 IG，「分享至 Facebook」一律關閉，FB 不另發同一組圖（2026-10-15）。網站的 FB→IG 同步只轉居易網誌長文，不會替 Reels 或主題文發 IG，這兩類仍由本流程各平台原生發布。
 - Threads 只發布／排程在《不標準答案》的 Threads 帳號。IG 發文時「分享到 Threads」一律關閉，Threads 版另以專屬文案排程，避免同一內容出現兩次。
 - IG 發布隔離：IG 圖文與 IG Reels 只發布／排程至《不標準答案》Instagram 品牌帳號；禁止同步至 Si Ming Wang 個人 Facebook 頁面。建立 IG 貼文與提交前，星期天必須逐項核對「目前 IG 身分＝不標準答案」及「分享至 Facebook／交叉發布＝關閉」；任一項不符即停止並修正，不得發布。
@@ -299,6 +299,8 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 #### 6.2 六支週計畫跨平台排程
 
 以 weekly-plan.json 為唯一短片發布清單（包含第 6.1 節的一般預告，不能重算）。逐支核對最終檔、專屬封面、caption、品牌 ALLOW、QC、人工核准、帳號及 target_at；三平台都要套用專屬封面並讀回封面已生效；時段依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。
+
+IG／FB Reels 列在授權後到 Meta Business Suite 建立一則 Reel，發布位置同時勾選《不標準答案》Facebook 粉專與《不標準答案》Instagram（不得出現 Si Ming Wang 個人頁），上傳該支成品與專屬封面、貼上同一段 caption、AI 標示選「否」、以原生排程設定 target_at。兩個平台共用一段 caption；排程後分別在 Business Suite 排程清單讀回 FB 與 IG 兩列的時間、帳號與封面，任一邊未出現或封面未生效，就只把該平台記 `FAILED`，不重建另一邊。授權包仍分 IG、FB 兩列記錄證據。
 
 YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.render> --meta <該支 youtube.txt> --thumbnail <專屬封面> --qa-report <鐵雄報告> --publish-at <item.target_at>` 一次完成上傳、封面與預約公開；工具核對平台回傳的預約時間，不符就停下且不重傳。上傳前先讀 `item.platforms.youtube`，已有 id 就跳過。封面另到 Studio 讀回；若 Shorts 封面沒生效，該列記「封面未生效」，不為此重傳影片。
 
