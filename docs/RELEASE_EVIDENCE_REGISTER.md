@@ -14,6 +14,8 @@
 
 ## 現況
 
+2026-10-15 S3EP11 週四／週六補註：Meta Reel 與 Threads 週六排程先前已送出；其後獨立鐵雄報告將兩支授權審列為 `UNVERIFIED`（字體、插圖／AI、BGM／音效來源缺逐項證據）。這不是 QA PASS。老查明確授權 YouTube 上傳後，以任務卡 `qa_override` 留存風險並送件；週四已公開、週六已排程。老查再確認「這次是特例放行，下次還是要按規則來」；例外只限 S3EP11 這兩支 YouTube 上傳，不構成後續集數或平台的放行先例。授權來源仍待補證，詳見兩支交件包的 `qa/report.md`。
+
 | 資產 ID | 平台與用途 | 最終版本／依據 | 目前狀態 | 已有平台證據 | 預定／實際時間 | 公開網址／平台 ID | 下一個驗證動作 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | S3EP11-TUE-PAPER-IG | Instagram Reel 週二剪紙精華 | P05R2 完整審閱片 v2；25 秒；技術 QA `PASS`、品牌 `ALLOW`；私有上傳包保存雜湊 | `已排程；老查回報已檢查發布，Codex 待驗證公開` | Meta「已排定發佈」清單讀回 `another20251021`、10/13 20:30、公開；老查 10/14 回報已檢查 | 2026-10-13 20:30（Asia/Taipei） | ID／公開網址未取得 | 不重傳；老查另行交辦時只讀補公開頁、ID、帳號與版本 |
@@ -56,6 +58,13 @@
 | S3EP11-WED-QUOTE-FB | Facebook Reel 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW）；封面 v6 | `已公開` | Meta 已發布清單讀回粉專「不標準答案」、正確文案與 25 秒影片 | 2026-10-14 22:07（Asia/Taipei） | `https://www.facebook.com/reel/1407270461539470`（`1407270461539470`） | 已讀回；無 |
 | S3EP11-WED-QUOTE-YOUTUBE | YouTube Shorts 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW）；封面 v6 | `已公開` | Studio 讀回「影片已發布」、公開狀態、品牌頻道；著作權與社群檢查無問題 | 2026-10-14（Asia/Taipei） | `https://youtube.com/shorts/Q8CFZIa538Y`（`Q8CFZIa538Y`） | 已讀回；無 |
 | S3EP11-WED-QUOTE-THREADS | Threads 週三金句 | `private-media/s3ep11-wed-release-20261014/s3ep11-wed-quote-final-v4.mp4`（25 秒；QA PASS、品牌 ALLOW） | `已公開` | 公開貼文頁讀回帳號 `another20251021`、正確文案與影片播放器 | 2026-10-14（Asia/Taipei） | `https://www.threads.com/@another20251021/post/Deej87UE5Fn`（`Deej87UE5Fn`） | 已讀回；無 |
+| S3EP11-THU-QUOTE-META | Facebook／Instagram Reel 週四金句 | `output/weekly-shorts/2026-10-12/deliverables/thu-type/video-v2.mp4`；封面 v8 | `已公開；封面待公開頁核對` | Meta Business Suite 10/15 行事曆讀回「承認自己只是普通人，很難」文案與下午 10:23 Instagram／Facebook 合併列 | 2026-10-15 22:23（Asia/Taipei） | Meta 內容 ID `1408240958109087`；兩平台公開網址待補 | 分別讀回 FB／IG 公開頁及封面；不可重傳 |
+| S3EP11-THU-QUOTE-THREADS | Threads 週四金句 | 同支 `thu-type/video-v2.mp4`；`threads.txt` | `待驗證` | 曾送出發布，介面先顯示「發佈中」；目前個人檔案影音與串文清單均未見該文，草稿也未見 | 2026-10-15 即時發布（實際公開未確認） | 無 | 查詢帳號貼文狀態，不盲目重傳 |
+| S3EP11-SAT-QUOTE-FB | Facebook Reel 週六金句 | `output/weekly-shorts/2026-10-12/deliverables/sat-scene/video-v2.mp4`；封面 v8 | `已排程；封面待讀回` | Meta「已排定 Reel」確認 Facebook；行事曆 10/17 下午 8:30，詳情編號 `1795628124967664` | 2026-10-17 20:30（Asia/Taipei） | Meta 內容 ID `1795628124967664` | 發布後核對公開頁與封面；不可重傳 |
+| S3EP11-SAT-QUOTE-IG | Instagram Reel 週六金句 | 同支 `sat-scene/video-v2.mp4`；封面 v8 | `已排程；封面待讀回` | Meta「已排定 Reel」確認 Instagram；行事曆 10/17 下午 8:30，詳情顯示帳號 `another20251021` 與編號 `1612963050567650` | 2026-10-17 20:30（Asia/Taipei） | Meta 內容 ID `1612963050567650` | 讀回 IG 封面；不可重傳 |
+| S3EP11-SAT-QUOTE-THREADS | Threads 週六金句 | 同支 `sat-scene/video-v2.mp4`；`threads.txt` | `已排程` | Threads 草稿／預排清單讀回帳號 `another20251021`、正確文案、影片播放器及「星期六下午 8:30 [GMT+8] 發佈」 | 2026-10-17 20:30（Asia/Taipei） | 預排清單未顯示貼文 ID | 到時核對公開貼文；不可重傳 |
+| S3EP11-THU-QUOTE-YOUTUBE | YouTube Shorts 週四金句 | 同支 `thu-type/video-v2.mp4`；封面 v8 | `已公開；老查 QA 例外授權` | Studio 讀回品牌頻道、封面 `cover-v8.png`、著作權與社群規範初檢無問題、發布成功視窗「影片已發布」、Shorts 列表「公開」；授權來源仍 `UNVERIFIED`，例外記於任務卡 | 2026-10-15（Asia/Taipei） | `https://youtube.com/shorts/HLzfyfUUc0M?feature=share`（`HLzfyfUUc0M`） | 補齊素材授權／自製證據；不可重傳 |
+| S3EP11-SAT-QUOTE-YOUTUBE | YouTube Shorts 週六金句 | 同支 `sat-scene/video-v2.mp4`；封面 v8 | `已排程；老查 QA 例外授權` | Studio 讀回封面 `cover-v8.png`、著作權與社群規範初檢無問題，並顯示「已排定影片發布時間：2026年10月17日 晚上20:30」；GMT+0800；授權來源仍 `UNVERIFIED` | 2026-10-17 20:30（Asia/Taipei） | `https://youtube.com/shorts/EPKQdlHWdME?feature=share`（`EPKQdlHWdME`） | 到時讀回公開狀態，補齊素材來源；不可重傳 |
 
 ## 新發布資產列入模板
 
