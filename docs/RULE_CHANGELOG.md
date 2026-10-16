@@ -38,6 +38,8 @@
 
 | 2026-10-15 | 新增「教材復盤」Skill（`process-curriculum-retro`）：每週記錄製作流程改了什麼、為什麼改、有沒有證據，並把每項方法改變整理成 8 類教材卡（草稿／已驗證／可教三級），落檔老查 Drive「不標準答案/復盤內容」；每週日製作復盤後由教父提醒；與製作復盤、成析分工不重疊 | 新增 | 老查準備日後開工作坊，要求每週復盤時記錄製作過程變化並整理成分類教材 | `skills/process-curriculum-retro/SKILL.md`、`AGENTS.md`、`docs/SKILL_ROUTING_MATRIX.md`、`docs/CEO_CONTROL_TOWER.md` | 已在 Drive 建立資料夾、README、索引、2026-W42 週紀錄與 10 張教材卡；Skill 同步與 Codex 端首次實跑待驗證 |
 
+| 2026-10-16 | 星期天發布收工前必須 commit＋push 發布證據並讀回 0／0；push 失敗時結束回報第一行標「證據未推上 GitHub」；中途停下等老查前也先推已讀回的證據 | 修改 | 10-14、10-15 兩次發布證據只留在 Mac 本機未推，換機同步時差點遺失 | `skills/podcast-publish/SKILL.md` 第 6 節 | 下一次發布結束時，GitHub 讀回該次證據列且本機 0／0 |
+
 ## 新增變更模板
 
 ```text

@@ -330,6 +330,8 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 **結束回報**：全部列跑完才回報一次：每列是「排程成功（平台 ID／網址／讀回時間）」「FAILED（原因）」或「未執行」，同步寫入 `docs/RELEASE_EVIDENCE_REGISTER.md`。失敗列另開只含失敗列的補件包。成功訊息、內容編號與網址讀回後，才可標成完成。
 
+**證據落 GitHub（收工硬條件）**：結束回報之前，把本次寫入的 `docs/RELEASE_EVIDENCE_REGISTER.md`、`.publish-status.json` 與週計畫等追蹤檔 commit，再 `git pull --rebase` 後 push，讀回本機與 GitHub 為 0／0、工作樹乾淨。只 commit 本次發布寫入的檔案，不順手帶入其他修改；rebase 衝突就停下回報，不自行解。push 失敗時在結束回報第一行寫「證據未推上 GitHub」與原因，不得宣稱收工。單次發布中途若要停下等老查，也先把已讀回的證據推上去，避免證據只留在一台電腦。
+
 #### 6.1 週一預告（mon-quote）
 
 只要 `teaser_video.rendered: true` 且 `approved: true`，`fb_promo.applicable` 就是 `true`，與真人 Shorts 是否存在無關。使用 9:16 成品與核准文案建立 FB Reel，預設排程週一 20:30；單集若由老查指定立即發布，就只覆寫該集。
