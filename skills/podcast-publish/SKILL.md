@@ -284,7 +284,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 **建包前的預檢（可逆，不對外寫入）**
 
 - 只收齊件的列：最終檔、專屬封面、caption、鐵雄 PASS、阿維 `ALLOW`、人工核准、完整 +08:00 時間都具備。缺件的列標 `BLOCKED` 留在包外，不擋其他列。
-- 逐平台確認登入有效、帳號身分正確（IG＝不標準答案、分享至 Facebook＝關閉、分享到 Threads＝關閉；Threads＝不標準答案）、時間未過、平台支援預約。登入失效在預檢一次列給老查補登，不得等授權後才中途叫人。
+- 逐平台確認登入有效、帳號身分正確（IG＝不標準答案、分享至 Facebook＝關閉、分享到 Threads＝關閉；Threads＝不標準答案；YouTube＝Studio 網址的頻道 ID 必須是 `UCE-QusSupACm0Lk7D0ThHLQ`，右上角顯示「不標準答案」，不是個人頻道 Charles Wang `UCNHo51yChyWBzqUaiBJCrHA`）、時間未過、平台支援預約。登入失效在預檢一次列給老查補登，不得等授權後才中途叫人。
 
 **授權包**：寫入 `output/ep-{slug}/release-package.json`（週計畫短片寫 `output/weekly-shorts/{week-start}/release-package.json`），每列記 item ID、平台、帳號、成品路徑與 SHA-256、封面、caption 檔與 SHA-256、公開範圍、target_at、`ai_label`。給老查的摘要一次列完全部列，不分批問。
 
