@@ -108,3 +108,5 @@
 | 2026-10-16 | 星期天預檢的帳號身分加入 YouTube：Studio 網址頻道 ID 必須是品牌頻道 `UCE-QusSupACm0Lk7D0ThHLQ`，不是個人頻道 Charles Wang | 修改 | S3EP7 剪紙精華 YouTube 版誤發在個人頻道，10/16 重發至品牌頻道並刪除舊片 | `skills/podcast-publish/SKILL.md`、`docs/RELEASE_EVIDENCE_REGISTER.md` | 下一次上架授權包的 YouTube 列記錄讀回的頻道 ID |
 
 | 2026-10-16 | 短影片專屬封面主標開放 5 種字體風格（重黑體預設、宋體、圓體、手寫、毛筆），對應 Noto Sans TC 900／Noto Serif TC 900／Huninn／LXGW WenKai TC／莫大毛筆；一週 6 張共用一款並記 `cover_font`，節目名與輔助字維持 Noto Sans TC；表外字型禁用，交件前查缺字 fallback | 修改 | 老查提供小紅書封面字體截圖，要求 Codex 製作時也能用；原圖多為簡體商用字型，改轉寫成可免費商用、繁體完整的對應表 | `DESIGN.md`、`skills/podcast-teaser-video/SKILL.md` | 各字型授權與繁體涵蓋已查官方來源；首次實作待下一週封面框架母版送阿維核准 |
+
+| 2026-10-16 | 星期天新增「Firstory 先行閘門」：收到音檔與逐字稿後，內容決策拆 A 段（標題、關鍵字）先核准，Firstory 四件（主標題、節目介紹、1400 × 1400 本集節目圖片、8 至 12 個節目標籤）缺一即 BLOCKED；圖片與標籤由瀏覽器工具補填並讀回；以只含 Firstory 一列的先行包單獨授權並預約讀回；讀回前不開工 IG 圖、短片、其他文案、居易與網站單集重點，金句等 B 段放行後才交審；主上架授權包不再含 Firstory | 修改 | 老查實測 Codex 收檔後直接進入長時間製作，Firstory 排程被往後拖 | `skills/podcast-publish/SKILL.md`、`docs/CEO_CONTROL_TOWER.md`、`docs/CEO_COMMAND_PROTOCOL.md`、`docs/AUTHORITY_MATRIX.md` | 下一集收檔後第一個對外動作是 Firstory 先行包；讀回前狀態檔 `production_gate.released: false` 且無短片／文案產出 |

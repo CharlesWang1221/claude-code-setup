@@ -15,7 +15,25 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 - 啟動時先通過 `tools/check-skill-authority.sh`，讀既有 `.publish-status.json`、週計畫、任務交接及平台證據；一次登錄當次素材。已完成、已核准及已排程項目不得因新一輪調度重做或重傳。
 - 逐字稿、品牌基準、內容決策及週計畫來源配置是共用前置。前置未核准時，可並行做唯讀盤點、素材分類、音訊技術檢查與選段候選；不能把候選直接送入對外稿或短片製作。
-- 前置完成後，依可用代理席位同時推進互不依賴的工作：音檔與 Firstory 準備、IG 輪播與文案、各個已 READY 的短片 item。缺圖、缺原音或一支 QC 失敗，只阻塞該項；其他就緒項目繼續。
+- Firstory 先行閘門（2026-10-16，見下節）放行後，才依可用代理席位同時推進互不依賴的工作：IG 輪播與文案、各個已 READY 的短片 item、居易長文。缺圖、缺原音或一支 QC 失敗，只阻塞該項；其他就緒項目繼續。
+
+### Firstory 先行閘門（2026-10-16）
+
+收到音檔與逐字稿後，第一件事是把 Firstory 正片排上預約，製作類工作一律排在後面。順序固定：
+
+1. 登錄素材、逐字稿入檔、確認 `release_schedule.target_at`（第 0、0.6、1 步）。音檔若不是剪好的成品 MP3，先走 `podcast-audio-edit`。
+2. 內容決策關 A 段（第 2 步）：只交核心主張、核心搜尋問題＋關鍵字、標題 6 案與推薦案，請老查核准標題。
+3. 同時產出 Firstory 四件，一起過品牌閘門與鐵雄 PASS：
+   - **主標題**：A 段核准的那一案，原字寫進 `show-notes.md` 第一行 H1，不另改寫。
+   - **節目介紹**：`show-notes.md`（第 2.1 步的 Show Notes 結構），不放標籤段、不放金句段，金句等 B 段核准後再補到網站單集重點。
+   - **節目圖片**：`output/ep-{slug}/social/firstory-cover-{版本}-1400.png`，實際像素必須是 `1400 × 1400`。老查有給 1:1 圖就先用，檢查尺寸與品牌；沒給就由大千（`chibi-ink-illustrations`）依 `references/podcast-cover-workflow.md` 做本集專屬水墨圖：圖內不放文字，以本集事件的道具與場景點題（前例 `output/ep-s3ep10/social/firstory-cover-final-v3-event-1400.png`）。不用節目總封面或 IG 輪播圖頂替。
+   - **節目標籤**：`output/ep-{slug}/firstory-tags.txt`，一行逗號分隔、8 至 12 個。第一個放核心關鍵字，最後一個固定「不標準答案」，其餘取自核心搜尋問題與逐字稿主題詞。不放人名八卦詞、不放家人私事，不與說明欄重複貼一次。
+4. 第 4 步建「Firstory 先行包」，四件一次給老查看，回「可以上架」後預約並讀回。
+
+**閘門放行條件**：Firstory 單集列表讀回「已預約＋正確時間」，`release_schedule.firstory_scheduled: true`，並寫入 `production_gate.released: true`。Firstory 標 `FAILED` 時立即回報原因，不自動放行；老查明說「先做」才放行，並在 `production_gate.reason` 記原話。
+
+**閘門前不得做**：fb-post／ig-caption／threads-post 與逐支 caption、IG 圖、任何短片的 brief、鏡頭表、生圖與渲染、居易文章、網站單集重點。
+**閘門前可做（唯讀、不交老查審）**：10 句原話金句候選與時間碼、素材分類、音訊技術檢查。這些在放行後才和內容決策 B 段一起交出，不插隊到 Firstory 前面讓老查多審一輪。
 - 每個代理只擁有明確檔案或 item ID，禁止兩個可寫入代理改同一狀態檔、週計畫或平台草稿。總控統一合併結果、執行品牌與版本檢查、序列化寫回狀態；並行任務完成不等於獲得發布授權。
 - 對外提交依第 6 節：預檢帳號、交叉發布、時間與成品版本，整理成一份上架授權包；老查回「可以上架」後一次跑完並讀回平台證據，中途不再逐項詢問。若平台不支援替換舊排程，須避免新舊兩份同時上線。跨工作階段依狀態檔與證據接續；單次對話不宣稱背景任務會持續運轉。
 
@@ -100,6 +118,11 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
   "firstory": {
     "uploaded": false
   },
+  "production_gate": {
+    "released": false,
+    "released_at": null,
+    "reason": null
+  },
   "release_schedule": {
     "target_at": null,
     "timezone": "Asia/Taipei",
@@ -159,7 +182,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - Podcast target_at 與短片週計畫分開。每項短片寫完整 +08:00 target_at，週計畫引用來源集數；不從正片日期自動追加舊三支精華。
 - 第 6 集發布滿 7 天後，回報應進行時段復盤；比較上線後 24 小時播放量、7 天完播率、首日播放占比、實際收聽尖峰與社群導流，再由老查決定是否調整。
 
-總控優先追蹤一般預告、IG 圖文、Firstory 與週計畫其他短片；符合前置條件的內部製作可並行，對外動作仍在當次核准後逐項提交。前段可先配置週計畫原音與素材需求，但不插入 YouTube 長片工作。
+總控先追蹤 Firstory 先行閘門；放行後再追蹤一般預告、IG 圖文與週計畫其他短片，符合前置條件的內部製作可並行，對外動作仍在當次核准後逐項提交。不插入 YouTube 長片工作。
 
 ### 1. 逐字稿 — `transcript: false` 時
 老查有給 Plaud 連結（`https://web.plaud.ai/s/pub_xxxx...`）→ 用 `firecrawl_scrape`（`waitFor: 5000`）抓取；有給本機 `.txt`／`.md`／`.docx` → 直接讀取並複製到 `output/ep-{slug}/transcript/`。兩者都有時以本機修訂版為準，Plaud 只用來補時間碼。
@@ -168,7 +191,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 ### 2. 內容決策關 — `content_decision.approved: false` 時
 
-先讀完整逐字稿，只能使用逐字稿與老查明確提供的事實。產出 `content-decision.md`：
+先讀完整逐字稿，只能使用逐字稿與老查明確提供的事實。產出 `content-decision.md`，分兩段交老查：
+
+- **A 段（Firstory 先行，先交）**：核心主張、品牌錨點、主要受眾、聽眾問題、核心搜尋問題＋關鍵字、節目承諾、標題 6 案與推薦案。核准標題後就寫 Show Notes 進 Firstory 先行包。
+- **B 段（閘門放行後才交）**：縮圖文字 3 案、10 句原話金句、週計畫選段與小渡配置。
+
+各項規格：
 
 - 核心主張 1 句：聽完後應改變的看法或行動。
 - 品牌錨點 1 個：指出這集如何連回 Beyond Answers、靈魂金繼、情感物理學或對抗爆買帝國；只選真正吻合者，不硬塞品牌術語。
@@ -185,12 +213,12 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 同時列出 10 句逐字稿原話金句，附講者與可靠時間碼，並依句剪 SKILL.md 標記 `T1 適配`（標題公式實驗，2026-10-16 起）。不可把改寫句冒充原話；找不到可靠時間碼就標示待確認。將這 10 句及可用素材交給小渡，產出 `community-briefs/highlight-allocation.md`，再由小查核對其沒有改寫原話或越過品牌放行。
 
-讓老查核准最終標題、縮圖文字、原話金句與週計畫中本集承接的選段。一般預告含在六支內，可由核准歷史素材補足其他槽位，不強迫本集切六段。完整語意優先，不為秒數截斷句子。
+A 段讓老查核准最終標題；B 段在 Firstory 先行閘門放行後，讓老查核准縮圖文字、原話金句與週計畫中本集承接的選段。一般預告含在六支內，可由核准歷史素材補足其他槽位，不強迫本集切六段。完整語意優先，不為秒數截斷句子。
 
 小渡依週計畫提供各支差異與逐支 brief，教父核對 item ID、原話、時間碼及版本後才設 READY。核准寫回單集與週計畫；同段原音換畫風不能算兩支不同發布內容。
 
 ### 2.1 平台文案 — `content_decision.approved: true` 且 `content_files: false` 時
-以核准母稿產出 fb-post.txt、ig-caption.txt、threads-post.txt、show-notes.md，並依週計畫逐 item ID 產出 caption 與 Threads 版文案。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
+分兩批：標題核准後先只寫 show-notes.md，過品牌閘門後直接進第 4 步 Firstory 先行包；Firstory 先行閘門放行後，才以核准母稿產出 fb-post.txt、ig-caption.txt、threads-post.txt，並依週計畫逐 item ID 產出 caption 與 Threads 版文案。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
 
 寫作時套用記憶 `feedback_interaction_style` 的語氣禁用詞、排版規則，以及以下平台硬規則與發布前品牌關（取自 `social-media-assistant` 技能包，2026-08-06 併入）：
 
@@ -221,9 +249,9 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 6. 隱私關：不過度揭露孩子、家庭、私密對話與未經同意的當事人資訊。
 7. 商業關：不做農場標題、焦慮行銷、未揭露業配、絕對承諾或拉低品牌定位的廉售導向。
 
-任一項命中即設為 `REJECTED`，把具體問題句與原因寫入 `brand-review.md`，完成改寫後重新檢查。全部通過才設定 `brand_review.passed: true` 與 `content_files: true`；不得為了接續上架硬放行。
+任一項命中即設為 `REJECTED`，把具體問題句與原因寫入 `brand-review.md`，完成改寫後重新檢查。全部通過才設定 `brand_review.passed: true` 與 `content_files: true`；不得為了接續上架硬放行。Show Notes 先行時，先單獨審 show-notes.md 並記入 `brand-review.md`；其他文案寫完後再審，全部通過才設 `content_files: true`。
 
-**下游硬條件**：無論 `content_files`、`ig_images`  的既有旗標為何，只要 `brand_review.passed` 不是 `true`，就不得執行節目預告、IG 圖生成、Firstory 填寫、Shorts 或 FB 預告。先審查既有對外內容；通過後才能接續。
+**下游硬條件**：無論 `content_files`、`ig_images`  的既有旗標為何，只要 `brand_review.passed` 不是 `true`，就不得執行節目預告、IG 圖生成、Firstory 填寫、Shorts 或 FB 預告。先審查既有對外內容；通過後才能接續。另外 `production_gate.released` 不是 `true` 時，節目預告、IG 圖、Shorts、FB 預告、居易與網站單集重點一律不得開工。
 
 **目的衝突當場擋下**：如果這集文案同時要衝觸及、要導流訂閱、又要帶貨/招募，先問老查排順序，不要假裝一組文案能通吃三個目的。
 
@@ -262,11 +290,13 @@ IG 輪播視覺固定使用 1:1；金句短片（含週一預告）與剪紙、�
 
 完成後 `ig_images: true`。列出輪播順序與 `ig-caption.txt` 讓老查審核；核准後列入第 6 節上架授權包，授權後直接建立草稿並排程，不另做二次確認。成功讀回後才寫回 `instagram.approved`、`published`、`postId`、`url`。
 
-### 4. Firstory 上傳 — 有音檔路徑且 `firstory.uploaded: false` 時
+### 4. Firstory 先行上傳 — 標題核准、show-notes 通過品牌閘門且 `firstory.uploaded: false` 時
+
+這一步在第 3 步之前執行（編號保留舊版以免交接檔對不上）。Firstory 不等第 6 節的整包，單獨建「Firstory 先行包」：寫入 `output/ep-{slug}/release-package-firstory.json`，只含 Firstory 一列，欄位與第 6 節相同（音檔 SHA-256、主標題、Show Notes 雜湊、節目圖片路徑與 SHA-256、標籤檔與 SHA-256、target_at、`ai_label: false`）；四件缺一即 `BLOCKED`，不得先傳音檔再補圖或標籤；建包前一樣做登入與時間預檢，並取得鐵雄 PASS。老查回「可以上架」只授權這一列，授權記錄寫入 `release_authorization_firstory`。
 ```
 node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 ```
-腳本開瀏覽器、自動填標題+說明+上傳音檔，停在發布頁，本身不會按發布。說明欄即上述結構的 Show Notes；預約後讀回標題含核心關鍵字、說明欄前 150 字與章節時間碼完整。音檔與標題列入第 6 節上架授權包；授權後由星期天用瀏覽器工具在同一頁設定 `release_schedule.target_at` 的預約時間並按預約，不再請老查到電腦前操作。若 Firstory 當下介面或方案不支援預約，該列標 `FAILED` 並停在確認頁，不得改成提前公開。在 Firstory 單集列表讀回「已預約＋正確時間」後，才把 `firstory.uploaded` 與 `release_schedule.firstory_scheduled` 設為 `true`（不要在腳本跑完就設定）。
+腳本開瀏覽器、自動填標題+說明+上傳音檔，停在發布頁，本身不會按發布；腳本不處理圖片與標籤。星期天接著用瀏覽器工具在同一頁上傳節目圖片、逐個輸入 `firstory-tags.txt` 的標籤。說明欄即上述結構的 Show Notes；預約後讀回四件：主標題與核准案逐字相同、說明欄前 150 字與章節時間碼完整、單集圖片已換成本集 1400 圖、標籤數量與內容和標籤檔一致。任一件讀回不符，該列記 `FAILED`，不放行製作。音檔與標題列入第 6 節上架授權包；授權後由星期天用瀏覽器工具在同一頁設定 `release_schedule.target_at` 的預約時間並按預約，不再請老查到電腦前操作。若 Firstory 當下介面或方案不支援預約，該列標 `FAILED` 並停在確認頁，不得改成提前公開。在 Firstory 單集列表讀回「已預約＋正確時間」後，才把 `firstory.uploaded` 與 `release_schedule.firstory_scheduled` 設為 `true`（不要在腳本跑完就設定），同時寫入 `production_gate.released: true` 與讀回時間、寫入 `docs/RELEASE_EVIDENCE_REGISTER.md`，再回報老查並開始第 2 步 B 段與其餘製作。
 
 ### 5. 依週計畫製作短片
 
@@ -279,7 +309,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 ### 6. 上架授權包與自動排程
 
-老查只在內容階段核准；發布階段只問一次。把要上架的全部內容整理成一份「上架授權包」，老查回「可以上架」後，星期天自行跑完所有平台的草稿、排程與讀回，中途不再逐項詢問。
+老查只在內容階段核准；Firstory 已在第 4 步以先行包單獨授權，其餘發布只問一次。本包不含 Firstory 列，除非先行包 `FAILED` 且老查指示併入。把其餘要上架的內容整理成一份「上架授權包」，老查回「可以上架」後，星期天自行跑完所有平台的草稿、排程與讀回，中途不再逐項詢問。
 
 **建包前的預檢（可逆，不對外寫入）**
 
@@ -292,7 +322,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 **AI 標示**：所有影片在 YouTube（「變造或合成內容」）、IG／FB Reels 與 Threads（「AI 標籤／AI 資訊」）上架時，AI 選項一律選「否」，授權包每列記 `ai_label: false`。水墨、剪紙、字卡動畫與節目真實原音不屬平台要求揭露的擬真合成內容。例外只有兩種，該列必須選「是」並在授權包標明：用 AI 複製的聲音（例如 Voicebox）讓真人說出沒說過的話；或 AI 生成／改造、看起來像真實拍攝的人物或場景（例如 Flow 擬真動態）。不得為了選「否」去除檔案的 AI 中繼資料；平台若自動加上 AI 標籤，保留並在結束回報註明。
 
-**授權後執行**：依 Firstory → IG／FB／Threads 主題文 → 週一預告 → 其他短片的順序，逐列建立草稿、設定、排程並讀回平台證據。不做 IG 草稿二次確認，也不在每列之間回頭問。
+**授權後執行**：依 IG／FB／Threads 主題文 → 週一預告 → 其他短片的順序（Firstory 已先行），逐列建立草稿、設定、排程並讀回平台證據。不做 IG 草稿二次確認，也不在每列之間回頭問。
 
 **只停該列、不中途詢問**：成品或 caption 雜湊與包不符、帳號身分不符或交叉發布關不掉、登入失效、時間已過或平台不支援預約、平台報錯或讀回不符、需要付費或新增權限。遇到就把該列標 `FAILED` 並寫原因，不重試上傳、不改時間、不換檔、不換平台、不改成立即公開，繼續下一列。
 
