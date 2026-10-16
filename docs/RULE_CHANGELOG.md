@@ -106,3 +106,5 @@
 | 2026-10-16 | 新增標題公式實驗 T1：整理 10 句候選金句時加標 `T1 適配`，每週從入選且標「可」的支挑 1 支只改標題測試 | 新增（實驗，未成規則） | S3EP11 剪紙「為了讓別人好探聽，卻離自己越來越遠」YouTube 觀看 724，同形式 S3EP10 僅 58；老查要求交 Codex 整理金句時套用 | `output/short-video-experiments/2026-10-title-formula.md`、`skills/podcast-teaser-video/SKILL.md`、`skills/podcast-publish/SKILL.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下一次候選金句表有 `T1 適配` 欄；週計畫有 1 支 `title_formula_T1` 或寫明本週無適配；累積 4 支才判定 |
 
 | 2026-10-16 | 星期天預檢的帳號身分加入 YouTube：Studio 網址頻道 ID 必須是品牌頻道 `UCE-QusSupACm0Lk7D0ThHLQ`，不是個人頻道 Charles Wang | 修改 | S3EP7 剪紙精華 YouTube 版誤發在個人頻道，10/16 重發至品牌頻道並刪除舊片 | `skills/podcast-publish/SKILL.md`、`docs/RELEASE_EVIDENCE_REGISTER.md` | 下一次上架授權包的 YouTube 列記錄讀回的頻道 ID |
+
+| 2026-10-16 | 短影片專屬封面主標開放 5 種字體風格（重黑體預設、宋體、圓體、手寫、毛筆），對應 Noto Sans TC 900／Noto Serif TC 900／Huninn／LXGW WenKai TC／莫大毛筆；一週 6 張共用一款並記 `cover_font`，節目名與輔助字維持 Noto Sans TC；表外字型禁用，交件前查缺字 fallback | 修改 | 老查提供小紅書封面字體截圖，要求 Codex 製作時也能用；原圖多為簡體商用字型，改轉寫成可免費商用、繁體完整的對應表 | `DESIGN.md`、`skills/podcast-teaser-video/SKILL.md` | 各字型授權與繁體涵蓋已查官方來源；首次實作待下一週封面框架母版送阿維核准 |

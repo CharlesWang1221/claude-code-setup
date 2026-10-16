@@ -84,6 +84,42 @@
 
 ---
 
+## 短影片封面主標字體（2026-10-16 起）
+
+只放寬「直式短影片專屬封面的主標」一處。節目名、`S{季}EP{集}`、輔助字、影片字幕、IG 圖卡與網站一律維持 Noto Sans TC。
+
+參考來源：老查收集的小紅書「短影音封面字體」截圖（私人 OneDrive，不入 repo）。截圖裡的字型多為簡體商用字型，繁體常缺字又要授權費，所以只取「風格對用途」，再換成下表可免費商用、繁體完整的字型。
+
+| 風格 | 適合 | 指定字型 | 取得方式 |
+| :-- | :-- | :-- | :-- |
+| 重黑體（預設） | 衝突句、觀點判斷，要在格狀牆上最先被看到 | Noto Sans TC 900 | Google Fonts |
+| 宋體 | 知識、反思、穩重的半句懸念 | Noto Serif TC 900 | Google Fonts |
+| 圓體 | 家庭日常、孩子視角、角色反應 | Huninn（jf open 粉圓的 Google Fonts 版，只有 1 種字重） | Google Fonts |
+| 手寫 | 自白、溫柔的一句話 | LXGW WenKai TC 700 | Google Fonts |
+| 毛筆 | 8 字以內、語氣安靜的金句短標；不配衝突句，避免讀成武俠或霸氣宣言 | 莫大毛筆 Bakudai（OFL 1.1） | GitHub `max32002/bakudaifont`；檔案只放當週工作資料夾，不 commit |
+
+規則：
+
+- 一週 6 張封面共用同一個主標字型，屬於系列框架的一部分。換字型等於換框架，要重新送阿維核准。
+- 一張封面最多 2 種字型：主標字型＋Noto Sans TC。
+- 封面以 HTML 渲染時一律用網頁字型載入，Mac 與 Windows 都不依賴本機安裝：
+
+  ```html
+  <link href="https://fonts.googleapis.com/css2?family=Huninn&family=LXGW+WenKai+TC:wght@700&family=Noto+Sans+TC:wght@400;900&family=Noto+Serif+TC:wght@900&display=block" rel="stylesheet">
+  <style>
+    @font-face { font-family: "Bakudai"; font-weight: 700; font-display: block;
+      src: url("https://cdn.jsdelivr.net/gh/max32002/bakudaifont@1.49/webfont/Bakudai-Bold.woff2") format("woff2"); }
+  </style>
+  ```
+
+  截圖前先等 `document.fonts.ready`，否則會拍到 fallback 字型。
+- Mac 要在 Keynote、Canva 桌面版等軟體手動使用時，執行 `tools/install-cover-fonts.sh` 裝進使用者字型夾。Windows 是公司電腦，不安裝字型。
+- 每張渲染後檢查缺字：主標每個字都要真的用到指定字型，有 fallback 成別的字型就換句或換字型，不得混字交件。毛筆字型只保證教育部 4,808 個常用字。
+- Huninn 沒有粗體，不得用瀏覽器假粗體加重；要更重就放大字級或加底板。
+- 表外字型不得使用。要新增字型，先查授權與繁體涵蓋、附來源連結寫進這張表，才能上線。
+
+---
+
 ## 給 AI 的判斷原則
 
 1. **網站相關**（首頁、部落格頁、影片頁、Landing Page 如果是掛在 podcast 品牌下）→ 用系統一（Basie 紫粉深色）
@@ -96,7 +132,7 @@
 ## Do's and Don'ts
 
 - ✅ 深色背景 + 少量高對比強調色
-- ✅ 中文一律用 Noto Sans TC 系列，不要換成預設無襯線字體
+- ✅ 中文一律用 Noto Sans TC 系列，不要換成預設無襯線字體；唯一例外是短影片封面主標，只能從「短影片封面主標字體」表內選
 - ✅ 兩套 IG 配色維持獨立，各自的四種版型內部一致
 - ❌ 不要用漸層背景（現有系統都是純色/深淺分層，不是漸層）
 - ❌ 不要幫網站生出第三種主色，紫粉系統只有這 4 個強調色可用
