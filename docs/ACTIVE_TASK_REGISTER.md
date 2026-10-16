@@ -13,7 +13,7 @@
 
 | 任務 ID | 任務與範圍 | 狀態 | 主責主管 | 最終依據／證據 | 阻塞或待放行 | 下一個明確動作 | 時點 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| S3EP7-H1-COVER | S3EP7 剪紙精華一補做 9:16 專屬封面，套到品牌頻道重發的 YouTube Shorts `Lk9xJUCsry0` | `ACTIVE` | 廠長（句剪） | 2026-10-16 老查同意補封面；成片 `video-projects/s3ep7-paper-collage/h1-full/renders/s3ep7-h1-paper-collage-v1.mp4`；原文案已獲阿維 `ALLOW` | 依句剪「專屬封面」規格與封面鉤子手法製作；計入句剪常態卡 ImageGen 上限 | 句剪出封面 → 鐵雄技術審 → 阿維 ALLOW → 星期天到 Studio 套用並讀回封面生效 | 未設定 |
+| S3EP7-H1-COVER | S3EP7 剪紙精華一補做 9:16 專屬封面，套到品牌頻道重發的 YouTube Shorts `Lk9xJUCsry0` | `REVISE` | 廠長（句剪） | 2026-10-16 老查同意補封面；成片 `video-projects/s3ep7-paper-collage/h1-full/renders/s3ep7-h1-paper-collage-v1.mp4`；原文案已獲阿維 `ALLOW`；私有成品與鐵雄報告 `output/ep-s3ep7/s3ep7-h1-cover-v1.png`、`output/ep-s3ep7/qa/report.md` | 鐵雄 `FAIL`：未以網頁字型載入 Noto Sans TC 900／無 `document.fonts.ready` 證據；交件追溯與角色資產授權為 `UNVERIFIED`。阿維依停止線未終審。不得套用或操作平台 | 補齊網頁字型與交件／授權追溯鏈，產出新 SHA-256 後重送鐵雄；全項 `PASS` 後才送阿維 | 未設定 |
 | S3EP11-WED-QUOTE | S3EP11 週三金句短片以原音帶劇情重製；老查與阿分敘事、虛構成人承演案例 | `QA_REVIEW` | 教父＋廠長 | 私有工作區已有 20 秒審閱片 v2、主持人版專屬封面與 5 張關鍵影格；技術檢查 0 error，影音規格讀回正常 | 正由獨立鐵雄 QA；未正式渲染、品牌放行或發布 | QA 結果回收後交老查審閱小樣與封面 | 未設定 |
 | S3EP11-TUE-PAPER | S3EP11 週二剪紙精華 v2 三平台上傳與排程 | `已排程；使用者回報已檢查發布` | 內容營運長＋品牌總監 | 私有 P05R2 完整審閱片 v2；技術 QA `PASS`、品牌 `ALLOW`；YouTube Shorts `4MIFyxBFa98`；Meta 清單讀回 FB／IG 各一筆 10/13 20:30 | Codex 尚未獨立讀回三平台公開頁及 FB／IG ID；老查指示先停，不得重傳 | 暫停；僅在老查另行交辦時只讀補公開網址、ID 與版本證據，修正另開版本 | 2026-10-13 20:30（Asia/Taipei） |
 | IG-GROWTH-2026Q4 | 《不標準答案》IG 4 週自然曝光冷啟動。僅測 Trial Reels、既有內容導流、協作者候選、主動參與與個人檔案轉換，不含付費廣告或任何平台發布 | `ACTIVE` | 小渡（社群營運長）＋星期天（內容營運長）＋小查 | `docs/IG_GROWTH_EXPERIMENT_2026Q4.md`、每週曝光 brief 與回顧 | 帳號 Bio、名稱、置頂內容與既有流量入口尚待盤點；協作者邀約與任何平台草稿均需老查另行授權 | 小渡完成 Week 1 曝光 brief，星期天依 brief 提出 2 支 Trial Reels 的內容草案 | 2026-10-11 22:14（Asia/Taipei）完成第一週回顧 |
