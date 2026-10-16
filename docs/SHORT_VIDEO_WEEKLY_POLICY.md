@@ -32,6 +32,7 @@
 
 - 每支開工前由真短驗析（`short-video-experiment-review`）出產前假設卡，一支只測一個入口變因（例如開場第一句、首張字卡、封面、時段），寫進週計畫該項的 `experiment.variable` 與 `experiment.hypothesis_card`。
 - 發布後第 7 天出驗證卡，寫入 `experiment.d7_review`；不把流量當成品牌價值，原話與語意完整優先於數據。
+- 標題公式實驗 T1（2026-10-16 起）：整理候選金句時標記 `T1 適配`，每週從入選且標「可」的支中挑 1 支只改標題，`experiment.variable: title_formula_T1`。全週無適配就跳過，不硬湊。細節見 [`output/short-video-experiments/2026-10-title-formula.md`](../output/short-video-experiments/2026-10-title-formula.md)。
 - 試行 2 週後（首次核准週計畫起算），真短驗析彙整 12 支結果交教父回報老查，決定哪些變因要固定下來，以及剪紙／實透是否值得以特別企劃形式回來測。
 
 原有週一、二、三、五時段沿用；新增週四、六暫採 20:30，屬編輯預設，沒有最佳流量實證。核准當週計畫時可調整，不自行改已建立的排程。

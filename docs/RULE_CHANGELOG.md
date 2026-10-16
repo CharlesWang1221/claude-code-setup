@@ -102,3 +102,5 @@
 | 2026-10-15 | 內容決策新增「核心搜尋問題＋核心關鍵字」（居易查搜尋量），Firstory 標題、Show Notes、網站單集重點、週四 GEO 文章全部沿用；最終標題必含關鍵字；Show Notes 前 150 字先答問題、含 `00:00` 起的章節時間碼並連回網站 | 修改 | 老查確認要讓 Firstory 標題與介紹配合 GEO，AI 讀 Apple／Spotify 頁面時看到的就是這兩項 | `skills/podcast-publish/SKILL.md`、`skills/seo-article-writer/SKILL.md` | 下一集內容決策有核心問題與關鍵字；Firstory 讀回標題含關鍵字、說明欄前 150 字與章節；Spotify 顯示可點章節 |
 
 | 2026-10-15 | `flow-video-pilot` 新增 Seedance 備援：經 Monica 網頁由 Codex 瀏覽器操作（不用另付費的 API），登入、扣點、單支生成、不自動重送與檔案選擇器停止線比照 Flow；前兩個鏡頭與 Flow 對照測試後依鏡頭類型固定指派；私人照片經第三方需老查當次同意 | 新增 | 老查有 Monica 年訂閱，想善用 Seedance 2.5 不浪費 | `skills/flow-video-pilot/SKILL.md` | Monica 使用條款、Mac 瀏覽器操作、額度計算方式與 Flow／Seedance 對照測試均待首次實測 |
+
+| 2026-10-16 | 新增標題公式實驗 T1：整理 10 句候選金句時加標 `T1 適配`，每週從入選且標「可」的支挑 1 支只改標題測試 | 新增（實驗，未成規則） | S3EP11 剪紙「為了讓別人好探聽，卻離自己越來越遠」YouTube 觀看 724，同形式 S3EP10 僅 58；老查要求交 Codex 整理金句時套用 | `output/short-video-experiments/2026-10-title-formula.md`、`skills/podcast-teaser-video/SKILL.md`、`skills/podcast-publish/SKILL.md`、`docs/SHORT_VIDEO_WEEKLY_POLICY.md` | 下一次候選金句表有 `T1 適配` 欄；週計畫有 1 支 `title_formula_T1` 或寫明本週無適配；累積 4 支才判定 |
