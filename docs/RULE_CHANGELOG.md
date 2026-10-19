@@ -112,3 +112,5 @@
 | 2026-10-16 | 短影片專屬封面主標開放 5 種字體風格（重黑體預設、宋體、圓體、手寫、毛筆），對應 Noto Sans TC 900／Noto Serif TC 900／Huninn／LXGW WenKai TC／莫大毛筆；一週 6 張共用一款並記 `cover_font`，節目名與輔助字維持 Noto Sans TC；表外字型禁用，交件前查缺字 fallback | 修改 | 老查提供小紅書封面字體截圖，要求 Codex 製作時也能用；原圖多為簡體商用字型，改轉寫成可免費商用、繁體完整的對應表 | `DESIGN.md`、`skills/podcast-teaser-video/SKILL.md` | 各字型授權與繁體涵蓋已查官方來源；首次實作待下一週封面框架母版送阿維核准 |
 
 | 2026-10-16 | 星期天新增「Firstory 先行閘門」：收到音檔與逐字稿後，內容決策拆 A 段（標題、關鍵字）先核准，Firstory 四件（主標題、節目介紹、1400 × 1400 本集節目圖片、8 至 12 個節目標籤）缺一即 BLOCKED；圖片與標籤由瀏覽器工具補填並讀回；以只含 Firstory 一列的先行包單獨授權並預約讀回；讀回前不開工 IG 圖、短片、其他文案、居易與網站單集重點，金句等 B 段放行後才交審；主上架授權包不再含 Firstory | 修改 | 老查實測 Codex 收檔後直接進入長時間製作，Firstory 排程被往後拖 | `skills/podcast-publish/SKILL.md`、`docs/CEO_CONTROL_TOWER.md`、`docs/CEO_COMMAND_PROTOCOL.md`、`docs/AUTHORITY_MATRIX.md` | 下一集收檔後第一個對外動作是 Firstory 先行包；讀回前狀態檔 `production_gate.released: false` 且無短片／文案產出 |
+
+| 2026-10-19 | 句剪新增「標題精簡規則」：一般支 10 至 12 字（上限 14）、T1 實驗支保留「為了 A，卻 B」上限 16；刪解釋句、同詞不重複、對句動詞對稱、整週核心詞不連 3 天；精簡掉 T1 公式的支須改挑實驗支；交件附主推／備案與整週查重 | 修改 | 老查審 S3EP12 週標題回饋「意思有，但太長」 | `skills/podcast-teaser-video/SKILL.md` | 下一週標題交件每支有字數、主推、備案與整週查重結論 |
