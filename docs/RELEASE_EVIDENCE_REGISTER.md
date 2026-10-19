@@ -1,6 +1,6 @@
 # 平台發布證據庫
 
-最後盤點：2026-10-16（Asia/Taipei）
+最後盤點：2026-10-19（Asia/Taipei）
 主責：內容營運長。  
 用途：將「素材已做完」與「平台已處理」切開。未填入平台讀回證據的列，一律視為 `待驗證`，不得對外或對老查宣稱已上傳、已排程或已公開。
 
@@ -18,6 +18,7 @@
 
 | 資產 ID | 平台與用途 | 最終版本／依據 | 目前狀態 | 已有平台證據 | 預定／實際時間 | 公開網址／平台 ID | 下一個驗證動作 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| S3EP12-FULL-FIRSTORY | Firstory 正片 | 標題「沒有人聽我說話，還要繼續講嗎？｜S3EP12」；後台音檔 37:27；1400 x 1400 封面；10 個標籤 | `已公開；老查自行上架特例；鐵雄 UNVERIFIED` | Firstory 後台「已發佈」清單讀回 S3E12、2026-10-19；詳情讀回標題、公開權限、音檔長度、封面尺寸、標籤與平台連結；公開頁可開啟。老查原話「這次是特例 我先自己上架了」 | 後台日期 2026-10-19；精確公開時間未顯示 | `https://open.firstory.fm/story/cmvardmv70e9901xm8biz178y`（`cmvardmv70e9901xm8biz178y`） | 保留既有公開版本，不重傳；平台音檔雜湊與封面來源仍待補證。本例外不延續到下集 |
 | SPECIAL-ROADSTER-POSTER-FB | Facebook 特殊任務海報 | 9:16 海報 v5；SHA-256 `b5b6e42d…47597c88`；核准短文案「人生不一定要照著跑道走。」 | `已公開` | Facebook 公開貼文頁讀回粉專「不標準答案」、正確海報、完整文案與 4 個標籤；Meta 內容列 ID `1409140361352480` | 2026-10-16 22:05（Asia/Taipei） | `https://www.facebook.com/100067695880628/posts/1409140361352480/`（`1409140361352480`） | 已讀回；無 |
 | SPECIAL-ROADSTER-POSTER-IG | Instagram 特殊任務海報 | 同版 9:16 海報 v5；帳號 `another20251021` | `已公開` | Instagram 公開個人檔案首則讀回正確海報、完整文案與 4 個標籤；Meta 已發布內容列同步讀回 | 2026-10-16 22:05（Asia/Taipei） | `https://www.instagram.com/another20251021/p/DejtP9BE9Ph/`（`DejtP9BE9Ph`） | 已讀回；無 |
 | SPECIAL-ROADSTER-POSTER-THREADS | Threads 特殊任務海報 | 同版 9:16 海報 v5；核准 Threads 短文案與 2 個標籤 | `已公開` | Threads 公開貼文頁讀回帳號 `another20251021`、正確海報、文案「人生不一定要照著跑道走。 🎧 搜尋《不標準答案》」與標籤 | 2026-10-16 23:27（Asia/Taipei） | `https://www.threads.com/@another20251021/post/Dej2jfoiTJg`（`Dej2jfoiTJg`） | 已讀回；無 |
