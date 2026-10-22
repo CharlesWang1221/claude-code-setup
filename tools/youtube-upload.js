@@ -4,13 +4,14 @@
  * 用法：
  *   node tools/youtube-upload.js --episode ep-s2ep7
  *   node tools/youtube-upload.js --episode ep-s2ep7 --update <videoId>
+ *   node tools/youtube-upload.js --update <videoId> --thumbnail-only --thumbnail <封面>
  *   node tools/youtube-upload.js --episode ep-s2ep7 --publish-at 2026-10-20T07:00:00+08:00
  *
  *   node tools/youtube-upload.js --video output/ep-s3ep11/s3ep11-teaser-v3.mp4 \
  *     --meta <youtube.txt> --thumbnail <封面> --publish-at 2026-10-20T20:30:00+08:00
  *
  * --publish-at：上傳時直接設定 YouTube 預約公開時間（須含 +08:00 時區且晚於現在），
- * 影片保持私人直到該時間自動公開；不加此參數則只上傳為私人。
+ * 影片保持私人直到該時間自動公開；--public-now 則立即公開；兩者皆未加時只上傳為私人。
  * AI 標示：預設送出 containsSyntheticMedia=false（「變造或合成內容」選否）；
  * 只有 AI 複製聲音或擬真 AI 人物／場景才加 --synthetic-media 改為 true。
  * --video／--meta／--thumbnail／--qa-report：直接指定檔案（週計畫 Shorts 用），
@@ -57,7 +58,8 @@ function explicitFile(name) {
 
 const epArg = process.argv.indexOf('--episode');
 const hasVideoArg = process.argv.includes('--video');
-if ((epArg === -1 || !process.argv[epArg + 1]) && !hasVideoArg) {
+const hasUpdateArg = process.argv.includes('--update');
+if ((epArg === -1 || !process.argv[epArg + 1]) && !hasVideoArg && !hasUpdateArg) {
   console.error('用法：node tools/youtube-upload.js --episode <資料夾名稱>');
   console.error('　或：node tools/youtube-upload.js --video <mp4> --meta <youtube.txt> [--thumbnail <圖>] [--publish-at <時間>]');
   console.error('範例：node tools/youtube-upload.js --episode ep-s2ep7');
@@ -92,7 +94,7 @@ function parseYoutubeMeta(dir, metaPath) {
 }
 
 // ── 更新既有影片 metadata，不重傳影片 ───────────────────────
-async function updateMetadata(auth, videoId, meta) {
+async function updateMetadata(auth, videoId, meta, thumbnailPath = null) {
   const youtube = google.youtube({ version: 'v3', auth });
   await youtube.videos.update({
     part: ['snippet'],
@@ -108,9 +110,27 @@ async function updateMetadata(auth, videoId, meta) {
     },
   });
 
+  if (thumbnailPath) {
+    await setThumbnail(auth, videoId, thumbnailPath);
+  }
+
   console.log('\n影片資料已更新！');
   console.log(`影片 ID：${videoId}`);
   console.log(`YouTube Studio：https://studio.youtube.com/video/${videoId}/edit`);
+}
+
+async function setThumbnail(auth, videoId, thumbnailPath) {
+  const youtube = google.youtube({ version: 'v3', auth });
+  const thumbnailResult = await youtube.thumbnails.set({
+    videoId,
+    media: { body: fs.createReadStream(thumbnailPath) },
+  });
+  const returnedThumbnail = thumbnailResult.data?.items?.[0]?.default?.url
+    || thumbnailResult.data?.items?.[0]?.high?.url
+    || null;
+  console.log(`縮圖已套用：${path.basename(thumbnailPath)}`);
+  console.log(`API 回傳縮圖：${returnedThumbnail || '無 URL'}`);
+  console.log(`仍須到 Studio 重新載入讀回：https://studio.youtube.com/video/${videoId}/edit`);
 }
 
 // ── 找正式影片與縮圖 ───────────────────────────────────────────
@@ -209,6 +229,9 @@ async function authenticate() {
 // ── 上傳影片 ──────────────────────────────────────────────────
 // ── 預約公開時間 ──────────────────────────────────────────────
 function parsePublishAt() {
+  if (process.argv.includes('--public-now') && process.argv.includes('--publish-at')) {
+    throw new Error('--public-now 與 --publish-at 不可同時使用');
+  }
   const i = process.argv.indexOf('--publish-at');
   if (i === -1) return null;
   const raw = process.argv[i + 1];
@@ -240,9 +263,9 @@ async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
           categoryId: '22',         // People & Blogs
           defaultLanguage: 'zh-TW',
         },
-        // 先上傳為私人；有 publishAt 時由 YouTube 在該時間自動公開
+        // 預約片先私人；明確 --public-now 才立即公開。
         status: {
-          privacyStatus: 'private',
+          privacyStatus: process.argv.includes('--public-now') ? 'public' : 'private',
           containsSyntheticMedia: process.argv.includes('--synthetic-media'),
           ...(publishAt ? { publishAt: publishAt.toISOString() } : {}),
         },
@@ -266,6 +289,12 @@ async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
       throw new Error(`影片 ${res.data.id} 已上傳為私人，但平台回傳的預約時間為 ${got || '無'}，與指定時間不符；不要重傳，改到 Studio 核對`);
     }
     console.log(`預約公開：${publishAt.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}（平台回傳 ${got}）`);
+  } else if (process.argv.includes('--public-now')) {
+    const got = res.data.status?.privacyStatus;
+    if (got !== 'public') {
+      throw new Error(`影片 ${res.data.id} 已上傳，但平台回傳隱私狀態為 ${got || '無'}，不是 public；不要重傳，改到 Studio 核對`);
+    }
+    console.log('立即公開：平台回傳 public');
   }
 
   if (thumbnailPath) {
@@ -285,20 +314,31 @@ async function upload(auth, videoPath, thumbnailPath, meta, publishAt) {
 // ── 主流程 ────────────────────────────────────────────────────
 (async () => {
   try {
+    const updateArg = process.argv.indexOf('--update');
+    const videoId = updateArg !== -1 ? process.argv[updateArg + 1] : null;
+    const thumbnailOnly = process.argv.includes('--thumbnail-only');
+
+    if (updateArg !== -1 && !videoId) {
+      throw new Error('--update 後面需要影片 ID');
+    }
+    if (thumbnailOnly) {
+      if (!videoId) throw new Error('--thumbnail-only 必須搭配 --update <影片 ID>');
+      const thumbnailPath = explicitFile('--thumbnail');
+      if (!thumbnailPath) throw new Error('--thumbnail-only 必須指定 --thumbnail <封面>');
+      const auth = await authenticate();
+      await setThumbnail(auth, videoId, thumbnailPath);
+      return;
+    }
+
     const metaPath = explicitFile('--meta');
     if (!episodeDir && !metaPath) throw new Error('未指定 --episode 時必須提供 --meta');
     const meta = parseYoutubeMeta(episodeDir, metaPath);
     const publishAt = parsePublishAt();
     const auth = await authenticate();
-    const updateArg = process.argv.indexOf('--update');
-    const videoId = updateArg !== -1 ? process.argv[updateArg + 1] : null;
-
-    if (updateArg !== -1 && !videoId) {
-      throw new Error('--update 後面需要影片 ID');
-    }
 
     if (videoId) {
-      await updateMetadata(auth, videoId, meta);
+      const thumbnailPath = explicitFile('--thumbnail') || (episodeDir ? findThumbnail(episodeDir) : null);
+      await updateMetadata(auth, videoId, meta, thumbnailPath);
     } else {
       const videoPath = explicitFile('--video') || findVideo(episodeDir);
       const status = readPublishStatus(episodeDir);

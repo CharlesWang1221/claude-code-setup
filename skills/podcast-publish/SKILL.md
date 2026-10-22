@@ -342,7 +342,9 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 IG／FB Reels 列在授權後到 Meta Business Suite 建立一則 Reel，發布位置同時勾選《不標準答案》Facebook 粉專與《不標準答案》Instagram（不得出現 Si Ming Wang 個人頁），上傳該支成品與專屬封面、貼上同一段 caption、AI 標示選「否」、以原生排程設定 target_at。兩個平台共用一段 caption；排程後分別在 Business Suite 排程清單讀回 FB 與 IG 兩列的時間、帳號與封面，任一邊未出現或封面未生效，就只把該平台記 `FAILED`，不重建另一邊。授權包仍分 IG、FB 兩列記錄證據。
 
-YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.render> --meta <該支 youtube.txt> --thumbnail <專屬封面> --qa-report <鐵雄報告> --publish-at <item.target_at>` 一次完成上傳、封面與預約公開；工具核對平台回傳的預約時間，不符就停下且不重傳。上傳前先讀 `item.platforms.youtube`，已有 id 就跳過。封面另到 Studio 讀回；若 Shorts 封面沒生效，該列記「封面未生效」，不為此重傳影片。
+YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.render> --meta <該支 youtube.txt> --thumbnail <專屬封面> --qa-report <鐵雄報告> --publish-at <item.target_at>` 一次完成上傳、封面與預約公開；工具核對平台回傳的預約時間，不符就停下且不重傳。上傳前先讀 `item.platforms.youtube`，已有 id 就跳過。既有影片只補封面時，使用 `node tools/youtube-upload.js --update <videoId> --thumbnail-only --thumbnail <專屬封面>`，不得把只更新 metadata 的 `--update` 當成封面已換。
+
+YouTube API／指令顯示「縮圖已套用」只能算提交成功，不能算封面生效。每支必須另開該影片 Studio 詳細資料頁，重新載入後讀回「已上傳的縮圖」、`selected=true`，且縮圖 URL 含正確 `videoId`；三項缺一就記 `THUMBNAIL_FAILED`，不得回報完成。S3EP12 失敗案例：既有 `--update` 路徑原本只更新標題與說明，流程又未逐支重載 Studio，導致封面未換卻被誤判完成。修復封面不重傳影片。
 
 Threads 列（主題文與每支短片）在授權後用瀏覽器工具到 threads.com，以《不標準答案》帳號建立貼文、附上該支成品（主題文附 IG 輪播第一張或純文字）、貼上 Threads 版文案，用原生「排程」設定 target_at；到排程清單讀回時間與內容後才算成功。介面找不到排程功能就標 `FAILED`，不得改成立即發布。
 
