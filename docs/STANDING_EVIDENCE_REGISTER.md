@@ -10,7 +10,7 @@
 
 | 列號 | 素材 | 用在哪 | 證據類型 | 證據內容 | 登記日 | 狀態 |
 | --- | --- | --- | --- | --- | --- | --- |
-| SE-01 | Podcast 片頭／片尾 BGM | Podcast 正片、句剪若有使用 | 老查聲明＋平台條款 | 來源：[ElevenLabs Sound Effects](https://elevenlabs.io/sound-effects)（老查 2026-10-24 提供）。[官方 FAQ](https://elevenlabs.io/sound-effects)：付費帳號可免版稅商用；免費帳號僅限非商用，下載自 [commercial 音效庫](https://elevenlabs.io/sound-effects/commercial) 者需標註 elevenlabs.io。下載當時是否為付費帳號，待老查確認 | 2026-10-24 | 有效，待確認下載時帳號方案 |
+| SE-01 | Podcast 片頭／片尾 BGM | Podcast 正片、句剪若有使用 | 老查聲明＋平台條款 | 來源：[ElevenLabs Sound Effects](https://elevenlabs.io/sound-effects)（老查 2026-10-24 提供）。[官方 FAQ](https://elevenlabs.io/sound-effects)：付費帳號可免版稅商用；免費帳號僅限非商用，下載自 [commercial 音效庫](https://elevenlabs.io/sound-effects/commercial) 者需標註 elevenlabs.io。老查 2026-10-24 回覆下載時是否付費「不記得」 | 2026-10-24 | 方案不明：鐵雄判 UNVERIFIED，解法＝老查查 ElevenLabs 帳單紀錄 |
 | SE-02 | Noto Sans TC | 句剪字幕與封面 | 開源授權 | [Google Fonts METADATA：OFL](https://github.com/google/fonts/blob/main/ofl/notosanstc/METADATA.pb) | 2026-10-22 | 有效 |
 
 ## 歷史缺口（老查一次接受）
@@ -19,4 +19,4 @@
 
 | 範圍 | 缺什麼 | 老查接受日 | 備註 |
 | --- | --- | --- | --- |
-| 2026-10-19 週六支句剪 | ImageGen 逐張 prompt 與參考輸入紀錄、渲染當下字型載入紀錄 | 待老查確認 | 確認後填日期才生效 |
+| 2026-10-19 週六支句剪 | ImageGen 逐張 prompt 與參考輸入紀錄、渲染當下字型載入紀錄 | 2026-10-24 | 老查原話：「不再追」 |
