@@ -10,7 +10,7 @@
 
 | 列號 | 素材 | 用在哪 | 證據類型 | 證據內容 | 登記日 | 狀態 |
 | --- | --- | --- | --- | --- | --- | --- |
-| SE-01 | Podcast 片頭／片尾 BGM | Podcast 正片、句剪若有使用 | 老查聲明（非授權文件） | 老查 2026-10-22：「是免版權音樂。BGM 已經用很久了」。曲名與來源連結待老查補 | 2026-10-22 | 有效，待補來源連結 |
+| SE-01 | Podcast 片頭／片尾 BGM | Podcast 正片、句剪若有使用 | 老查聲明＋平台條款 | 來源：[ElevenLabs Sound Effects](https://elevenlabs.io/sound-effects)（老查 2026-10-24 提供）。[官方 FAQ](https://elevenlabs.io/sound-effects)：付費帳號可免版稅商用；免費帳號僅限非商用，下載自 [commercial 音效庫](https://elevenlabs.io/sound-effects/commercial) 者需標註 elevenlabs.io。下載當時是否為付費帳號，待老查確認 | 2026-10-24 | 有效，待確認下載時帳號方案 |
 | SE-02 | Noto Sans TC | 句剪字幕與封面 | 開源授權 | [Google Fonts METADATA：OFL](https://github.com/google/fonts/blob/main/ofl/notosanstc/METADATA.pb) | 2026-10-22 | 有效 |
 
 ## 歷史缺口（老查一次接受）
