@@ -11,6 +11,7 @@
 | 列號 | 素材 | 用在哪 | 證據類型 | 證據內容 | 登記日 | 狀態 |
 | --- | --- | --- | --- | --- | --- | --- |
 | SE-01 | Podcast 片頭／片尾 BGM | Podcast 正片、句剪若有使用 | 老查聲明＋平台條款 | 來源：[ElevenLabs Sound Effects](https://elevenlabs.io/sound-effects)（老查 2026-10-24 提供）。[官方 FAQ](https://elevenlabs.io/sound-effects)：付費帳號可免版稅商用；免費帳號僅限非商用，下載自 [commercial 音效庫](https://elevenlabs.io/sound-effects/commercial) 者需標註 elevenlabs.io。老查 2026-10-24 回覆下載時是否付費「不記得」 | 2026-10-24 | 方案不明：鐵雄判 UNVERIFIED，解法＝老查查 ElevenLabs 帳單紀錄 |
+| SE-03 | 部分音效 | Podcast 正片、句剪若有使用 | 老查聲明＋平台條款 | 來源：[Envato Elements 音效](https://elements.envato.com/royalty-free-music/sound+effect)（老查 2026-10-24 提供）。[官方 License FAQ](https://help.elements.envato.com/hc/en-us/articles/360000629346-Envato-Elements-License-FAQ)：授權依「每次下載登記的專案」核發，訂閱期間完成的作品，退訂後仍可繼續使用；未完成的就失效。哪幾個音效、登記在哪個專案，待老查從 Envato 帳號下載授權證書 | 2026-10-24 | 待補授權證書：鐵雄判 UNVERIFIED |
 | SE-02 | Noto Sans TC | 句剪字幕與封面 | 開源授權 | [Google Fonts METADATA：OFL](https://github.com/google/fonts/blob/main/ofl/notosanstc/METADATA.pb) | 2026-10-22 | 有效 |
 
 ## 歷史缺口（老查一次接受）
