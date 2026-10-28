@@ -9,6 +9,8 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 （內部技術識別名維持 `podcast-publish`——skill 系統規定 name 只能用小寫英文+數字+橫線，中文名只能放在暱稱/觸發詞，不影響喊「星期天」直接叫出這個流程。）
 
+**上架模型與對話**：進入平台後台操作（Firstory、Meta Business Suite、Threads、YouTube Studio）時，用 `GPT-6.1 Sol / medium`，每次上架開新對話；Luna 不得操作發布。Playwright MCP 已在本機設定免逐次確認，若仍跳權限視窗，記下視窗文字回報，不要讓老查逐一按確認。
+
 **這不是重寫底下四條 pipeline，是在它們上面加一層排序 + 狀態判斷 + 呼叫。** 每個步驟該用什麼工具、去哪個記憶檔找細節，都在下面列出。
 
 ### 並行調度與接續

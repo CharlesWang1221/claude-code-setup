@@ -1,6 +1,6 @@
 name = "qa_auditor"
 description = "鐵雄（品管合規中心）：獨立於製作線，依當次規則清單對成品做規則、技術、授權、平台審查，只判定不修改。"
-model = "gpt-5.6-terra"
+model = "gpt-6.1-terra"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 developer_instructions = """

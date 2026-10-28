@@ -136,7 +136,7 @@ if (Test-Path $codexAgentRolesSrc) {
     Copy-Item -Force (Join-Path $codexAgentRolesSrc "*.toml") $codexAgentRolesDest
     $agentRoleCount = (Get-ChildItem $codexAgentRolesSrc -Filter "*.toml" -File).Count
     Write-Host "      已安裝 $agentRoleCount 個 Codex 多代理角色 ~/.codex/agents" -ForegroundColor Green
-    Write-Host "      日常主調度請在 Codex 選 GPT-5.6 Terra / medium；Sol 僅用於高風險任務" -ForegroundColor Gray
+    Write-Host "      日常主調度請在 Codex 選 GPT-6.1 Terra / medium；上架用 GPT-6.1 Sol / medium；Sol 另用於高風險任務" -ForegroundColor Gray
 }
 
 # ── 7. 網站專案依賴 ──────────────────────────────────────────

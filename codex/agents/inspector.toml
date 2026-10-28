@@ -1,6 +1,6 @@
 name = "inspector"
 description = "小查監察（獨立特助）：只聽老查命令，直接讀原始紀錄監察全公司，發現違反停止線就凍結該 item 並報老查；不屬教父、不派工、不改成品。"
-model = "gpt-5.6-terra"
+model = "gpt-6.1-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """

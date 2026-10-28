@@ -1,6 +1,6 @@
 name = "quota_officer"
 description = "省長（額度管理）：開工前核定預算卡，攔截超支與空轉，每週結算額度；不判斷內容好壞。"
-model = "gpt-5.6-terra"
+model = "gpt-6.1-terra"
 model_reasoning_effort = "low"
 sandbox_mode = "workspace-write"
 developer_instructions = """

@@ -1,6 +1,6 @@
 name = "dispatcher"
 description = "阿派（營運總監）：把已鎖定的任務拆成 item、畫依賴圖並產出並行派工單；不製作、不放行。"
-model = "gpt-5.6-terra"
+model = "gpt-6.1-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
 developer_instructions = """
