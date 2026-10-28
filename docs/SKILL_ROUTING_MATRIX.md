@@ -10,6 +10,7 @@
 | 自訂影片、動畫或既有 HyperFrames 工程檢查／修改 | 廠長＋教父 | `hyperframes` 入口 → 最貼近需求的專責流程 | brief、素材或既有工程、輸出規格、來源／授權、核准預算 | 先恢復工程狀態；依實際安裝 CLI 做 lint／check／snapshot；預算、sample、正式 render、外部工具、發布分別核准 |
 | 剪 Podcast 音檔 | 廠長（音剪） | `podcast-audio-edit` | 原始音檔、節目目的、可用逐字稿 | 未確認刪除範圍，不做破壞性覆蓋 |
 | 金句短片（週一至六 6 支，含週一本集預告） | 廠長（句剪，原名預報） | `short-video-experiment-review`（產前假設卡）→ `podcast-teaser-video` | 已放行主句、時間碼、原音、READY brief、單一測試變因 | 每支另做專屬封面並獨立送審，鉤子擇一並記 `cover_hook`，角色反應封面由大千出圖；重點卡主句 60 px／副句 49 px 以上；人物版才需四角色特寫與合照；小樣先確認，最終 QC 及品牌放行後才排程 |
+| 直式講者知識短片「開講」（特別企劃，老查點名才啟動） | 廠長（開講）＋解題 | 正式 Skill 未建立；依 `video-projects/kaijiang-pilot/BRIEF.md`，資訊窗交 `jieti`，講者層用嘴型元件 | 老查點名、省長預算卡、核准原音與時間碼、解題圖解來源 | 不占句剪週一至六槽位；句剪不得套嘴型頭像；油管角落小頭像只呼叫嘴型元件，不走開講流程；事實交正風 |
 | 剪紙節目精華（特別企劃，老查點名才啟動） | 廠長（剪紙） | `community-operations` → `paper-collage-video` | 老查點名指示、省長 L 級預算卡、已放行金句、時間碼、最終音訊、替換槽位的 `READY` brief、角色規格 | Skill 為 `RED` 時先比對；未有逐支 brief 不得做鏡頭表；QC 失敗不得建草稿 |
 | 實景照片＋家庭插畫角色＋金句原音動畫（特別企劃，老查點名才啟動，需省長 L 級預算卡） | 廠長（實透）＋阿維 | `community-operations` → `shi-tou`（實透）；執行串接 `chibi-ink-illustrations`；Flow 特別企劃才接 `flow-video-pilot` | 核准金句、來源音檔與時間碼；對應實透的 `READY` brief；老查提供實景後才定動態腳本 | 未有逐支 brief 不得情境拆解、索取照片或寫腳本；腳本與關鍵畫面先核准；QC 未過不排程；槽位替換需明確選稿 |
 | 真人素材做 Shorts | 廠長（真秀） | 先素材判讀，再 `shorts-pipeline` | 原始影片、音訊、可用逐字稿、發布目的 | 先向老查提出建議，取得「確認製作」才開始 |
