@@ -7,6 +7,7 @@
 | 新集數從素材到跨平台發布 | 阿派（派工）＋星期天（排程） | `podcast-publish`（星期天） | 集數、音檔、逐字稿／時間碼、公開範圍 | 先讀品牌與各當下 Skill；未 `ALLOW`／無平台證據，不得發布；IG 圖與 Podcast 音檔由單集狀態追蹤，六支短片（含預告）由跨集週計畫追蹤；YouTube 長片另交油管，未完成不阻擋星期天 |
 | 短影音製作前的平台與畫面方向 | 小渡＋阿派 | `community-operations` → `podcast-publish`（星期天） | 單集逐字稿／時間碼、可用素材、平台目的；有留言時附原始留言 | 未有社群 brief 不得開始製作；小市先採證；完成後仍須阿維 `ALLOW`、鐵雄 PASS、阿維 `ALLOW` 與老查發布授權 |
 | YouTube 長影片製作與獨立上架交接 | 阿派＋廠長（油管）＋阿維 | `you-guan`（油管） | 工作名稱／集數、原音或影片、逐字稿與時間碼、目的／形式；發布另需日期與公開範圍 | 不由星期天自動啟動；獨立 `.youtube-status.json`，原長片素材承接不重做；非 `ALLOW`／無 QC 或發布授權不得上傳 |
+| 自訂影片、動畫或既有 HyperFrames 工程檢查／修改 | 廠長＋教父 | `hyperframes` 入口 → 最貼近需求的專責流程 | brief、素材或既有工程、輸出規格、來源／授權、核准預算 | 先恢復工程狀態；依實際安裝 CLI 做 lint／check／snapshot；預算、sample、正式 render、外部工具、發布分別核准 |
 | 剪 Podcast 音檔 | 廠長（音剪） | `podcast-audio-edit` | 原始音檔、節目目的、可用逐字稿 | 未確認刪除範圍，不做破壞性覆蓋 |
 | 金句短片（週一至六 6 支，含週一本集預告） | 廠長（句剪，原名預報） | `short-video-experiment-review`（產前假設卡）→ `podcast-teaser-video` | 已放行主句、時間碼、原音、READY brief、單一測試變因 | 每支另做專屬封面並獨立送審，鉤子擇一並記 `cover_hook`，角色反應封面由大千出圖；重點卡主句 60 px／副句 49 px 以上；人物版才需四角色特寫與合照；小樣先確認，最終 QC 及品牌放行後才排程 |
 | 剪紙節目精華（特別企劃，老查點名才啟動） | 廠長（剪紙） | `community-operations` → `paper-collage-video` | 老查點名指示、省長 L 級預算卡、已放行金句、時間碼、最終音訊、替換槽位的 `READY` brief、角色規格 | Skill 為 `RED` 時先比對；未有逐支 brief 不得做鏡頭表；QC 失敗不得建草稿 |
