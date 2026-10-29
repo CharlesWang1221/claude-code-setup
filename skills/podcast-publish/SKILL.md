@@ -236,8 +236,18 @@ A 段讓老查核准最終標題；B 段在 Firstory 先行閘門放行後，讓
 
 **Threads 文案規則**
 - 另寫，不照貼 FB 長文或 IG caption；單篇 500 字元以內，像老查當下想到的一句話，不像公告
-- 拋一個觀點或問題讓人想回，結尾不用「點連結收聽」式 CTA；hashtag 最多 1 個
+- 拋一個觀點或問題讓人想回，結尾不用「點連結收聽」式 CTA；可附一行出處或 Firstory 連結；主題標籤固定 1 個（Threads 介面的主題欄），不在內文堆 hashtag
 - 短片的 Threads 文案只服務該支觀點，跟同支 IG caption 不得是同一段文字
+
+**短片上架文字包（2026-10-29 起每支必備，缺一列 `BLOCKED`）**
+
+每次上架都是被搜尋到的機會，不能只放一句金句加三個 hashtag。每支短片的 lane 目錄要有下列三檔，跟成片一起送阿維品牌閘門：
+
+- `caption.txt`（IG／FB Reels 共用）：第一行是鉤子；接 2 至 4 行這句話的情境，只用原話與逐字稿有的事；再一行出處「完整一集：《不標準答案》S{季}EP{集}〈集名〉」，FB 留言區或說明可附 Firstory 連結，IG 改寫「完整一集在個人檔案連結」；最後 3 至 5 個 hashtag：`#不標準答案` 固定，加 2 至 4 個本集主題詞（取自核心搜尋問題與 `firstory-tags.txt`），不放人名八卦或家人私事。
+- `youtube.txt`：`【YouTube 標題】`、`【YouTube 說明欄 Description】`、`【YouTube 標籤】` 三區。說明欄至少三段：情境 2 至 3 句、出處集名＋Firstory 公開連結（尚未公開就放節目頁）、一句訂閱或收聽指引；結尾 3 個 hashtag，`#不標準答案 #Shorts` 加 1 個主題詞（YouTube 只在標題上方顯示前 3 個）。`【YouTube 標籤】` 一行逗號分隔 8 至 15 個，第一個放核心搜尋詞，要含「不標準答案」「Podcast」與單集代號；`tools/youtube-upload.js` 會讀這一區寫進 YouTube 標籤欄。
+- `threads.txt`：依上方 Threads 文案規則，最後一行寫 `主題：{1 個主題標籤}`，發文時填進 Threads 的主題欄。
+
+舊包只有一行說明或沒有 `【YouTube 標籤】` 時，上傳前先補齊並重過阿維，不得以「工具會退回讀 hashtag」當成已有標籤。
 
 **發布前品牌閘門（五個文案檔、Threads 版文案與所有對外字卡都要檢查）**
 
@@ -317,6 +327,8 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 
 - 只收齊件的列：最終檔、專屬封面、caption、鐵雄 PASS、阿維 `ALLOW`、人工核准、完整 +08:00 時間都具備。缺件的列標 `BLOCKED` 留在包外，不擋其他列。
 - 逐平台確認登入有效、帳號身分正確（IG＝不標準答案、分享至 Facebook＝關閉、分享到 Threads＝關閉；Threads＝不標準答案；YouTube＝Studio 網址的頻道 ID 必須是 `UCE-QusSupACm0Lk7D0ThHLQ`，右上角顯示「不標準答案」，不是個人頻道 Charles Wang `UCNHo51yChyWBzqUaiBJCrHA`）、時間未過、平台支援預約。登入失效在預檢一次列給老查補登，不得等授權後才中途叫人。
+- Threads 預檢不能只看個人頁有登入：要實際打開發文框、選取一支本包影片，等影片預覽出現後取消。兩步驟驗證常在發文時才跳出，S3EP12 週就是授權後才卡在 2FA，5 支 Threads 整週沒發。
+- 逐支核對短片上架文字包三檔（見第 2.1 步）齊全且已過阿維；缺標籤、說明只有一行或 Threads 缺主題，該列 `BLOCKED`。
 
 **授權包**：寫入 `output/ep-{slug}/release-package.json`（週計畫短片寫 `output/weekly-shorts/{week-start}/release-package.json`），每列記 item ID、平台、帳號、成品路徑與 SHA-256、封面、caption 檔與 SHA-256、公開範圍、target_at、`ai_label`。給老查的摘要一次列完全部列，不分批問。
 
@@ -331,6 +343,10 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 **授權邊界**：只涵蓋包內的列與當時的雜湊。包外新增、換版、改時間、修改或刪除既有排程，都要另開新包或老查另行明確授權；授權不延續到下一包。
 
 **結束回報**：全部列跑完才回報一次：每列是「排程成功（平台 ID／網址／讀回時間）」「FAILED（原因）」或「未執行」，同步寫入 `docs/RELEASE_EVIDENCE_REGISTER.md`。失敗列另開只含失敗列的補件包。成功訊息、內容編號與網址讀回後，才可標成完成。
+
+`FAILED`、`BLOCKED`、`SUBMITTED_UNVERIFIED` 的列不能只留在 `release-package.json`：結束回報第一段先列它們，並在 `docs/ACTIVE_TASK_REGISTER.md` 開一列 `BLOCKED`，寫明缺什麼、誰補、何時補。S3EP12 的 Threads 2FA 卡住後只記在包裡，整週沒人補。
+
+**隔日讀回巡檢（完成標記）**：排程時段過後，隔天第一個工作階段先開前一天每個時段、每個平台的公開頁，核對帳號、成片（Threads 看影片在不在）、封面、文案與標籤，把證據庫該列從「已排程」改成「已公開」或 `MEDIA_MISSING`／`FAILED`，再 commit＋push。換電腦接手也一樣，不能因為證據在另一台就跳過。證據庫沒有讀回的列，一律不算完成。
 
 **證據落 GitHub（收工硬條件）**：結束回報之前，把本次寫入的 `docs/RELEASE_EVIDENCE_REGISTER.md`、`.publish-status.json` 與週計畫等追蹤檔 commit，再 `git pull --rebase` 後 push，讀回本機與 GitHub 為 0／0、工作樹乾淨。只 commit 本次發布寫入的檔案，不順手帶入其他修改；rebase 衝突就停下回報，不自行解。push 失敗時在結束回報第一行寫「證據未推上 GitHub」與原因，不得宣稱收工。單次發布中途若要停下等老查，也先把已讀回的證據推上去，避免證據只留在一台電腦。
 
@@ -348,7 +364,17 @@ YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.re
 
 YouTube API／指令顯示「縮圖已套用」只能算提交成功，不能算封面生效。每支必須另開該影片 Studio 詳細資料頁，重新載入後讀回「已上傳的縮圖」、`selected=true`，且縮圖 URL 含正確 `videoId`；三項缺一就記 `THUMBNAIL_FAILED`，不得回報完成。S3EP12 失敗案例：既有 `--update` 路徑原本只更新標題與說明，流程又未逐支重載 Studio，導致封面未換卻被誤判完成。修復封面不重傳影片。
 
-Threads 列（主題文與每支短片）在授權後用瀏覽器工具到 threads.com，以《不標準答案》帳號建立貼文、附上該支成品（主題文附 IG 輪播第一張或純文字）、貼上 Threads 版文案，用原生「排程」設定 target_at；到排程清單讀回時間與內容後才算成功。介面找不到排程功能就標 `FAILED`，不得改成立即發布。
+Threads 列（主題文與每支短片）在授權後用瀏覽器工具到 threads.com，以《不標準答案》帳號建立貼文、附上該支成品（主題文附 IG 輪播第一張或純文字）、貼上 Threads 版文案、填主題標籤，用原生「排程」設定 target_at。介面找不到排程功能就標 `FAILED`，不得改成立即發布。
+
+**Threads 影片三段讀回（2026-10-29 起硬規則）**：短片列的影片必須三段都讀到，缺一段就不算成功。
+
+1. 送出前：發文框裡看得到影片預覽（播放器或縮圖＋時長），上傳進度跑完、沒有進度條或「處理中」，才按排程。看不到影片就不送出，該列記 `FAILED`（媒體未附上）。
+2. 送出後：到排程清單逐則讀回時間、文案與影片預覽三項。只讀到文字，或找不到排程清單，記 `SUBMITTED_UNVERIFIED`，不得寫成「已排程」或「已公開」。
+3. 公開後：target_at 之後開該則單篇網址，確認影片在「這則貼文」的區塊裡。頁面下方別人的推薦貼文也會有影片，不能整頁數 `<video>`。只有文字就記 `MEDIA_MISSING`，當天回報老查；補救方式（原文下回覆影片，或刪除重發）由老查決定，不得自行刪文。
+
+S4EP1 失敗案例：10/26 至 10/28 三則 Threads 用網頁版排程送出，公開後只有文字、沒有影片；當時排程清單讀不到，卻被記成「四平台已公開」。
+
+**逾期補發**：時段已過的列，只有老查明確說補發時，才另開只含這些列的補件包並立即發布；每則照上面第 1、3 段讀回，一則確認有影片才發下一則。
 
 各平台讀回寫入該 item.platforms 與發布證據庫，單集保留引用。三平台任一失敗保留其他成功結果，不重複上傳，也不把整支標為跨平台完成。
 

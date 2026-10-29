@@ -76,7 +76,11 @@ function parseYoutubeMeta(dir, metaPath) {
   const title = titleMatch ? titleMatch[1].trim() : '（請填入標題）';
 
   const descStart = txt.indexOf('【YouTube 說明欄 Description】');
-  const descEnd   = txt.indexOf('\n---\n', descStart + 1);
+  // 說明欄到下一個 --- 或下一個【區塊】為止，避免把【YouTube 標籤】吃進說明
+  const descEnds = ['\n---\n', '\n【']
+    .map(sep => txt.indexOf(sep, descStart + 1))
+    .filter(i => i !== -1);
+  const descEnd = descEnds.length ? Math.min(...descEnds) : -1;
   let description = descStart !== -1
     ? txt.slice(descStart + '【YouTube 說明欄 Description】'.length, descEnd !== -1 ? descEnd : undefined).trim()
     : '';
@@ -85,10 +89,14 @@ function parseYoutubeMeta(dir, metaPath) {
     description = simpleDescription ? simpleDescription[1].trim() : '';
   }
 
+  // 優先讀【YouTube 標籤】（逗號分隔）；沒有才退回說明欄第一行 hashtag
+  const tagBlock = txt.match(/【YouTube 標籤】\s*\n([^\n]+)/);
   const tagMatch = txt.match(/^#(.+)$/m);
-  const tags = tagMatch
-    ? tagMatch[1].split(/\s+#/).map(t => t.replace(/^#/, '').trim()).filter(Boolean)
-    : [];
+  const tags = tagBlock
+    ? tagBlock[1].split(/[,，、]/).map(t => t.replace(/^#/, '').trim()).filter(Boolean)
+    : tagMatch
+      ? tagMatch[1].split(/\s+#/).map(t => t.replace(/^#/, '').trim()).filter(Boolean)
+      : [];
 
   return { title, description, tags };
 }
