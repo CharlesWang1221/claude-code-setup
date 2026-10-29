@@ -1,5 +1,5 @@
-"""嘴型元件（開講試點 v7）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
-import sys, json, math, random, subprocess, re, wave
+"""嘴型元件（開講試點 v9）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
+import sys, os, json, math, random, subprocess, re, wave
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from pypinyin import pinyin, Style
@@ -37,29 +37,29 @@ def feather(size, e=40):
     c = np.minimum(np.arange(h) / e, 1); a *= c[:, None]
     return Image.fromarray((a * 255).astype(np.uint8))
 CROPS = {'big': (90, 180, 910, 1310), 'small': (110, 190, 870, 1060)}  # small＝腰上鏡位
-# 去背：從畫面四角往內 flood fill 亮色紙底，剩下的就是人物
-_g = base.convert('L').point(lambda v: 255 if v > 205 else 0)
-for seed in [(5, 5), (base.width-6, 5), (5, base.height-6), (base.width-6, base.height-6), (base.width//2, 5)]:
-    ImageDraw.floodfill(_g, seed, 128)
-CUT = Image.fromarray(np.where(np.asarray(_g) == 128, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.2))
-# ---- 手臂圖層：以肩膀為軸心，只往外擺（左手順時針、右手逆時針）
-ARM_L = [(185, 770), (255, 790), (296, 830), (300, 1170), (270, 1290), (120, 1290), (95, 1100), (110, 900), (140, 810)]
-CORE_X = 262  # 身體側線保留在底圖，手臂挖空只到這裡
-MIRROR = 1000
-def poly_mask(pts, clip_x=None, right=False):
-    m = Image.new('L', base.size, 0)
-    q = [(min(x, clip_x), y) for x, y in pts] if clip_x else pts
-    if right: q = [(MIRROR - x, y) for x, y in q]
-    ImageDraw.Draw(m).polygon(q, fill=255); return m.filter(ImageFilter.GaussianBlur(2))
-ARM_MASK = {'L': poly_mask(ARM_L), 'R': poly_mask(ARM_L, right=True)}
-CORE = Image.fromarray(np.maximum(np.asarray(poly_mask(ARM_L, CORE_X)), np.asarray(poly_mask(ARM_L, CORE_X, True))))
-PIVOT = {'L': (215, 800), 'R': (MIRROR - 215, 800)}
-SIGN = {'L': -1, 'R': 1}
-BODY_A = Image.fromarray((np.asarray(CUT).astype(float) * (1 - np.asarray(CORE) / 255)).astype(np.uint8))
-ARMS = {}
-for k in 'LR':
-    a = base.convert('RGBA'); a.putalpha(Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(ARM_MASK[k]))))
-    ARMS[k] = a
+# 去背：從畫面四角往內 flood fill 亮色紙底，剩下的就是人物；已有透明度的圖直接用
+def cutout(img):
+    if img.mode == 'RGBA' and np.asarray(img.getchannel('A')).min() < 250: return img.getchannel('A')
+    g = img.convert('L').point(lambda v: 255 if v > 205 else 0)
+    for seed in [(5, 5), (img.width-6, 5), (5, img.height-6), (img.width-6, img.height-6), (img.width//2, 5)]:
+        ImageDraw.floodfill(g, seed, 128)
+    return Image.fromarray(np.where(np.asarray(g) == 128, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.2))
+CUT = cutout(base)
+# ---- 頭身分層：頭（含嘴型／眨眼）固定取自前視圖，身體換姿勢圖
+# 接縫在下巴下緣 y 698；姿勢圖的脖子與肩線要跟前視圖同位。托腮、搔頭這類手會蓋到頭的，另給 <姿勢>_前.png 疊在頭上
+HEAD = Image.new('L', base.size, 0); ImageDraw.Draw(HEAD).rectangle((0, 0, base.width, 698), fill=255)
+HEAD_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(HEAD.filter(ImageFilter.GaussianBlur(3)))))
+POSE_NAMES = ['垂手', '攤手', '手指', '托腮', '胸口', '搔頭']
+POSES, FRONT, MISSING = {}, {}, []
+_pd = os.environ.get('POSES', '')
+for n in POSE_NAMES:
+    fp = os.path.join(_pd, n + '.png')
+    src = Image.open(fp) if _pd and os.path.exists(fp) else base
+    if src is base and n != '垂手': MISSING.append(n)
+    body = src.convert('RGBA'); body.putalpha(cutout(src)); POSES[n] = body
+    fr = os.path.join(_pd, n + '_前.png')
+    if _pd and os.path.exists(fr): FRONT[n] = Image.open(fr).convert('RGBA')
+if MISSING: print('缺姿勢圖，暫用垂手：', MISSING)
 
 # ---- 字 → 嘴型
 def viseme(ch):
@@ -74,7 +74,7 @@ def viseme(ch):
     elif fin.startswith('i') or fin in ('ai', 'ei', 'in', 'ing'): v = '扁'
     else: v = '小開'
     return lip, v
-words = json.load(open(WORDS))
+words = json.load(open(WORDS, encoding='utf-8'))  # Windows 預設 cp950，要明指
 dur = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', WAV]))
 N = int(dur * FPS)
 track = ['閉'] * N
@@ -102,13 +102,33 @@ tilts = [w['s'] for w in words if re.search(r'[嗎呢？?]|怎麼|什麼|為什�
 blinks = []; t = 1.0
 while t < dur: blinks.append(int(t * FPS)); t += random.uniform(2.5, 5)
 
-env = rms / (rms.max() + 1e-9)
-env = np.convolve(env, np.ones(9) / 9, 'same')  # 約 0.3 秒平滑，避免手抖
-def arm_angle(f, k):
-    ph = 0 if k == 'L' else 1.7
-    sway = 0.6 * (1 + math.sin(f / FPS * 2 * math.pi / 4.2 + ph))
-    beat = sum(1.6 * math.exp(-((f - n) / 6) ** 2) for n in nods) * (1 if k == 'L' else 0.7)
-    return 0.0  # 2026-10-28 老查判定手臂切層擺動破圖，停用；手勢改走姿勢圖
+# ---- 姿勢排程：比方說／例如→攤手；序數與數量→手指；疑問→托腮；講自己→胸口；語塞／轉折→搔頭；其餘垂手
+# 同一姿勢至少 HOLD 秒、任 10 秒內最多切 2 次（回到垂手也算一次），切換交叉淡化 XF 秒
+HOLD, XF = 3.0, 0.15
+NUM = r'第[一二三四五六七八九十]|[0-9０-９]|[兩二三四五六七八九十百千萬]+(個|次|年|天|點|種|件|塊|歲|成|%)'
+cues = []
+for i, w in enumerate(words):
+    ctx = w['w'] + ''.join(x['w'] for x in words[i+1:i+3])  # 「比／方／說」常被拆成單字
+    if re.match(r'比方|例如|舉例|譬如', ctx): cues.append((w['s'], '攤手'))
+    elif re.search(NUM, w['w']): cues.append((w['s'], '手指'))
+    elif re.search(r'[嗎呢？?]|為什麼', w['w']): cues.append((w['s'], '托腮'))  # 「會怎麼想我」不是問句，怎麼／什麼不算
+    elif re.match(r'我覺得|我是|我自己|對我來說', ctx): cues.append((w['s'], '胸口'))
+    elif re.match(r'其實|不好意思|啊[,，]?$', w['w']): cues.append((w['s'], '搔頭'))
+switches = [(0.0, '垂手')]
+def can_switch(t):
+    return t - switches[-1][0] >= HOLD and sum(1 for s, _ in switches[1:] if t - 10 < s <= t) < 2
+back = None  # 手勢做完 HOLD 秒收回垂手；被頻率擋住就順延
+for t, p in cues + [(dur, None)]:
+    if back is not None and back < t:
+        while back < t and not can_switch(back): back += 0.5
+        if back < t: switches.append((back, '垂手')); back = None
+    if p and p == switches[-1][1]: back = t + HOLD
+    elif p and can_switch(t): switches.append((t, p)); back = t + HOLD
+def body_at(tt):
+    k = max(i for i, (s, _) in enumerate(switches) if s <= tt)
+    cur = switches[k][1]; prev = switches[k-1][1] if k else cur
+    return prev, cur, min((tt - switches[k][0]) / XF, 1) if k else 1
+
 def pose(f):
     dy = sum(9 * math.exp(-((f - n) / 4) ** 2) for n in nods)
     ang = sum(3.5 * math.exp(-((f / FPS - s - 0.4) / 0.45) ** 2) for s in tilts)
@@ -128,10 +148,10 @@ PAPER = tuple(int(v) for v in np.median(np.asarray(base)[30:120, 30:120].reshape
 
 def avatar(f, scale, kind):
     mouth = track[f]; b = 1 if any(0 <= f - x < 4 for x in blinks) else 0
-    body = frames[(mouth, b)].convert('RGBA'); body.putalpha(BODY_A)
-    for k in 'LR':
-        arm = ARMS[k].rotate(SIGN[k] * arm_angle(f, k), resample=Image.BICUBIC, center=PIVOT[k])
-        body.alpha_composite(arm)
+    prev, cur, mix = body_at(f / FPS)
+    body = POSES[cur] if mix >= 1 else Image.blend(POSES[prev], POSES[cur], mix)
+    body = body.copy(); head = frames[(mouth, b)].convert('RGBA'); head.putalpha(HEAD_A); body.alpha_composite(head)
+    if cur in FRONT: body.alpha_composite(FRONT[cur])
     im = body.crop(CROPS[kind]); dy, ang, br = pose(f)
     w, h = im.size; s = scale * br
     im = im.resize((int(w * s), int(h * s)), Image.LANCZOS)
@@ -152,6 +172,7 @@ def render(kind, out):
             d.text((W/2, 440), '資訊窗（解題圖解）', fill=(150, 145, 138), font=font_small, anchor='mm')
             im, dy = avatar(f, 0.85, 'big'); cv.paste(im, ((W - im.width)//2, int(H - im.height + 30 + dy)), im)
             if sub: d.text((W/2, 860), sub, fill=(30, 28, 26), font=font_big, anchor='mm')
+            if os.environ.get('POSE_DEBUG'): d.text((80, 1820), '姿勢：' + body_at(tt)[1], fill=(200, 40, 40), font=font_small)
         else:
             d.rectangle((0, 0, W, H), fill=(205, 200, 192))
             d.text((W/2, H/2-40), '故事段漫畫覆蓋（示意）', fill=(120, 115, 108), font=font_small, anchor='mm')
@@ -159,14 +180,15 @@ def render(kind, out):
             if sub: d.text((W/2-200, H-90), sub, fill=(30, 28, 26), font=font_small, anchor='mm')
         p.stdin.write(cv.tobytes())
     p.stdin.close(); p.wait()
-import os
-if os.environ.get('STILL'):
-    _aa = arm_angle; tiles = []
-    for deg in (0, 2.5, 5):
-        arm_angle = lambda f, k, d=deg: d
-        im, _ = avatar(60, 0.5, 'big'); bg = Image.new('RGBA', im.size, PAPER + (255,)); bg.alpha_composite(im); tiles.append(bg)
+print('pose switches', [(round(t, 2), p) for t, p in switches])
+if os.environ.get('STILL'):  # 只出四種姿勢聯絡表，檢查頭身接縫
+    tiles = []
+    for n in POSE_NAMES:
+        switches[:] = [(0.0, n)]; im, _ = avatar(60, 0.5, 'big')
+        bg = Image.new('RGBA', im.size, PAPER + (255,)); bg.alpha_composite(im); ImageDraw.Draw(bg).text((10, 10), n, fill=(200, 40, 40), font=font_small); tiles.append(bg)
     sh = Image.new('RGB', (sum(t.width for t in tiles), tiles[0].height), 'white'); x = 0
     for t in tiles: sh.paste(t, (x, 0)); x += t.width
-    sh.save(OUT + '-arms.png'); sys.exit()
-render('big', OUT + '-big-9x16.mp4'); render('small', OUT + '-small-16x9.mp4')
+    sh.save(OUT + '-poses.png'); sys.exit()
+for kind in os.environ.get('ONLY', 'big,small').split(','):
+    render(kind, OUT + ('-big-9x16.mp4' if kind == 'big' else '-small-16x9.mp4'))
 from collections import Counter; print('mouths', Counter(track)); print('nods', len(nods), 'tilts', len(tilts), 'blinks', len(blinks))
