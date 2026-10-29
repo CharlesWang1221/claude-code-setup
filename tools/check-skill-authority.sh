@@ -5,7 +5,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_SRC="$REPO_ROOT/skills"
-CODEX_SKILLS="${CODEX_HOME:-$HOME/.codex}/skills"
+CODEX_ROOT="${CODEX_HOME:-$HOME/.codex}"
+if command -v cygpath >/dev/null 2>&1; then
+    CODEX_ROOT="$(cygpath -u "$CODEX_ROOT")"
+fi
+CODEX_SKILLS="$CODEX_ROOT/skills"
 AGENTS_SKILLS="$HOME/.agents/skills"
 
 failures=0
@@ -20,14 +24,17 @@ else
     exit 1
 fi
 
+# 在 Skill 目錄內以相對路徑雜湊，不用 sed 剝除絕對路徑前綴；
+# Windows 的 CODEX_HOME 是 C:\... 反斜線路徑，會被 sha256sum 跳脫、也會被 sed 當成 regex。
 hash_tree() {
     local root="$1"
-    find "$root" -type f ! -name '.DS_Store' -print0 \
-        | LC_ALL=C sort -z \
-        | xargs -0 "${hash_cmd[@]}" \
-        | sed "s# [* ]$root/#  #" \
-        | "${hash_cmd[@]}" \
-        | awk '{print $1}'
+    (
+        cd "$root" &&
+        find . -type f ! -name '.DS_Store' -print0 \
+            | LC_ALL=C sort -z \
+            | xargs -0 "${hash_cmd[@]}" \
+            | sed 's#^\\##; s# [* ]\./#  #'
+    ) | "${hash_cmd[@]}" | awk '{print $1}'
 }
 
 check_copy() {
