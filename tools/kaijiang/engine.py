@@ -1,4 +1,4 @@
-"""嘴型元件（開講試點 v9）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
+"""嘴型元件（開講試點 v10）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
 import sys, os, json, math, random, subprocess, re, wave
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -11,8 +11,34 @@ FPS = 30; random.seed(7)
 base = Image.open(SRC).convert('RGB')
 CROP = (110, 180, 870, 1180)
 shapes = dict(M.shapes)
+mouth_dir = os.environ.get('MOUTHS', '')
+ink_mouths = {}
+if mouth_dir:
+    for name in shapes:
+        path = os.path.join(mouth_dir, name + '.png')
+        try:
+            with Image.open(path) as src:
+                if src.mode != 'RGBA' or src.size not in (base.size, (260, 140)):
+                    raise ValueError('需要 RGBA 透明 PNG，尺寸為原圖或 260 × 140')
+                layer = src.copy()
+            alpha = layer.getchannel('A')
+            box = alpha.point(lambda a: 255 if a >= 20 else 0).getbbox()
+            if box is None:
+                raise ValueError('嘴型沒有可見像素')
+            ox, oy = (0, 0) if layer.size == base.size else (M.CX-130, M.CY-70)
+            x0, y0, x1, y1 = box
+            if not (M.CX-100 <= ox+x0 and ox+x1 <= M.CX+100 and 578 <= oy+y0 and oy+y1 <= 655):
+                raise ValueError('嘴型超出既有擦除框')
+            ink_mouths[name] = layer
+        except (OSError, ValueError) as exc:
+            print(f'嘴型 {name} 無法讀取（{exc}），退回程式嘴型', flush=True)
 def with_mouth(name):
     f = base.copy()
+    if name in ink_mouths:
+        f = M.erase(f, 50).convert('RGBA')
+        layer = ink_mouths[name]
+        f.alpha_composite(layer, (0, 0) if layer.size == base.size else (M.CX-130, M.CY-70))
+        return f.convert('RGB')
     if shapes[name]:
         f = M.erase(f, 50); L, o = M.render(shapes[name]); f.paste(L, o, L)
     return f
@@ -36,7 +62,7 @@ def feather(size, e=40):
     r = np.minimum(np.arange(w) / e, 1); a *= np.minimum(r, r[::-1])[None, :]
     c = np.minimum(np.arange(h) / e, 1); a *= c[:, None]
     return Image.fromarray((a * 255).astype(np.uint8))
-CROPS = {'big': (90, 180, 910, 1310), 'small': (110, 190, 870, 1060)}  # small＝腰上鏡位
+CROPS = {'big': (90, 180, 910, 1310), 'small': (110, 190, 870, 1310)}  # small＝腰上鏡位
 # 去背：從畫面四角往內 flood fill 亮色紙底，剩下的就是人物；已有透明度的圖直接用
 def cutout(img):
     if img.mode == 'RGBA' and np.asarray(img.getchannel('A')).min() < 250: return img.getchannel('A')
@@ -176,7 +202,7 @@ def render(kind, out):
         else:
             d.rectangle((0, 0, W, H), fill=(205, 200, 192))
             d.text((W/2, H/2-40), '故事段漫畫覆蓋（示意）', fill=(120, 115, 108), font=font_small, anchor='mm')
-            im, dy = avatar(f, 0.70, 'small'); cv.paste(im, (W - im.width - 40, int(H - im.height + 6 + dy)), im)
+            im, dy = avatar(f, 0.82, 'small'); cv.paste(im, (W - im.width - 40, int(H - im.height + 6 + dy)), im)
             if sub: d.text((W/2-200, H-90), sub, fill=(30, 28, 26), font=font_small, anchor='mm')
         p.stdin.write(cv.tobytes())
     p.stdin.close(); p.wait()
