@@ -1,4 +1,4 @@
-"""嘴型元件（開講試點 v11）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
+"""嘴型元件（開講試點 v12）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
 import sys, os, json, math, random, subprocess, re, wave
 from collections import Counter
 import numpy as np
@@ -72,14 +72,18 @@ def cutout(img):
         ImageDraw.floodfill(g, seed, 128)
     return Image.fromarray(np.where(np.asarray(g) == 128, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.2))
 CUT = cutout(base)
-# ---- 頭身分層：頭（含嘴型／眨眼）固定取自前視圖，身體換姿勢圖
-# 接縫在下巴下緣 y 698；姿勢圖的脖子與肩線要跟前視圖同位。托腮、搔頭這類手會蓋到頭的，另給 <姿勢>_前.png 疊在頭上
-HEAD = Image.new('L', base.size, 0); ImageDraw.Draw(HEAD).rectangle((0, 0, base.width, 698), fill=255)
-HEAD_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(HEAD.filter(ImageFilter.GaussianBlur(3)))))
-# 原圖的單一道衣領覆住姿勢圖常見的雙領線；只取頸部中央，避開抬手。
-NECK = Image.new('L', base.size, 0); ImageDraw.Draw(NECK).ellipse((345, 662, 640, 795), fill=255)
-NECK_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(NECK.filter(ImageFilter.GaussianBlur(16)))))
-NECK_PATCH = base.convert('RGBA'); NECK_PATCH.putalpha(NECK_A)
+# ---- 頭身分層：沿前視頭部外輪廓切，排除原圖衣領與肩線。
+# 下巴弧線只保留臉部像素，姿勢圖獨自提供頸部、衣領和肩膀。
+HEAD_CONTOUR = [
+    (160, 0), (850, 0), (850, 450), (780, 450), (780, 510),
+    (760, 550), (730, 585), (705, 620), (670, 650), (625, 675),
+    (580, 692), (540, 701), (490, 706), (440, 701), (400, 692),
+    (355, 675), (315, 650), (280, 620), (250, 585), (225, 550),
+    (205, 510), (205, 450), (160, 450),
+]
+HEAD = Image.new('L', base.size, 0)
+ImageDraw.Draw(HEAD).polygon(HEAD_CONTOUR, fill=255)
+HEAD_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(HEAD.filter(ImageFilter.GaussianBlur(2)))))
 POSE_NAMES = ['垂手', '攤手', '手指', '托腮', '胸口', '搔頭']
 POSES, FRONT, MISSING = {}, {}, []
 _pd = os.environ.get('POSES', '')
@@ -237,7 +241,6 @@ def avatar(f, scale, kind):
     prev, cur, mix = body_at(f / FPS)
     body = POSES[cur] if mix >= 1 else Image.blend(POSES[prev], POSES[cur], mix)
     body = body.copy(); head = frames[(mouth, b)].convert('RGBA'); head.putalpha(HEAD_A); body.alpha_composite(head)
-    body.alpha_composite(NECK_PATCH)
     for name, opacity in ((prev, 1-mix), (cur, mix)) if mix < 1 else ((cur, 1),):
         if name in FRONT and opacity > 0:
             hand = FRONT[name].copy()
@@ -272,6 +275,22 @@ def render(kind, out):
         p.stdin.write(cv.tobytes())
     p.stdin.close(); p.wait()
 print('pose switches', [(round(t, 2), p) for t, p in switches])
+if os.environ.get('NECK_QC'):
+    # 每個姿勢各取切入、淡化中點與切出一格；所有影格都從實際 avatar 合成路徑擷取。
+    qc_names = [n for n in POSE_NAMES if n != '垂手']
+    qc_font = ImageFont.truetype(FONT, 25)
+    sheet = Image.new('RGB', (3*720, len(qc_names)*440), PAPER)
+    for row, name in enumerate(qc_names):
+        switches[:] = [(0.0, '垂手'), (1.0, name), (4.0, '垂手')]
+        for col, (frame, label) in enumerate(((31, '切入'), (32, '淡化中間'), (123, '切出'))):
+            im, _ = avatar(frame, 0.85, 'big')
+            tile = Image.new('RGBA', im.size, PAPER + (255,)); tile.alpha_composite(im)
+            crop = tile.crop((170, 350, 530, 550)).resize((720, 400), Image.Resampling.LANCZOS)
+            sheet.paste(crop.convert('RGB'), (col*720, row*440+40))
+            ImageDraw.Draw(sheet).text((col*720+10, row*440+5),
+                                       f'{name} {label} {frame/FPS:.2f}s', fill=(35, 30, 27), font=qc_font)
+    sheet.save(OUT + '-neck-qc-2x.png')
+    sys.exit()
 if os.environ.get('STILL'):  # 只出六種姿勢聯絡表，檢查頭身接縫
     tiles = []
     for n in POSE_NAMES:
