@@ -1,5 +1,6 @@
-"""嘴型元件（開講試點 v10）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
+"""嘴型元件（開講試點 v11）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
 import sys, os, json, math, random, subprocess, re, wave
+from collections import Counter
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from pypinyin import pinyin, Style
@@ -75,6 +76,10 @@ CUT = cutout(base)
 # 接縫在下巴下緣 y 698；姿勢圖的脖子與肩線要跟前視圖同位。托腮、搔頭這類手會蓋到頭的，另給 <姿勢>_前.png 疊在頭上
 HEAD = Image.new('L', base.size, 0); ImageDraw.Draw(HEAD).rectangle((0, 0, base.width, 698), fill=255)
 HEAD_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(HEAD.filter(ImageFilter.GaussianBlur(3)))))
+# 原圖的單一道衣領覆住姿勢圖常見的雙領線；只取頸部中央，避開抬手。
+NECK = Image.new('L', base.size, 0); ImageDraw.Draw(NECK).ellipse((345, 662, 640, 795), fill=255)
+NECK_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(NECK.filter(ImageFilter.GaussianBlur(16)))))
+NECK_PATCH = base.convert('RGBA'); NECK_PATCH.putalpha(NECK_A)
 POSE_NAMES = ['垂手', '攤手', '手指', '托腮', '胸口', '搔頭']
 POSES, FRONT, MISSING = {}, {}, []
 _pd = os.environ.get('POSES', '')
@@ -94,12 +99,15 @@ def viseme(ch):
     ini = pinyin(ch, style=Style.INITIALS, strict=False)[0][0]
     fin = p[len(ini):] if p.startswith(ini) else p
     lip = ini in ('b', 'p', 'm')
-    if ini in ('zh', 'ch', 'sh', 'r', 'z', 'c', 's') and fin == 'i': v = '扁'
-    elif fin.endswith(('a', 'an', 'ang', 'ao')): v = '大開'
-    elif fin in ('o', 'uo', 'ou', 'iu', 'ong', 'iong', 'u', 'v', 'un', 'vn', 'ue', 've') or fin.startswith('u'): v = '圓'
-    elif fin.startswith('i') or fin in ('ai', 'ei', 'in', 'ing'): v = '扁'
-    else: v = '小開'
-    return lip, v
+    if fin in ('ou', 'iu'): seq = ('小開', '圓')
+    elif fin == 'ui': seq = ('圓', '扁')
+    elif fin == 'uo': seq = ('圓', '小開')
+    elif ini in ('zh', 'ch', 'sh', 'r', 'z', 'c', 's') and fin == 'i': seq = ('扁',)
+    elif fin.endswith(('a', 'an', 'ang', 'ao')): seq = ('大開',)
+    elif fin in ('u', 'v', 'ü', 'o', 'ong'): seq = ('小開', '圓', '圓')  # 起口過渡後才收圓
+    elif fin.startswith('i') or fin in ('ai', 'ei', 'in', 'ing'): seq = ('扁',)
+    else: seq = ('小開',)
+    return lip, seq
 words = json.load(open(WORDS, encoding='utf-8'))  # Windows 預設 cp950，要明指
 dur = float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', WAV]))
 N = int(dur * FPS)
@@ -109,10 +117,62 @@ for w in words:
     if not chars: continue
     span = max(w['e'] - w['s'], 0.08) / len(chars)
     for k, c in enumerate(chars):
-        lip, v = viseme(c); s = w['s'] + k * span; e = s + span
+        lip, seq = viseme(c); s = w['s'] + k * span; e = s + span
         for f in range(int(s * FPS), min(N, int(e * FPS) + 1)):
             t = (f / FPS - s) / span
-            track[f] = '抿' if lip and t < 0.3 else ('小開' if t > 0.8 and v == '大開' else v)
+            track[f] = '抿' if lip and t < 0.3 else seq[min(int(t * len(seq)), len(seq)-1)]
+
+def runs(values):
+    starts = [0] + [i for i in range(1, len(values)) if values[i] != values[i-1]] + [len(values)]
+    return [(a, b, values[a]) for a, b in zip(starts, starts[1:])]
+
+# 最短 2 格：過短口形併入相鄰較長的一段，避免 30 fps 下單格閃爍。
+while True:
+    rr = runs(track)
+    short_idx = next((i for i, (a, b, _) in enumerate(rr) if b-a < 2), None)
+    if short_idx is None: break
+    a, b, _ = rr[short_idx]
+    left_len = rr[short_idx-1][1] - rr[short_idx-1][0] if short_idx else -1
+    right_len = rr[short_idx+1][1] - rr[short_idx+1][0] if short_idx+1 < len(rr) else -1
+    replacement = rr[short_idx-1][2] if left_len >= right_len else rr[short_idx+1][2]
+    track[a:b] = [replacement] * (b-a)
+
+# 大開 ↔ 閉必經小開 2 格；長度不足時捨棄該次大開，保留閉嘴休止。
+while True:
+    rr = runs(track)
+    boundary = next(((left, right) for left, right in zip(rr, rr[1:]) if {left[2], right[2]} == {'大開', '閉'}), None)
+    if boundary is None: break
+    (a, b, v), (c, d, w) = boundary
+    if v == '大開' and b-a >= 4: track[b-2:b] = ['小開'] * 2
+    elif w == '大開' and d-c >= 4: track[c:c+2] = ['小開'] * 2
+    elif v == '閉' and b-a >= 4: track[b-2:b] = ['小開'] * 2
+    elif w == '閉' and d-c >= 4: track[c:c+2] = ['小開'] * 2
+    else:
+        s, e = (a, b) if v == '大開' else (c, d)
+        track[s:e] = ['小開'] * (e-s)
+
+rr = runs(track)
+if any(b-a < 2 for a, b, _ in rr): raise RuntimeError('存在少於 2 格的嘴型')
+if any({x[2], y[2]} == {'大開', '閉'} for x, y in zip(rr, rr[1:])): raise RuntimeError('大開與閉缺小開過渡')
+counts = Counter(track)
+shares = {name: round(counts[name] / N, 4) for name in shapes}
+print('mouth shares', shares, 'min hold', min(b-a for a, b, _ in rr), flush=True)
+if shares['圓'] >= 0.20: raise RuntimeError('圓嘴型佔比達 20%，須調整韻母規則')
+with open(OUT + '-viseme-stats.json', 'w', encoding='utf-8') as fh:
+    json.dump({'fps': FPS, 'frames': N, 'counts': dict(counts), 'shares': shares,
+               'min_hold_frames': min(b-a for a, b, _ in rr)}, fh, ensure_ascii=False, indent=2)
+if os.environ.get('MOUTH_SHEET_START') is not None:
+    start = int(float(os.environ['MOUTH_SHEET_START']) * FPS)
+    if start < 0 or start + 4*FPS > N: raise ValueError('嘴部聯絡表須為完整連續 4 秒')
+    font_sheet = ImageFont.truetype(FONT, 21)
+    sheet = Image.new('RGB', (12*260, 10*155), 'white')
+    for k in range(4*FPS):
+        f = start + k
+        tile = frames[(track[f], 0)].crop((360, 545, 620, 675))
+        sheet.paste(tile, ((k%12)*260, (k//12)*155+25))
+        ImageDraw.Draw(sheet).text(((k%12)*260+4, (k//12)*155+2),
+                                   f'{f/FPS:.2f}s {track[f]}', fill=(25, 25, 25), font=font_sheet)
+    sheet.save(OUT + '-mouth-4s.png')
 
 # ---- 音量包絡 → 重音點頭
 with wave.open(WAV) as wv:
@@ -177,7 +237,12 @@ def avatar(f, scale, kind):
     prev, cur, mix = body_at(f / FPS)
     body = POSES[cur] if mix >= 1 else Image.blend(POSES[prev], POSES[cur], mix)
     body = body.copy(); head = frames[(mouth, b)].convert('RGBA'); head.putalpha(HEAD_A); body.alpha_composite(head)
-    if cur in FRONT: body.alpha_composite(FRONT[cur])
+    body.alpha_composite(NECK_PATCH)
+    for name, opacity in ((prev, 1-mix), (cur, mix)) if mix < 1 else ((cur, 1),):
+        if name in FRONT and opacity > 0:
+            hand = FRONT[name].copy()
+            hand.putalpha(hand.getchannel('A').point(lambda a: round(a * opacity)))
+            body.alpha_composite(hand)
     im = body.crop(CROPS[kind]); dy, ang, br = pose(f)
     w, h = im.size; s = scale * br
     im = im.resize((int(w * s), int(h * s)), Image.LANCZOS)
@@ -207,7 +272,7 @@ def render(kind, out):
         p.stdin.write(cv.tobytes())
     p.stdin.close(); p.wait()
 print('pose switches', [(round(t, 2), p) for t, p in switches])
-if os.environ.get('STILL'):  # 只出四種姿勢聯絡表，檢查頭身接縫
+if os.environ.get('STILL'):  # 只出六種姿勢聯絡表，檢查頭身接縫
     tiles = []
     for n in POSE_NAMES:
         switches[:] = [(0.0, n)]; im, _ = avatar(60, 0.5, 'big')
@@ -217,4 +282,4 @@ if os.environ.get('STILL'):  # 只出四種姿勢聯絡表，檢查頭身接縫
     sh.save(OUT + '-poses.png'); sys.exit()
 for kind in os.environ.get('ONLY', 'big,small').split(','):
     render(kind, OUT + ('-big-9x16.mp4' if kind == 'big' else '-small-16x9.mp4'))
-from collections import Counter; print('mouths', Counter(track)); print('nods', len(nods), 'tilts', len(tilts), 'blinks', len(blinks))
+print('mouths', counts); print('nods', len(nods), 'tilts', len(tilts), 'blinks', len(blinks))
