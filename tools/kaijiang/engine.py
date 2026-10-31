@@ -1,8 +1,8 @@
-"""嘴型元件（開講試點 v12）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
+"""嘴型元件（開講試點 v13）：words.json + 音檔 + 角色前視圖 → 大／小兩種尺寸 MP4。"""
 import sys, os, json, math, random, subprocess, re, wave
 from collections import Counter
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageChops
 from pypinyin import pinyin, Style
 sys.path.insert(0, sys.argv[1]); import mouths as M  # noqa
 SRC, WORDS, WAV, AUDIO, FONT, OUT = sys.argv[2:8]
@@ -84,6 +84,16 @@ HEAD_CONTOUR = [
 HEAD = Image.new('L', base.size, 0)
 ImageDraw.Draw(HEAD).polygon(HEAD_CONTOUR, fill=255)
 HEAD_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(HEAD.filter(ImageFilter.GaussianBlur(2)))))
+# 固定原前視圖的領口筆觸，覆蓋生成姿勢內建、位置各異的多道衣領線。
+# 遮罩只在領口中央；肩線、手臂與手勢仍由各姿勢圖提供。
+COLLAR = Image.new('L', base.size, 0)
+ImageDraw.Draw(COLLAR).polygon([
+    (365, 670), (615, 670), (640, 695), (650, 735),
+    (640, 775), (630, 840), (615, 880), (365, 880),
+    (350, 840), (340, 775), (330, 735), (340, 695),
+], fill=255)
+COLLAR_A = Image.fromarray(np.minimum(np.asarray(CUT), np.asarray(COLLAR.filter(ImageFilter.GaussianBlur(10)))))
+COLLAR_PATCH = base.convert('RGBA'); COLLAR_PATCH.putalpha(COLLAR_A)
 POSE_NAMES = ['垂手', '攤手', '手指', '托腮', '胸口', '搔頭']
 POSES, FRONT, MISSING = {}, {}, []
 _pd = os.environ.get('POSES', '')
@@ -93,8 +103,27 @@ for n in POSE_NAMES:
     if src is base and n != '垂手': MISSING.append(n)
     body = src.convert('RGBA'); body.putalpha(cutout(src)); POSES[n] = body
     fr = os.path.join(_pd, n + '_前.png')
-    if _pd and os.path.exists(fr): FRONT[n] = Image.open(fr).convert('RGBA')
+    if _pd and os.path.exists(fr):
+        front = Image.open(fr).convert('RGBA')
+        if n == '托腮':
+            # 原 _前 圖把衣領與肩膀一併裁進來；只保留會蓋到臉的手。
+            hand_mask = Image.new('L', base.size, 0)
+            ImageDraw.Draw(hand_mask).polygon([
+                (275, 550), (450, 550), (450, 665),
+                (430, 720), (315, 720), (280, 680),
+            ], fill=255)
+            front.putalpha(ImageChops.darker(front.getchannel('A'), hand_mask.filter(ImageFilter.GaussianBlur(4))))
+        FRONT[n] = front
 if MISSING: print('缺姿勢圖，暫用垂手：', MISSING)
+CHIN_COLLAR_PATCH = COLLAR_PATCH
+if '托腮' in FRONT:
+    # 領口補片沿前臂右緣讓位；衣領右半仍用單一原圖筆觸。
+    arm_clearance = Image.new('L', base.size, 0)
+    ImageDraw.Draw(arm_clearance).polygon([(0, 680), (430, 680), (445, 730),
+                                           (430, 780), (415, 840), (390, 900), (0, 900)], fill=255)
+    arm_clearance = arm_clearance.filter(ImageFilter.GaussianBlur(7))
+    chin_alpha = ImageChops.multiply(COLLAR_A, ImageChops.invert(arm_clearance))
+    CHIN_COLLAR_PATCH = base.convert('RGBA'); CHIN_COLLAR_PATCH.putalpha(chin_alpha)
 
 # ---- 字 → 嘴型
 def viseme(ch):
@@ -193,7 +222,8 @@ blinks = []; t = 1.0
 while t < dur: blinks.append(int(t * FPS)); t += random.uniform(2.5, 5)
 
 # ---- 姿勢排程：比方說／例如→攤手；序數與數量→手指；疑問→托腮；講自己→胸口；語塞／轉折→搔頭；其餘垂手
-# 同一姿勢至少 HOLD 秒、任 10 秒內最多切 2 次（回到垂手也算一次），切換交叉淡化 XF 秒
+# 同一姿勢至少 HOLD 秒、任 10 秒內最多切 2 次（回到垂手也算一次）。
+# 姿勢切換使用 XF 秒區間，中點切換整張姿勢，避免兩套肩線交叉淡化。
 HOLD, XF = 3.0, 0.15
 NUM = r'第[一二三四五六七八九十]|[0-9０-９]|[兩二三四五六七八九十百千萬]+(個|次|年|天|點|種|件|塊|歲|成|%)'
 cues = []
@@ -239,13 +269,12 @@ PAPER = tuple(int(v) for v in np.median(np.asarray(base)[30:120, 30:120].reshape
 def avatar(f, scale, kind):
     mouth = track[f]; b = 1 if any(0 <= f - x < 4 for x in blinks) else 0
     prev, cur, mix = body_at(f / FPS)
-    body = POSES[cur] if mix >= 1 else Image.blend(POSES[prev], POSES[cur], mix)
-    body = body.copy(); head = frames[(mouth, b)].convert('RGBA'); head.putalpha(HEAD_A); body.alpha_composite(head)
-    for name, opacity in ((prev, 1-mix), (cur, mix)) if mix < 1 else ((cur, 1),):
-        if name in FRONT and opacity > 0:
-            hand = FRONT[name].copy()
-            hand.putalpha(hand.getchannel('A').point(lambda a: round(a * opacity)))
-            body.alpha_composite(hand)
+    # 肩線幾何不同，整張身體交叉淡化會產生兩套肩線；於 0.15 秒區間的中點切換。
+    chosen = cur if mix >= 0.4 else prev
+    body = POSES[chosen].copy()
+    body.alpha_composite(CHIN_COLLAR_PATCH if chosen == '托腮' else COLLAR_PATCH)
+    head = frames[(mouth, b)].convert('RGBA'); head.putalpha(HEAD_A); body.alpha_composite(head)
+    if chosen in FRONT: body.alpha_composite(FRONT[chosen])
     im = body.crop(CROPS[kind]); dy, ang, br = pose(f)
     w, h = im.size; s = scale * br
     im = im.resize((int(w * s), int(h * s)), Image.LANCZOS)
@@ -282,7 +311,7 @@ if os.environ.get('NECK_QC'):
     sheet = Image.new('RGB', (3*720, len(qc_names)*440), PAPER)
     for row, name in enumerate(qc_names):
         switches[:] = [(0.0, '垂手'), (1.0, name), (4.0, '垂手')]
-        for col, (frame, label) in enumerate(((31, '切入'), (32, '淡化中間'), (123, '切出'))):
+        for col, (frame, label) in enumerate(((31, '切入'), (32, '切換中點'), (123, '切出'))):
             im, _ = avatar(frame, 0.85, 'big')
             tile = Image.new('RGBA', im.size, PAPER + (255,)); tile.alpha_composite(im)
             crop = tile.crop((170, 350, 530, 550)).resize((720, 400), Image.Resampling.LANCZOS)
