@@ -1,0 +1,36 @@
+<!doctype html>
+<!--
+  句剪專屬封面系列框架樣板（2026-10-29 老查選定：D 版＋黃色節目名）
+  色碼與限制以 DESIGN.md「短影片封面強調色」為準；排版規則見 SKILL.md「專屬封面」。
+  使用：複製到當週工作資料夾，替換下列 {{...}}，以 1080x1920 截圖，截圖前等 document.fonts.ready。
+  {{ART}}       封面畫面（大千依留白規則出圖，y 280–720 不得有角色頭部）
+  {{TAG}}       期別標籤，例：S4EP2｜週一預告
+  {{LINE1}}     主標第一行（黑字）
+  {{HIGHLIGHT}} 主標重點字，2～4 字，黑底黃字，全張只有這一處
+  {{FONT}}      當週 cover_font（DESIGN.md 字體表）；預設 Noto Sans TC
+  交件前：裁 y 240–1680 縮成寬 264 px 檢查，標籤、主標、節目名都要完整可讀。
+-->
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #f7f4ec; }
+  .cover { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: #24231f; font-family: "Noto Sans TC", sans-serif; }
+  .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .tag { position: absolute; top: 280px; left: 88px; padding: 10px 18px; background: #24231f; color: #FFD400; font-size: 32px; font-weight: 700; letter-spacing: .04em; }
+  .headline { position: absolute; left: 76px; top: 360px; width: 928px; margin: 0; font-family: "{{FONT}}", "Noto Sans TC", sans-serif; font-size: 125px; line-height: 1.12; letter-spacing: -.08em; font-weight: 900; }
+  .hl { display: inline-block; background: #24231f; color: #FFD400; padding: 0 .2em .04em .12em; margin-top: .12em; margin-left: -.06em; }
+  .show { position: absolute; left: 88px; top: 1438px; padding: 18px 22px; background: #FFD400; border-top: 4px solid #24231f; font-size: 42px; font-weight: 700; }
+</style>
+</head>
+<body>
+  <main class="cover">
+    <img class="art" src="{{ART}}" alt="">
+    <div class="tag">{{TAG}}</div>
+    <h1 class="headline">{{LINE1}}<br><span class="hl">{{HIGHLIGHT}}</span></h1>
+    <div class="show">不標準答案</div>
+  </main>
+</body>
+</html>

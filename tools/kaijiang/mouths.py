@@ -8,15 +8,24 @@ skin=tuple(int(v) for v in np.median(a[560:575,430:550].reshape(-1,3),axis=0))
 INK=(38,34,32); WASH=(88,82,78); TONGUE=(165,158,150); TEETH=(244,240,232)
 CX,CY=490,604; K=4
 def erase(img,bottom=20):
-    # 逐列左右內插：取擦除區左右兩側的臉色，中間線性補，保留原本的明暗漸層
-    x0,x1,y0,y1=CX-100,CX+100,CY-34,CY+36
+    # 上緣避開鼻底陰影（y 576 以上），下緣包住下唇陰影（y 628–648）；切一半會留橫向色帶
+    x0,x1,y0,y1=CX-100,CX+100,CY-26,CY+50
     a=np.asarray(img).astype(float).copy()
-    for y in range(y0,y1+1):
+    for y in range(y0,y1+1):  # 先逐列左右內插當初值
         L=np.median(a[y,x0-14:x0-2],axis=0); R=np.median(a[y,x1+2:x1+14],axis=0)
         t=np.linspace(0,1,x1-x0)[:,None]; a[y,x0:x1]=L*(1-t)+R*t
+    # 再以四邊為邊界做調和補色，上下左右的明暗一起往內收，不留矩形邊
+    # 第二塊補右嘴角筆尖：翹到 y 575，主框不能整條上拉（會吃到鼻底陰影）
+    boxes=[(x0,y0,x1,y1),(CX+58,CY-33,CX+78,y0)]
+    for bx0,by0,bx1,by1 in boxes:
+        r=a[by0-1:by1+2,bx0-1:bx1+1]
+        for _ in range(1500):
+            r[1:-1,1:-1]=(r[:-2,1:-1]+r[2:,1:-1]+r[1:-1,:-2]+r[1:-1,2:])/4
     out=Image.fromarray(a.clip(0,255).astype(np.uint8))
-    m=Image.new('L',img.size,0); ImageDraw.Draw(m).rounded_rectangle((x0,y0,x1,y1),radius=24,fill=255)
-    return Image.composite(out,img,m.filter(ImageFilter.GaussianBlur(9)))
+    # 補色已與四邊連續，遮罩不再圓角＋大羽化；羽化會讓角落透出原圖嘴角
+    m=Image.new('L',img.size,0)
+    for b in boxes: ImageDraw.Draw(m).rectangle(b,fill=255)
+    return Image.composite(out,img,m.filter(ImageFilter.GaussianBlur(1)))
 def curve(hw,sag,lift=0,n=60):
     # smile curve: corners at y=-lift, middle sags down by sag
     return [(x, -lift + sag*(1-(x/hw)**2)) for x in np.linspace(-hw,hw,n)]
