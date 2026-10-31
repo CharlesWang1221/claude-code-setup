@@ -48,7 +48,7 @@ Config schema:
 
 1. Identify the characters, action, emotion, props, setting, and requested aspect ratio from the user's scene.
 2. Attach every character sheet for people appearing in the scene. State each person's name, gender/age cue, hair, clothing, action, and placement; do not infer these from names alone.
-3. Generate one complete composition. Keep in-image copy, Chinese dialogue, and labels out of generation; reserve clean space or add them in post-production.
+3. For 句剪 shots, every prompt must state both the shot size (extreme wide shot / wide shot / medium shot / close-up) and the camera angle (eye-level / low-angle / high-angle / bird's-eye view / Dutch angle) given in the approved shot list; see `podcast-teaser-video` SKILL.md「景別與鏡頭角度」. Generate one complete composition. Keep in-image copy, Chinese dialogue, and labels out of generation; reserve clean space or add them in post-production.
 4. Inspect identity, costume, pose, scene hierarchy, and unwanted artifacts. If anything drifts, make one targeted edit only and explicitly say that all other elements must remain unchanged.
 5. Preserve the original; move only the approved final PNG to `final_output_dir` with a descriptive non-overwriting name: `主題＿場景＿版本.png`.
 
