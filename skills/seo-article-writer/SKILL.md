@@ -70,7 +70,7 @@ H2/H3結構，挂記憶 `project_podcast_strategy` 三大哲學（金繼/物心�
 ### 4. 撰寫全文
 套用：
 - `feedback_interaction_style` 的語氣禁用詞、排版規則（繁體中文、中英數交界半角空格、段落≤3行、精準條列、複雜概念用電影分鏡/動畫特效比喻）
-- `feedback_writing_authenticity` 反AI味六條規則（禁AI味制式開頭、每個論點掛具體案例、段落長度不對稱、要有明確立場、引用取原話口語感、念出來測試）
+- 反 AI 味規則以 repo 根目錄 `AGENTS.md`「反 AI 味寫作規則」第 1–17 條為唯一母版（2026-11-02 起新增黑話、同義詞輪換、句子瘦身、對話痕跡、缺案例標 `[待補案例]` 五條），不再引用舊的 auto-memory 六條版本
 
 ### 5. 技術SEO包裝
 frontmatter 填：

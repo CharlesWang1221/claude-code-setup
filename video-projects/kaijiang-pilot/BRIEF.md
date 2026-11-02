@@ -45,6 +45,7 @@ last_updated: 2026-10-31 Asia/Taipei
 
 - 必讀 Skill：`chibi-ink-illustrations`（嘴型素材）、`jieti`（資訊窗）、`hyperframes`（合成）。
 - 開講正式 Skill 等階段 1 試片核准後才建立。
+- 選段與口播判準草案見 [segment-and-script-guide.md](segment-and-script-guide.md)（2026-11-02 新增），建立正式 Skill 時併入其 `references/`。
 - 對外發布時比照短片規則：專屬封面、鐵雄 QC、阿維放行、平台讀回證據。
 
 ## 目前狀態
