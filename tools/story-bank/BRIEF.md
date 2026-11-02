@@ -1,6 +1,6 @@
 ---
 task_id: STORY-BANK-PILOT
-status: PENDING_APPROVAL
+status: ACTIVE
 owner: 居易（使用者）＋廠長（建庫）；鐵雄驗抽查
 created_at: 2026-11-02 Asia/Taipei
 last_updated: 2026-11-02 Asia/Taipei
@@ -34,8 +34,8 @@ last_updated: 2026-11-02 Asia/Taipei
 | 類型 | 路徑或來源 | 版本 | 狀態 |
 | --- | --- | --- | --- |
 | 逐字稿 | 各集 `output/ep-*/transcript/`（gitignore）及 Drive 備份；缺的集數用 Whisper 補 | 待盤點 | 未開始 |
-| 索引檔 | 老查 Google Drive「節目-不標準答案/素材庫/」（2026-11-02 老查指定；本機路徑依電腦而定，不寫進 repo） | — | 位置已定 |
-| 腳本 | `tools/story-bank/build_index.py` | — | 未開始 |
+| 索引檔 | 老查 Google Drive「節目-不標準答案/素材庫/story-bank.jsonl」；用法見同資料夾 README.md | S4EP1＋EP2，105 筆 | 待老查抽查 |
+| 腳本 | `tools/story-bank/build_index.py`（切段／併標註／查詢）、`tools/story-bank/align_public.py`（對公開版時間碼） | v1 | 已完成 |
 
 ## 閘門與證據
 
@@ -45,9 +45,14 @@ last_updated: 2026-11-02 Asia/Taipei
 
 ## 目前狀態
 
-- 狀態：PENDING_APPROVAL。
+- 狀態：ACTIVE（試做完成，待抽查）。
 - 已完成：構想與規格（本檔）。
 - 2026-11-02 老查指定先盤點 S4；盤點結果放 Drive 素材庫「S4_逐字稿盤點_2026-11-02.md」。S4 共 4 集逐字稿齊全；EP1、EP2 為第一批（待補公開讀回），EP3、EP4 無發布紀錄暫不入庫；EP4 的 12 段「Speaker 4」經老查確認為大寶，已改標；剩 1 段 Whisper 幻覺於入庫時刪除。
 - 2026-11-02 S4EP1、S4EP2 公開讀回已入發布證據庫（S4EP1-PUBLIC、S4EP2-PUBLIC）。S4EP1 公開版顯示 53 分鐘、本機逐字稿 58:10，開頭時間碼對得上，入庫前核對後段是否有剪掉的部分。
-- 阻塞或待確認：老查核准開工。
-- 下一步（核准後由 Codex 執行）：盤點已公開集數的逐字稿 → 寫 `build_index.py` → 先跑 S4EP1＋EP2 試做 → 3 主題查詢驗收 → 改居易 SKILL.md。
+- 2026-11-02 老查核准開工並完成試做：
+  - S4EP1 公開版不是 Drive 上的 `S4ep1-firstory-v3.mp3`：公開版 3,189 秒，比本機少 301 秒，全片 16 處被剪。已用 `align_public.py` 逐句比對，85 句公開版已剪不入庫，其餘改用公開版時間碼；對 show notes 章節 30:09、42:14 分秒不差。S4EP2 公開版與本機同長（2,651 秒），直接使用。
+  - 切段後人工標註：EP1 60 段收 53、EP2 52 段全收，共 105 筆；原話全部通過逐字比對。錄後更正、孩子健康隱私、需查證數字都寫在 `note`。
+  - 驗收查詢：「爸爸」34 筆跨兩集、「陪伴」15 筆跨兩集、「自尊」5 筆；「放手」只有 2 筆，未達 3 筆門檻，兩集題材有限，下一批再驗。
+- 阻塞或待確認：老查用公開版抽查 10 筆（Drive 素材庫「抽查10筆_S4EP1-EP2_2026-11-02.md」）；通過後才改居易 SKILL.md 接素材庫。
+- 避坑：任何一集入庫前都要先比對公開版長度，不能假設 Drive 上的音檔就是上架版。
+- 下一步：老查抽查通過 → 改居易 SKILL.md 第 3 步接素材庫 → EP3、EP4 公開讀回後照 README「新增一集」補入 → 回補 S3。
