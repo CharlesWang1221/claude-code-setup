@@ -69,6 +69,8 @@
 | S3EP11-SAT-QUOTE-THREADS | Threads 週六金句 | 同支 `sat-scene/video-v2.mp4`；`threads.txt` | `已排程` | Threads 草稿／預排清單讀回帳號 `another20251021`、正確文案、影片播放器及「星期六下午 8:30 [GMT+8] 發佈」 | 2026-10-17 20:30（Asia/Taipei） | 預排清單未顯示貼文 ID | 到時核對公開貼文；不可重傳 |
 | S3EP11-THU-QUOTE-YOUTUBE | YouTube Shorts 週四金句 | 同支 `thu-type/video-v2.mp4`；封面 v8 | `已公開；老查 QA 例外授權` | Studio 讀回品牌頻道、封面 `cover-v8.png`、著作權與社群規範初檢無問題、發布成功視窗「影片已發布」、Shorts 列表「公開」；授權來源仍 `UNVERIFIED`，例外記於任務卡 | 2026-10-15（Asia/Taipei） | `https://youtube.com/shorts/HLzfyfUUc0M?feature=share`（`HLzfyfUUc0M`） | 補齊素材授權／自製證據；不可重傳 |
 | S3EP11-SAT-QUOTE-YOUTUBE | YouTube Shorts 週六金句 | 同支 `sat-scene/video-v2.mp4`；封面 v8 | `已排程；老查 QA 例外授權` | Studio 讀回封面 `cover-v8.png`、著作權與社群規範初檢無問題，並顯示「已排定影片發布時間：2026年10月17日 晚上20:30」；GMT+0800；授權來源仍 `UNVERIFIED` | 2026-10-17 20:30（Asia/Taipei） | `https://youtube.com/shorts/EPKQdlHWdME?feature=share`（`EPKQdlHWdME`） | 到時讀回公開狀態，補齊素材來源；不可重傳 |
+| S4EP1-PUBLIC | Podcast 正片公開讀回 | `S4ep1-firstory-v3.mp3`（本機 58:10） | `已公開；長度待核` | 2026-11-02 Apple Podcasts 台灣區節目頁（Firstory RSS 同步）讀回單集標題「🎙️【聊哉】寶可夢30年：一扇門，你剛好有鑰匙. S4EP01」、列表日期 10月25日（美東時區，對應台北 10-26 07:00）、顯示長度 53 分鐘；與本機 58:10 不符，開頭章節 00:47 與逐字稿對得上 | 2026-11-02 讀回（Asia/Taipei） | `https://podcasts.apple.com/tw/podcast/id1872102749?i=1000798080042`；Firstory `https://open.firstory.fm/story/cmviy8iin08fv01yfcapa5ynk` | 在 Firstory 播放器核對公開版實際長度，確認與逐字稿時間碼一致 |
+| S4EP2-PUBLIC | Podcast 正片公開讀回 | `s4ep2 .mp3`（本機 44:11） | `已公開` | 2026-11-02 Apple Podcasts 台灣區節目頁讀回單集標題「S4EP2｜一個人扛起照顧，是愛還是逞強？」、顯示 1 天前、44 分鐘，show notes 含時間軸與錄後更正 | 2026-11-01 07:00 排程；2026-11-02 讀回（Asia/Taipei） | `https://podcasts.apple.com/tw/podcast/id1872102749?i=1000799129873`；Firstory 單集 ID `cmvs7lnvt00t601xua9r146em` | 已讀回；無 |
 
 ## 新發布資產列入模板
 
