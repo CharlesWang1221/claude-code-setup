@@ -19,7 +19,7 @@ const posts = (await getPublishedPosts()).sort(
   <section class="blog-list container">
     <div class="cards-2col">
       {posts.map((post) => (
-        <a href={`/blog/${post.slug}`} class="media-card reveal">
+        <a href={`/blog/${post.id}`} class="media-card reveal">
           {post.data.image && (
             <div class="media-card-thumb">
               <img src={post.data.image} alt={post.data.title} loading="lazy" />

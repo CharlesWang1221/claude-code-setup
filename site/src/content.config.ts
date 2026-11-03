@@ -1,7 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     date: z.string(),
@@ -17,7 +19,7 @@ const blog = defineCollection({
 
 // 單集重點：檔名用集數（s3ep11.md），單集頁依季／集自動對上
 const highlights = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/highlights' }),
   schema: z.object({
     summary: z.string(),
     chapters: z.array(z.object({ time: z.string(), title: z.string() })).optional(),

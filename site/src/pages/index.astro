@@ -145,7 +145,7 @@ const podcastSchema = {
         </div>
         <div class="blog-grid">
           {blogPosts.map((post, i) => (
-            <a href={`/blog/${post.slug}`} class={`blog-card reveal reveal-d${(i % 2) + 1}`}>
+            <a href={`/blog/${post.id}`} class={`blog-card reveal reveal-d${(i % 2) + 1}`}>
               {post.data.image && (
                 <div class="blog-card-thumb">
                   <img src={post.data.image} alt={post.data.title} loading="lazy" />
