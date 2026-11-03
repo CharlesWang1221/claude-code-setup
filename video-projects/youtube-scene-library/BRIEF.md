@@ -1,9 +1,9 @@
 ---
 task_id: YOUTUBE-SCENE-LIBRARY
-status: PENDING_APPROVAL
+status: ACTIVE
 owner: 教父（油管）＋廠長；大千出圖
 created_at: 2026-10-28 Asia/Taipei
-last_updated: 2026-10-28 Asia/Taipei
+last_updated: 2026-11-03 Asia/Taipei
 ---
 
 # 油管長片水墨場景庫
@@ -50,7 +50,7 @@ last_updated: 2026-10-28 Asia/Taipei
 ## 預算
 
 - ImageGen：每場景最多 3 次（初稿 1＋精修 2），6 場景上限 18 次；試做故事畫面 2 次。合計上限 20 次。
-- 不在句剪常態卡內，開工前要省長另開預算卡。
+- 不在句剪常態卡內。預算卡 `YOUTUBE-SCENE-LIBRARY` 2026-11-03 由老查指示開出，記在 `docs/QUOTA_LEDGER.md`。
 
 ## 閘門與證據
 
@@ -61,7 +61,7 @@ last_updated: 2026-10-28 Asia/Taipei
 
 ## 目前狀態
 
-- 狀態：PENDING_APPROVAL。
+- 狀態：ACTIVE。
 - 已完成：規則寫入油管起步期規則；場景清單 2026-10-28 老查確認。
-- 阻塞或待確認：省長開預算卡。
-- 下一個動作：省長開卡 → 大千依序出 6 張空景 → 聯絡表交老查整批審；時點未設定。
+- 阻塞或待確認：無；預算卡 2026-11-03 已開。
+- 下一個動作：大千先出 S4EP2 B1 要用的「家中餐桌」，再依序出其餘 5 張 → 聯絡表交老查整批審；時點未設定。
