@@ -33,7 +33,11 @@ const path = require('path');
 const readline = require('readline');
 const { assertQaPass } = require('./qa-gate/qa-gate.cjs');
 
-const SCOPES = ['https://www.googleapis.com/auth/youtube.upload'];
+// force-ssl 用於 --update 修改既有影片的標題、說明與標籤；upload 只能新上傳
+const SCOPES = [
+  'https://www.googleapis.com/auth/youtube.upload',
+  'https://www.googleapis.com/auth/youtube.force-ssl',
+];
 const TOKEN_PATH  = path.join(__dirname, 'youtube-token.json');
 const CREDS_PATH  = path.join(__dirname, 'client_secret.json');
 const OUTPUT_ROOT = path.join(__dirname, '..', 'output');

@@ -37,6 +37,8 @@ repo Skill 母版：`skills/<skill-name>/SKILL.md`。
 | `video-shotcraft` | `MISSING` | `PRESENT` | 2026-10-12 已下架，setup 不再安裝；以下為下架前紀錄。第三方外部 Git Skill。目前不是 Codex 可直接啟動的本機部署；若要用，先以外部來源同步到 Codex，不以 Claude 版當母版。 |
 | HyperFrames、`media-use`、`general-video`、`talking-head-recut`、`motion-graphics`、`ui-ux-pro-max` | `PRESENT` | 多數 `PRESENT` | 屬安裝或系統提供能力，不在 repo 核心 Skill 比對範圍；使用時仍依當前完整 `SKILL.md`。 |
 | `social-cards`、`landing`、`brainstorm`、`learning-journal` 等 | 本次 session 可用，但本機 repo 無母版 | Agents 路徑可見部分項目 | 需另立外部／個人 Skill 來源清冊；未確認母版前，不將本機副本回寫 repo。 |
+| `stageshow`（`benjitaylor/skills` 1.1.0） | `NOT_INSTALLED` | `NOT_INSTALLED` | 2026-11-05 評估：第三方 React 假產品 UI 與游標示範動畫，與水墨、句剪產線重疊低，且需 Node 開發伺服器（Windows 公司電腦不裝）。列觀察，不安裝；某集 YouTube 長片或工作坊銷售頁需要「AI 介面操作示範」時，再由解題評估是否只借其 `craft.md`／`framing.md` 構圖規則，要裝也只在 Mac。 |
+| `reverse-engineer-anything`（`morluto/rea`） | `NOT_INSTALLED` | `NOT_INSTALLED` | 2026-11-05 評估排除：二進位與 App 逆向工程，無業務需求；需接 MCP 與反組譯工具，公司電腦有資安風險，且預設裝進 `~/.agents/skills`，違反 `.agents` 不留副本規則。不得安裝。 |
 
 ## 健康門檻與處理順序
 
