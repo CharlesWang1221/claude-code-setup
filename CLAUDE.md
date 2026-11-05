@@ -5,10 +5,10 @@
 ## 共用規則與專案隔離
 
 - `AGENTS.md` 是共用規則唯一母版；本檔只保留 Claude 相容說明，不再複製一套流程。
-- Codex 是主要調度端。Claude Code 可依老查指示獨立執行其他專案；先讀該專案的 `AGENTS.md`、README 與 BRIEF，不把 Podcast 的角色或發布節奏套到其他專案。
+- 2026-11-05 起 Claude Code 是管理者（大腦）：規劃、開任務卡、設計流程，並依老查指示修改 Codex 的做法（repo 規則與 Skill 母版）；Codex 是執行單位，負責上架與製作後製。Claude 交辦 Codex 的工作一律寫成 repo 內的 BRIEF＋`docs/ACTIVE_TASK_REGISTER.md` 一列並推上 repo，平台操作與產製預設交 Codex 執行。Claude Code 可依老查指示獨立執行其他專案；先讀該專案的 `AGENTS.md`、README 與 BRIEF，不把 Podcast 的角色或發布節奏套到其他專案。
 - 執行本 repo 任務前，依 `docs/DOCUMENT_GOVERNANCE.md` 判斷權威；調度讀 `docs/CEO_COMMAND_PROTOCOL.md`、`docs/SKILL_ROUTING_MATRIX.md` 與 `docs/AUTHORITY_MATRIX.md`。
 - 現有任務先讀 `docs/ACTIVE_TASK_REGISTER.md` 與對應 BRIEF／HANDOFF；平台狀態只認 `docs/RELEASE_EVIDENCE_REGISTER.md` 的讀回證據。
-- Skills 唯一母版為 repo 的 `skills/`。本機 `~/.claude/skills` 是部署副本；Mac 執行 `python3 tools/sync-claude.py --apply --global-rules`，Windows 執行 `.\tools\sync-claude.ps1`。不得由 Claude 或 `.agents` 反向同步 Codex。
+- Skills 唯一母版為 repo 的 `skills/`。本機 `~/.claude/skills` 是部署副本；Mac 執行 `python3 tools/sync-claude.py --apply --global-rules`，Windows 執行 `.\tools\sync-claude.ps1`。Claude 改規則只改 repo 母版，不得把本機 `~/.claude` 或 `.agents` 副本直接複製進 `~/.codex`。
 - 全域規則母版是 `codex/AGENTS.global.md`；Mac／Windows 都從 repo 部署至 `~/.claude/CLAUDE.md`。跨電腦流程見 `docs/CLAUDE_PC_SYNC.md`。
 - 總控流程先執行來源檢查並取得 PASS：Mac 用 `tools/check-skill-authority.sh`，Windows 用 `tools/check-skill-authority.ps1`；Claude 副本用 Python 同步工具或 Windows 的 `sync-claude.ps1 -CheckOnly` 驗證。任一必要檢查失敗即停止。
 - 每次使用 Skill 先讀完整母版；外部／內建能力先查當前可用清單，不因舊文件提到名稱就假裝能用。

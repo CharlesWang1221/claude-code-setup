@@ -2,7 +2,7 @@
 
 Claude Code MCP 工具一鍵安裝腳本，支援 Windows 與 macOS。
 
-> Mac 與 Windows PC 都以 Codex 為主要工作代理；Claude Cloud／Claude Code 僅作輔助。兩套安裝腳本都直接從 repo 安裝 Codex Skills，不以 Claude 設定反向覆蓋 Codex。
+> 2026-11-05 起，Claude Code 是管理者（規劃、任務卡、修改規則與 Skill 母版），Codex 是執行單位（上架與製作後製）。兩套安裝腳本都直接從 repo 安裝 Skills，不以本機 `~/.claude` 副本覆蓋 Codex。
 
 ## 換電腦還原步驟
 

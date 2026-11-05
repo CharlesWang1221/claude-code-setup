@@ -12,8 +12,9 @@
 
 ## 主要工作專案
 
-- 無論使用 Mac 或 Windows PC，主要工作代理固定是 Codex；Claude Cloud／Claude Code 僅作輔助。跨工具同步時以 Codex 的規則、Skills 與 MCP 設定為主，不得再把 Claude 設定當成母版覆蓋 Codex。
-- Codex 不讀取 `.claude/skills` 作為規則來源，也不接受任何 `Claude → Codex` 的反向同步。若 `.agents/skills` 與 `.codex/skills` 出現同名 Skill，停止使用該副本；進入專案後以 repo 的 `skills/<skill-name>/` 為唯一母版。
+- 分工（2026-11-05 老查決定，Mac／Windows 相同）：**Claude Code 是管理者（大腦）**，負責規劃、任務卡、流程設計，以及依老查指示修改 Codex 的做法（規則與 Skill 母版）；**Codex 是執行單位**，負責上架與製作後製，依 repo 母版與 Claude 開出的 BRIEF 執行。
+- 規則與 Skill 一律改 repo 母版（`skills/`、`AGENTS.md`、`codex/AGENTS.global.md`、`docs/`），由 Claude 修改並推上 repo，Codex `git pull` 並同步後執行。Codex 執行中發現規則有問題，回報老查交 Claude 修改，不自行改規則；老查直接命令 Codex 修改時除外，改完仍要記 `docs/RULE_CHANGELOG.md`。
+- 部署方向不變：只從 repo 部署到 `~/.codex/skills` 與 `~/.claude/skills`，不得把本機 `~/.claude` 或 `.agents` 副本直接複製進 `~/.codex`。若 `.agents/skills` 與 `.codex/skills` 出現同名 Skill，停止使用該副本；以 repo 的 `skills/<skill-name>/` 為唯一母版。
 - 《不標準答案》的總控流程啟動前，若 repo 提供 `tools/check-skill-authority.sh`，必須先執行並取得 `PASS`。失敗時停止，不得用舊副本勉強開工。
 - 《不標準答案》Podcast 內容生產與自動化工具鏈，repo 是 `CharlesWang1221/claude-code-setup`（**公開 repo**，機敏內容不要進去），本機路徑依電腦而定（Windows 常見在 `Code/claude-code-setup` 或 `hot data/CCoode`，Mac 在 `~/Documents/CCoode/claude-code-setup`）
 - 該專案更完整的規則、SOP、觸發詞見專案根目錄內的 `AGENTS.md`
@@ -32,7 +33,7 @@
 
 ## 多代理調度與額度
 
-- 預設用 `GPT-6.1 Terra / medium` 做日常主調度；`GPT-6 Luna / medium` 只處理可獨立、唯讀的搜尋與盤點；`GPT-6.1 Sol` 只用於高風險架構、複雜除錯、最終裁決，以及平台上架。
+- 預設用 `GPT-6.1 Terra / medium` 做日常主調度；`GPT-6 Luna / medium` 只處理可獨立、唯讀的搜尋與盤點；`GPT-6.1 Sol` 只用於高風險執行、複雜除錯、執行端的技術裁決，以及平台上架（規則與流程設計歸 Claude，最終批准歸老查）。
 - 平台上架（後台填文案、上傳、排程、發布）固定用 `GPT-6.1 Sol / medium`，每次上架開新對話，不接續舊的長對話；Luna 不得操作任何發布。
 - 多代理是用額度換時間與交叉驗證。只在任務可平行拆分時才啟動，避免多個可寫入 worker 同時修改同一檔案。
 - 使用 repo 同步的 `luna_worker`、`explorer`、`reviewer`、`implementer` 角色。先探索／研究，再由單一 worker 實作，最後需要時交 reviewer 驗收。程式與設定交 `reviewer`；對外內容成品交 `qa_auditor`（鐵雄），製作者不得稽核自己的成品。

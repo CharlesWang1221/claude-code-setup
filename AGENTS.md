@@ -5,7 +5,7 @@
 ## 這是誰、這個 repo 是做什麼的
 
 - 使用者自稱「老查」，一人公司獨立創作者，搭檔「阿分」（debra.hdf@gmail.com，需要 CC/轉寄時用）
-- 無論使用 Mac 或 Windows PC，主要工作代理固定是 Codex；Claude Cloud／Claude Code 僅作輔助。跨工具同步時以 Codex 的規則、Skills 與 MCP 設定為主，不得再把 Claude 設定當成母版覆蓋 Codex。
+- 分工（2026-11-05 老查決定）：**Claude Code 是管理者（大腦）**，負責規劃、任務卡、流程設計，並依老查指示修改 Codex 的做法（repo 規則與 Skill 母版）；**Codex 是執行單位**，負責上架與製作後製。Codex 開工前先 `git pull`，依 `docs/ACTIVE_TASK_REGISTER.md` 與 Claude 開的 BRIEF 執行；發現規則問題回報老查交 Claude 改，不自行改規則（老查直接命令除外，仍記 `docs/RULE_CHANGELOG.md`）。
 - 核心事業：Podcast《不標準答案》（Firstory 上架，每週一更新），社群主力 FB/IG，擴張中的節點是 YouTube 長影片＋短影音
 - 這個 repo 是老查的內容生產與自動化工具鏈：逐字稿、文案、短影音、IG 圖、SEO 文章、每日 cloud routine 排程等都在這裡處理
 - **這個 repo 的 GitHub remote 是公開的**（`CharlesWang1221/claude-code-setup`）——任何機敏內容（API key、私人課程資料、未公開的個人資訊）絕對不要 commit 進去
@@ -14,7 +14,7 @@
 
 - Codex 執行本 repo 的工作時，Skill 唯一母版是本 repo 的 `skills/<skill-name>/`；安裝版 `~/.codex/skills/` 只可作為相同內容的部署副本。
 - 若工作階段同時列出 `~/.codex/skills`、`~/.agents/skills` 或 `~/.claude/skills` 的同名 Skill，核心工作一律讀本 repo 版本。不得選用 `.agents` 或 `.claude` 版本補充、覆蓋或裁決現行規則。
-- `.agents` 與 `.claude` 都是輔助／舊環境來源。核心 Skill 不得在 `.agents/skills` 保留同名副本，也不得從 `.claude` 反向同步回 Codex。
+- 本機 `.agents` 與 `~/.claude` 副本都不是來源。核心 Skill 不得在 `.agents/skills` 保留同名副本，也不得把本機 `~/.claude` 副本直接複製進 `~/.codex`；Claude 修改規則一律改 repo 母版，再由同步腳本部署到兩邊。
 - 啟動 `podcast-publish` 或任何會呼叫其他 Skill 的總控流程時，先執行 `tools/check-skill-authority.sh`。檢查失敗就停止，不得用找到的任一舊副本勉強開工。
 - `skill-creator` 在 Codex 端固定使用 Codex 內建版；repo 內同名 Skill 僅供舊環境相容，不得部署成 Codex 使用者版。
 
