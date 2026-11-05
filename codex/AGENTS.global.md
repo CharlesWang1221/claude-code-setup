@@ -37,4 +37,4 @@
 - 平台上架（後台填文案、上傳、排程、發布）固定用 `GPT-6.1 Sol / medium`，每次上架開新對話，不接續舊的長對話；Luna 不得操作任何發布。
 - 多代理是用額度換時間與交叉驗證。只在任務可平行拆分時才啟動，避免多個可寫入 worker 同時修改同一檔案。
 - 使用 repo 同步的 `luna_worker`、`explorer`、`reviewer`、`implementer` 角色。先探索／研究，再由單一 worker 實作，最後需要時交 reviewer 驗收。程式與設定交 `reviewer`；對外內容成品交 `qa_auditor`（鐵雄），製作者不得稽核自己的成品。
-- 《不標準答案》內容產線另有執行長教父（主執行緒）與 `dispatcher`（阿派）、`production_lead`（廠長）、`qa_auditor`（鐵雄）、`quota_officer`（省長）、`inspector`（小查監察，獨立）等角色，權責以該 repo 的 `docs/CEO_CONTROL_TOWER.md` 為準，不套用到其他專案。
+- 《不標準答案》內容產線另有執行長教父（主執行緒）與 `dispatcher`（阿派）、`production_lead`（廠長）、`qa_auditor`（鐵雄）、`quota_officer`（省長）等角色（監察 2026-11-05 起改由 Claude Code 管理層執行，`inspector` 退役；小查改為老查私人助理，不參與公司），權責以該 repo 的 `docs/CEO_CONTROL_TOWER.md` 為準，不套用到其他專案。

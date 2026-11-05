@@ -13,7 +13,7 @@ description: 「教材復盤」——每週把《不標準答案》製作流程�
 | --- | --- | --- |
 | 製作復盤（`docs/PRODUCTION_RETRO_LOG.md`） | 成品被退回的缺失與 SOP 修正 | 阿派、鐵雄、師傅 |
 | 成析 T6（`podcast-performance-review`） | 播放成效 | 小渡 |
-| 教材復盤（本 Skill） | 流程與方法的變化，轉成教材 | 小查特助室，老查親自給原話 |
+| 教材復盤（本 Skill） | 流程與方法的變化，轉成教材 | Claude Code 管理層，老查親自給原話 |
 
 ## 開始前
 

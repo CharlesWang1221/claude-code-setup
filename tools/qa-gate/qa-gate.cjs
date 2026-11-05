@@ -13,7 +13,7 @@
  * 報告位置（依序尋找）：明確指定 → 檔案所在資料夾往上最多 3 層的 qa/report.md。
  * 報告格式見 codex/agents/qa_auditor.toml：需有「總結：PASS」與受檢檔的 SHA-256。
  *
- * 小查凍結：檔案所在資料夾往上最多 3 層有 FROZEN.md，或任一 output/weekly-shorts/<週>/weekly-plan.json
+ * 管理層凍結：檔案所在資料夾往上最多 3 層有 FROZEN.md，或任一 output/weekly-shorts/<週>/weekly-plan.json
  * 的 item 其 lane_dir 包含此檔且 lane_status 以 FROZEN 開頭，就一律擋下。凍結不吃 QA_OVERRIDE_REASON，
  * 只有老查解除（刪除 FROZEN.md 並改回 lane_status）後才能通過。
  *
@@ -104,7 +104,7 @@ function checkQa(file, opts = {}) {
   lines.push(`SHA-256：${actual}`);
   const frozen = findFrozen(file, projectRoot);
   if (frozen) {
-    lines.push(`結果：BLOCKED，小查已凍結（${frozen.reason}；來源 ${rel(frozen.source)}），只有老查能解除`);
+    lines.push(`結果：BLOCKED，管理層已凍結（${frozen.reason}；來源 ${rel(frozen.source)}），只有老查能解除`);
     return { ok: false, lines, sha: actual, frozen: true };
   }
   const report = findReport(file, opts.report, projectRoot);
@@ -145,7 +145,7 @@ function assertQaPass(file, opts = {}) {
   for (const l of result.lines) console.log(`  [鐵雄閘門] ${l}`);
   if (result.ok) return result;
   if (result.frozen) {
-    throw new Error('小查已凍結此 item，緊急放行不適用。只有老查能解除凍結。');
+    throw new Error('管理層已凍結此 item，緊急放行不適用。只有老查能解除凍結。');
   }
   const reason = (process.env.QA_OVERRIDE_REASON || '').trim();
   if (reason) {

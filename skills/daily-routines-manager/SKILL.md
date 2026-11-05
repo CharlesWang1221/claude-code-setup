@@ -21,7 +21,7 @@ description: 「多利」是 Codex 影音動畫公司的後勤管家，隸屬阿
 
 - 三支腳本都可以加 `--dry-run`，只印出內容、不存檔；加 `--force` 會重跑已完成的工作。
 - 資料來源：`docs/RELEASE_EVIDENCE_REGISTER.md`、週計畫 JSON、交件包。腳本只讀檔；唯一的寫入是週計畫空殼與報告。
-- 報告存在 `output/weekly-shorts/duoli-reports/`（git 忽略），由教父彙整進日報，不另外寄信；小查監察時可直接讀取。
+- 報告存在 `output/weekly-shorts/duoli-reports/`（git 忽略），由教父彙整進日報，不另外寄信；管理層監察時可直接讀取。
 - Mac 與 PC 都能執行（Python 3.9 以上）。PC 用 `py -3 tools\duoli\duoli.py auto`；Skill 健康檢查在 PC 上改跑 `check-skill-authority.ps1`。
 
 ### 選用：背景排程與寄信
