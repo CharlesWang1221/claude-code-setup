@@ -11,7 +11,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 **上架模型與對話**：進入平台後台操作（Firstory、Meta Business Suite、Threads、YouTube Studio）時，用 `GPT-6.1 Sol / medium`，每次上架開新對話；Luna 不得操作發布。Playwright MCP 已在本機設定免逐次確認，若仍跳權限視窗，記下視窗文字回報，不要讓老查逐一按確認。
 
-**開工模型與沙盒自檢（2026-11-05，硬性）**：星期天啟動的第一個動作，是回報當前模型、推理強度與沙盒。三項必須是 `GPT-6.1 Sol`、`medium`、可寫入工作區（`workspace-write`）；任一不符就停下，只回一句「請切到 Sol／medium、可寫入工作區後開新對話」，不得繼續讀素材或操作平台。對話中途模型被換成 Luna 或其他檔位，也立即停手並回報，不得用 Luna 繼續操作後台。新對話預設就是唯讀時，修法是在 Codex 設定檔（`$CODEX_HOME/config.toml`，Windows PC 為 `%LOCALAPPDATA%\CodexCLI\config.toml`，Mac 為 `~/.codex/config.toml`）頂端加 `sandbox_mode = "workspace-write"` 後重開 Codex；Windows 另外必須加 `[windows]` 區塊的 `sandbox = "unelevated"`（不需管理員權限），沒設定時 Codex 一律強制唯讀；設定檔含憑證，只在本機改，不進 repo。起因：S4EP3 Firstory 上架從第 2 輪起跑在 Luna、唯讀沙盒，每做一小步就停下，老查要喊 6 次「繼續」。
+**開工模型與沙盒自檢（2026-11-05，硬性）**：星期天啟動的第一個動作，是回報當前模型、推理強度與沙盒。模型必須是 `GPT-6.1 Sol`、推理 `medium`；不符就停下，只回一句「請切到 GPT-6.1 Sol／medium 後開新對話」，不得繼續讀素材或操作平台。對話中途模型被換成 Luna 或其他版本，也立即停手並回報，不得用 Luna 繼續操作後台。沙盒依電腦判斷：Mac 要可寫入工作區（`workspace-write`），唯讀就停下請老查在 `~/.codex/config.toml` 設 `sandbox_mode = "workspace-write"`；**Windows 公司 PC 固定唯讀＋`on-request`（老查 2026-11-05 決定）**，唯讀不算不符、照常開工，寫檔時提出權限請求由老查按確認，平台瀏覽器操作照常連續執行。Windows 不得改用 `[windows] sandbox = "unelevated"`（實測所有指令卡死）或完全存取。起因：S4EP3 Firstory 上架從第 2 輪起跑在 Luna，每做一小步就停下，老查要喊 6 次「繼續」。
 
 **老查授權後連續執行（2026-11-05）**：老查回「可以上架」「可以執行」後，同一平台的上傳、填單、封面、標籤、預約與讀回一路做完，中間不回報進度、不停下等「繼續」。只有下列情況才停：平台連不上或登入失效、瀏覽器工具碰不到的系統檔案選擇器、介面要求付費或額度但本 Skill 沒有預設、讀回不符。停下時一次講清楚卡在哪、老查要做什麼，做完後自己接續。
 
