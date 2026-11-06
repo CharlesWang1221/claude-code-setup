@@ -41,5 +41,7 @@ YouTube 長片相關任務由教父管理油管，沿用既有 Task ID、素材�
 | TASK-ID | 範圍 | ACTIVE／PENDING_APPROVAL／BLOCKED／REVISE | 主責主管 | 文件／版本／平台證據 | 缺口 | 下一個動作＋主責 | Asia/Taipei 時點或未設定 |
 ```
 
-| S4EP3-RELEASE | S4EP3 上架包 v0.6 執行 | `ACTIVE` | 星期天 | `output/ep-s4ep3/HANDOFF.md`、`.publish-status.json`；鐵雄 PASS、阿維 ALLOW | Firstory、FB 已排程並讀回；Threads 等 GEO 公開網址 | 11/12 讀回 GEO 公開網址後完成 Threads 授權包；短片維持未開工 | Firstory：2026-11-09 07:00（Asia/Taipei） |
+| S4EP3-SHORTS-V4 | S4EP3 六支句剪依開頭檢查卡重切（週一、二、三、五）、換 6 張封面主標與鉤子、週一主角改阿分 | `ACTIVE` | 廠長（句剪）；鐵雄、阿維 | `docs/briefs/S4EP3-SHORTS-V4-2026-11/BRIEF.md`；本機字幕 v4、`weekly-plan.json` `revision_v4` | 新切四支待老查核聽 | Codex 重切音檔、重算字幕時間碼、出封面，交老查核聽原音包 | 週一片 2026-11-09 20:30 前（Asia/Taipei） |
+| S4EP3-RELEASE | S4EP3 上架包 v0.6 執行 | `ACTIVE` | 星期天 | `output/ep-s4ep3/HANDOFF.md`、`.publish-status.json`；鐵雄 PASS、阿維 ALLOW | Firstory、FB 已排程並讀回；Threads 等 GEO 公開網址 | 老查 11/6 明確啟動短片：六段候選已切、待核聽；11/12 GEO 公開後補 Threads 授權包 | Firstory：2026-11-09 07:00（Asia/Taipei） |
+
 
