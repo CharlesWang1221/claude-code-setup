@@ -82,3 +82,7 @@
 ```text
 | ASSET-ID | 平台與用途 | 最終檔名／文案版本／QC | 草稿已建立／已排程／已上傳／已公開／待驗證 | 畫面、ID 或讀回資訊 | Asia/Taipei 時間 | 網址或平台 ID | 下一個驗證動作 |
 ```
+
+| S4EP3-FULL-FIRSTORY | Firstory 正片 | 上架包 v0.6 原文；32:14；1400 × 1400 封面；鐵雄 PASS、阿維 ALLOW | 已排程，未公開 | 單集頁與列表讀回「自動發佈／排程於 2026-11-09 07:00」；封面、季 4 集 3、介紹音樂末句確認；本機 `output/ep-s4ep3/firstory-scheduled-readback.json`、`firstory-list-readback.json` | 2026-11-09 07:00 Asia/Taipei | cmw363vqt0evt01x4fbxvdzyd | 到時核對公開狀態；接 FB／Threads 授權包 |
+| S4EP3-FB-TOPIC | FB 主題貼文 | DOCX v0.6 原文＋核准水墨圖；QA PASS、品牌 ALLOW | 已排程，未公開 | 已排定發佈列表及詳情讀回「不標準答案／相片／11月9日 12:15」；編號 2330780114353136；平台保留 AI 內容標籤；Instagram、限動關閉 | 2026-11-09 12:15 Asia/Taipei | 2330780114353136；本機 fb-scheduled-readback.json | 公開後讀回並補 Firstory 留言連結 |
+| S4EP3-GEO-DRAFT | beyond-ans.com GEO 文章與主圖 | 文章 SHA `D0F0794D8042BF3D9D43088681D5E780B005987C1A633A70C4D53F811D2BB5FA`；主圖 SHA `429DDE50F59CD9114F1633EC9E9B66A1492F47EC32DB22E35328C05488CBBAD2`；鐵雄 PASS、阿維 ALLOW | commit `84c53f1` 已推送；GitHub Actions run `42149802895` 部署成功；文章尚未公開，publishAt 未到 | 2026-11-12 10:00 +08 預定下一次週四自動部署；目前網址讀回為首頁 canonical、文章未讀回，sitemap 未列本篇 | 2026-11-06（Asia/Taipei） | 預期文章路徑含 `.md`，真實網址待到期後讀回 | 11/12 部署後讀回文章、sitemap 與 FAQPage，再確認真實網址並處理 Threads |

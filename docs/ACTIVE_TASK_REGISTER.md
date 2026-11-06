@@ -40,3 +40,6 @@ YouTube 長片相關任務由教父管理油管，沿用既有 Task ID、素材�
 ```text
 | TASK-ID | 範圍 | ACTIVE／PENDING_APPROVAL／BLOCKED／REVISE | 主責主管 | 文件／版本／平台證據 | 缺口 | 下一個動作＋主責 | Asia/Taipei 時點或未設定 |
 ```
+
+| S4EP3-RELEASE | S4EP3 上架包 v0.6 執行 | `ACTIVE` | 星期天 | `output/ep-s4ep3/HANDOFF.md`、`.publish-status.json`；鐵雄 PASS、阿維 ALLOW | Firstory、FB 已排程並讀回；Threads 等 GEO 公開網址 | 11/12 讀回 GEO 公開網址後完成 Threads 授權包；短片維持未開工 | Firstory：2026-11-09 07:00（Asia/Taipei） |
+
