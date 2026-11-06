@@ -71,7 +71,7 @@
 | 「做圖卡」「/cards」「社群圖卡」 | 若屬 Podcast 單集，走 `podcast-publish` 的 IG 圖步驟；其他圖卡先判斷是否有對應 Skill，不得憑關鍵字硬派。 |
 | 「多利」 | `daily-routines-manager` |
 | 「社群營運」「社群管理」「社群 brief」「平台內容方向」 | `community-operations`（小渡／社群營運長）；若屬 Podcast 短影音製作，先由它出 brief，再回 `podcast-publish`（星期天）執行 |
-| 「寫日記」「今天結束了」「journal」 | `learning-journal` |
+| 「寫日記」「今天結束了」「journal」「學習日記」「學習筆記」 | `learning-journal`。2026-11-06 起，Claude 與 Codex 寫的學習日記與學習筆記一律存到老查 Google Drive 的 `我的雲端硬碟/AI學習筆記/`，檔名為 `YYYY-MM-DD.md`（Windows 掛載為 `G:\我的雲端硬碟\AI學習筆記\`，Mac 依 Drive 掛載點，不寫死路徑），不再存 repo 的 `journals/`。同一天已有檔案就補充，不覆蓋；讀前一天待辦也從這裡讀。 |
 | 「動手前先想清楚」「/brainstorm」 | `brainstorm` |
 | 「銷售頁」「landing page」「$landing」 | `landing` |
 | 「幫我分析這些留言」「需求地圖」「選題靈感」「小市」 | `voc-jtbd-demand-map` |
