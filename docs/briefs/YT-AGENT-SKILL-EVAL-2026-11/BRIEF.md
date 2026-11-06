@@ -21,20 +21,27 @@ source: Claude Code 管理層評估外部 Skill，老查 2026-11-06 回覆「以
 - 先向省長申請 S 級預算卡，兩項任務共用。沒有預算卡不得開工。
 - **不得安裝或複製外部 repo 的 Skill**（`Jakeschincariol/youtube-agent-skill`）到任何 skills 目錄。演算法自己寫，不搬原檔。
 
-## T1：競品爆款雷達腳本（Mac 限定）
+## T1：競品爆款雷達腳本（Mac 或 Windows）
 
-Windows 是公司電腦，不裝 `yt-dlp`；這項只在 Mac 做。
+2026-11-06 老查在 Windows 公司電腦實測不擋，`yt-dlp` 列為 Windows 例外，兩台都能跑。安裝一律用使用者層級：`python -m pip install --user yt-dlp`（Mac 用 `python3`），不用管理員權限、不裝 deno 等 JS 執行環境。
 
-1. 建 `tools/yt-outlier/outlier.py`，Python 標準函式庫＋`yt-dlp` 指令。
-   - 輸入 `tools/yt-outlier/channels.txt`：一行一個頻道，格式 `頻道名稱<TAB>YouTube 頻道網址<TAB>tw 或 intl`。
-   - 每個頻道用 `yt-dlp --flat-playlist -J` 抓最近 30 支長片與最近 30 支 Shorts 的公開清單。不登入、不帶 cookies、不用老查帳號。
+Claude 實測紀錄（2026-11-06，yt-dlp 2026.10.26）：
+
+- `--flat-playlist` **拿不到播放數**，只有標題、長度、網址。播放數要逐支讀：`--skip-download --print "%(view_count)s..."`，約每支 2.5 秒。
+- 每支會跳「No supported JavaScript runtime」警告，只影響下載格式，讀資料不受影響，過濾掉即可。
+- 頻道沒有某個分頁時（例：我們頻道沒有 `/videos`），yt-dlp 會報 `does not have a videos tab`，腳本要當成「該格式 0 支」處理，不要整個中止。
+- 頻道網址優先用 `https://www.youtube.com/channel/UC...`，比 `@代號` 穩；中文代號可用，但要 URL 編碼正確。
+
+1. 建 `tools/yt-outlier/outlier.py`，Python 標準函式庫＋以 `python -m yt_dlp` 呼叫（不依賴 PATH）。
+   - 輸入 `tools/yt-outlier/channels.txt`：一行一個頻道，格式 `頻道名稱<TAB>YouTube 頻道網址<TAB>tw／intl／self`。
+   - 每個頻道逐支讀最近 20 支長片與最近 20 支 Shorts（`--limit` 可調）。12 個頻道約 20 分鐘，跑在背景。不登入、不帶 cookies、不用老查帳號。
    - 長片、Shorts **分開**算各自的播放數中位數；同一格式少於 4 支就跳過，在報告列出跳過原因。
    - 倍數＝播放數 ÷ 該頻道該格式中位數；預設門檻 2.0，可用 `--min` 調整。
    - 我方頻道也放進清單、標 `self`，只當參照，不列入爆款。
    - 輸出 `output/weekly-shorts/{週一日期}/outlier-radar.json` 與 `.md`（倍數、播放數、中位數、頻道、標題、網址、格式）。
 2. `channels.txt` 初版：
    - 現有雙週競品監控 7 個對象中有 YouTube 頻道的（名單見 `skills/daily-routines-manager/routines/daily-competitor-monitor-7.md`），網址由 Luna 唯讀查找，查不到就標 `N/A`，不猜。
-   - 《不標準答案》自己的頻道，標 `self`。
+   - 《不標準答案》自己的頻道 `https://www.youtube.com/channel/UCE-QusSupACm0Lk7D0ThHLQ`（代號 `@不標準答案`），標 `self`。
    - **另提 5 個台灣中型 Podcast 的 YouTube 頻道作為候選**，各附訂閱數與一句為何同賽道。這 5 個先不寫進 `channels.txt`，交老查勾選。
 3. 首跑一次，回報：2 倍以上清單前 10、跳過的頻道與原因、執行時間。腳本與 `channels.txt` commit 進 repo；輸出在 `output/`，不 commit。
 4. 小渡／小市讀首跑結果，依 SKILL.md 歸類鉤子並寫「能不能做」。歸類用中文判斷，不用英文 regex。
@@ -62,4 +69,5 @@ Windows 是公司電腦，不裝 `yt-dlp`；這項只在 Mac 做。
 
 ## 目前狀態
 
-- 2026-11-06：母版已寫回（見 `docs/RULE_CHANGELOG.md` 同日）。等 Codex 在 Mac 開 T1；T2 不需要 Mac，可先在任一台做。
+- 2026-11-06：母版已寫回（見 `docs/RULE_CHANGELOG.md` 同日）。
+- 2026-11-06：Windows 實測可用（已 `pip --user` 安裝），T1、T2 都可在任一台開工。

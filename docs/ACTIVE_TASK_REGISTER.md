@@ -24,7 +24,7 @@
 | S4EP2-YOUTUBE-B | S4EP2 油管 B 兩支（B1 請看護是不是不孝、B2 長照資源怎麼找），B 常態規則首跑 | `ACTIVE` | 教父（油管）＋廠長；解題、大千、正風 | `video-projects/s4ep2-youtube-b/BRIEF.md`、`OPENING_B1.md`；預算卡 `S4EP2-YOUTUBE-B`（ImageGen 合計 ≤30） | 老查審 B1 開場稿並錄音；B2 須先決定 37:15 長照費用句剪掉或加更正字卡 | 老查審稿錄音 → 對原音確認 B1 切點 → B1 鏡頭表文字版與正風查證清單 | 未設定 |
 | YOUTUBE-SCENE-LIBRARY | 油管長片 16:9 水墨空景庫 6 張（家中餐桌、餐廳小店、露營、稻田小路大樹下、三合院古宅、博物館），供故事段漫畫覆蓋重複使用 | `ACTIVE` | 教父（油管）＋廠長；大千出圖 | `video-projects/youtube-scene-library/BRIEF.md`；規則 `skills/you-guan/references/growth-stage.md` | 場景清單 2026-10-28 已確認；預算卡 2026-11-03 已開（ImageGen ≤20 次） | 大千先出 B1 要用的「家中餐桌」，再出其餘 5 張 → 聯絡表整批審 | 未設定 |
 | KAIJIANG-PILOT | 「開講」直式講者知識短片試點與共用嘴型元件（油管角落小頭像也用） | `PENDING_APPROVAL` | 教父＋廠長；解題、大千 | `video-projects/kaijiang-pilot/BRIEF.md`、`HANDOFF.md`；引擎 `tools/kaijiang/`；試片在私有 Drive「暫存/對嘴試作」 | 2026-11-03 老查審 v13：6 種嘴型核准；5 張姿勢肩膀破面退件。已授權以垂手原圖為底重畫「攤手」1 次驗證肩線，過了才放行其餘 4 張各 1 次（ImageGen 由 Codex 執行） | 老查審 v13 試片 → 頭身分層合成；阿分姿勢圖另開卡 | 未設定 |
-| YT-AGENT-SKILL-EVAL-2026-11 | 外部 Skill 評估落地：①競品爆款雷達腳本（Mac `yt-dlp`，倍數＝播放數÷頻道中位數）②句剪開頭檢查卡回測 | `ACTIVE` | 多利＋小渡／小市；真短驗析回測；教父督導 | `docs/briefs/YT-AGENT-SKILL-EVAL-2026-11/BRIEF.md`、`EVALUATION.md`；母版 2026-11-06 已寫回 | 需省長 S 級預算卡；T1 只能在 Mac 做；新增競品頻道待老查勾選 | Codex 在 Mac 建 `tools/yt-outlier/` 首跑並提 5 個候選頻道；真短驗析回測 12 支已發布句剪 | 未設定 |
+| YT-AGENT-SKILL-EVAL-2026-11 | 外部 Skill 評估落地：①競品爆款雷達腳本（`yt-dlp`，Mac／Windows 皆可，倍數＝播放數÷頻道中位數）②句剪開頭檢查卡回測 | `ACTIVE` | 多利＋小渡／小市；真短驗析回測；教父督導 | `docs/briefs/YT-AGENT-SKILL-EVAL-2026-11/BRIEF.md`、`EVALUATION.md`；母版 2026-11-06 已寫回 | 需省長 S 級預算卡；新增競品頻道待老查勾選 | Codex 建 `tools/yt-outlier/` 首跑並提 5 個候選頻道；真短驗析回測 12 支已發布句剪 | 未設定 |
 
 ## 2026-09-28 管理分工更新
 
