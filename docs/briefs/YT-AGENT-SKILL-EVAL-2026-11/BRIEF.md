@@ -71,3 +71,12 @@ Claude 實測紀錄（2026-11-06，yt-dlp 2026.10.26）：
 
 - 2026-11-06：母版已寫回（見 `docs/RULE_CHANGELOG.md` 同日）。
 - 2026-11-06：Windows 實測可用（已 `pip --user` 安裝），T1、T2 都可在任一台開工。
+- 2026-11-06：Windows PC 已跑 `sync-claude.ps1`，Codex 24／Claude 25 個 Skill 皆 PASS；需重開 Codex 與 Claude Code 才生效。
+
+### 待辦（依序）
+
+1. 省長開 S 級預算卡（T1、T2 共用）。未開卡前不得開工。
+2. Codex 開 T1：建 `tools/yt-outlier/`、首跑、提 5 個台灣中型 Podcast 候選頻道。
+3. 老查勾選候選頻道 → 寫入 `channels.txt`。
+4. 真短驗析開 T2 回測 → 結論交老查 → Claude 決定開頭檢查卡去留並改母版。
+5. 順帶驗證：首頁 `sameAs` YouTube 連結已於 commit `7fbb207` 改為頻道 ID 網址，beyond-ans.com 是否已重新部署**待驗證**；下次動網站時讀回首頁原始碼確認。
