@@ -208,6 +208,14 @@ if [[ -f "$CODEX_AGENTS_SRC" ]]; then
     mkdir -p "$CODEX_HOME_DIR"
     cp "$CODEX_AGENTS_SRC" "$CODEX_HOME_DIR/AGENTS.md"
     echo -e "${GREEN}      已安裝 Codex 全域規則 $CODEX_HOME_DIR/AGENTS.md${NC}"
+    # 同一份母版部署到 Claude，避免 Mac 上 Claude 規則落後（Windows 由 tools/sync-claude.ps1 --global-rules 處理）
+    mkdir -p "$HOME/.claude"
+    cp "$CODEX_AGENTS_SRC" "$HOME/.claude/CLAUDE.md"
+    if cmp -s "$CODEX_AGENTS_SRC" "$HOME/.claude/CLAUDE.md"; then
+        echo -e "${GREEN}      已安裝 Claude 全域規則 $HOME/.claude/CLAUDE.md${NC}"
+    else
+        echo -e "${RED}      Claude 全域規則部署後比對不一致：$HOME/.claude/CLAUDE.md${NC}"
+    fi
 fi
 
 # Codex 多代理角色（可公開同步；config.toml 與 MCP 憑證仍只留本機）
