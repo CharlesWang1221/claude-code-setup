@@ -8,5 +8,5 @@ export function isPublished(post: CollectionEntry<'blog'>, now = new Date()) {
 
 export async function getPublishedPosts() {
   // mirrorOf：FB 同步回來的居易長文，網站上已有原文，不重複列出
-  return (await getCollection('blog')).filter((post) => isPublished(post) && !post.data.mirrorOf);
+  return (await getCollection('blog')).filter((post) => isPublished(post) && !post.data.mirrorOf && (!post.data.fbPostId || post.data.sourceKind === 'photo'));
 }

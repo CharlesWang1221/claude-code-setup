@@ -10,6 +10,7 @@ const blog = defineCollection({
     description: z.string().optional(),
     image: z.string().optional(),
     fbPostId: z.string().optional(),
+    sourceKind: z.enum(['photo', 'video']).optional(),
     tags: z.array(z.string()).optional(),
     publishAt: z.string().optional(),
     mirrorOf: z.string().optional(),
