@@ -1,0 +1,26 @@
+name: Archive blog images
+on:
+  workflow_dispatch:
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Recover Facebook image files and identify videos
+        env:
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+        run: node .github/scripts/archive-blog-images.js
+      - name: Save recovered images and classifications
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/src/content/blog/ site/public/images/blog/
+          if ! git diff --staged --quiet; then
+            git commit -m "Archive Facebook blog images"
+            git push
+          fi
