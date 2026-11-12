@@ -21,7 +21,7 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 
 - 啟動時先通過 `tools/check-skill-authority.sh`，讀既有 `.publish-status.json`、週計畫、任務交接及平台證據；一次登錄當次素材。已完成、已核准及已排程項目不得因新一輪調度重做或重傳。
 - 逐字稿、品牌基準、內容決策及週計畫來源配置是共用前置。前置未核准時，可並行做唯讀盤點、素材分類、音訊技術檢查與選段候選；不能把候選直接送入對外稿或短片製作。
-- Firstory 先行閘門（2026-10-16，見下節）放行，且 FB 主題文與 Threads 長文排程讀回（2026-11-05，見「上架順序」）後，才依可用代理席位同時推進互不依賴的工作：IG 輪播與文案、各個已 READY 的短片 item、居易長文。缺圖、缺原音或一支 QC 失敗，只阻塞該項；其他就緒項目繼續。
+- Firstory 先行閘門（2026-10-16，見下節）放行，且「上架順序」第 2 至 4 步（FB 主題文、IG 輪播、週一至週三 Threads 輪播鉤子文）排程讀回（2026-11-12）後，才依可用代理席位同時推進互不依賴的工作：各個已 READY 的短片 item。居易長文在 Firstory 放行後即可並行，不擋主線。缺圖、缺原音或一支 QC 失敗，只阻塞該項；其他就緒項目繼續。IG 輪播不再屬於「並行、只阻塞自己」的工作：S3EP11 起它被這樣歸類後連續 5 集沒做，也沒人發現。
 
 ### 起始狀態與上架包（2026-11-05 老查決定）
 
@@ -48,12 +48,15 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 節目介紹**最後一句**固定加「音樂來自 Pixabay 的 theodoremusic」（音樂授權條件）。上架包沒寫也要補；讀回時這句不在介紹最後或文字不完整，該列記 `BLOCKED`。已公開的舊集數由老查自行補，星期天不得修改。
 - 「AI 生成內容」標示依先行包 `ai_label` 欄位，不另問。
 
-**上架順序（兩種狀態都適用）**
+**上架順序（兩種狀態都適用；2026-11-12 老查核定）**
 
-1. Firstory 正片預約並讀回（下方「Firstory 先行閘門」）。
-2. FB 主題文與 Threads（居易長文）排程並讀回，各自搭配大千的圖片。步驟 1、2 卡住時先回報老查，不得跳去做短片。
-3. 選段包一次交老查核准，分兩區、不得混在一起：「句剪」區列 6 支（週幾、講者、原話、起訖時間碼）；「油管長片片段」區列 B 段落（起訖時間碼、題目的搜尋問題、涵蓋哪幾支句剪、四項門檻判定，見 `skills/you-guan/references/growth-stage.md`「B 常態規則」）。同一段原音兩區都用到時各列一次並註明共用。同時交 B 的開場錄音稿 TXT（規格見 BRIEF「開場稿一律交 TXT 檔」）。
-4. 老查核准選段後兩線並行：星期天做 6 支句剪與後續上架；油管等老查交開場錄音後才做 B，不擋句剪。
+1. Firstory 全部內容預約並讀回（下方「Firstory 先行閘門」）。讀回前，後面各步一律不開工。
+2. FB 主題文：上架包原文＋大千 9:16 圖，週一 12:15 排程並讀回。
+3. IG 輪播：第 3 步「IG 圖」產出 5 張輪播＋5 張金句圖＋`ig-caption.txt`，老查審輪播順序與文案、鐵雄、阿維後，輪播於週一 12:15 排程並讀回（分享至 Facebook、分享到 Threads 皆關閉）。
+4. Threads 輪播鉤子文：週一、二、三 12:15 各 1 則，依序配 `carousel_2`、`carousel_3`、`carousel_4`，寫法見「Threads 輪播鉤子文」。三則都排程並讀回。週四 Threads 12:15 仍是居易長文＋大千圖（狀態 1 第 6 點），居易寫完後另排，不擋本步。
+   步驟 1 至 4 任一卡住，先回報老查，不得跳去做短片；缺輪播或鉤子文的週，對帳表該格 `BLOCKED`。
+5. 選段包一次交老查核准，分兩區、不得混在一起：「句剪」區列 6 支（週幾、講者、原話、起訖時間碼）；「油管長片片段」區列 B 段落（起訖時間碼、題目的搜尋問題、涵蓋哪幾支句剪、四項門檻判定，見 `skills/you-guan/references/growth-stage.md`「B 常態規則」）。同一段原音兩區都用到時各列一次並註明共用。同時交 B 的開場錄音稿 TXT（規格見 BRIEF「開場稿一律交 TXT 檔」）。
+6. 老查核准選段後兩線並行：星期天做 6 支句剪（含專屬封面）與後續上架；油管等老查交開場錄音後才做 B，不擋句剪。
 
 ### Firstory 先行閘門（2026-10-16）
 
@@ -213,8 +216,8 @@ description: 《不標準答案》單集上架統一入口（老查取名「星�
 - 2026-08-24 起，Podcast 音檔正片固定排程於每週一 07:00（Asia/Taipei, UTC+8）公開，連續執行 6 集；不得因單集波動自行改時段。
 - 啟動單集流程時，先確認該集預定發布日期，將完整 ISO 8601 時間（含 `+08:00`）寫入 `release_schedule.target_at`，並標記這是實驗第幾集。若日期無法由現有資料判斷，只問老查「這集排哪個週一」，不可自行猜日期。
 - 製作目標：前一週五 18:00 前完成內容決策與品牌審查；週日 18:00 前完成星期天範圍內的成品、平台文案與上傳；週一 07:00 正片公開。時間不足時要回報風險，不可默默改成即時發布。
-- 社群主題文維持週一 12:15，FB、IG、Threads 同時段；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支的 IG Reels 與 FB Reels 在 Meta Business Suite 以同一則 Reel 一次排程（2026-10-15），YouTube Shorts、Threads 另排；無平台成功讀回不得標為已排程。
-- IG 金句圖與 IG 輪播（靜態圖）只發 IG，「分享至 Facebook」一律關閉，FB 不另發同一組圖（2026-10-15）。網站的 FB→IG 同步只轉居易網誌長文，不會替 Reels 或主題文發 IG，這兩類仍由本流程各平台原生發布。
+- 社群主題文維持週一 12:15，FB 主題文與 IG 輪播同時段；Threads 改為週一至週三 12:15 各 1 則輪播鉤子文（2026-11-12），週四 12:15 居易長文；週一至週六各 1 支短片，共 6 支（含一般預告），形式、時間與網誌碰撞處理依 [每週 6 支短片母版](../../docs/SHORT_VIDEO_WEEKLY_POLICY.md)。每支的 IG Reels 與 FB Reels 在 Meta Business Suite 以同一則 Reel 一次排程（2026-10-15），YouTube Shorts、Threads 另排；無平台成功讀回不得標為已排程。
+- IG 金句圖與 IG 輪播（靜態圖）不發 FB，「分享至 Facebook」一律關閉，FB 不另發同一組圖（2026-10-15）。例外：輪播第 2 至 4 張另作 Threads 週一至週三輪播鉤子文的配圖（2026-11-12），在 Threads 原生發文，不用 IG 的分享功能。網站的 FB→IG 同步只轉居易網誌長文，不會替 Reels 或主題文發 IG，這兩類仍由本流程各平台原生發布。
 - Threads 只發布／排程在《不標準答案》的 Threads 帳號。IG 發文時「分享到 Threads」一律關閉，Threads 版另以專屬文案排程，避免同一內容出現兩次。
 - IG 發布隔離：IG 圖文與 IG Reels 只發布／排程至《不標準答案》Instagram 品牌帳號；禁止同步至 Si Ming Wang 個人 Facebook 頁面。建立 IG 貼文與提交前，星期天必須逐項核對「目前 IG 身分＝不標準答案」及「分享至 Facebook／交叉發布＝關閉」；任一項不符即停止並修正，不得發布。
 - Podcast target_at 與短片週計畫分開。每項短片寫完整 +08:00 target_at，週計畫引用來源集數；不從正片日期自動追加舊三支精華。
@@ -256,7 +259,7 @@ A 段讓老查核准最終標題；B 段在 Firstory 先行閘門放行後，讓
 小渡依週計畫提供各支差異與逐支 brief，教父核對 item ID、原話、時間碼及版本後才設 READY。核准寫回單集與週計畫；同段原音換畫風不能算兩支不同發布內容。
 
 ### 2.1 平台文案 — `content_decision.approved: true` 且 `content_files: false` 時
-分兩批：標題核准後先只寫 show-notes.md，過品牌閘門後直接進第 4 步 Firstory 先行包；Firstory 先行閘門放行後，才以核准母稿產出 fb-post.txt、ig-caption.txt、threads-post.txt，並依週計畫逐 item ID 產出 caption 與 Threads 版文案。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
+分兩批：標題核准後先只寫 show-notes.md，過品牌閘門後直接進第 4 步 Firstory 先行包；Firstory 先行閘門放行後，才以核准母稿產出 fb-post.txt、ig-caption.txt；`threads-carousel-{1,2,3}.txt` 等第 3 步輪播出圖後，看圖再寫，並依週計畫逐 item ID 產出 caption 與 Threads 版文案。每支只服務該段觀點，不共用泛用摘要；用 AGENTS.md 與 BRAND_CONTEXT.md 的寫作規則，不依賴不可讀的舊記憶。
 
 寫作時套用記憶 `feedback_interaction_style` 的語氣禁用詞、排版規則，以及以下平台硬規則與發布前品牌關（取自 `social-media-assistant` 技能包，2026-08-06 併入）：
 
@@ -274,6 +277,13 @@ A 段讓老查核准最終標題；B 段在 Firstory 先行閘門放行後，讓
 - 另寫，不照貼 FB 長文或 IG caption；單篇 500 字元以內，像老查當下想到的一句話，不像公告
 - 拋一個觀點或問題讓人想回，結尾不用「點連結收聽」式 CTA；可附一行出處或 Firstory 連結；主題標籤固定 1 個（Threads 介面的主題欄），不在內文堆 hashtag
 - 短片的 Threads 文案只服務該支觀點，跟同支 IG caption 不得是同一段文字
+
+**Threads 輪播鉤子文（2026-11-12 起，週一至週三 12:15）**
+- 檔案：`output/ep-{slug}/social/threads-carousel-{1,2,3}.txt`，依序配 `carousel_2.png`、`carousel_3.png`、`carousel_4.png`，一則一張圖
+- 先看圖再寫：鉤子從該張輪播的重點出發，改寫成老查會脫口而出的一句話，不照抄圖上文字；再接 1 至 2 句逐字稿裡的原話或具體場景，停在聽眾會想知道「然後呢」的地方
+- 主文不放連結；發文後第一則回覆（串文）放「完整一集：《不標準答案》S{季}EP{集}〈集名〉」＋Firstory 公開連結
+- 三則各講一個重點，彼此不重複、不寫成整集摘要；每則 500 字元以內，最後一行 `主題：{1 個主題標籤}`
+- 跟週一 FB 主題文、IG caption、同日短片的 Threads 文案都不得是同一段文字；三則一起過阿維品牌閘門
 
 **短片上架文字包（2026-10-29 起每支必備，缺一列 `BLOCKED`）**
 
@@ -330,7 +340,7 @@ A 段讓老查核准最終標題；B 段在 Firstory 先行閘門放行後，讓
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\ig-images\run_ig.ps1 -EpSlug {slug}
 ```
-自動偵測封面圖（規則見記憶 `project_ig_pipeline`）；偵測失敗才問老查要哪張封面，加 `-CoverImage` 參數重跑。
+封面一律明確指定，不用自動偵測（2026-11-12；舊的自動偵測寫在 Claude 記憶，Codex 讀不到，而且偵測的 Drive「網誌/節目」資料夾已不再放封面）：加 `-CoverImage output\ep-{slug}\social\firstory-cover-{版本}-1400.png`，用第 1 步讀回的那張 Firstory 單集圖。輸出到 `output\ep-{slug}\ig\`：`carousel_1.png`（封面＋標題）、`carousel_2` 至 `carousel_4.png`（三個重點，取自 show-notes）、`carousel_5.png`（去 Firstory 聽完整集），以及金句圖。工具從 `show-notes.md` 取標題與重點；本集沒有 `show-notes.md` 就先依核准稿補齊再跑，不得用空白重點出圖。
 
 產完後，把整個 `output/ep-{slug}/ig/` 資料夾內容（carousel + quote 圖）連同 `ig-caption.txt` 一起複製到 Google Drive：`G:\我的雲端硬碟\不標準答案\2026\IG\{slug}\`（老查要求2026-07-26，方便他之後直接去這裡貼文，不用回頭找 repo 路徑）。
 
@@ -367,6 +377,7 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - 逐支核對短片上架文字包三檔（見第 2.1 步）齊全且已過阿維；缺標籤、說明只有一行或 Threads 缺主題，該列 `BLOCKED`。
 
 **週排程對帳表（2026-11-12 起硬規則）**：六支短片 × IG／FB／YouTube／Threads 共 24 格，一格一則，用 `python tools/weekly-shorts/check_slots.py` 機器對帳，不靠人眼。S4EP2 週就是沒有對帳：YouTube 少 2 支、IG 週五那支提前到週四跟週四撞日、FB 一支在 00:08 發出，同一支三平台分散在不同天，週末流量歸零也沒人發現。
+圖文另列 4 格（2026-11-12）：IG 輪播（週一 12:15）、Threads 輪播鉤子文 ×3（週一至週三 12:15），缺一格 `BLOCKED`。`check_slots.py` 尚未支援這 4 格前，在授權包另列一張表人工核對，結束回報要寫出這 4 格的讀回狀態。
 
 1. 建包前跑 `check_slots.py <weekly-plan.json>`：每支 target_at 必須是母版時段（週一至四、六 20:30，週五 12:00）、日期對上週幾、一天只有一支。改時段只能由老查核准，寫進該 item 的 `slot_override`（含老查原話）；某平台不發寫 `platform_skip`。FAIL 的支整支 `BLOCKED`，不得進包。
 2. 建包後加 `--package <release-package.json>` 再跑一次：每列時間與週計畫逐字相同，四平台都有列。`immediate` 一律不收，補發走下方「逾期補發」。
@@ -414,7 +425,7 @@ YouTube Shorts 列在授權後用 `node tools/youtube-upload.js --video <item.re
 
 YouTube API／指令顯示「縮圖已套用」只能算提交成功，不能算封面生效。每支必須另開該影片 Studio 詳細資料頁，重新載入後讀回「已上傳的縮圖」、`selected=true`，且縮圖 URL 含正確 `videoId`；三項缺一就記 `THUMBNAIL_FAILED`，不得回報完成。S3EP12 失敗案例：既有 `--update` 路徑原本只更新標題與說明，流程又未逐支重載 Studio，導致封面未換卻被誤判完成。修復封面不重傳影片。
 
-Threads 列（主題文與每支短片）在授權後用瀏覽器工具到 threads.com，以《不標準答案》帳號建立貼文、附上該支成品（主題文附 IG 輪播第一張或純文字）、貼上 Threads 版文案、填主題標籤，用原生「排程」設定 target_at。介面找不到排程功能就標 `FAILED`，不得改成立即發布。
+Threads 列（主題文與每支短片）在授權後用瀏覽器工具到 threads.com，以《不標準答案》帳號建立貼文、附上該支成品（輪播鉤子文附指定的那一張輪播圖，發出後在第一則回覆貼 Firstory 連結；週四居易長文附大千圖）、貼上 Threads 版文案、填主題標籤，用原生「排程」設定 target_at。介面找不到排程功能就標 `FAILED`，不得改成立即發布。
 
 **Threads 影片三段讀回（2026-10-29 起硬規則）**：短片列的影片必須三段都讀到，缺一段就不算成功。
 
