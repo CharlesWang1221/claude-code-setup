@@ -9,7 +9,7 @@
   python3 tools/cover-frame/render_cover.py <covers.json> <輸出資料夾> [--shots <影片劇情圖資料夾> ...]
 
 covers.json：
-  [{"day": "mon", "art": "art/mon-cover-art.png", "tag": "S4EP2｜週一預告",
+  [{"day": "mon", "art": "art/mon-cover-art.png", "tag": "S4EP2",
     "line1": "全家精神狀況", "highlight": "很脆弱", "font": "Noto Sans TC",
     "angle": "high-angle", "shot1_angle": "eye-level",
     "shots": ["shots/mon-shot-01.png", "shots/mon-shot-02.png", "shots/mon-shot-03.png", "shots/mon-shot-04.png"]}]
@@ -57,6 +57,8 @@ def check(item, shot_hashes):
     for k in ('day', 'art', 'tag', 'line1', 'highlight', 'angle', 'shot1_angle', 'shots'):
         if not item.get(k):
             errs.append(f'缺欄位 {k}')
+    if item.get('tag') and not re.fullmatch(r'S\d+EP\d+', item['tag']):
+        errs.append(f'期別標籤「{item["tag"]}」只能放集數（例 S4EP3），不寫週幾金句或預告（2026-11-12）')
     hl = item.get('highlight', '')
     if not 2 <= len(hl) <= 4:
         errs.append(f'重點字「{hl}」須 2～4 字')

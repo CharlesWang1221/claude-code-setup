@@ -366,6 +366,18 @@ node tools/firstory-upload/upload.mjs --episode {slug} --audio "<音檔路徑>"
 - Threads 預檢不能只看個人頁有登入：要實際打開發文框、選取一支本包影片，等影片預覽出現後取消。兩步驟驗證常在發文時才跳出，S3EP12 週就是授權後才卡在 2FA，5 支 Threads 整週沒發。
 - 逐支核對短片上架文字包三檔（見第 2.1 步）齊全且已過阿維；缺標籤、說明只有一行或 Threads 缺主題，該列 `BLOCKED`。
 
+**週排程對帳表（2026-11-12 起硬規則）**：六支短片 × IG／FB／YouTube／Threads 共 24 格，一格一則，用 `python tools/weekly-shorts/check_slots.py` 機器對帳，不靠人眼。S4EP2 週就是沒有對帳：YouTube 少 2 支、IG 週五那支提前到週四跟週四撞日、FB 一支在 00:08 發出，同一支三平台分散在不同天，週末流量歸零也沒人發現。
+
+1. 建包前跑 `check_slots.py <weekly-plan.json>`：每支 target_at 必須是母版時段（週一至四、六 20:30，週五 12:00）、日期對上週幾、一天只有一支。改時段只能由老查核准，寫進該 item 的 `slot_override`（含老查原話）；某平台不發寫 `platform_skip`。FAIL 的支整支 `BLOCKED`，不得進包。
+2. 建包後加 `--package <release-package.json>` 再跑一次：每列時間與週計畫逐字相同，四平台都有列。`immediate` 一律不收，補發走下方「逾期補發」。
+3. 同一支四個平台排在同一個 target_at，不得 IG 先發、YouTube 晚一天。
+4. 排程讀回後，把每格的平台 ID、`scheduled_at`（平台顯示的 Asia/Taipei 時間）、`readback_at` 寫回週計畫 `items[].platforms.<平台>`，跑 `--readback`，結束回報第一段貼對帳表。任一格 ✕ 就照「只停該列」處理並開 `BLOCKED` 任務列。讀回時間跟 target_at 差一分鐘也算 ✕（00:08 就是時區或日期欄填錯）。
+5. 隔日讀回巡檢與每週日收週時再跑 `--readback`，PUBLISHED 才算完成；週日 24 格沒全部 ○，不得開下週授權包。
+
+**IG 交叉發布讀回**：IG 洞察的瀏覽來源若出現「Facebook」，當週讀回巡檢要查清是 Meta「在 Facebook 推薦」還是交叉發布：開 Si Ming Wang 個人頁確認沒有出現該則 Reel，並記錄 IG 該則的 Facebook 相關設定。出現在個人頁即違反 IG 發布隔離規則，當天回報老查，不得自行刪文。
+
+**讀回不灌觀看數**：QC 與內容檢查一律用本機成片，不在公開網址重複播放。公開頁讀回只確認影片、封面與文案存在，確認後立刻停止播放、關閉分頁；YouTube 優先在 Studio 讀回。S4EP2 週 YouTube 有一支平均觀看 4:39（片長的 11 倍）、電腦裝置佔 61.5%，疑似內部播放灌數，會讓成效復盤失真。
+
 **授權包**：寫入 `output/ep-{slug}/release-package.json`（週計畫短片寫 `output/weekly-shorts/{week-start}/release-package.json`），每列記 item ID、平台、帳號、成品路徑與 SHA-256、封面、caption 檔與 SHA-256、公開範圍、target_at、`ai_label`。給老查的摘要一次列完全部列，不分批問。
 
 **授權**：老查回「可以上架」「照包上架」或同義明確回覆，即授權包內全部列。寫入 `release_authorization`：包路徑、包的 SHA-256、授權時間與老查原話。只回部分列（例如「IG 先不要」）就把其餘列移出包後再執行。
