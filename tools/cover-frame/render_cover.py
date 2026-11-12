@@ -62,8 +62,8 @@ def check(item, shot_hashes):
     hl = item.get('highlight', '')
     if not 2 <= len(hl) <= 4:
         errs.append(f'重點字「{hl}」須 2～4 字')
-    if len(item.get('line1', '')) > 7:
-        errs.append(f'主標第一行「{item.get("line1")}」超過 7 字，125 px 會折行')
+    if len(item.get('line1', '')) > 6:
+        errs.append(f'主標第一行「{item.get("line1")}」超過 6 字，125 px＋字距 .07em 會折行（2026-11-12）')
     if item.get('font', 'Noto Sans TC') not in FONTS:
         errs.append(f'字型 {item.get("font")} 不在 DESIGN.md 封面字體表')
     if item.get('angle') not in ANGLES:
