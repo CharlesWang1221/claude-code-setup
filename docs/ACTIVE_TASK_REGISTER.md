@@ -15,6 +15,7 @@
 
 | 任務 ID | 任務與範圍 | 狀態 | 主責主管 | 最終依據／證據 | 阻塞或待放行 | 下一個明確動作 | 時點 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| MAC-SYNC-2026-11-12 | Mac 同步 2026-11-12 規則：上架順序＋IG 輪播＋Threads 輪播鉤子文（`4abeee5`）、封面四人輪值與大寶小寶 v2 造型（`7922ea8`、`c5c0612`） | `ACTIVE` | Codex（Mac 執行） | Windows 已同步：`sync-claude.ps1` 回報 Codex 24、Claude 25 個 Skill MATCH／PASS | 無 | Mac 在 repo 執行 `git pull --ff-only`、`./tools/sync-codex.sh`、`python3 tools/sync-claude.py --apply --global-rules`，看到 PASS 後重開 Codex 與 Claude Code，回寫本列並移除 | 2026-11-16 週開工前 |
 | KIDS-OUTFIT-COVER-ROTATION-2026-11 | 大寶改短 T＋長褲、小寶改短 T＋短褲（大千重繪三視圖）；句剪封面改四人輪值（老查 2、阿分 2、大寶 1、小寶 1） | `ACTIVE` | 大千＋星期天 | `docs/briefs/KIDS-OUTFIT-COVER-ROTATION-2026-11/BRIEF.md` | 需省長 S 級 ImageGen 卡（≤6 次）；新三視圖待老查核准 | 大千出兩張新三視圖交老查審 | 未設定 |
 | THREADS-CAROUSEL-HOOK-2026-11 | IG 輪播復工（每集必做，週一 12:15）＋Threads 週一至週三 12:15 輪播鉤子文；上架順序改為 Firstory → FB → IG 輪播 → Threads → 短片 | `ACTIVE` | 星期天（執行）＋阿派 | `docs/briefs/THREADS-CAROUSEL-HOOK-2026-11/BRIEF.md` | Threads 排程能否附圖、能否預排第一則回覆未實測；IG 工具配色可能與 `DESIGN.md` 不一致 | Codex 依 BRIEF 待辦 1 至 4，下一集試行 | 下一集上架前 |
 | MAC-SITE-NPM-VULN | 網站 `site/` npm 套件 19 個漏洞（含 1 critical），2026-10-14 Mac 同步時發現未修 | `ACTIVE` | Codex（執行） | 原 MAC-SYNC-2026-10-14 紀錄 | Windows 公司電腦不裝軟體，只能在 Mac 處理 | 下次用 Mac：`site/` 跑 `npm audit`，先修 critical；`npm audit fix` 後本機 build 通過才 commit，不用 `--force`，有破壞性升級先回報 | 下次使用 Mac 時 |
