@@ -1,6 +1,6 @@
 ---
 task_id: KIDS-OUTFIT-COVER-ROTATION-2026-11
-status: ACTIVE
+status: ACTIVE（A 已完成，B 待 2026-11-16 週執行）
 owner: 大千（三視圖）＋星期天／句剪（封面輪值）；省長（ImageGen 預算）
 created_at: 2026-11-12 Asia/Taipei
 last_updated: 2026-11-12 Asia/Taipei
@@ -34,3 +34,11 @@ source: 阿分提出、老查 2026-11-12 與 Claude Code 討論定案
 
 - 孩子封面未經新三視圖核准，不得用舊服裝先做。
 - 原始三視圖與私人路徑不進公開 repo。
+
+## 進度（2026-11-12）
+
+- A 完成：Claude Code 以 `codex exec` 呼叫 Codex 內建 imagegen 編輯，共 4 次生成（大寶換裝 1、小寶換裝 1、小寶馬尾 1、大寶加帽 1）。老查 2026-11-12 核准 v2：大寶短 T＋長褲＋鴨舌帽、小寶短 T＋短褲＋馬尾；帽子戶外固定戴、室內可拿下。檔案存在老查私人雲端三視圖資料夾，v1 保留。
+- 已知瑕疵（老查接受）：大寶身形較舊版修長、正面帽簷不明顯；入鏡時多用斜側角度。
+- Windows Codex 唯讀沙盒擋下讀取 Skill 母版，本次依 prompt 規格產圖；正式產線仍須讓 Codex 讀到母版。
+- 額度：4 次 ImageGen 由老查直接授權，待省長補記 `docs/QUOTA_LEDGER.md`。
+- B：2026-11-16 週起，週計畫加 `cover_lead`、`cover_lead_reason`。
