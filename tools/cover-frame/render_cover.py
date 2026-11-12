@@ -81,7 +81,7 @@ def check(item, shot_hashes):
     return errs
 
 
-def render(item, out_dir, exe):
+def render(item, out_dir, exe, preview=False):
     tpl = re.sub(r'<!--.*?-->', '', TEMPLATE.read_text(encoding='utf-8'), flags=re.S)
     fill = {'{{ART}}': Path(item['art_path']).resolve().as_uri(), '{{TAG}}': html.escape(item['tag']),
             '{{LINE1}}': html.escape(item['line1']), '{{HIGHLIGHT}}': html.escape(item['highlight']),
@@ -89,7 +89,7 @@ def render(item, out_dir, exe):
     for k, v in fill.items():
         tpl = tpl.replace(k, v)
     assert '{{' not in tpl, '樣板仍有未填欄位'
-    out = out_dir / f'{item["day"]}-cover.png'
+    out = out_dir / f'{item["day"]}-cover{"-PREVIEW" if preview else ""}.png'
     with tempfile.TemporaryDirectory() as td:
         page = Path(td) / 'cover.html'
         page.write_text(tpl, encoding='utf-8')
@@ -100,6 +100,8 @@ def render(item, out_dir, exe):
     thumb = out_dir / f'{item["day"]}-cover-grid-check.png'
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(out), '-vf', 'crop=1080:1440:0:240,scale=264:-1', str(thumb)],
                    check=True)
+    if preview:
+        return out, thumb, None
     sheet = out_dir / f'{item["day"]}-cover-vs-shots.png'
     ins = [item['art_path']] + item['shot_paths']
     args = ['ffmpeg', '-v', 'error', '-y']
@@ -117,11 +119,13 @@ def main():
     ap.add_argument('spec')
     ap.add_argument('out_dir')
     ap.add_argument('--shots', action='append', default=[])
+    ap.add_argument('--preview', action='store_true',
+                    help='只給老查看樣板改版後的樣式：免填角度與劇情圖，輸出檔名帶 PREVIEW，不得當交件封面上架')
     a = ap.parse_args()
     spec = Path(a.spec)
     items = json.loads(spec.read_text(encoding='utf-8'))
     shot_hashes = {sha(p) for d in a.shots for p in Path(d).rglob('*') if p.suffix.lower() in ('.png', '.jpg', '.jpeg', '.webp')}
-    out_dir = Path(a.out_dir)
+    out_dir = Path(a.out_dir).resolve()  # Chrome 的 --screenshot 不認相對路徑（Windows 實測）
     out_dir.mkdir(parents=True, exist_ok=True)
     bad = False
     for it in items:
@@ -132,11 +136,16 @@ def main():
             bad = True
             continue
         errs = check(it, shot_hashes)
+        if a.preview:  # 預覽只保留文字規則；角度、劇情圖、重複用圖檢查留給正式交件
+            errs = [e for e in errs if not any(k in e for k in ('angle', '角度', 'shots', '劇情圖', '影片內的圖'))]
         if errs:
             bad = True
             print(f'FAIL {it.get("day")}：' + '；'.join(errs))
             continue
-        out, thumb, sheet = render(it, out_dir, chrome())
+        out, thumb, sheet = render(it, out_dir, chrome(), a.preview)
+        if a.preview:
+            print(f'PREVIEW {it["day"]}：{out}（格狀牆縮圖 {thumb.name}）；僅供看樣式，不得上架')
+            continue
         print(f'OK   {it["day"]}：{out}（格狀牆縮圖 {thumb.name}；對照圖 {sheet.name} 交鐵雄確認不是影片圖的裁切或重繪）')
     sys.exit(1 if bad else 0)
 
