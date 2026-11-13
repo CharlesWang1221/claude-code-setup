@@ -61,6 +61,7 @@
 | 「SEO文章」「寫SEO」「補SEO」「居易」 | `seo-article-writer` |
 | 「啊問」「網誌圖片」「網誌主圖」「文章適合什麼圖片」「分隔漫畫」 | `blog-image-director` |
 | 「真秀」「剪短影片」「做 Shorts」「自動剪」 | `shorts-pipeline` |
+| 「HyperFrames」「做影片」「改影片工程」「預覽／渲染影片」且未明確進入專責產線 | 必須先讀 repo 母版 `skills/hyperframes/SKILL.md`，再依交付物路由；不得用安裝版或 `.agents` 副本代替 |
 | 「真人」 | 教父先判讀素材，建議 `shorts-pipeline`；老查確認後才製作 |
 | 「訪談」 | 教父先判讀素材，建議 `talking-head-recut`；老查確認後才製作 |
 | 「句剪」「金句短片」「節目精選」「預報」「做節目預告」「做 Podcast 預告」「音檔做短片」「用封面做 Reels」「做 15 秒預告」 | `podcast-teaser-video`（句剪，原名預報；週一至六 6 支金句短片，每支另做專屬封面；一律漫畫分鏡，不套嘴型頭像） |
@@ -107,7 +108,7 @@
 - 所有時間皆為 Asia/Taipei。規則存於公開 repo，換 Mac／Windows 都以 Codex 同步後的 `AGENTS.md`、`BRAND_CONTEXT.md` 與 Skills 為準。
 - 交接紀錄同步例外：不要每次自動把任務交接檔複製到 Google Drive；跨電腦接續以 repo／GitHub 為預設。只有老查明確要求時才同步交接紀錄；S3EP7 的 Google Drive 交接是特例。
 - Windows PC 日常更新後，在 repo 執行 `git pull --ff-only`（只有已追蹤檔修改才算未提交，未追蹤檔不擋；有修改或兩邊分岔時依 `docs/CLAUDE_PC_SYNC.md`「本機有修改時」commit 後 `git pull --rebase`）、`.\tools\sync-codex.ps1`，再重新啟動 Codex；若要同時更新 Claude，改執行 `.\tools\sync-claude.ps1`（包含 Codex 同步），詳見 `docs/CLAUDE_PC_SYNC.md`；新機完整安裝才執行 `.\setup.ps1`。兩者都只從 repo 複製核心 Skills 到 `%USERPROFILE%\.codex\skills`，並隔離 `.agents` 舊同名副本，不得沿用或反向同步 Claude 設定。
-- Mac 更新後，在 repo 執行 `git pull`、`./setup.sh`，再重新啟動 Codex。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
+- Mac 更新後，在 repo 執行 `git pull --ff-only`（本機有已追蹤檔修改或兩邊分岔時，同樣依 `docs/CLAUDE_PC_SYNC.md`「本機有修改時」處理）、`./setup.sh`，再重新啟動 Codex。Mac／PC 都不得用 `git stash` 暫存修改後再 pull：看不懂或尚未決定的修改先 commit 到本機 `wip/<電腦>-<日期>` 分支並回報老查，`main` 保持乾淨再 pull（2026-11-13，Mac 長期 stash 未 commit，11-09 封面 v4 與 S4EP1／S4EP2 帳冊未進 repo，與 PC 分岔）。若只改單一 Skill，可先比對 repo 與 `~/.codex/skills`，但 repo 仍是唯一母版。
 
 ### 影片封面硬規則
 
@@ -178,6 +179,7 @@
 
 - 涉及《不標準答案》、心維空間、We I、Podcast、社群、SEO、短影音、品牌企劃或 AI 工作流時，先讀根目錄 `BRAND_CONTEXT.md`。
 - 此 repo 為公開 repo；只將去識別的品牌原則與公開內容提交，原始家庭文件與其他私密資料不得提交。
+- 學習筆記的唯一主檔位於老查私人 Google Drive 的 `AI學習筆記/LEARNING_NOTES.md`；`docs/LEARNING_NOTES.md` 只保留索引，後續心得與製作反思不得續寫到公開 repo。每日 `journals/` 是另一類歷史紀錄，不併入這份主檔。
 ## 公司控制台與內容營運
 
 - Codex 依 `docs/CEO_CONTROL_TOWER.md`（公司控制台）運作為影音動畫公司：老查只發布案件、洽談業務與最終批准；教父（執行長）在老查之下、其他人之上，接案件、管整個後製流程並向老查回報，不產製、不放行、不能推翻鐵雄／阿維／省長的判定；Claude Code 是管理層，負責規則、任務卡與監察，可凍結違反停止線的 item，不屬於教父；小查只是老查的私人助理，不參與公司；阿派（營運總監）開任務卡、畫依賴圖並行派工；廠長製作；鐵雄（品管合規）獨立稽核；阿維品牌放行；省長管額度；星期天依序排程。Skill 是 SOP，不是可自行接案的員工。

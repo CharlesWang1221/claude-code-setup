@@ -29,7 +29,7 @@ const path = require('path');
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const OVERRIDE_LOG = path.join(PROJECT_ROOT, 'output', 'weekly-shorts', 'qa-overrides.log');
 const SUMMARY_RE = /總結\s*[:：]\s*(PASS|FAIL|UNVERIFIED)/;
-const SHA_RE = /\b[0-9a-f]{64}\b/i;
+const SHA_RE = /\b[0-9a-f]{64}\b/gi;
 
 function sha256(file) {
   const hash = crypto.createHash('sha256');
@@ -115,17 +115,19 @@ function checkQa(file, opts = {}) {
   lines.push(`報告：${rel(report)}`);
   const text = fs.readFileSync(report, 'utf8');
   const summary = (text.match(SUMMARY_RE) || [])[1];
-  const recorded = ((text.match(SHA_RE) || [])[0] || '').toLowerCase();
+  // A batch PASS report may contain several independently listed asset hashes.
+  // Accept only when the uploaded file's exact hash appears in that report.
+  const recorded = (text.match(SHA_RE) || []).map((value) => value.toLowerCase());
   if (summary !== 'PASS') {
     lines.push(`結果：BLOCKED，稽核總結為 ${summary || '（找不到總結）'}`);
     return { ok: false, lines, report, sha: actual };
   }
-  if (!recorded) {
+  if (recorded.length === 0) {
     lines.push('結果：BLOCKED，報告沒有記錄受檢檔的 SHA-256');
     return { ok: false, lines, report, sha: actual };
   }
-  if (recorded !== actual) {
-    lines.push(`結果：BLOCKED，報告審的是另一個版本（報告 ${recorded.slice(0, 12)}…，檔案 ${actual.slice(0, 12)}…）`);
+  if (!recorded.includes(actual)) {
+    lines.push(`結果：BLOCKED，報告沒有此檔案的 SHA-256（檔案 ${actual.slice(0, 12)}…）`);
     return { ok: false, lines, report, sha: actual };
   }
   lines.push('結果：PASS，鐵雄稽核通過且雜湊一致');

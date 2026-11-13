@@ -20,6 +20,7 @@ if ($LASTEXITCODE -ne 0) { throw "git pull failed; resolve it before syncing" }
 - 兩邊都有新 commit 時改用 `git pull --rebase`。表格衝突通常是兩邊各加新列，全部保留並依日期排序；檢查無殘留衝突標記後再 `git rebase --continue`。
 - push 會寫入公開 repo，需老查當次同意；之後照常跑同步與 `check-skill-authority.ps1`，PASS 才重開 Codex。
 - 看不懂的修改或內容衝突不自行取捨，停下列給老查決定。
+- 不得用 `git stash`（含 `git pull --autostash`）暫存修改後再 pull；stash 不會進 repo，另一台電腦看不到，還原後也容易忘記 commit。尚未決定的修改先 commit 到本機 `wip/<電腦>-<日期>` 分支並回報老查。本節 Mac 同樣適用（2026-11-13）。
 
 這個入口先跑 repo → Codex 的既有同步及來源檢查，再同步 Claude 的 23 個核心 Skills 與全域工作規則。
 Python 3.9 以上需已安裝；入口依序偵測 `py -3`、`python3`、`python`。同步後開新的工作階段。既有中文 PowerShell 同步與來源檢查腳本使用 UTF-8 BOM，兼容 Windows PowerShell 5.1。

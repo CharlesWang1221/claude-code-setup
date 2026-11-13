@@ -73,6 +73,12 @@ video-projects/s3ep9-hyperframes-teaser/
 /video-projects/s3ep8-live-action-animation-pilot
 /video-projects/s3ep8-paper-collage
 /video-projects/s3ep11-hyperframes-teaser
+/video-projects/s3ep12-mon-quote/
+/video-projects/s3ep12-tue-quote/
+/video-projects/s3ep12-wed-quote/
+/video-projects/s3ep12-thu-quote/
+/video-projects/s3ep12-fri-quote/
+/video-projects/s3ep12-sat-quote/
 /video-projects/youtube-window-s3ep5
 /video-projects/s3ep9-hyperframes-teaser
 
@@ -86,3 +92,6 @@ video-projects/s3ep9-hyperframes-teaser/
 
 # 私人論文研究進度，不進公開 repo
 /docs/THESIS_PROGRESS*.md
+
+# Private episode workspace alias
+/output/ep-s4ep2
