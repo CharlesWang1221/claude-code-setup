@@ -3,7 +3,7 @@ task_id: CREATOR-OS-TRAFFIC-2026-11
 status: ACTIVE
 owner: 廠長（工作站實作，Codex 執行）＋成析（資料口徑）；規則由 Claude Code 管理層維護
 created_at: 2026-11-13 Asia/Taipei
-last_updated: 2026-11-13 Asia/Taipei
+last_updated: 2026-11-13 21:00 Asia/Taipei
 source: 老查 2026-11-13 與 Claude Code 討論：「能把這個改成總流量管理嗎」→「好 開始」
 ---
 
@@ -134,3 +134,19 @@ PC Codex 的寫檔工具壞了（`TextEncoder is not defined`），老查改指�
   - 單集列一律從 Firstory 單集頁手填，CSV 匯入只吃本卡自己的範本格式；本階段不寫 Firstory 專用解析器。
   - 時區：Firstory 的日界是 UTC+0（台北早上 08:00 換日）。手填 D7 時取最接近的完整日，在「備註」寫 `Firstory UTC+0`，不另做換算。
   - 原始匯出檔留在 Drive 當佐證，不進 repo、不進 D1。
+
+## 上線結果（2026-11-13 晚，Mac）
+
+- 已部署：Worker 版本 `7f66de14`（程式），之後老查重設 secret，目前線上是 `f3259fdf`（Secret Change，程式不變）。分支已併入 `main`（`f06bfc0`）。
+- D1：0005、0006 原本已套用；0007 已套用，讀回「No migrations to apply」。
+- Access：未登入時 `/`、`/traffic`、`/index.html`、`/v1/traffic` 全部 302 轉 Access 登入頁（Claude curl 實測）。`/index.html` 登入後回 Worker 的 404「找不到路徑」，舊 MVP 未對外。
+- **既有問題已修**：`OWNER_EMAIL` secret 存在但值為空，雲端工作站自 8 月起從未啟用（D1 工作區 0、成員 0、備份 0）。老查重設 `OWNER_EMAIL`／`EDITOR_EMAIL` 後親自開 `/traffic`，D1 讀回工作區 1、成員 owner＋editor。每日 Drive 備份從今晚起才有機會成功，明早（19:30 UTC 排程）須讀 `backup_runs` 確認。
+- Mac Wrangler OAuth 9/4 過期，老查 11-13 重新 `wrangler login`。
+- 部署用的 `wrangler.jsonc`（`run_worker_first: true`）在 `~/creator-os-deploy/apps/creator-os/`，保留作為 Mac 部署目錄；`apps/creator-os/.gitignore` 已加入 `wrangler.jsonc`、`wrangler.line.jsonc`。
+- `package-lock.json` 已進版控（根目錄 `.gitignore` 例外）。
+
+### 完成定義第 3 項：延後
+
+- 今晚無可填數據：S4EP3 於 11-09 公開，D7 要 11-16 才滿；S4EP4 尚未發布。Firstory 頻道 CSV 依裁定不得填單集。
+- Codex 用 Chrome 抄數字時多次遇到畫面切換，D1 也沒抄到。
+- 新期限：**11-16（一）晚**抄 S4EP3 D1／D7，存成 Drive `流量管理/S4EP3_traffic.csv`（範本格式）後從 `/traffic` 匯入；S4EP4 等發布後第 8 天補 D7。匯入成功並截圖後，本卡才結案。

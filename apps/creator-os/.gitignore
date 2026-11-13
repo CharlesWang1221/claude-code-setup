@@ -1,2 +1,4 @@
 out/
 *.tsbuildinfo
+wrangler.jsonc
+wrangler.line.jsonc
