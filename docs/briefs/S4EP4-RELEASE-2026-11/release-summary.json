@@ -1,0 +1,58 @@
+{
+  "task_id": "S4EP4-RELEASE",
+  "updated_at": "2026-11-13T14:10:00+08:00",
+  "owner": "星期天",
+  "status": "WAITING_PACKAGE",
+  "completed_scope": "Firstory 與三篇 Threads 已排程並讀回，尚未公開",
+  "firstory": {
+    "id": "cmweedqou00a401rkbrwvdlxa",
+    "scheduled_at": "2026-11-16T07:00:00+08:00",
+    "studio_url": "https://studio.firstory.me/episodes/cmweedqou00a401rkbrwvdlxa/info",
+    "story_url": "https://open.firstory.fm/story/cmweedqou00a401rkbrwvdlxa",
+    "readback_at": "2026-11-13T13:16:15+08:00",
+    "duration_seconds": 1731.828271,
+    "cover_pixels": [
+      1400,
+      1400
+    ],
+    "music_credit_last_line": "音樂來自 Pixabay 的 theodoremusic"
+  },
+  "threads": {
+    "account": "another20251021",
+    "scheduled_url": "https://www.threads.com/drafts/",
+    "posts": [
+      {
+        "date": "2026-11-16",
+        "time": "12:15",
+        "topic": "金錢安全感"
+      },
+      {
+        "date": "2026-11-17",
+        "time": "12:15",
+        "topic": "家庭回憶"
+      },
+      {
+        "date": "2026-11-18",
+        "time": "12:15",
+        "topic": "家庭對話"
+      }
+    ],
+    "timezone": "Asia/Taipei",
+    "readback_at": "2026-11-13T13:15:35+08:00",
+    "text_matches": true,
+    "images_verified": true,
+    "first_reply_link_verified": true,
+    "public_post_ids": "not_available_before_publication"
+  },
+  "qa": "PASS",
+  "brand": "ALLOW",
+  "imagegen": {
+    "used": 4,
+    "approved_max": 6
+  },
+  "shorts": {
+    "started": false,
+    "state": "WAITING_PACKAGE"
+  },
+  "raw_evidence": "私人工作檔；未提交公開 repo"
+}
