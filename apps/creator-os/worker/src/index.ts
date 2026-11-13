@@ -16,6 +16,7 @@ type D1Database = {
 
 type Env = {
   DB: D1Database;
+  ASSETS?: { fetch: (request: Request) => Promise<Response> };
   OWNER_EMAIL?: string;
   EDITOR_EMAIL?: string;
   APP_ORIGIN?: string;
@@ -86,7 +87,7 @@ function json(body: unknown, status = 200, request?: Request, env?: Env) {
 }
 
 function landingPage() {
-  return new Response(`<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Creator OS 已驗證</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#191328;color:#f6f1ff;font-family:ui-sans-serif,system-ui,"Noto Sans TC",sans-serif}.card{max-width:36rem;padding:3rem;border:1px solid #66558a;border-radius:1.25rem;background:#241b36;box-shadow:0 2rem 5rem #090612}small{color:#bcb0d6;letter-spacing:.12em}h1{font-size:2rem;margin:.75rem 0}p{line-height:1.8;color:#ded5ed}code{padding:.2rem .4rem;border-radius:.3rem;background:#34264e;color:#edc8ff}</style><main class="card"><small>CREATOR OS · ACCESS VERIFIED</small><h1>驗證成功</h1><p>這個網址是雲端同步 API，不是工作站介面。請回到本機工作站 <code>http://localhost:3000</code>，再按「讀取雲端」。</p><p>第一次讀取若顯示雲端是空的，再按「一次性匯入本機資料」。</p></main></html>`, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
+  return new Response(`<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Creator OS 已驗證</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#191328;color:#f6f1ff;font-family:ui-sans-serif,system-ui,"Noto Sans TC",sans-serif}.card{max-width:36rem;padding:3rem;border:1px solid #66558a;border-radius:1.25rem;background:#241b36;box-shadow:0 2rem 5rem #090612}small{color:#bcb0d6;letter-spacing:.12em}h1{font-size:2rem;margin:.75rem 0}p{line-height:1.8;color:#ded5ed}code{padding:.2rem .4rem;border-radius:.3rem;background:#34264e;color:#edc8ff}</style><main class="card"><small>CREATOR OS · ACCESS VERIFIED</small><h1>驗證成功</h1><p>這個網址是雲端同步 API，不是工作站介面。請回到本機工作站 <code>http://localhost:3000</code>，再按「讀取雲端」。</p><p>第一次讀取若顯示雲端是空的，再按「一次性匯入本機資料」。</p><p><a href="/traffic" style="color:#edc8ff">開啟「總流量」→</a></p></main></html>`, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
 }
 
 function normalizedEmail(value?: string) {
@@ -503,11 +504,20 @@ async function importTraffic(request: Request, env: Env, email: string, role: Ro
   return json({ ok: true, imported: inputs.length, overwrites, rows: await listTraffic(env) }, 200, request, env);
 }
 
+function isPublicAsset(pathname: string) {
+  return pathname === "/traffic" || pathname === "/traffic/" || pathname === "/traffic.html" || pathname === "/traffic.txt" || pathname.startsWith("/traffic/") || pathname.startsWith("/_next/") || pathname === "/favicon.ico";
+}
+
 const worker = {
   async fetch(request: Request, env: Env, ctx: Context): Promise<Response> {
     if (request.method === "OPTIONS") return json({}, 204, request, env);
     const url = new URL(request.url);
     if (request.method === "GET" && url.pathname === "/") return landingPage();
+    // 只開放總流量頁與其靜態資源；out/index.html 是 localStorage 舊 MVP，不得對外。
+    if ((request.method === "GET" || request.method === "HEAD") && isPublicAsset(url.pathname)) {
+      if (!env.ASSETS) return json({ error: "靜態資源尚未綁定。" }, 503, request, env);
+      return env.ASSETS.fetch(request);
+    }
     if (url.pathname === "/health") return json({ ok: true }, 200, request, env);
     if (request.method === "POST" && url.pathname === "/line/webhook") return handleLineWebhook(request, env);
     if (request.method === "POST" && url.pathname === "/v1/worker/claim") return claimRemoteCommand(request, env);
