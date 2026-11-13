@@ -16,6 +16,7 @@
 - 若工作階段同時列出 `~/.codex/skills`、`~/.agents/skills` 或 `~/.claude/skills` 的同名 Skill，核心工作一律讀本 repo 版本。不得選用 `.agents` 或 `.claude` 版本補充、覆蓋或裁決現行規則。
 - 本機 `.agents` 與 `~/.claude` 副本都不是來源。核心 Skill 不得在 `.agents/skills` 保留同名副本，也不得把本機 `~/.claude` 副本直接複製進 `~/.codex`；Claude 修改規則一律改 repo 母版，再由同步腳本部署到兩邊。
 - 啟動 `podcast-publish` 或任何會呼叫其他 Skill 的總控流程時，先執行 `tools/check-skill-authority.sh`。檢查失敗就停止，不得用找到的任一舊副本勉強開工。
+- 本次工作階段拉過 repo 更新（含為推 commit 而 pull）後，先同步部署（Mac `./tools/sync-codex.sh`、Windows `.\tools\sync-codex.ps1`）再跑檢查。pull 後第一次檢查若只有 `MISSING`／`DIFF`，可同步一次後重跑；重跑仍 FAIL，或出現 `DUPLICATE`／`WARN`，照常停止（2026-11-14，Mac pull 拉進新的句剪鏡頭表樣板，未同步就檢查而誤停上架）。
 - `skill-creator` 在 Codex 端固定使用 Codex 內建版；repo 內同名 Skill 僅供舊環境相容，不得部署成 Codex 使用者版。
 
 ## 角色設定與語氣（所有互動都套用，不限寫作任務）
