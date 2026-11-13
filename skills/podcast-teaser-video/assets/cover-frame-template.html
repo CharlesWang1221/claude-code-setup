@@ -1,28 +1,36 @@
 <!doctype html>
 <!--
-  句剪專屬封面系列框架樣板（2026-10-29 老查選定：D 版＋黃色節目名）
+  句剪專屬封面系列框架樣板（2026-10-29 老查選定：D 版＋黃色節目名；2026-11-09 修正版位與離線字型；
+  2026-11-09 v4：節目名從畫面下方移到主標正下方，阿維複審 REVISE：下方黃框壓到週二阿分臉、週三與週五老查眼睛）
   色碼與限制以 DESIGN.md「短影片封面強調色」為準；排版規則見 SKILL.md「專屬封面」。
   使用：只能透過 tools/cover-frame/render_cover.py 填字與截圖；不得複製後改 CSS 或另寫程式重畫。
-  {{ART}}       封面畫面（大千依留白規則出圖，y 280–720 不得有角色頭部）
-  {{TAG}}       期別標籤，例：S4EP2｜週一預告
-  {{LINE1}}     主標第一行（黑字）
-  {{HIGHLIGHT}} 主標重點字，2～4 字，黑底黃字，全張只有這一處
-  {{FONT}}      當週 cover_font（DESIGN.md 字體表）；預設 Noto Sans TC
+  {{FONT_FACES}} renderer 注入的 @font-face（本機字型檔，離線；不得改回 Google Fonts 等網路字型）
+  {{ART}}        封面畫面（大千依留白規則出圖，y 280–860 是文字留白帶，不得有角色頭部與重要物件）
+  {{TAG}}        期別標籤，例：S4EP2｜週一預告
+  {{LINE1}}      主標第一行（黑字）
+  {{HIGHLIGHT}}  主標重點字，2～4 字，黑底黃字，全張只有這一處
+  字型別名：CoverBase＝Noto Sans TC（標籤、節目名）；CoverHead＝當週 cover_font（主標）。
+  版位（全部釘死行高，不隨字型 metrics 漂移；renderer 會量測並擋下越界）：
+    期別標籤  y 280–346
+    主標      y 360 起，含重點字色塊底緣不低於 y 720；x 76–1004
+    節目名    y 750–850（主標正下方、人物上方留白帶內；黃框高 100＝上框線 4＋內距 18×2＋行高 60）
+  文字全部集中在 y 280–860；y 860 以下留給人物與故事中的手，不放任何文字。
+  節目名不得移到左右兩側（會遮故事中的手），也不得移回畫面下方（會壓到人物臉與眼睛）。
   交件前：裁 y 240–1680 縮成寬 264 px 檢查，標籤、主標、節目名都要完整可讀。
 -->
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=block" rel="stylesheet">
 <style>
+{{FONT_FACES}}
   * { box-sizing: border-box; }
   html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #f7f4ec; }
-  .cover { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: #24231f; font-family: "Noto Sans TC", sans-serif; }
+  .cover { position: relative; width: 1080px; height: 1920px; overflow: hidden; color: #24231f; font-family: "CoverBase", sans-serif; }
   .art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .tag { position: absolute; top: 280px; left: 88px; padding: 10px 18px; background: #24231f; color: #FFD400; font-size: 32px; font-weight: 700; letter-spacing: .04em; }
-  .headline { position: absolute; left: 76px; top: 360px; width: 928px; margin: 0; font-family: "{{FONT}}", "Noto Sans TC", sans-serif; font-size: 125px; line-height: 1.12; letter-spacing: -.08em; font-weight: 900; }
+  .tag { position: absolute; top: 280px; left: 88px; padding: 10px 18px; background: #24231f; color: #FFD400; font-size: 32px; line-height: 46px; font-weight: 700; letter-spacing: .04em; white-space: nowrap; }
+  .headline { position: absolute; left: 84px; top: 360px; width: 920px; margin: 0; font-family: "CoverHead", sans-serif; font-size: 125px; line-height: 1.12; letter-spacing: -.08em; font-weight: 900; }
   .hl { display: inline-block; background: #24231f; color: #FFD400; padding: 0 .2em .04em .12em; margin-top: .12em; margin-left: -.06em; }
-  .show { position: absolute; left: 88px; top: 1438px; padding: 18px 22px; background: #FFD400; border-top: 4px solid #24231f; font-size: 42px; font-weight: 700; }
+  .show { position: absolute; left: 88px; top: 750px; padding: 18px 22px; background: #FFD400; border-top: 4px solid #24231f; font-size: 42px; line-height: 60px; font-weight: 700; white-space: nowrap; }
 </style>
 </head>
 <body>
