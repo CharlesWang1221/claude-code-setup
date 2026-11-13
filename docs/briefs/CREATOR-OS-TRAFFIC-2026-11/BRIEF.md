@@ -53,13 +53,42 @@ source: 老查 2026-11-13 與 Claude Code 討論：「能把這個改成總流�
 - 第一階段跑滿 2 至 4 週，老查確認欄位後，Claude 另開第二階段卡：YouTube Analytics API、Meta Graph API（FB＋IG）、Threads insights、Cloudflare Web Analytics 掛到每日排程自動抓；Podcast 收聽保留手動。
 - 屆時一併評估要不要改 `podcast-performance-review`（成析）讓復盤數字直接寫進工作站。
 
+## Mac Claude 查證與改版（2026-11-13 晚，老查核准「按你建議執行」）
+
+**本節取代下方「給 Mac 的 Claude Code」第一件事與「Mac 部署前必看」第 1 至 3 點。** 那兩段的前提（線上有新版主頁原始碼）已查證不成立。
+
+### 查證結果
+
+- 從 Cloudflare 讀回線上 `creator-os` Worker 程式：`GET /` 只回「驗證成功」靜態頁（文字要使用者回本機 `localhost:3000`）；沒有使用 `ASSETS`，非 `/v1/*` 一律 404。**線上從來沒有部署過前端**，沒有 `output: "export"` 是正常的。
+- 線上 Worker 與 `main` 的 `worker/src/index.ts` 同版（含 LINE、Mac Worker 佇列、Drive 備份）。重新部署 Worker 不會退版。
+- 「讀取雲端」前端從未進 git（全部分支、歷史、stash 都查過），Mac 硬碟與 Drive 也沒有。「核准」是 LINE 指令，不是網頁按鈕。此事不擋本卡，另由老查決定要不要追。
+
+### 改版內容（分支 `feat/creator-os-traffic`，commit `e632af5`）
+
+- `next.config.ts` 加 `output: "export"`，build 產出 `./out`。
+- Worker 新增 `isPublicAsset` 白名單：只把 `/traffic`、`/traffic.html`、`/traffic.txt`、`/traffic/*`、`/_next/*`、`/favicon.ico` 交給 `ASSETS`。`/` 仍回驗證頁，另加「開啟總流量」連結。
+- `out/index.html` 是 localStorage 舊 MVP，**不得對外**；白名單已擋住，不要放寬。
+- `wrangler.jsonc.example` 的 `run_worker_first` 改為 `true`（全部先進 Worker，由白名單決定）。
+- Mac 驗證：`npm run lint`、`npx tsc --noEmit`（含 Worker）、`npm run build` 通過，路由 `/`、`/_not-found`、`/traffic`。
+
+### Mac Codex 部署步驟（取代原待辦順序）
+
+1. `git switch feat/creator-os-traffic && git pull --ff-only`，跑來源檢查取得 PASS。
+2. `apps/creator-os/wrangler.jsonc`：Mac 沒有，從 Drive 交接包 `wrangler設定_PC副本/` 複製，**只改一處** `assets.run_worker_first` 為 `true`，其餘（database_id、vars）照 PC 副本；不提交。
+3. `npm ci` → `npm run lint` → `npm run build`，確認 `out/traffic.html` 存在。
+4. `wrangler d1 migrations list` 確認線上已有 0005、0006；套 0007；再讀回一次。
+5. `wrangler deploy`。部署前先 `wrangler deploy --dry-run` 確認 assets 目錄是 `./out`。
+6. 線上讀回：`/` 是驗證頁且有總流量連結；`/traffic` 有頁面；`/index.html` **必須不是**舊 MVP（應為 404）；無痕視窗被 Access 擋。
+7. 匯入 Drive 的 S4EP3、S4EP4 CSV（先預覽再寫入），線上截圖回報。
+8. 驗收通過後由 Claude 併入 `main`。
+
 ## Mac 交接（2026-11-13 老查指定，今晚在 Mac 執行）
 
 - 交接包放在老查 Google Drive：`我的雲端硬碟/節目-不標準答案/暫存/流量管理/`（Mac 依 Drive 掛載點找，通常在 `~/Library/CloudStorage/GoogleDrive-*/`，不寫死路徑）。
 - 先讀 `00_先讀_Mac交接_2026-11-13.md`；給 Codex 的指令是 `01_貼給Mac_Codex的指令.txt`（2026-11-13 下午改版：程式已寫好，Codex 只做確認、部署、填數字、讀回）。
 - `wrangler設定_PC副本/` 是 PC 上的 `wrangler.jsonc`、`wrangler.line.jsonc`（含 D1 database_id，不進 repo）。Mac 已有就先比對 database_id，不同即停；沒有才複製。
 
-### 給 Mac 的 Claude Code（老查問起「總流量」「流量管理」時）
+### 給 Mac 的 Claude Code（已過時，見「Mac Claude 查證與改版」）
 
 - 現況：程式在分支 `feat/creator-os-traffic`（`f0a5bc9`），PC 已過 lint、tsc、build；尚未套 0007、未部署、未填數字。
 - Claude 的角色：管理與驗收，不重寫功能。部署、填數字由 Mac Codex 依 Drive 的 `01` 指令執行。
@@ -90,7 +119,7 @@ PC Codex 的寫檔工具壞了（`TextEncoder is not defined`），老查改指�
   - **不設外鍵接 `content_items`／`publications`**。`POST /v1/state` 每次儲存都整批刪除再重建 `content_items`，設外鍵會讓成效資料跟著被刪或斷開。改用 `episode`（例 S4EP3）＋`content_label`（空白代表集數本身）當識別，`content_item_id` 只留欄位、不設約束。
   - **總流量做成獨立網址 `/traffic`，沒改主頁 `page.tsx`**。原因見下。
 
-### Mac 部署前必看（停止線）
+### Mac 部署前必看（停止線；第 1 至 3 點已由「Mac Claude 查證與改版」取代）
 
 1. **PC 的 repo 裡沒有線上工作站的前端原始碼。** repo 的 `src/app/page.tsx` 還是 localStorage 版 MVP，沒有「讀取雲端」「核准」；`next.config.ts` 也沒有 `output: "export"`，但線上是從 `./out` 部署。線上版原始碼推測只在 Mac 本機、沒有 commit。
 2. Mac 先跑 `git status` 看 `apps/creator-os` 有沒有未提交的 `page.tsx`、`next.config.ts`。有的話，先 commit 到這個分支再 build；**用 repo 現在的 `page.tsx` 直接部署，會把線上工作站退回舊版**，這種情況要停下來回報老查。
