@@ -32,7 +32,7 @@ source: 老查 2026-11-13 與 Claude Code 討論：「能把這個改成總流�
 
 ## Codex 待辦（依序）
 
-0. **前置：等老查決定 LINE 遠端控制那批改動**。Windows PC 上 `apps/creator-os/worker/src/index.ts` 有約 200 行未提交改動，另有 `0005_remote_control.sql`、`0006_line_authorized_users.sql` 兩個未進 repo 的 migration。老查決定保留或捨棄前，不得修改 `worker/src/index.ts`，避免兩邊合併衝突。新 migration 一律編號 `0007` 起跳，不得占用 0005、0006。
+0. **前置已解除**：老查 2026-11-13 決定保留 LINE 遠端控制，已由 Claude 提交（`908b3d0`，含 `0005_remote_control.sql`、`0006_line_authorized_users.sql`）。新功能疊在其上，新 migration 一律編號 `0007` 起跳。部署前先確認線上 D1 已套用 0005、0006；沒套用就一起套，套完讀回 `wrangler d1 migrations list`。`wrangler.jsonc` 含 database_id，維持不提交。
 1. `git pull --ff-only`，跑來源檢查取得 PASS。實作與部署在 Mac 執行；Windows 是公司電腦，不在上面跑 `npm install` 或 `wrangler`。
 2. 讀 `apps/creator-os/AGENTS.md`：這版 Next.js 有破壞性變更，先讀 `node_modules/next/dist/docs/` 對應段落再寫。
 3. 新增 D1 migration：成效數據表，外鍵接 `workspaces`，可選接 `content_items`／`publications`；同一內容、同一平台、同一觀察窗不得重複（UNIQUE）。
