@@ -1,9 +1,18 @@
 {
   "task_id": "S4EP4-RELEASE",
-  "updated_at": "2026-11-13T14:10:00+08:00",
+  "updated_at": "2026-11-14T05:10:57+08:00",
   "owner": "星期天",
-  "status": "WAITING_PACKAGE",
-  "completed_scope": "Firstory 與三篇 Threads 已排程並讀回，尚未公開",
+  "status": "PARTIALLY_SCHEDULED",
+  "mac_production_update": {
+    "date": "2026-11-13",
+    "sources": "兩批指定 v0.2_修正",
+    "ig": "橘白系 5 張輪播與 5 張金句預覽，待人工核准與審核放行",
+    "fb_image": "全家收到錢的喜悅 v2，1080×1920 預覽，v1 與 v2 各用 ImageGen 1 次",
+    "shorts": "5 段候選加 1 段備選，尚未正式製作",
+    "new_platform_writes": 1,
+    "publication_authorized": false
+  },
+  "completed_scope": "Firstory、三篇 Threads 及 FB 主題圖文已排程讀回，皆尚未公開",
   "firstory": {
     "id": "cmweedqou00a401rkbrwvdlxa",
     "scheduled_at": "2026-11-16T07:00:00+08:00",
@@ -54,5 +63,37 @@
     "started": false,
     "state": "WAITING_PACKAGE"
   },
-  "raw_evidence": "私人工作檔；未提交公開 repo"
+  "raw_evidence": "私人工作檔；未提交公開 repo",
+  "publication_authorized": true,
+  "fb_topic": {
+    "status": "SCHEDULED_NOT_PUBLIC",
+    "account": "不標準答案",
+    "scheduled_at": "2026-11-16T12:15:00+08:00",
+    "readback_at": "2026-11-14T05:10:57+08:00",
+    "business_suite_content_id": "1122387377071581",
+    "platform_post_id": "1665913965039530",
+    "photo_id": "1436610721938777",
+    "url": "https://www.facebook.com/1665913965039530",
+    "first_comment_id": "1463610162391853",
+    "first_comment_status": "SAVED",
+    "readback": "貼文時間、圖片、文案及含 Firstory 連結的首則留言在重新整理後讀回；跨平台分享與加強推廣關閉"
+  },
+  "publication": {
+    "authorized": true,
+    "new_uploads": 0,
+    "new_schedules": 1,
+    "new_published": 0,
+    "authorization_received": true,
+    "user_text": "核准案排程上架；已確認 可以繼續",
+    "authorization_recorded_at": "2026-11-13T20:54:38+08:00",
+    "package": "release-package-fb.json",
+    "submitted": true,
+    "readback_verified": true,
+    "fb_schedule_status": "SCHEDULED_NOT_PUBLIC"
+  },
+  "policy_confirmation": {
+    "user_confirmed_proceed": true,
+    "independent_11_15_check_completed": false,
+    "source": "user_manual_confirmation"
+  }
 }
