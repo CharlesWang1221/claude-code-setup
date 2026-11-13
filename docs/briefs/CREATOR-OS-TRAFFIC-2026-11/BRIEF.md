@@ -60,6 +60,18 @@ source: 老查 2026-11-13 與 Claude Code 討論：「能把這個改成總流�
 - `wrangler設定_PC副本/` 是 PC 上的 `wrangler.jsonc`、`wrangler.line.jsonc`（含 D1 database_id，不進 repo）。Mac 已有就先比對 database_id，不同即停；沒有才複製。
 - Mac 的 Claude Code 接手時：只負責確認上述前置與驗收，實作交 Codex，不自己改 `apps/creator-os` 程式。
 
+## PC／Mac 拆工（2026-11-13 老查要求白天先在 PC 推進）
+
+PC 已有 `node_modules`（含 `next/dist/docs`），寫程式不需要安裝。拆法如下，取代待辦 1「實作在 Mac」的限制；`npm install`、`wrangler` 仍只在 Mac 跑。
+
+- **PC 現在做**（Codex，單一執行線，不開子代理；唯讀盤點卡住兩次就是並行探查拖垮的，直接開工）：
+  - 待辦 2 至 6 的程式：`0007` migration、Worker API、「總流量」頁、CSV 範本。
+  - 可跑 `npm run lint`、`npm run build`（只用既有 `node_modules`，不得 `npm install`／`npm ci`）。缺套件就停，留給 Mac。
+  - 開分支 `feat/creator-os-traffic` commit 並 push，不併入 main。
+  - Firstory 匯出實測：瀏覽器登入後台只看不改，結果寫回本卡「實測結果」。
+  - S4EP3、S4EP4 各平台 D1／D7／D30 數字：後台唯讀抄錄，存到 Drive 交接包 `流量管理/` 的 CSV（照範本欄位），不進 repo。
+- **Mac 今晚做**：拉分支 → `npm ci` → lint／build → 確認線上 D1 已有 0005、0006 → 套 0007 並讀回 `migrations list` → 部署 → 匯入 Drive 那份 CSV → 線上讀回截圖 → 併入 main。
+
 ## 實測結果
 
 （Codex 待辦 6、7 完成後填寫）
