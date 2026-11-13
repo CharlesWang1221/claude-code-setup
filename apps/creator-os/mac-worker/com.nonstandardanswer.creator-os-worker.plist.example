@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.nonstandardanswer.creator-os-worker</string>
+  <key>ProgramArguments</key><array>
+    <string>/usr/local/bin/node</string>
+    <string>/Users/你的帳號/CCoode/apps/creator-os/mac-worker/creator-os-worker.mjs</string>
+  </array>
+  <key>RunAtLoad</key><true/><key>KeepAlive</key><true/>
+  <key>StandardOutPath</key><string>/Users/你的帳號/Library/Logs/creator-os-worker.log</string>
+  <key>StandardErrorPath</key><string>/Users/你的帳號/Library/Logs/creator-os-worker.error.log</string>
+</dict></plist>

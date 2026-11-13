@@ -22,6 +22,19 @@ type Env = {
   GOOGLE_DRIVE_CLIENT_SECRET?: string;
   GOOGLE_DRIVE_REFRESH_TOKEN?: string;
   GOOGLE_DRIVE_BACKUP_FOLDER_ID?: string;
+  LINE_CHANNEL_SECRET?: string;
+  LINE_CHANNEL_ACCESS_TOKEN?: string;
+  LINE_ALLOWED_USER_IDS?: string;
+  LINE_PAIRING_CODE?: string;
+  CREATOR_OS_WORKER_TOKEN?: string;
+};
+
+type RemoteCommand = {
+  id: string;
+  commandType: "run_workflow" | "approve" | "reject" | "pause";
+  payload: Record<string, unknown>;
+  status: string;
+  createdAt: string;
 };
 
 type AccessContext = { access?: { getIdentity?: () => Promise<{ email?: string } | null> } };
@@ -130,6 +143,191 @@ async function state(env: Env) {
     content: (contentRows.results ?? []).map((item) => ({ ...item, scriptSections: typeof item.scriptSections === "string" ? JSON.parse(item.scriptSections || "[]") : item.scriptSections, assets: typeof item.assets === "string" ? JSON.parse(item.assets || "[]") : item.assets })),
     tasks: (taskRows.results ?? []).map((task) => ({ ...task, done: task.status === "已完成", requiresApproval: Boolean(task.requiresApproval) })),
   };
+}
+
+async function ensureWorkspace(env: Env) {
+  const existing = await env.DB.prepare("SELECT id FROM workspaces WHERE id = ?").bind(workspaceId).first<{ id: string }>();
+  if (existing) return;
+  const ownerEmail = normalizedEmail(env.OWNER_EMAIL);
+  if (!ownerEmail) throw new Error("尚未設定 owner。");
+  const statements = [
+    env.DB.prepare("INSERT OR IGNORE INTO workspaces (id, name) VALUES (?, ?)").bind(workspaceId, "不標準答案"),
+    env.DB.prepare("INSERT OR IGNORE INTO workspace_members (workspace_id, email, role) VALUES (?, ?, 'owner')").bind(workspaceId, ownerEmail),
+  ];
+  const editorEmail = normalizedEmail(env.EDITOR_EMAIL);
+  if (editorEmail) statements.push(env.DB.prepare("INSERT OR IGNORE INTO workspace_members (workspace_id, email, role) VALUES (?, ?, 'editor')").bind(workspaceId, editorEmail));
+  await env.DB.batch(statements);
+}
+
+function safeJson(value: string | null | undefined): Record<string, unknown> {
+  if (!value) return {};
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed as Record<string, unknown> : {};
+  } catch {
+    return {};
+  }
+}
+
+async function remoteStatus(env: Env) {
+  await ensureWorkspace(env);
+  const [commands, workers] = await Promise.all([
+    env.DB.prepare("SELECT id, command_type AS commandType, payload_json AS payloadJson, status, created_at AS createdAt FROM remote_commands WHERE workspace_id = ? ORDER BY created_at DESC LIMIT 6").bind(workspaceId).all<RemoteCommand & { payloadJson: string }>(),
+    env.DB.prepare("SELECT id, label, status, last_seen_at AS lastSeenAt FROM remote_workers WHERE workspace_id = ? ORDER BY last_seen_at DESC").bind(workspaceId).all<{ id: string; label: string; status: string; lastSeenAt: string }>(),
+  ]);
+  const now = Date.now();
+  return {
+    commands: (commands.results ?? []).map(({ payloadJson, ...command }) => ({ ...command, payload: safeJson(payloadJson) })),
+    workers: (workers.results ?? []).map((worker) => ({ ...worker, online: now - Date.parse(worker.lastSeenAt) < 90_000 })),
+  };
+}
+
+async function createRemoteCommand(env: Env, requestedBy: string, commandType: RemoteCommand["commandType"], payload: Record<string, unknown>, idempotencyKey?: string) {
+  await ensureWorkspace(env);
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  await env.DB.prepare("INSERT OR IGNORE INTO remote_commands (id, workspace_id, source, requested_by, command_type, payload_json, status, idempotency_key, created_at, updated_at) VALUES (?, ?, 'line', ?, ?, ?, 'queued', ?, ?, ?)")
+    .bind(id, workspaceId, requestedBy, commandType, JSON.stringify(payload), idempotencyKey ?? null, now, now).run();
+  if (idempotencyKey) {
+    const saved = await env.DB.prepare("SELECT id, command_type AS commandType, payload_json AS payloadJson, status, created_at AS createdAt FROM remote_commands WHERE idempotency_key = ?").bind(idempotencyKey).first<RemoteCommand & { payloadJson: string }>();
+    if (saved) return { ...saved, payload: safeJson(saved.payloadJson) };
+  }
+  return { id, commandType, payload, status: "queued", createdAt: now };
+}
+
+function configuredLineUsers(env: Env) {
+  return (env.LINE_ALLOWED_USER_IDS ?? "").split(",").map((value) => value.trim()).filter(Boolean);
+}
+
+async function lineAllowed(userId: string, env: Env) {
+  if (configuredLineUsers(env).includes(userId)) return true;
+  await ensureWorkspace(env);
+  const paired = await env.DB.prepare("SELECT user_id FROM line_authorized_users WHERE workspace_id = ? AND user_id = ?").bind(workspaceId, userId).first<{ user_id: string }>();
+  return Boolean(paired);
+}
+
+async function pairLineUser(input: string, userId: string, env: Env) {
+  const match = input.trim().match(/^配對\s+(.+)$/);
+  if (!match || !env.LINE_PAIRING_CODE || match[1] !== env.LINE_PAIRING_CODE) return false;
+  await ensureWorkspace(env);
+  const now = new Date().toISOString();
+  await env.DB.prepare("INSERT INTO line_authorized_users (workspace_id, user_id, label, paired_at, last_seen_at) VALUES (?, ?, '老查', ?, ?) ON CONFLICT(workspace_id, user_id) DO UPDATE SET last_seen_at = excluded.last_seen_at")
+    .bind(workspaceId, userId, now, now).run();
+  return true;
+}
+
+function commandHelp() {
+  return "可用指令：\n進度\n待我核准\n執行 每日檢查\n核准 <命令 ID>\n退件 <命令 ID>：原因\n暫停 <命令 ID>";
+}
+
+function describeStatus(status: Awaited<ReturnType<typeof remoteStatus>>) {
+  const online = status.workers.filter((worker) => worker.online);
+  const workerText = online.length ? `Mac Worker：${online.map((worker) => `${worker.label}（${worker.status}）`).join("、")}` : "Mac Worker：離線，命令會保留在佇列。";
+  const queued = status.commands.filter((command) => ["queued", "claimed", "running"].includes(command.status));
+  const commandText = queued.length ? queued.map((command) => `${command.id.slice(0, 8)} ${command.commandType} ${command.status}`).join("\n") : "目前沒有待執行命令。";
+  return `${workerText}\n\n待執行：\n${commandText}`;
+}
+
+async function lineSignatureValid(request: Request, secret: string) {
+  const signature = request.headers.get("x-line-signature") ?? "";
+  const body = await request.clone().text();
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const digest = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body));
+  const expected = btoa(String.fromCharCode(...new Uint8Array(digest)));
+  if (signature.length !== expected.length) return false;
+  let mismatch = 0;
+  for (let index = 0; index < signature.length; index += 1) mismatch |= signature.charCodeAt(index) ^ expected.charCodeAt(index);
+  return mismatch === 0;
+}
+
+async function lineReply(replyToken: string, text: string, env: Env) {
+  if (!env.LINE_CHANNEL_ACCESS_TOKEN) throw new Error("LINE_CHANNEL_ACCESS_TOKEN 尚未設定。");
+  const response = await fetch("https://api.line.me/v2/bot/message/reply", {
+    method: "POST",
+    headers: { authorization: `Bearer ${env.LINE_CHANNEL_ACCESS_TOKEN}`, "content-type": "application/json" },
+    body: JSON.stringify({ replyToken, messages: [{ type: "text", text: text.slice(0, 4900) }] }),
+  });
+  if (!response.ok) throw new Error("LINE 回覆失敗。");
+}
+
+async function handleLineText(text: string, userId: string, eventId: string, env: Env) {
+  const input = text.trim();
+  if (["進度", "狀態"].includes(input)) return describeStatus(await remoteStatus(env));
+  if (input === "待我核准") {
+    const status = await remoteStatus(env);
+    const waiting = status.commands.filter((command) => command.status === "queued");
+    return waiting.length ? waiting.map((command) => `${command.id}\n${command.commandType} ${JSON.stringify(command.payload)}`).join("\n\n") : "目前沒有等待你決定的命令。";
+  }
+  if (/^執行\s*(每日檢查|daily-check)$/i.test(input)) {
+    const command = await createRemoteCommand(env, userId, "run_workflow", { workflowId: "daily-check" }, eventId);
+    return `已排入「每日檢查」。\n命令 ID：${command.id}\nMac 上線後會自動領取。`;
+  }
+  const approve = input.match(/^核准\s+([\w-]+)$/);
+  if (approve) {
+    const command = await createRemoteCommand(env, userId, "approve", { targetId: approve[1] }, eventId);
+    return `已記錄核准命令：${command.id}`;
+  }
+  const reject = input.match(/^退件\s+([\w-]+)\s*[：:]\s*(.+)$/);
+  if (reject) {
+    const command = await createRemoteCommand(env, userId, "reject", { targetId: reject[1], reason: reject[2].slice(0, 1000) }, eventId);
+    return `已記錄退件命令：${command.id}`;
+  }
+  const pause = input.match(/^暫停\s+([\w-]+)$/);
+  if (pause) {
+    const command = await createRemoteCommand(env, userId, "pause", { targetId: pause[1] }, eventId);
+    return `已記錄暫停命令：${command.id}`;
+  }
+  return commandHelp();
+}
+
+async function handleLineWebhook(request: Request, env: Env) {
+  if (!env.LINE_CHANNEL_SECRET || !env.LINE_CHANNEL_ACCESS_TOKEN) return new Response("LINE 尚未完成設定。", { status: 503 });
+  if (!await lineSignatureValid(request, env.LINE_CHANNEL_SECRET)) return new Response("簽章無效。", { status: 401 });
+  const body = await request.json().catch(() => null) as { events?: Array<{ type?: string; webhookEventId?: string; replyToken?: string; source?: { userId?: string }; message?: { type?: string; text?: string } }> } | null;
+  for (const event of body?.events ?? []) {
+    if (event.type !== "message" || event.message?.type !== "text" || !event.replyToken || !event.source?.userId) continue;
+    const paired = await pairLineUser(event.message.text ?? "", event.source.userId, env);
+    const allowed = paired || await lineAllowed(event.source.userId, env);
+    const reply = paired ? "配對完成。這個 LINE 帳號已取得 Creator OS 遠端控制權限。輸入「進度」開始使用。" : allowed ? await handleLineText(event.message.text ?? "", event.source.userId, event.webhookEventId ?? crypto.randomUUID(), env) : "這個帳號沒有 Creator OS 遠端控制權限。請輸入由你在 Cloudflare 設定的配對碼。";
+    await lineReply(event.replyToken, reply, env);
+  }
+  return new Response("OK");
+}
+
+function workerAuthorized(request: Request, env: Env) {
+  const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  return Boolean(env.CREATOR_OS_WORKER_TOKEN && token && token === env.CREATOR_OS_WORKER_TOKEN);
+}
+
+async function claimRemoteCommand(request: Request, env: Env) {
+  if (!workerAuthorized(request, env)) return json({ error: "Mac Worker 驗證失敗。" }, 401, request, env);
+  await ensureWorkspace(env);
+  const workerId = request.headers.get("x-creator-os-worker-id")?.trim();
+  if (!workerId || workerId.length > 120) return json({ error: "缺少有效的 Worker ID。" }, 400, request, env);
+  const body = await request.json().catch(() => ({})) as { label?: string };
+  const now = new Date().toISOString();
+  await env.DB.prepare("INSERT INTO remote_workers (id, workspace_id, label, status, last_seen_at, updated_at) VALUES (?, ?, ?, 'online', ?, ?) ON CONFLICT(id) DO UPDATE SET label = excluded.label, status = 'online', last_seen_at = excluded.last_seen_at, updated_at = excluded.updated_at")
+    .bind(workerId, workspaceId, String(body.label ?? workerId).slice(0, 120), now, now).run();
+  const next = await env.DB.prepare("SELECT id, command_type AS commandType, payload_json AS payloadJson, status, created_at AS createdAt FROM remote_commands WHERE workspace_id = ? AND status = 'queued' AND command_type = 'run_workflow' ORDER BY created_at ASC LIMIT 1").bind(workspaceId).first<RemoteCommand & { payloadJson: string }>();
+  if (!next) return json({ command: null }, 200, request, env);
+  await env.DB.prepare("UPDATE remote_commands SET status = 'claimed', worker_id = ?, claimed_at = ?, started_at = ?, updated_at = ? WHERE id = ? AND status = 'queued'").bind(workerId, now, now, now, next.id).run();
+  const claimed = await env.DB.prepare("SELECT status FROM remote_commands WHERE id = ?").bind(next.id).first<{ status: string }>();
+  if (claimed?.status !== "claimed") return json({ command: null }, 200, request, env);
+  await env.DB.prepare("UPDATE remote_workers SET status = 'busy', current_command_id = ?, updated_at = ? WHERE id = ?").bind(next.id, now, workerId).run();
+  return json({ command: { ...next, payload: safeJson(next.payloadJson) } }, 200, request, env);
+}
+
+async function completeRemoteCommand(request: Request, env: Env, commandId: string) {
+  if (!workerAuthorized(request, env)) return json({ error: "Mac Worker 驗證失敗。" }, 401, request, env);
+  const workerId = request.headers.get("x-creator-os-worker-id")?.trim();
+  const body = await request.json().catch(() => null) as { ok?: boolean; result?: unknown; error?: string } | null;
+  if (!workerId || !body || typeof body.ok !== "boolean") return json({ error: "完成回報格式錯誤。" }, 400, request, env);
+  const now = new Date().toISOString();
+  const status = body.ok ? "succeeded" : "failed";
+  await env.DB.prepare("UPDATE remote_commands SET status = ?, result_json = ?, error_message = ?, completed_at = ?, updated_at = ? WHERE id = ? AND worker_id = ? AND status = 'claimed'")
+    .bind(status, JSON.stringify(body.result ?? {}), body.ok ? null : String(body.error ?? "Mac Worker 執行失敗。").slice(0, 1000), now, now, commandId, workerId).run();
+  await env.DB.prepare("UPDATE remote_workers SET status = 'online', current_command_id = NULL, last_seen_at = ?, updated_at = ? WHERE id = ?").bind(now, now, workerId).run();
+  return json({ ok: true }, 200, request, env);
 }
 
 function hex(bytes: ArrayBuffer) {
@@ -250,10 +448,15 @@ const worker = {
     const url = new URL(request.url);
     if (request.method === "GET" && url.pathname === "/") return landingPage();
     if (url.pathname === "/health") return json({ ok: true }, 200, request, env);
+    if (request.method === "POST" && url.pathname === "/line/webhook") return handleLineWebhook(request, env);
+    if (request.method === "POST" && url.pathname === "/v1/worker/claim") return claimRemoteCommand(request, env);
+    const completedCommand = url.pathname.match(/^\/v1\/worker\/commands\/([\w-]+)\/complete$/);
+    if (request.method === "POST" && completedCommand) return completeRemoteCommand(request, env, completedCommand[1]);
     if (!url.pathname.startsWith("/v1/")) return json({ error: "找不到路徑。" }, 404, request, env);
     const member = await memberFor(request, env, ctx);
     if (member instanceof Response) return member;
     if (request.method === "GET" && url.pathname === "/v1/state") return json(await state(env), 200, request, env);
+    if (request.method === "GET" && url.pathname === "/v1/remote/status") return json(await remoteStatus(env), 200, request, env);
     if (request.method === "POST" && url.pathname === "/v1/import") return importState(request, env, member.email);
     if (request.method === "POST" && url.pathname === "/v1/state") return replaceState(request, env, member.email, member.role);
     if (request.method === "POST" && url.pathname === "/v1/backups") {

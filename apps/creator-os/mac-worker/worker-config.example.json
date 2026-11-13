@@ -1,0 +1,14 @@
+{
+  "apiUrl": "https://creator-os.example.workers.dev",
+  "workerId": "mac-studio-charles",
+  "label": "老查的 Mac",
+  "workerToken": "只放在 Mac，不可提交",
+  "pollIntervalMs": 15000,
+  "workflows": {
+    "daily-check": {
+      "command": "/bin/zsh",
+      "args": ["/Users/你的帳號/CCoode/tools/daily-check.sh"],
+      "cwd": "/Users/你的帳號/CCoode"
+    }
+  }
+}
