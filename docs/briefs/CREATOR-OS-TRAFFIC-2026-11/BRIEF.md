@@ -55,10 +55,18 @@ source: 老查 2026-11-13 與 Claude Code 討論：「能把這個改成總流�
 
 ## Mac 交接（2026-11-13 老查指定，今晚在 Mac 執行）
 
-- 交接包放在老查 Google Drive：`我的雲端硬碟/節目-不標準答案/暫存/流量管理/`（Mac 依 Drive 掛載點找，不寫死路徑）。
-- 先讀 `00_先讀_Mac交接_2026-11-13.md`；給 Codex 的指令是 `01_貼給Mac_Codex的指令.txt`。
+- 交接包放在老查 Google Drive：`我的雲端硬碟/節目-不標準答案/暫存/流量管理/`（Mac 依 Drive 掛載點找，通常在 `~/Library/CloudStorage/GoogleDrive-*/`，不寫死路徑）。
+- 先讀 `00_先讀_Mac交接_2026-11-13.md`；給 Codex 的指令是 `01_貼給Mac_Codex的指令.txt`（2026-11-13 下午改版：程式已寫好，Codex 只做確認、部署、填數字、讀回）。
 - `wrangler設定_PC副本/` 是 PC 上的 `wrangler.jsonc`、`wrangler.line.jsonc`（含 D1 database_id，不進 repo）。Mac 已有就先比對 database_id，不同即停；沒有才複製。
-- Mac 的 Claude Code 接手時：只負責確認上述前置與驗收，實作交 Codex，不自己改 `apps/creator-os` 程式。
+
+### 給 Mac 的 Claude Code（老查問起「總流量」「流量管理」時）
+
+- 現況：程式在分支 `feat/creator-os-traffic`（`f0a5bc9`），PC 已過 lint、tsc、build；尚未套 0007、未部署、未填數字。
+- Claude 的角色：管理與驗收，不重寫功能。部署、填數字由 Mac Codex 依 Drive 的 `01` 指令執行。
+- Claude 第一件事：在 Mac repo 跑 `git status`，確認 `apps/creator-os/src/app/page.tsx`、`next.config.ts` 有沒有未提交的線上版（有「讀取雲端」「核准」、`output: "export"`）。這是部署成敗的關鍵，結果先告訴老查。
+  - 有：請 Codex 先 commit 到分支再部署。
+  - 沒有：停下來，跟老查確認線上版原始碼在哪；不得用 repo 的舊 MVP 部署。
+- 驗收 Codex 回報時看四件事：線上 `/traffic` 有 S4EP3、S4EP4 數字；主頁沒退回舊版；無痕視窗仍被 Access 擋；沒有跨平台加總的大數字。通過後確認分支已併入 main、任務卡「實測結果」與總表已更新。
 
 ## PC／Mac 拆工（2026-11-13 老查要求白天先在 PC 推進）
 
