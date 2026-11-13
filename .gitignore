@@ -8,6 +8,8 @@ site/.astro
 # root
 node_modules/
 package-lock.json
+# creator-os 例外：部署用 npm ci，lock 檔必須進版控，Mac／PC 才會裝到同一組版本（2026-11-13）
+!apps/creator-os/package-lock.json
 .next/
 .playwright-mcp/
 
