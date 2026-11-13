@@ -74,4 +74,9 @@ PC 已有 `node_modules`（含 `next/dist/docs`），寫程式不需要安裝。
 
 ## 實測結果
 
-（Codex 待辦 6、7 完成後填寫）
+- 2026-11-13 PC Codex 實測 Firstory：「成效總覽」可下載 CSV，欄位為 `date, uniqueStarts, videoUniqueStarts, spotifyStreams, starts, videoStarts, spotifyPlays, spotifyListeners, spotifyFollowers`；頁面標示時區 UTC+0。
+- Claude 裁定（口徑，Codex 照做）：
+  - 這份匯出是**頻道每日總量，不是單集**，不得拿來填單集的 D1／D7／D30 列。
+  - 單集列一律從 Firstory 單集頁手填，CSV 匯入只吃本卡自己的範本格式；本階段不寫 Firstory 專用解析器。
+  - 時區：Firstory 的日界是 UTC+0（台北早上 08:00 換日）。手填 D7 時取最接近的完整日，在「備註」寫 `Firstory UTC+0`，不另做換算。
+  - 原始匯出檔留在 Drive 當佐證，不進 repo、不進 D1。
