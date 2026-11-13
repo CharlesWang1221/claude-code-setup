@@ -72,6 +72,23 @@ PC 已有 `node_modules`（含 `next/dist/docs`），寫程式不需要安裝。
   - S4EP3、S4EP4 各平台 D1／D7／D30 數字：後台唯讀抄錄，存到 Drive 交接包 `流量管理/` 的 CSV（照範本欄位），不進 repo。
 - **Mac 今晚做**：拉分支 → `npm ci` → lint／build → 確認線上 D1 已有 0005、0006 → 套 0007 並讀回 `migrations list` → 部署 → 匯入 Drive 那份 CSV → 線上讀回截圖 → 併入 main。
 
+## PC 實作結果（2026-11-13，Claude 依老查「換你寫」代寫）
+
+PC Codex 的寫檔工具壞了（`TextEncoder is not defined`），老查改指派 Claude 寫程式，已記 `docs/RULE_CHANGELOG.md`。程式在分支 `feat/creator-os-traffic`，未併 main。
+
+- 新增：`database/migrations/0007_traffic_metrics.sql`、`src/lib/traffic.ts`（平台、觀察窗、CSV 解析與驗證，Worker 與前端共用）、`src/lib/traffic-api.ts`、`src/app/traffic/`（頁面）、`docs/traffic-csv-template.csv`；修改 `worker/src/index.ts`（`GET /v1/traffic`、`POST /v1/traffic`、`POST /v1/traffic/import` 帶 `mode=preview|commit`）。
+- PC 驗證：`npm run lint`、`npx tsc --noEmit`（含 Worker）、`npm run build` 都通過，路由出現 `/traffic`；CSV 解析用 6 種情況實測；migration 與覆寫語句用 Node 內建 SQLite 實跑通過。
+- 與待辦的兩個差異（Claude 裁定）：
+  - **不設外鍵接 `content_items`／`publications`**。`POST /v1/state` 每次儲存都整批刪除再重建 `content_items`，設外鍵會讓成效資料跟著被刪或斷開。改用 `episode`（例 S4EP3）＋`content_label`（空白代表集數本身）當識別，`content_item_id` 只留欄位、不設約束。
+  - **總流量做成獨立網址 `/traffic`，沒改主頁 `page.tsx`**。原因見下。
+
+### Mac 部署前必看（停止線）
+
+1. **PC 的 repo 裡沒有線上工作站的前端原始碼。** repo 的 `src/app/page.tsx` 還是 localStorage 版 MVP，沒有「讀取雲端」「核准」；`next.config.ts` 也沒有 `output: "export"`，但線上是從 `./out` 部署。線上版原始碼推測只在 Mac 本機、沒有 commit。
+2. Mac 先跑 `git status` 看 `apps/creator-os` 有沒有未提交的 `page.tsx`、`next.config.ts`。有的話，先 commit 到這個分支再 build；**用 repo 現在的 `page.tsx` 直接部署，會把線上工作站退回舊版**，這種情況要停下來回報老查。
+3. 確認線上版原始碼後，在主頁側欄加一個連到 `/traffic` 的入口（一行 `<Link href="/traffic">`），這步由 Mac 做，因為主頁原始碼只在 Mac 上。
+4. D1：先 `wrangler d1 migrations list` 確認線上已有 0005、0006，再套 0007，套完再讀回一次。
+
 ## 實測結果
 
 - 2026-11-13 PC Codex 實測 Firstory：「成效總覽」可下載 CSV，欄位為 `date, uniqueStarts, videoUniqueStarts, spotifyStreams, starts, videoStarts, spotifyPlays, spotifyListeners, spotifyFollowers`；頁面標示時區 UTC+0。
