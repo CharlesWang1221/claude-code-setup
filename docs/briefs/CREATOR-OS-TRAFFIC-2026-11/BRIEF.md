@@ -53,6 +53,13 @@ source: 老查 2026-11-13 與 Claude Code 討論：「能把這個改成總流�
 - 第一階段跑滿 2 至 4 週，老查確認欄位後，Claude 另開第二階段卡：YouTube Analytics API、Meta Graph API（FB＋IG）、Threads insights、Cloudflare Web Analytics 掛到每日排程自動抓；Podcast 收聽保留手動。
 - 屆時一併評估要不要改 `podcast-performance-review`（成析）讓復盤數字直接寫進工作站。
 
+## Mac 交接（2026-11-13 老查指定，今晚在 Mac 執行）
+
+- 交接包放在老查 Google Drive：`我的雲端硬碟/節目-不標準答案/暫存/流量管理/`（Mac 依 Drive 掛載點找，不寫死路徑）。
+- 先讀 `00_先讀_Mac交接_2026-11-13.md`；給 Codex 的指令是 `01_貼給Mac_Codex的指令.txt`。
+- `wrangler設定_PC副本/` 是 PC 上的 `wrangler.jsonc`、`wrangler.line.jsonc`（含 D1 database_id，不進 repo）。Mac 已有就先比對 database_id，不同即停；沒有才複製。
+- Mac 的 Claude Code 接手時：只負責確認上述前置與驗收，實作交 Codex，不自己改 `apps/creator-os` 程式。
+
 ## 實測結果
 
 （Codex 待辦 6、7 完成後填寫）
