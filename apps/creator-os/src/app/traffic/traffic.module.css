@@ -1,0 +1,42 @@
+/* 色碼沿用 globals.css 的 Basie 深紫夜光 token（DESIGN.md 系統一）。 */
+.page { min-height:100vh; max-width:1500px; margin:0 auto; padding:34px 42px 60px; display:grid; gap:22px; background:radial-gradient(circle at 80% 0%, rgba(129,91,219,.20), transparent 29%), var(--bg); }
+.header { display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+.header h1 { margin:0; font-size:30px; letter-spacing:-.03em; }
+.back { color:var(--muted); font-size:12px; text-decoration:none; display:inline-block; margin-bottom:14px; }
+.back:hover { color:#fff; }
+.lead { color:var(--muted); font-size:13px; line-height:1.7; margin:8px 0 0; max-width:560px; }
+.headerActions { display:flex; gap:10px; align-items:flex-end; }
+.episodePicker { display:grid; gap:6px; color:#cac0e4; font-size:11px; }
+.episodePicker select, .formGrid input, .formGrid select, .csv { background:#15083a; color:#fff; border:1px solid var(--line); border-radius:7px; padding:9px 10px; font-size:13px; }
+.message { margin:0; padding:11px 14px; border:1px solid rgba(170,221,34,.4); border-radius:9px; color:var(--lime); font-size:13px; background:rgba(26,10,69,.72); }
+.error { color:#ff9bc9; border-color:rgba(238,53,158,.55); }
+.cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:12px; }
+.card { border:1px solid var(--line); background:rgba(26,10,69,.72); border-radius:12px; padding:15px; display:grid; gap:4px; }
+.cardPlatform { color:#cac0e4; font-size:12px; font-weight:700; }
+.card strong { font:700 26px "Space Mono", monospace; }
+.card small { color:var(--muted); font-size:11px; }
+.empty { color:var(--muted); font-size:18px !important; }
+.up, .down, .flat { font:11px "Space Mono", monospace; margin-top:6px; }
+.up { color:var(--lime); }
+.down { color:#ff9bc9; }
+.flat { color:var(--muted); }
+.tableWrap { overflow-x:auto; }
+.table { width:100%; border-collapse:collapse; font-size:12px; }
+.table th { text-align:left; color:var(--muted); font-weight:500; padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+.table td { padding:10px; border-bottom:1px solid var(--line); vertical-align:top; }
+.table td small { color:var(--muted); }
+.num { font-family:"Space Mono", monospace; white-space:nowrap; }
+.emptyRow { color:var(--muted); text-align:center; padding:26px !important; }
+.editors { display:grid; grid-template-columns:1.2fr .8fr; gap:18px; align-items:start; }
+.editors h2 { margin-bottom:6px; }
+.hint { color:var(--muted); font-size:12px; line-height:1.7; margin:0 0 16px; }
+.hint code { color:#edc8ff; font-size:11px; word-break:break-all; }
+.formGrid { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; margin-bottom:16px; }
+.formGrid label { display:grid; gap:6px; color:#cac0e4; font-size:12px; }
+.wide { grid-column:1 / -1; }
+.csv { width:100%; min-height:140px; margin:12px 0; resize:vertical; font-family:"Space Mono", monospace; font-size:11px; }
+.preview { margin-top:14px; font-size:13px; display:grid; gap:10px; }
+.preview p { margin:0; }
+.errorList { margin:0; padding-left:18px; color:#ff9bc9; font-size:12px; line-height:1.7; }
+@media (max-width:1050px) { .page { padding:28px; } .editors { grid-template-columns:1fr; } }
+@media (max-width:680px) { .page { padding:22px 15px 40px; } .formGrid { grid-template-columns:1fr; } .header h1 { font-size:24px; } }

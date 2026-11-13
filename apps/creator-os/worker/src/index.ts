@@ -1,3 +1,5 @@
+import { csvToTrafficInputs, MAX_IMPORT_ROWS, trafficKey, validateTrafficInput, type TrafficInput, type TrafficRow, type TrafficSource } from "../../src/lib/traffic";
+
 type Role = "owner" | "editor" | "viewer";
 
 type D1Result<T> = { results?: T[] };
@@ -442,6 +444,65 @@ async function replaceState(request: Request, env: Env, email: string, role: Rol
   return json({ ok: true, savedAt: now }, 200, request, env);
 }
 
+// ── 總流量（CREATOR-OS-TRAFFIC-2026-11 第一階段：手填＋CSV，不接平台 API）──
+
+type TrafficDbRow = {
+  id: string;
+  episode: string;
+  contentLabel: string;
+  platform: TrafficRow["platform"];
+  window: TrafficRow["window"];
+  primaryValue: number;
+  reach: number | null;
+  engagements: number | null;
+  linkClicks: number | null;
+  followerDelta: number | null;
+  source: TrafficSource;
+  enteredBy: string;
+  note: string;
+  updatedAt: string;
+};
+
+async function listTraffic(env: Env): Promise<TrafficRow[]> {
+  const rows = await env.DB.prepare("SELECT id, episode, content_label AS contentLabel, platform, obs_window AS window, primary_value AS primaryValue, reach, engagements, link_clicks AS linkClicks, follower_delta AS followerDelta, source, entered_by AS enteredBy, note, updated_at AS updatedAt FROM traffic_metrics WHERE workspace_id = ? ORDER BY episode DESC, content_label ASC, platform ASC, obs_window ASC").bind(workspaceId).all<TrafficDbRow>();
+  return rows.results ?? [];
+}
+
+function upsertTrafficStatement(env: Env, input: TrafficInput, source: TrafficSource, email: string, now: string) {
+  return env.DB.prepare("INSERT INTO traffic_metrics (id, workspace_id, episode, content_label, platform, obs_window, primary_value, reach, engagements, link_clicks, follower_delta, source, entered_by, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(workspace_id, episode, content_label, platform, obs_window) DO UPDATE SET primary_value = excluded.primary_value, reach = excluded.reach, engagements = excluded.engagements, link_clicks = excluded.link_clicks, follower_delta = excluded.follower_delta, source = excluded.source, entered_by = excluded.entered_by, note = excluded.note, updated_at = excluded.updated_at")
+    .bind(crypto.randomUUID(), workspaceId, input.episode, input.contentLabel, input.platform, input.window, input.primaryValue, input.reach, input.engagements, input.linkClicks, input.followerDelta, source, email, input.note, now, now);
+}
+
+async function saveTrafficRow(request: Request, env: Env, email: string, role: Role) {
+  if (role === "viewer") return json({ error: "你沒有寫入工作區的權限。" }, 403, request, env);
+  const body = await request.json().catch(() => null) as Record<string, unknown> | null;
+  if (!body || typeof body !== "object") return json({ error: "資料格式不正確。" }, 400, request, env);
+  const { input, errors } = validateTrafficInput(body);
+  if (!input) return json({ error: errors.join("；"), errors }, 400, request, env);
+  await upsertTrafficStatement(env, input, "手填", email, new Date().toISOString()).run();
+  return json({ ok: true, rows: await listTraffic(env) }, 200, request, env);
+}
+
+/** CSV 匯入兩段式：mode=preview 只回傳解析結果與錯誤列；mode=commit 全部無誤才寫入。 */
+async function importTraffic(request: Request, env: Env, email: string, role: Role) {
+  if (role === "viewer") return json({ error: "你沒有寫入工作區的權限。" }, 403, request, env);
+  const body = await request.json().catch(() => null) as { csv?: unknown; mode?: unknown } | null;
+  if (!body || typeof body.csv !== "string" || (body.mode !== "preview" && body.mode !== "commit")) return json({ error: "需要 csv 文字與 mode（preview 或 commit）。" }, 400, request, env);
+  if (body.csv.length > 512_000) return json({ error: "CSV 超過 500 KB。" }, 413, request, env);
+
+  const { inputs, errors } = csvToTrafficInputs(body.csv);
+  const existing = new Set((await listTraffic(env)).map(trafficKey));
+  const overwrites = inputs.filter((input) => existing.has(trafficKey(input))).length;
+  const summary = { rows: inputs, errors, total: inputs.length, overwrites, inserts: inputs.length - overwrites, maxRows: MAX_IMPORT_ROWS };
+  if (body.mode === "preview") return json({ ok: true, ...summary }, 200, request, env);
+
+  if (errors.length) return json({ error: "CSV 有錯誤列，請修正後重新預覽，未寫入任何資料。", ...summary }, 400, request, env);
+  if (!inputs.length) return json({ error: "CSV 沒有資料列。" }, 400, request, env);
+  const now = new Date().toISOString();
+  await env.DB.batch(inputs.map((input) => upsertTrafficStatement(env, input, "CSV", email, now)));
+  return json({ ok: true, imported: inputs.length, overwrites, rows: await listTraffic(env) }, 200, request, env);
+}
+
 const worker = {
   async fetch(request: Request, env: Env, ctx: Context): Promise<Response> {
     if (request.method === "OPTIONS") return json({}, 204, request, env);
@@ -459,6 +520,9 @@ const worker = {
     if (request.method === "GET" && url.pathname === "/v1/remote/status") return json(await remoteStatus(env), 200, request, env);
     if (request.method === "POST" && url.pathname === "/v1/import") return importState(request, env, member.email);
     if (request.method === "POST" && url.pathname === "/v1/state") return replaceState(request, env, member.email, member.role);
+    if (request.method === "GET" && url.pathname === "/v1/traffic") return json({ rows: await listTraffic(env), role: member.role }, 200, request, env);
+    if (request.method === "POST" && url.pathname === "/v1/traffic") return saveTrafficRow(request, env, member.email, member.role);
+    if (request.method === "POST" && url.pathname === "/v1/traffic/import") return importTraffic(request, env, member.email, member.role);
     if (request.method === "POST" && url.pathname === "/v1/backups") {
       if (member.role !== "owner") return json({ error: "只有 owner 可以建立異地備份。" }, 403, request, env);
       try {
