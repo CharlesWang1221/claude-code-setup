@@ -145,6 +145,16 @@ PC Codex 的寫檔工具壞了（`TextEncoder is not defined`），老查改指�
 - 部署用的 `wrangler.jsonc`（`run_worker_first: true`）在 `~/creator-os-deploy/apps/creator-os/`，保留作為 Mac 部署目錄；`apps/creator-os/.gitignore` 已加入 `wrangler.jsonc`、`wrangler.line.jsonc`。
 - `package-lock.json` 已進版控（根目錄 `.gitignore` 例外）。
 
+### 首次 Drive 自動備份（2026-11-14 08:47 查）
+
+- `backup_runs` 只有 1 筆：`failed`，`creator-os_20261114033053.json`，錯誤「Google Drive 授權更新失敗。」（2026-11-14 03:30:53 台北時間）。工作區啟用後的第一次排程，**Creator OS 目前仍沒有任何異地備份**。
+- 判斷（高信心，未取得 Google 原始錯誤碼）：refresh token 已失效。依據：`docs/google-drive-backup-setup.md` 要求 consent screen 用「測試使用者」，Google 對 Testing 狀態 App 的 refresh token 只給 7 天；secret 最晚 10-21 設定，早已超過。Worker 丟掉了 Google 回傳的錯誤內容，無法直接證實是 `invalid_grant`。
+- 修法（待老查決定，Claude 未改 secret）：
+  1. Google Cloud 專案 `Creator OS Backup` 的 OAuth consent screen 改為「In production」。`drive.file` 是非敏感 scope，不需 Google 審查；之後 refresh token 不會 7 天到期。
+  2. 用 `tools/google-drive-oauth.mjs` 重新授權取得新 refresh token，老查本人 `npx wrangler secret put GOOGLE_DRIVE_REFRESH_TOKEN`。
+  3. 立即驗證：老查登入 `/traffic` 後在瀏覽器主控台跑 `fetch('/v1/backups',{method:'POST'}).then(r=>r.json()).then(console.log)`，或等下一次 03:30 排程；讀回 `backup_runs` 為 `succeeded` 並在 Drive `不標準答案/Creator OS/備份/` 看到檔案才算數。
+  4. 建議另修 Worker：把 Google 回傳的 `error` 欄位（如 `invalid_grant`）寫進 `error_message`，下次失敗能直接判斷。
+
 ### 完成定義第 3 項：延後
 
 - 今晚無可填數據：S4EP3 於 11-09 公開，D7 要 11-16 才滿；S4EP4 尚未發布。Firstory 頻道 CSV 依裁定不得填單集。
