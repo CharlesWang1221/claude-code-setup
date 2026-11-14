@@ -22,6 +22,8 @@ Whisper 路徑：/Users/ming/Library/Python/3.9/bin/whisper
 暫存目錄：session scratchpad
 
 輸出格式：MP3 192kbps 48000Hz
+交件檔名（第四季）：上傳 Drive 或交給阿分團隊時照 docs/S4_FILE_NAMING.md，
+  例：S4E05_生不生_完成音檔_v1_2026-11-17.mp3；本機中間檔名不變
 Normalize 標準：-16 LUFS（Podcast 國際標準）
 ```
 

@@ -399,6 +399,8 @@ ffprobe -v error -show_entries format=duration,size:stream=codec_type,codec_name
 
 確認檔案存在、非 0 bytes、時長合理、解析度 1080 × 1920，且有 H.264 影像與 AAC 音軌。回報成品連結與規格。
 
+第四季的短影音、原音包、字幕校對稿要放上 Drive 或交給阿分團隊時，檔名照 `docs/S4_FILE_NAMING.md`，例如 `S4E05_生不生_短影音_週一_上字幕_v1_2026-11-18.mp4`。本機的 `renders/`、`mon.json` 這類工作檔不改名，上傳時才改。
+
 ## 這次 S3EP2 的教訓
 
 第一次版本只做了封面慢推鏡與單一標題，使用者看起來像「一張圖片配音檔」。修正後才加入：3 段重點卡、段落碼、進度條、分段交接與 motion assertions。
